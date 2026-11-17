@@ -57,7 +57,7 @@ Spreadsheet column names are matched loosely: "CQ ID", "Competency question", "S
 
 ## External evaluators: OOPS! and ROBOT
 
-- **ROBOT** (`robot report`) runs locally and is used automatically when `robot` is on your PATH, or when `ROBOT_JAR` or `evaluation.robot_path` points to `robot.jar`.
+- **ROBOT** (`robot report`) runs on your machine in Docker, using the official `obolibrary/robot` image, so you don't need Java or `robot.jar`. With the default `robot = "auto"` it runs when the image has already been pulled (`docker pull obolibrary/robot`). `robot = "on"` or `--robot on` pulls the image if needed. A `robot` executable on your PATH, or set with `evaluation.robot_path`, is used instead of Docker when present. Use `evaluation.robot_image` (or `ROBOT_DOCKER_IMAGE`) to pin a version tag, such as `obolibrary/robot:<version>`.
 - **OOPS!** sends the ontology to https://oops.linkeddata.es, so it runs only when you turn it on with `--oops` or `evaluation.oops = true`.
 
 Both tools' results go in the quality report next to OntoReview's own checks, with affected elements linked to their term entries.
@@ -100,7 +100,8 @@ section_order = ["introduction", "competency-questions", "reference", "graph"]
 
 [evaluation]
 oops = false
-robot = "auto"                # "on" | "off"
+robot = "auto"                # "on" (pulls the Docker image if needed) | "off"
+robot_image = "obolibrary/robot"
 ```
 
 ## LinkML

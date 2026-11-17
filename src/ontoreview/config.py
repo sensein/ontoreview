@@ -115,7 +115,8 @@ class EvaluationConfig(BaseModel):
                                           "https://oops.linkeddata.es)")
     oops_timeout: int = 90
     robot: Literal["auto", "on", "off"] = Field("auto", description="Run `robot report` when ROBOT is available")
-    robot_path: str | None = Field(None, description="robot executable or path to robot.jar")
+    robot_path: str | None = Field(None, description="A local `robot` executable (optional; Docker is used otherwise)")
+    robot_image: str = Field("obolibrary/robot", description="Docker image used to run ROBOT")
     robot_profile: str | None = Field(None, description="Custom ROBOT report profile (TSV)")
 
 

@@ -81,7 +81,7 @@ def _eval_overrides(oops: bool | None, robot: str | None) -> dict | None:
     if oops is not None:
         ev["oops"] = oops
     if robot is not None:
-        if robot not in ("auto", "on", "off") and (robot.endswith(".jar") or "/" in robot):
+        if robot not in ("auto", "on", "off"):
             ev["robot"], ev["robot_path"] = "on", robot
         else:
             ev["robot"] = robot
@@ -135,7 +135,7 @@ def build(
     individuals: bool | None = typer.Option(None, "--individuals/--no-individuals"),
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file (.yaml/.json/.csv/.tsv/.xlsx); repeatable."),
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Add the OOPS! evaluation (uploads the ontology to oops.linkeddata.es)."),
-    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (if installed), on, off, or path to robot.jar."),
+    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (local robot or an already-pulled Docker image), on (pulls the image if needed), off, or a path to a robot executable."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
@@ -315,7 +315,7 @@ def check(
     output: Path | None = typer.Option(None, "--output", "-o", help="Write the report to a file."),
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file; repeatable."),
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Also run OOPS! (uploads the ontology to oops.linkeddata.es)."),
-    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (if installed), on, off, or path to robot.jar."),
+    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (local robot or an already-pulled Docker image), on (pulls the image if needed), off, or a path to a robot executable."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Run quality checks: built-in rules, plus ROBOT and OOPS! when enabled (great for CI)."""

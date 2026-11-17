@@ -1,9 +1,10 @@
-"""External ontology evaluators: OOPS! (web service) and ROBOT report (local, Java).
+"""External ontology evaluators: OOPS! (web service) and ROBOT report (local or Docker).
 
 * OOPS! (https://oops.linkeddata.es) sends the ontology to a remote service, so it only runs
   when enabled (``[evaluation] oops = true`` or ``--oops``).
-* ROBOT (http://robot.obolibrary.org/report) runs locally. With ``robot = "auto"`` (default)
-  it runs whenever a ``robot`` executable or a configured ``robot.jar`` is available.
+* ROBOT (http://robot.obolibrary.org/report) runs on this machine: a ``robot`` executable on
+  PATH, or the ``obolibrary/robot`` Docker image. With ``robot = "auto"`` (default) it runs
+  when either is available without downloading anything; ``robot = "on"`` pulls the image.
 """
 
 from __future__ import annotations
@@ -110,40 +111,79 @@ def parse_oops(rdfxml: str) -> list[ExternalItem]:
 
 
 # ----------------------------------------------------------------------- ROBOT
-def robot_command(robot: str | None = None) -> list[str] | None:
-    """Resolve how to invoke ROBOT: an executable, or ``java -jar robot.jar``."""
-    candidates = [robot] if robot else []
-    candidates += [os.environ.get("ROBOT_JAR"), "robot"]
-    for c in candidates:
-        if not c:
-            continue
-        if c.endswith(".jar"):
-            p = Path(c).expanduser()
-            java = shutil.which("java")
-            if p.is_file() and java:
-                return [java, "-jar", str(p)]
-            continue
-        exe = shutil.which(c)
+DEFAULT_ROBOT_IMAGE = "obolibrary/robot"
+
+
+def _docker() -> str | None:
+    """The docker executable, if the Docker daemon is reachable."""
+    exe = shutil.which("docker")
+    if not exe:
+        return None
+    try:
+        ok = subprocess.run([exe, "info", "--format", "{{.ServerVersion}}"], capture_output=True,
+                            text=True, timeout=15).returncode == 0
+    except Exception:  # noqa: BLE001
+        return None
+    return exe if ok else None
+
+
+def _image_present(docker: str, image: str) -> bool:
+    try:
+        return subprocess.run([docker, "image", "inspect", image], capture_output=True,
+                              timeout=15).returncode == 0
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def robot_command(robot: str | None = None, image: str | None = None,
+                  pull: bool = False) -> tuple[str, list[str]] | None:
+    """Resolve how to invoke ROBOT.
+
+    Returns ``("local", [exe])`` for a ``robot`` executable (``robot`` / ``evaluation.robot_path``
+    on PATH), or ``("docker", [docker, "run", ..., image, "robot"])`` for the ROBOT Docker image.
+    With ``pull=False`` the image is only used when it is already present locally, so an
+    automatic run never downloads it.
+    """
+    for c in ([robot] if robot else []) + ["robot"]:
+        exe = shutil.which(str(Path(c).expanduser()))
         if exe:
-            return [exe]
+            return "local", [exe]
+    image = image or os.environ.get("ROBOT_DOCKER_IMAGE") or DEFAULT_ROBOT_IMAGE
+    docker = _docker()
+    if docker and (pull or _image_present(docker, image)):
+        return "docker", [docker, "run", "--rm", image]
     return None
 
 
 def run_robot(graph: Graph, robot: str | None = None, profile: str | None = None,
-              timeout: int = 600) -> ExternalReport | None:
-    """Run ``robot report``. Returns None when ROBOT is not available."""
-    cmd = robot_command(robot)
-    if cmd is None:
+              timeout: int = 600, image: str | None = None, pull: bool = False) -> ExternalReport | None:
+    """Run ``robot report`` locally or in Docker. Returns None when ROBOT is not available."""
+    resolved = robot_command(robot, image, pull)
+    if resolved is None:
         return None
+    mode, cmd = resolved
     report = ExternalReport("ROBOT", "http://robot.obolibrary.org/report")
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / "ontology.owl"
         out = Path(tmp) / "report.tsv"
         graph.serialize(destination=str(src), format="xml")
-        args = cmd + ["report", "--input", str(src), "--output", str(out), "--fail-on", "none",
-                      "--print", "0"]
+        prof = None
         if profile:
-            args += ["--profile", str(profile)]
+            prof = Path(tmp) / "profile.tsv"
+            shutil.copyfile(Path(profile).expanduser(), prof)
+        if mode == "docker":
+            # mount the temp dir at /work; run as the current user so output files stay removable
+            run, img = cmd[:-1], cmd[-1]
+            run += ["-v", f"{Path(tmp).resolve()}:/work", "-w", "/work"]
+            if hasattr(os, "getuid"):
+                run += ["--user", f"{os.getuid()}:{os.getgid()}"]
+            base, where = run + [img, "robot"], lambda p: f"/work/{p.name}"
+        else:
+            base, where = cmd, str
+        args = base + ["report", "--input", where(src), "--output", where(out), "--fail-on", "none",
+                       "--print", "0"]
+        if prof:
+            args += ["--profile", where(prof)]
         try:
             proc = subprocess.run(args, capture_output=True, text=True, timeout=timeout)
         except Exception as e:  # noqa: BLE001
@@ -183,10 +223,12 @@ def run_evaluations(graph: Graph, config) -> list[ExternalReport]:
     ev = config.evaluation
     out: list[ExternalReport] = []
     if ev.robot != "off":
-        r = run_robot(graph, ev.robot_path, ev.robot_profile)
+        r = run_robot(graph, ev.robot_path, ev.robot_profile, image=ev.robot_image,
+                      pull=ev.robot == "on")
         if r is None and ev.robot == "on":
             out.append(ExternalReport("ROBOT", "http://robot.obolibrary.org/report",
-                                      error="ROBOT is not installed (set evaluation.robot_path or ROBOT_JAR)."))
+                                      error="ROBOT is not available: start Docker (image "
+                                            f"{ev.robot_image}) or put `robot` on PATH."))
         elif r is not None:
             out.append(r)
     if ev.oops:

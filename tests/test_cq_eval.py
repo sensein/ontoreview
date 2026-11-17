@@ -120,11 +120,57 @@ def test_robot_stub(tmp_path, pizza, monkeypatch):
 def test_robot_missing_is_reported_only_when_forced(pizza, monkeypatch):
     loaded, _ = pizza
     monkeypatch.setenv("PATH", "/nonexistent")
-    monkeypatch.delenv("ROBOT_JAR", raising=False)
     assert run_evaluations(loaded.graph, Config()) == []
     forced = run_evaluations(loaded.graph, Config(evaluation={"robot": "on"}))
-    assert forced[0].error and "not installed" in forced[0].error
+    assert forced[0].error and "not available" in forced[0].error
 
+
+
+def _docker_stub(tmp_path, canned, has_image):
+    """A fake `docker` CLI: answers `info`, `image inspect` and `run ... robot report`."""
+    log = tmp_path / "docker.log"
+    stub = tmp_path / "docker"
+    stub.write_text(textwrap.dedent(f"""\
+        #!/bin/sh
+        echo "$@" >> "{log}"
+        case "$1" in
+          info) echo 29.0.0; exit 0 ;;
+          image) exit {0 if has_image else 1} ;;
+          run)
+            while [ $# -gt 0 ]; do
+              if [ "$1" = "-v" ]; then host="${{2%%:/work}}"; fi
+              if [ "$1" = "--output" ]; then out="$2"; fi
+              shift
+            done
+            cp "{canned}" "$host/${{out#/work/}}" ;;
+        esac
+        """))
+    stub.chmod(stub.stat().st_mode | stat.S_IEXEC)
+    return log
+
+
+def test_robot_docker(tmp_path, pizza, monkeypatch):
+    loaded, _ = pizza
+    canned = tmp_path / "canned.tsv"
+    canned.write_text(ROBOT_TSV)
+    log = _docker_stub(tmp_path, canned, has_image=True)
+    monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}/usr/bin{os.pathsep}/bin")
+    rep = run_robot(loaded.graph, image="obolibrary/robot")
+    assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 1, "info": 1}
+    calls = log.read_text()
+    assert "run --rm" in calls and ":/work -w /work" in calls and "obolibrary/robot robot report" in calls
+
+
+def test_robot_docker_auto_never_pulls(tmp_path, pizza, monkeypatch):
+    loaded, _ = pizza
+    canned = tmp_path / "canned.tsv"
+    canned.write_text(ROBOT_TSV)
+    log = _docker_stub(tmp_path, canned, has_image=False)
+    monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}/usr/bin{os.pathsep}/bin")
+    assert run_evaluations(loaded.graph, Config()) == []  # auto: image missing -> skipped
+    assert " run " not in f" {log.read_text()}"
+    forced = run_evaluations(loaded.graph, Config(evaluation={"robot": "on"}))  # on: docker run pulls
+    assert forced[0].tool == "ROBOT" and forced[0].error is None
 
 def test_llm_files(fixtures, tmp_path):
     import json
