@@ -98,6 +98,7 @@ def _source_path(cfg: Config) -> str:
 
 
 def load(cfg: Config) -> LoadedOntology:
+    log.info("Parsing ontology %s", _source_path(cfg))
     return load_ontology(
         _source_path(cfg),
         fmt=cfg.format,
@@ -122,6 +123,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     plugins = PluginManager(load_plugins(cfg.plugins))
     onto = extract(loaded, cfg, (cfg.languages or ["en"])[0])
     plugins.decorate_terms(onto)
+    log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg)
@@ -134,6 +136,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
                                 loaded, cfg)
         except Exception as e:  # noqa: BLE001
             log.warning("Could not compute changelog against %s: %s", prev, e)
+    log.info("Rendering single HTML file → %s", out_file)
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
         downloads = write_serializations(loaded.graph, tmpdir, cfg.serialization_basename,
@@ -165,6 +168,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     languages = cfg.languages or ["en"]
     primary = languages[0]
     onto = extract(loaded, cfg, primary)
+    log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg)
@@ -180,6 +184,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             log.warning("Could not compute changelog against %s: %s", prev, e)
 
     files: list[Path] = []
+    log.info("Rendering website → %s", out_dir)
     downloads = write_serializations(loaded.graph, out_dir, cfg.serialization_basename,
                                      cfg.serializations) if cfg.sections.serializations else []
     files += [out_dir / d["file"] for d in downloads]

@@ -127,3 +127,35 @@ def test_settings_persist(tmp_path):
     assert Settings.load(f).task == "myst"
     f.write_text("{broken")
     assert Settings.load(f) == Settings()
+
+
+def test_safe_relpath_rejects_unsafe_names():
+    from ontoreview.ui_core import safe_relpath
+
+    assert str(safe_relpath("onto/sub/pizza.ttl")) == "onto/sub/pizza.ttl"
+    assert str(safe_relpath("onto\\win\\a.owl")) == "onto/win/a.owl"
+    for bad in ("../etc/passwd.ttl", "a/../../b.ttl", ".hidden/x.ttl", "C:/x.ttl", "notes.txt", "x.exe", ""):
+        assert safe_relpath(bad) is None, bad
+
+
+def test_upload_target_and_source(tmp_path, monkeypatch, fixtures):
+    from ontoreview import ui_core
+
+    monkeypatch.setattr(ui_core, "SETTINGS_FILE", tmp_path / "cfg" / "ui.json")
+    assert ui_core.upload_target("not-hex!", "a.ttl") is None
+    batch = "0123456789abcdef"
+    # one file dropped -> that file
+    t = ui_core.upload_target(batch, "pizza.ttl")
+    t.parent.mkdir(parents=True)
+    t.write_bytes((fixtures / "pizza.ttl").read_bytes())
+    assert ui_core.upload_source(batch) == str(t)
+    # one folder dropped -> that folder
+    b2 = "fedcba9876543210"
+    for rel in ("myonto/core.ttl", "myonto/vocab/colors.ttl"):
+        f = ui_core.upload_target(b2, rel)
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text("")
+    assert ui_core.upload_source(b2).endswith("myonto")
+    # several things dropped -> the batch folder
+    (ui_core.uploads_dir() / b2 / "other.ttl").write_text("")
+    assert ui_core.upload_source(b2) == str(ui_core.uploads_dir() / b2)

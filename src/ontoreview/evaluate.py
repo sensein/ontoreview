@@ -62,6 +62,7 @@ class ExternalReport:
 
 # ----------------------------------------------------------------------- OOPS!
 def run_oops(graph: Graph, timeout: int = 90, endpoint: str = OOPS_ENDPOINT) -> ExternalReport:
+    log.info("Running OOPS! pitfall scan (%s)", endpoint)
     report = ExternalReport("OOPS!", "https://oops.linkeddata.es")
     rdfxml = graph.serialize(format="xml")
     body = (
@@ -173,6 +174,8 @@ def run_robot(graph: Graph, robot: str | None = None, profile: str | None = None
     mode, cmd = resolved
     if mode == "docker":
         log.info("Running ROBOT report in Docker (%s)", cmd[-1])
+    else:
+        log.info("Running ROBOT report (%s)", cmd[0])
     report = ExternalReport("ROBOT", "http://robot.obolibrary.org/report")
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / "ontology.owl"
@@ -250,7 +253,7 @@ def run_evaluations(graph: Graph, config) -> list[ExternalReport]:
         if fallback:
             log.info("ROBOT could not run; using the OOPS! web service instead (uploads the ontology "
                      "to oops.linkeddata.es; set evaluation.oops = \"off\" to disable).")
-        out.append(run_oops(graph, ev.oops_timeout))
+        out.append(run_oops(graph, ev.oops_timeout, ev.oops_endpoint or OOPS_ENDPOINT))
     for r in out:
         if r.error:
             log.warning(r.error)

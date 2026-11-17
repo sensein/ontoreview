@@ -11,12 +11,14 @@ from __future__ import annotations
 import argparse
 import logging
 import queue
+import secrets
 import sys
 import uuid
 from pathlib import Path
 
 from . import __version__
 from .ui_core import (
+    MAX_UPLOAD_BYTES,
     TASKS,
     Settings,
     browse,
@@ -27,6 +29,8 @@ from .ui_core import (
     open_in_file_manager,
     record_run,
     run_task,
+    upload_source,
+    upload_target,
 )
 
 HELP = {
@@ -34,6 +38,92 @@ HELP = {
     "oops": "OOPS! is a web service: the ontology is uploaded to oops.linkeddata.es. "
             "'auto' uses it only when ROBOT cannot run. Choose 'off' for private ontologies.",
 }
+
+
+# Drag and drop: the page uploads dropped files to this endpoint. The token is embedded in the
+# page, so other web sites open in the same browser cannot write files through it.
+UPLOAD_TOKEN = secrets.token_urlsafe(24)
+UPLOAD_URL = "/_ontoreview/upload"
+def register_upload_route(app) -> None:
+    if any(getattr(r, "path", None) == UPLOAD_URL for r in app.router.routes):
+        return
+    from starlette.responses import JSONResponse
+    from starlette.routing import Route
+
+    async def _upload(request):
+        from urllib.parse import unquote
+
+        if not secrets.compare_digest(request.headers.get("x-upload-token", ""), UPLOAD_TOKEN):
+            return JSONResponse({"error": "forbidden"}, status_code=403)
+        target = upload_target(request.query_params.get("batch", ""),
+                               unquote(request.headers.get("x-path", "")))
+        if target is None:
+            return JSONResponse({"error": "file type or path not accepted"}, status_code=400)
+        if int(request.headers.get("content-length") or 0) > MAX_UPLOAD_BYTES:
+            return JSONResponse({"error": "file too large"}, status_code=413)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        size = 0
+        with open(target, "wb") as fh:
+            async for chunk in request.stream():
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    fh.close()
+                    target.unlink(missing_ok=True)
+                    return JSONResponse({"error": "file too large"}, status_code=413)
+                fh.write(chunk)
+        return JSONResponse({"ok": True, "size": size})
+
+    # a plain Starlette route, ahead of NiceGUI's catch-all routes
+    app.router.routes.insert(0, Route(UPLOAD_URL, _upload, methods=["POST"]))
+
+
+DROP_JS = r"""
+<script>
+(() => {
+  const TOKEN = "%TOKEN%", URL_ = "%URL%";
+  const OK = /\.(ttl|owl|rdf|jsonld|json|nt|n3|trig|nq|ofn|omn|ya?ml|csv|tsv|xlsx|toml|md|css|html)$/i;
+  const zone = () => document.getElementById("ob-drop");
+  const hasFiles = (e) => !!e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files");
+  let depth = 0;
+  window.addEventListener("dragenter", (e) => { if (hasFiles(e)) { depth++; zone()?.classList.add("ob-drag"); } });
+  window.addEventListener("dragleave", () => { depth = Math.max(0, depth - 1); if (!depth) zone()?.classList.remove("ob-drag"); });
+  window.addEventListener("dragover", (e) => { if (hasFiles(e)) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } });
+  const fileOf = (entry) => new Promise((res, rej) => entry.file(res, rej));
+  const readAll = async (dir) => {
+    const reader = dir.createReader(), out = [];
+    for (;;) { const batch = await new Promise((res, rej) => reader.readEntries(res, rej)); if (!batch.length) return out; out.push(...batch); }
+  };
+  async function walk(entry, prefix, out) {
+    if (entry.name.startsWith(".")) return;
+    if (entry.isFile) { out.push([prefix + entry.name, await fileOf(entry)]); return; }
+    for (const child of await readAll(entry)) await walk(child, prefix + entry.name + "/", out);
+  }
+  window.addEventListener("drop", async (e) => {
+    if (!hasFiles(e)) return;
+    e.preventDefault(); depth = 0; zone()?.classList.remove("ob-drag");
+    // collect entries synchronously: the DataTransfer is emptied after the first await
+    const entries = Array.from(e.dataTransfer.items || []).map((i) => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+    const plain = Array.from(e.dataTransfer.files || []);
+    const found = [];
+    if (entries.length) { for (const en of entries) await walk(en, "", found); }
+    else plain.forEach((f) => found.push([f.name, f]));
+    const files = found.filter(([p]) => OK.test(p)), skipped = found.length - files.length;
+    if (!files.length) { emitEvent("ob_drop_done", { batch: null, ok: 0, failed: 0, skipped }); return; }
+    const batch = Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join("");
+    emitEvent("ob_drop_start", { count: files.length });
+    let ok = 0, failed = 0;
+    for (const [path, file] of files) {
+      try {
+        const r = await fetch(URL_ + "?batch=" + batch, { method: "POST", body: file,
+          headers: { "X-Upload-Token": TOKEN, "X-Path": encodeURIComponent(path), "Content-Type": "application/octet-stream" } });
+        r.ok ? ok++ : failed++;
+      } catch (err) { failed++; }
+    }
+    emitEvent("ob_drop_done", { batch, ok, failed, skipped });
+  });
+})();
+</script>
+"""
 
 
 class _QueueHandler(logging.Handler):
@@ -54,6 +144,8 @@ class _QueueHandler(logging.Handler):
 def build_page() -> None:  # noqa: C901 - one page, laid out top to bottom
     from nicegui import app, run, ui
 
+    register_upload_route(app)
+    ui.add_body_html(DROP_JS.replace("%TOKEN%", UPLOAD_TOKEN).replace("%URL%", UPLOAD_URL))
     s = Settings.load()
     logs: queue.Queue[str] = queue.Queue()
     handler = _QueueHandler(logs)
@@ -69,6 +161,11 @@ def build_page() -> None:  # noqa: C901 - one page, laid out top to bottom
       body.body--dark .ob-hint { color: #a49e91; }
       .ob-cli { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .8rem; white-space: pre-wrap; word-break: break-all; }
       .ob-log { height: 16rem; font-size: .8rem; }
+      #ob-drop { border: 2px dashed rgba(128,128,128,.45); border-radius: 8px; padding: 1rem; text-align: center;
+                 transition: background-color .15s, border-color .15s; }
+      #ob-drop.ob-drag { border-color: var(--q-primary); background: rgba(88,152,212,.12); }
+      @media (prefers-reduced-motion: reduce) { #ob-drop { transition: none; } }
+      .ob-path { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .8rem; word-break: break-all; }
     """)
     dark = ui.dark_mode(None)
     prior_state: dict = {}
@@ -126,6 +223,7 @@ def build_page() -> None:  # noqa: C901 - one page, laid out top to bottom
         source_info.text = describe_source(s.source)
         folder = s.is_folder
         output.props(f'placeholder="{s.default_output()}"')
+        output_info.text = f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)")
         per_file_hint.set_visibility(folder)
         cq.set_enabled(not folder)
         prev.set_enabled(not folder)
@@ -156,6 +254,11 @@ def build_page() -> None:  # noqa: C901 - one page, laid out top to bottom
                                   on_click=lambda: pick("ontology", lambda p: src.set_value(p), False)).props("outline")
                         ui.button("Folder…", icon="folder",
                                   on_click=lambda: pick("ontology", lambda p: src.set_value(p), True)).props("outline")
+                    with ui.element("div").props('id="ob-drop"').classes("w-full"):
+                        ui.icon("upload_file", size="1.6rem").classes("opacity-70")
+                        ui.label("Drop ontology files or a whole folder here").classes("font-medium")
+                        drop_info = ui.label("Files are copied into a local workspace; sub-folders are kept.") \
+                            .classes("ob-hint").props('aria-live="polite"')
                     source_info = ui.label().classes("ob-hint").props('id="source-info" aria-live="polite"')
 
                 with ui.card().classes("ob-card"):
@@ -169,11 +272,12 @@ def build_page() -> None:  # noqa: C901 - one page, laid out top to bottom
                     ui.label("3. Where").classes("ob-step")
                     output = ui.input("Output folder or file (leave empty for the default)", on_change=refresh) \
                         .bind_value(s, "output").mark("output").classes("w-full").props("clearable")
+                    output_info = ui.label().classes("ob-path w-full").props('aria-live="polite"')
                     ui.button("Choose…", icon="folder_open",
                               on_click=lambda: pick("any", lambda p: output.set_value(p), True,
                                                     s.output or str(s.output_path().parent))).props("outline")
-                    with ui.row().classes("w-full items-center gap-2") as existing_row:
-                        existing_info = ui.label().classes("ob-hint grow").props('aria-live="polite"')
+                    with ui.row().classes("w-full items-center gap-1") as existing_row:
+                        existing_info = ui.label().classes("ob-hint w-full").props('aria-live="polite"')
                         ui.button("Open", icon="open_in_new", on_click=lambda: prior_state.get("index") and
                                   ui.navigate.to(link_for(prior_state["index"]), new_tab=True)).props("flat dense no-caps")
                         ui.button("Open folder", icon="folder_open",
@@ -381,6 +485,30 @@ def build_page() -> None:  # noqa: C901 - one page, laid out top to bottom
         refresh()
         ui.notify(f"Loaded {path}", type="positive")
 
+    def on_drop_start(e) -> None:
+        drop_info.text = f"Copying {e.args.get('count', 0)} file(s)…"
+
+    def on_drop_done(e) -> None:
+        a = e.args or {}
+        if not a.get("batch") or not a.get("ok"):
+            msg = "Nothing usable was dropped: no ontology files found." if not a.get("failed") else \
+                f"Copy failed for {a.get('failed')} file(s)."
+            drop_info.text = msg
+            ui.notify(msg, type="warning")
+            return
+        target = upload_source(a["batch"])
+        if not target:
+            ui.notify("The dropped files could not be found.", type="negative")
+            return
+        src.set_value(target)
+        extra = (f", {a['skipped']} other file(s) ignored" if a.get("skipped") else "") + \
+            (f", {a['failed']} failed" if a.get("failed") else "")
+        drop_info.text = f"Copied {a['ok']} file(s){extra}. Workspace: {target}"
+        ui.notify(f"Ready: {Path(target).name}", type="positive")
+
+    ui.on("ob_drop_start", on_drop_start)
+    ui.on("ob_drop_done", on_drop_done)
+
     def reveal(path: str) -> None:
         try:
             open_in_file_manager(path)
@@ -457,6 +585,9 @@ def main(argv: list[str] | None = None) -> None:
     if args.host not in ("127.0.0.1", "localhost", "::1"):
         print("Warning: the UI can read and write files on this machine; binding to "
               f"{args.host} exposes that to your network.", file=sys.stderr)
+    from nicegui import app
+
+    register_upload_route(app)
     ui.run(build_page, host=args.host, port=args.port, title="OntoReview", reload=False,
            show=not args.no_browser, native=args.native, favicon="📘", show_welcome_message=True,
            dark=None)

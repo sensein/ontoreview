@@ -53,6 +53,12 @@ class Settings:
     robot: Literal["auto", "on", "off"] = "auto"
     oops: Literal["auto", "on", "off"] = "auto"
     fail_on: Literal["error", "warning", "info", "never"] = "error"
+    robot_path: str = ""            # a local `robot` command; empty = Docker
+    robot_image: str = "obolibrary/robot"
+    oops_timeout: int = 90
+    oops_endpoint: str = ""
+    default_root: str = ""          # Settings > default output folder
+    verbose: bool = False
 
     # -------------------------------------------------------------- derived
     @property
@@ -68,6 +74,11 @@ class Settings:
         return bool(p and p.is_dir())
 
     def default_output(self) -> str:
+        if self.default_root.strip():
+            root = Path(self.default_root.strip()).expanduser()
+            stem = (self.source_path.name if self.is_folder else self.source_path.stem) if self.source_path else "ontology"
+            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json"}.get(self.task, stem)
+            return str(root / name)
         base = self.source_path.parent if self.source_path and not self.is_folder else (self.source_path or Path.cwd())
         name = {"site": "docs", "single": "docs", "markdown": "docs-md", "myst": "docs-myst",
                 "check": "quality"}[self.task]
@@ -88,7 +99,7 @@ class Settings:
             "reason": self.reason,
             "load_imports": self.load_imports,
             "include_individuals": self.include_individuals,
-            "evaluation": {"robot": self.robot, "oops": self.oops},
+            "evaluation": self.evaluation(),
         }
         langs = [x.strip() for x in self.languages.split(",") if x.strip()]
         if langs and langs != ["en"]:
@@ -102,6 +113,16 @@ class Settings:
             if self.previous_version.strip():
                 ov["previous_version"] = self.previous_version.strip()
         return ov
+
+    def evaluation(self) -> dict[str, Any]:
+        ev: dict[str, Any] = {"robot": self.robot, "oops": self.oops, "oops_timeout": int(self.oops_timeout or 90)}
+        if self.robot_path.strip():
+            ev["robot_path"] = self.robot_path.strip()
+        if self.robot_image.strip() and self.robot_image.strip() != "obolibrary/robot":
+            ev["robot_image"] = self.robot_image.strip()
+        if self.oops_endpoint.strip():
+            ev["oops_endpoint"] = self.oops_endpoint.strip()
+        return ev
 
     def validate(self) -> list[str]:
         problems = []
@@ -234,6 +255,7 @@ class Row:
     external: str = ""              # "ROBOT: 4 errors" / "OOPS!: failed (…)"
     output: str = ""                # file to open (index.html / index.md / report)
     problem: str | None = None
+    issues: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -248,6 +270,19 @@ class TaskResult:
     @property
     def ok(self) -> int:
         return sum(1 for r in self.rows if not r.problem)
+
+    @property
+    def issues(self) -> list[dict]:
+        out = []
+        for r in self.rows:
+            for i in r.issues:
+                out.append({**i, "ontology": r.title or r.name})
+        return out
+
+    @property
+    def totals(self) -> dict[str, int]:
+        return {"terms": sum(r.terms for r in self.rows), "errors": sum(r.errors for r in self.rows),
+                "warnings": sum(r.warnings for r in self.rows), "suggestions": sum(r.suggestions for r in self.rows)}
 
 
 def _external_text(reports) -> str:
@@ -265,7 +300,7 @@ def _external_text(reports) -> str:
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
     from .build import build, build_single_file, check, load, resolve_config
-    from .collection import build_collection, export_collection
+    from .collection import build_collection, export_collection, report_issues
     from .export import export_markdown
     from .model.extract import extract
 
@@ -299,7 +334,8 @@ def run_task(settings: Settings) -> TaskResult:
                                                  "include_individuals", "reason")})
                 sm = rep.summary
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
-                                    sm["warning"], sm["info"], _external_text(rep.external)))
+                                    sm["warning"], sm["info"], _external_text(rep.external),
+                                    issues=report_issues(rep)))
                 report_json[name] = json.loads(rep.to_json())
             except Exception as e:  # noqa: BLE001
                 res.rows.append(Row(name, problem=str(e)))
@@ -312,6 +348,7 @@ def run_task(settings: Settings) -> TaskResult:
             r.output = str(out)
         res.output = out
     elif s.task in ("markdown", "myst"):
+        log.info("Exporting %s → %s", "MyST" if s.task == "myst" else "Markdown", out)
         cfg = resolve_config(src)
         onto = extract(load(cfg), cfg)
         written = export_markdown(onto, out, myst=s.task == "myst")
@@ -329,7 +366,8 @@ def run_task(settings: Settings) -> TaskResult:
         sm = b.report.summary if b.report else {"error": 0, "warning": 0, "info": 0}
         res.rows = [Row(Path(src).name, b.ontology.metadata.title or Path(src).stem, len(b.ontology.terms),
                         sm["error"], sm["warning"], sm["info"],
-                        _external_text(b.report.external if b.report else []), str(page))]
+                        _external_text(b.report.external if b.report else []), str(page),
+                        issues=report_issues(b.report) if b.report else [])]
         res.index = str(page)
     res.seconds = time.perf_counter() - t0
     return res
@@ -338,7 +376,8 @@ def run_task(settings: Settings) -> TaskResult:
 def _row_from_entry(e, out: Path, page: str) -> Row:
     q = e.quality or {}
     return Row(e.source, e.title, e.terms, q.get("error", 0), q.get("warning", 0), q.get("info", 0),
-               _external_text(e.external), str(out / e.slug / page) if not e.error else "", e.error)
+               _external_text(e.external), str(out / e.slug / page) if not e.error else "", e.error,
+               issues=list(e.issues))
 
 
 # ------------------------------------------------------------------ browsing
@@ -451,7 +490,7 @@ def load_history(path: Path | None = None) -> list[HistoryEntry]:
 
 
 def record_run(settings: Settings, result: TaskResult | None, error: str | None = None,
-               path: Path | None = None) -> HistoryEntry:
+               path: Path | None = None, limit: int = HISTORY_LIMIT) -> HistoryEntry:
     """Append a run to the history file (newest first, capped)."""
     import uuid
 
@@ -466,7 +505,7 @@ def record_run(settings: Settings, result: TaskResult | None, error: str | None 
     entries = [entry] + load_history(path)
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps([asdict(e) for e in entries[:HISTORY_LIMIT]], indent=1), "utf-8")
+        path.write_text(json.dumps([asdict(e) for e in entries[:max(1, limit)]], indent=1), "utf-8")
     except OSError as e:
         log.debug("could not save run history: %s", e)
     return entry
@@ -521,3 +560,232 @@ def existing_output(path: str | Path) -> dict[str, Any] | None:
                 continue
             return {"kind": "single", "index": str(f), "when": f.stat().st_mtime, "count": 1}
     return None
+
+
+# ------------------------------------------------------------------ drag and drop
+# Browsers never reveal the local path of a dropped file, so dropped files and folders are
+# copied into a workspace and documented from there (folder structure is kept).
+UPLOAD_SUFFIXES = RDF_SUFFIXES | UNSUPPORTED | {".json", ".yaml", ".yml", ".csv", ".tsv", ".xlsx",
+                                                ".toml", ".md", ".css", ".html"}
+MAX_UPLOAD_BYTES = 200 * 1024 * 1024
+
+
+def uploads_dir() -> Path:
+    return SETTINGS_FILE.parent / "uploads"
+
+
+def safe_relpath(name: str) -> Path | None:
+    """A dropped file's relative path, or None if it is unsafe or not a file type we use."""
+    parts = [p for p in name.replace("\\", "/").split("/") if p not in ("", ".")]
+    if not parts or any(p == ".." or p.startswith(".") or "\x00" in p or ":" in p for p in parts):
+        return None
+    rel = Path(*parts)
+    return rel if rel.suffix.lower() in UPLOAD_SUFFIXES else None
+
+
+def valid_batch(batch: str) -> bool:
+    return 8 <= len(batch) <= 64 and all(c in "0123456789abcdef" for c in batch)
+
+
+def upload_target(batch: str, name: str) -> Path | None:
+    """Where a dropped file is stored, or None if the batch id or name is not acceptable."""
+    rel = safe_relpath(name)
+    if rel is None or not valid_batch(batch):
+        return None
+    root = (uploads_dir() / batch).resolve()
+    target = (root / rel).resolve()
+    return target if target.is_relative_to(root) else None
+
+
+def upload_source(batch: str) -> str | None:
+    """What to document from a drop: the single ontology file, the single dropped folder, or
+    the whole batch when several things were dropped."""
+    if not valid_batch(batch):
+        return None
+    root = uploads_dir() / batch
+    if not root.is_dir():
+        return None
+    top = [p for p in root.iterdir() if not p.name.startswith(".")]
+    if len(top) == 1 and top[0].is_dir():
+        return str(top[0])
+    onto = [p for p in top if p.is_file() and is_ontology_file(p)]
+    if len(top) == len(onto) == 1:
+        return str(onto[0])
+    return str(root)
+
+
+
+def clear_history(path: Path | None = None) -> None:
+    path = path or HISTORY_FILE
+    try:
+        path.unlink(missing_ok=True)
+    except OSError:
+        pass
+
+
+# ------------------------------------------------------------------ display helpers
+def when_text(ts: float, now: float | None = None) -> str:
+    """"Today, 23:41" / "Yesterday, 18:02" / "12 Nov, 09:47" / "12 Nov 2025"."""
+    import datetime as dt
+
+    t = dt.datetime.fromtimestamp(ts)
+    today = dt.datetime.fromtimestamp(now or time.time()).date()
+    if t.date() == today:
+        return f"Today, {t:%H:%M}"
+    if t.date() == today - dt.timedelta(days=1):
+        return f"Yesterday, {t:%H:%M}"
+    return f"{t.day} {t:%b}, {t:%H:%M}" if t.year == today.year else f"{t.day} {t:%b %Y}"
+
+
+def run_name(entry: HistoryEntry) -> str:
+    p = Path(entry.source)
+    if entry.source.startswith(("http://", "https://")):
+        return entry.source.rsplit("/", 1)[-1] or entry.source
+    if p.is_dir() or (entry.total > 1):
+        return f"{p.name}/ ({entry.total} file{'s' if entry.total != 1 else ''})"
+    return p.name or entry.source
+
+
+def issues_text(entry: HistoryEntry) -> str:
+    if entry.failed:
+        return entry.failed.splitlines()[0][:80]
+    return f"{entry.errors} error{'s' if entry.errors != 1 else ''} · {entry.warnings} warning{'s' if entry.warnings != 1 else ''}"
+
+
+def task_kind(task: str) -> str:
+    return "check" if task == "check" else "docs"
+
+
+# ------------------------------------------------------------------ preferences
+PREFS_NAME = "prefs.json"
+
+
+@dataclass
+class Prefs:
+    """Defaults for new builds (Settings page). A project's ontoreview.toml overrides these."""
+    default_output: str = ""
+    default_task: Task = "site"
+    open_when_done: bool = True
+    keep_history: bool = True
+    history_limit: int = 50
+    robot_enabled: bool = True
+    robot_mode: Literal["docker", "local"] = "docker"
+    robot_path: str = ""
+    robot_image: str = "obolibrary/robot"
+    oops: Literal["auto", "on", "off"] = "auto"
+    oops_endpoint: str = ""
+    oops_timeout: int = 90
+    theme: Literal["light", "dark", "system"] = "system"
+    compact: bool = False
+
+    @staticmethod
+    def path() -> Path:
+        return SETTINGS_FILE.with_name(PREFS_NAME)
+
+    def save(self) -> None:
+        try:
+            self.path().parent.mkdir(parents=True, exist_ok=True)
+            self.path().write_text(json.dumps(asdict(self), indent=2), "utf-8")
+        except OSError as e:
+            log.debug("could not save preferences: %s", e)
+
+    @classmethod
+    def load(cls) -> Prefs:
+        try:
+            data = json.loads(cls.path().read_text("utf-8"))
+            known = {f.name for f in fields(cls)}
+            return cls(**{k: v for k, v in data.items() if k in known})
+        except (OSError, ValueError, TypeError):
+            return cls()
+
+    def apply(self, s: Settings, *, new: bool = False) -> None:
+        """Copy the defaults that shape every run onto the form; ``new`` also resets the task."""
+        s.default_root = self.default_output
+        s.robot = "auto" if self.robot_enabled else "off"
+        s.robot_path = self.robot_path if self.robot_mode == "local" else ""
+        s.robot_image = self.robot_image or "obolibrary/robot"
+        s.oops, s.oops_endpoint, s.oops_timeout = self.oops, self.oops_endpoint, self.oops_timeout
+        if new:
+            s.task = self.default_task
+
+
+# ------------------------------------------------------------------ environment
+_oops_cache: dict[str, tuple[float, bool]] = {}
+
+
+def robot_status(prefs: Prefs) -> dict[str, str]:
+    """{state: ok | warn | off | missing, label, detail} for the sidebar and Settings."""
+    import shutil
+
+    from .evaluate import _docker, _image_present
+
+    if not prefs.robot_enabled:
+        return {"state": "off", "label": "ROBOT · off", "detail": "Turned off in Settings"}
+    if prefs.robot_mode == "local":
+        exe = shutil.which(str(Path(prefs.robot_path or "robot").expanduser()))
+        return ({"state": "ok", "label": "ROBOT · local", "detail": exe} if exe else
+                {"state": "missing", "label": "ROBOT · not found", "detail": f"`{prefs.robot_path or 'robot'}` is not on PATH"})
+    docker = _docker()
+    if not docker:
+        return {"state": "missing", "label": "ROBOT · Docker not running",
+                "detail": "Start Docker, or OOPS! is used instead (if allowed)"}
+    image = prefs.robot_image or "obolibrary/robot"
+    if _image_present(docker, image):
+        return {"state": "ok", "label": "ROBOT · Docker ready", "detail": image}
+    return {"state": "warn", "label": "ROBOT · Docker (pulls image)", "detail": f"{image} is downloaded on the first run"}
+
+
+def oops_status(prefs: Prefs, check: bool = True) -> dict[str, str]:
+    """Reachability of the OOPS! service (a HEAD request; the ontology is not sent). Cached 10 min."""
+    if prefs.oops == "off":
+        return {"state": "off", "label": "OOPS! · off", "detail": "Never uploads"}
+    from .evaluate import OOPS_ENDPOINT
+
+    url = prefs.oops_endpoint or OOPS_ENDPOINT
+    hit = _oops_cache.get(url)
+    if hit and time.time() - hit[0] < 600:
+        ok = hit[1]
+    elif not check:
+        return {"state": "warn", "label": "OOPS! · not checked", "detail": url}
+    else:
+        import urllib.request
+
+        try:
+            req = urllib.request.Request(url.rsplit("/rest", 1)[0] or url, method="HEAD",
+                                         headers={"User-Agent": "ontoreview"})
+            with urllib.request.urlopen(req, timeout=5) as r:  # noqa: S310 - fixed https endpoint
+                ok = r.status < 500
+        except Exception:  # noqa: BLE001
+            ok = False
+        _oops_cache[url] = (time.time(), ok)
+    mode = "fallback" if prefs.oops == "auto" else "always"
+    return ({"state": "ok", "label": "OOPS! · reachable", "detail": f"{url} ({mode})"} if ok else
+            {"state": "missing", "label": "OOPS! · unreachable", "detail": url})
+
+
+def system_info() -> dict[str, str]:
+    import platform
+
+    from . import __version__
+
+    try:
+        import nicegui
+        ng = nicegui.__version__
+    except ImportError:
+        ng = "not installed"
+    from .evaluate import _docker
+
+    docker = _docker()
+    if docker:
+        import subprocess
+        try:
+            dv = subprocess.run([docker, "version", "--format", "{{.Server.Version}}"], capture_output=True,
+                                text=True, timeout=10).stdout.strip()
+        except Exception:  # noqa: BLE001
+            dv = "?"
+        dock = f"Docker {dv} · {robot_status(Prefs.load())['detail']}"
+    else:
+        dock = "Docker not running"
+    return {"OntoReview": __version__, "Python": platform.python_version(), "NiceGUI": ng,
+            "Platform": f"{platform.system()} {platform.release()} ({platform.machine()})",
+            "Docker / ROBOT": dock, "Config file": str(SETTINGS_FILE.parent)}

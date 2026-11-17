@@ -61,3 +61,28 @@ async def test_missing_source_is_reported(isolated):
         user.find(marker="source").clear()
         user.find(marker="run").click()
         await user.should_see("Choose an ontology file or a folder of ontologies.")
+
+
+@pytest.mark.anyio
+async def test_drop_upload_endpoint(isolated, fixtures):
+    import httpx2
+    from nicegui import core
+
+    from ontoreview import ui as ui_mod
+
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        async with httpx2.AsyncClient(transport=httpx2.ASGITransport(core.app), base_url="http://test") as c:
+            url = ui_mod.UPLOAD_URL + "?batch=00112233aabbccdd"
+            ok = {"X-Upload-Token": ui_mod.UPLOAD_TOKEN}
+            body = (fixtures / "pizza.ttl").read_bytes()
+            assert (await c.post(url, content=body, headers={"X-Upload-Token": "wrong", "X-Path": "a.ttl"})).status_code == 403
+            assert (await c.post(url, content=body, headers={**ok, "X-Path": "..%2F..%2Fevil.ttl"})).status_code == 400
+            assert (await c.post(url, content=b"x", headers={**ok, "X-Path": "run.sh"})).status_code == 400
+            for rel in ("myonto%2Fpizza.ttl", "myonto%2Fvocab%2Fcolors.ttl"):
+                r = await c.post(url, content=body, headers={**ok, "X-Path": rel})
+                assert r.status_code == 200, r.text
+    root = ui_core.uploads_dir() / "00112233aabbccdd"
+    assert (root / "myonto" / "vocab" / "colors.ttl").is_file()
+    assert ui_core.upload_source("00112233aabbccdd") == str(root / "myonto")
+    assert not (isolated / "evil.ttl").exists()
