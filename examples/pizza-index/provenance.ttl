@@ -1,0 +1,21 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:wasDerivedFrom <https://example.org/pizza/1.2.0> ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<https://example.org/pizza/1.2.0> a prov:Entity ;
+    dcterms:modified "2026-11-01" ;
+    dcterms:title "Pizza Ontology" ;
+    prov:wasAttributedTo <https://orcid.org/0000-0000-0000-0001> ;
+    prov:wasRevisionOf <https://example.org/pizza/1.1.0> .
+
+<https://orcid.org/0000-0000-0000-0001> a prov:Agent .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-17T03:28:17+00:00"^^xsd:dateTime ;
+    prov:used "pizza-v2.ttl" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+

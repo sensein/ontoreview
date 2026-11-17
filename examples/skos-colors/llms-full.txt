@@ -1,0 +1,50 @@
+# Colour thesaurus
+
+**IRI:** `https://example.org/colors/scheme`
+
+**License:** [CC0 1.0 (Public Domain)](https://creativecommons.org/publicdomain/zero/1.0/)
+
+A tiny SKOS vocabulary of colours.
+
+## Contents
+
+- [Concepts](concepts.md) (4)
+
+---
+
+# Concepts
+
+### colour
+
+**IRI:** `https://example.org/colors/color` · `colors:color`
+
+A visual property.
+
+| | |
+|---|---|
+| Narrower | [red](concepts.md#red) |
+
+### dark red
+
+**IRI:** `https://example.org/colors/darkred` · `colors:darkred`
+
+| | |
+|---|---|
+| Broader | [red](concepts.md#red) |
+
+### maroon
+
+**IRI:** `https://example.org/colors/maroon` · `colors:maroon`
+
+| | |
+|---|---|
+| Broader | [red](concepts.md#red) |
+
+### red
+
+**IRI:** `https://example.org/colors/red` · `colors:red`
+
+| | |
+|---|---|
+| Broader | [colour](concepts.md#color) |
+| Narrower | [dark red](concepts.md#darkred), [maroon](concepts.md#maroon) |

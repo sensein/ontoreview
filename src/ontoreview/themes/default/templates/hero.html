@@ -1,0 +1,54 @@
+{% import "macros.html" as m with context %}
+<header class="doc-header" id="top">
+  <p class="kicker">{{ t('spec_kicker') }}{% if meta.status %} · {{ meta.status }}{% endif %}{% if onto.source_kind == 'linkml' %} · {{ t('linkml_source') }}{% endif %}</p>
+  <h1 class="doc-title">{{ meta.title or "Ontology documentation" }}</h1>
+  {% if meta.subtitle %}<p class="doc-subtitle">{{ meta.subtitle }}</p>{% endif %}
+  {% set lede = meta.abstract or meta.description %}
+  {% if lede %}<div class="lede">{{ lede|md }}</div>{% endif %}
+
+  <div class="doc-meta">
+    <dl class="meta-table">
+      {% if meta.iri %}<div><dt>{{ t('iri') }}</dt><dd><code>{{ meta.iri }}</code> <button class="copy" data-copy="{{ meta.iri }}">copy</button></dd></div>{% endif %}
+      {% if meta.version_info or meta.version_iri %}<div><dt>{{ t('version') }}</dt><dd>{{ meta.version_info or '' }}{% if meta.version_iri %}{% if meta.version_info %} · {% endif %}<a href="{{ meta.version_iri }}">{{ meta.version_iri }}</a>{% endif %}</dd></div>{% endif %}
+      {% if meta.prior_version %}<div><dt>{{ t('prior_version') }}</dt><dd>{{ m.link_or_text(meta.prior_version) }}</dd></div>{% endif %}
+      {% if meta.preferred_namespace %}<div><dt>{{ t('namespace') }}</dt><dd><code>{{ meta.preferred_namespace }}</code>{% if meta.preferred_prefix %} &nbsp;<span class="muted">{{ t('prefix') }}</span> <code>{{ meta.preferred_prefix }}:</code>{% endif %}</dd></div>{% endif %}
+      {% if meta.creators %}<div><dt>{{ t('creators') }}</dt><dd>{{ m.agent_line(meta.creators) }}</dd></div>{% endif %}
+      {% if meta.contributors %}<div><dt>{{ t('contributors') }}</dt><dd>{{ m.agent_line(meta.contributors) }}</dd></div>{% endif %}
+      {% if meta.publishers %}<div><dt>{{ t('publishers') }}</dt><dd>{{ m.agent_line(meta.publishers) }}</dd></div>{% endif %}
+      {% if meta.license %}<div><dt>{{ t('license') }}</dt><dd><a href="{{ meta.license }}">{{ meta.license_label or meta.license }}</a>{% if meta.rights %}. {{ meta.rights }}{% endif %}</dd></div>{% endif %}
+      {% if meta.issued or meta.modified or meta.created %}<div><dt>{{ t('modified') if meta.modified else (t('issued') if meta.issued else t('created')) }}</dt><dd>{{ meta.modified or meta.issued or meta.created }}{% if meta.created and (meta.modified or meta.issued) %} <span class="muted">({{ t('created')|lower }} {{ meta.created }})</span>{% endif %}</dd></div>{% endif %}
+      {% if meta.doi %}<div><dt>{{ t('doi') }}</dt><dd>{{ m.link_or_text(meta.doi) }}</dd></div>{% endif %}
+      {% if meta.imports %}<div><dt>{{ t('imports') }}</dt><dd>{% for r in meta.imports %}{{ m.ref(r) }}{% if not loop.last %}, {% endif %}{% endfor %}</dd></div>{% endif %}
+    </dl>
+    {% if downloads or cite_section %}
+    <aside class="doc-downloads">
+      {% if downloads %}
+      <h2 class="label">{{ t('download') }}</h2>
+      <ul>
+        {% for d in downloads %}<li><a href="{{ d.href }}" download="{{ d.file }}">{{ d.label }}</a> <span class="muted">{{ d.file.rsplit('.', 1)[-1] }}, {{ d.size|filesize }}</span></li>{% endfor %}
+      </ul>
+      {% endif %}
+      {% if cite_section %}<p><a href="{{ page_href(cite_section, page) }}">{{ t('cite') }} →</a></p>{% endif %}
+      {% if llm %}<p><a href="{{ '#llm' }}">{{ t('for_llms') }} →</a></p>{% endif %}
+    </aside>
+    {% endif %}
+  </div>
+
+  {% set more = meta.funders or meta.homepage or meta.repository or meta.keywords or meta.see_also or meta.source or meta.backward_compatible_with or meta.incompatible_with or meta.other %}
+  {% if more %}
+  <details class="more-meta">
+    <summary>{{ t('more_metadata') }}</summary>
+    <dl class="meta-table">
+      {% if meta.funders %}<div><dt>{{ t('funders') }}</dt><dd>{{ m.agent_line(meta.funders) }}</dd></div>{% endif %}
+      {% if meta.homepage %}<div><dt>{{ t('homepage') }}</dt><dd>{{ m.link_or_text(meta.homepage) }}</dd></div>{% endif %}
+      {% if meta.repository %}<div><dt>{{ t('repository') }}</dt><dd>{{ m.link_or_text(meta.repository) }}</dd></div>{% endif %}
+      {% if meta.keywords %}<div><dt>{{ t('keywords') }}</dt><dd>{{ meta.keywords|join(', ') }}</dd></div>{% endif %}
+      {% if meta.backward_compatible_with %}<div><dt>{{ t('backward_compatible_with') }}</dt><dd>{% for v in meta.backward_compatible_with %}{{ m.link_or_text(v) }} {% endfor %}</dd></div>{% endif %}
+      {% if meta.incompatible_with %}<div><dt>{{ t('incompatible_with') }}</dt><dd>{% for v in meta.incompatible_with %}{{ m.link_or_text(v) }} {% endfor %}</dd></div>{% endif %}
+      {% if meta.see_also %}<div><dt>{{ t('see_also') }}</dt><dd>{% for v in meta.see_also %}{{ m.link_or_text(v) }}{% if not loop.last %}<br>{% endif %}{% endfor %}</dd></div>{% endif %}
+      {% if meta.source %}<div><dt>{{ t('source') }}</dt><dd>{% for v in meta.source %}{{ m.link_or_text(v) }}{% if not loop.last %}<br>{% endif %}{% endfor %}</dd></div>{% endif %}
+      {% for a in meta.other %}<div><dt>{{ m.ref(a.prop) }}</dt><dd>{% for v in a.values %}{{ m.expr(v) }}{% if not loop.last %}<br>{% endif %}{% endfor %}</dd></div>{% endfor %}
+    </dl>
+  </details>
+  {% endif %}
+</header>

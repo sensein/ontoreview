@@ -1,0 +1,21 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:wasDerivedFrom <http://www.w3.org/ns/dcat3> ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<http://www.w3.org/ns/dcat3> a prov:Entity ;
+    dcterms:modified "2020-11-30" ;
+    dcterms:title "The data catalog vocabulary" ;
+    prov:wasAttributedTo <https://www.w3.org/groups/wg/dx> ;
+    prov:wasRevisionOf <http://www.w3.org/ns/dcat2> .
+
+<https://www.w3.org/groups/wg/dx> a prov:Agent .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-17T03:28:19+00:00"^^xsd:dateTime ;
+    prov:used "dcat.ttl" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+

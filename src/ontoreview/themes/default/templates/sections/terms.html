@@ -1,0 +1,11 @@
+{% import "macros.html" as m with context %}
+{% if s.group_first or multi %}
+<h2 class="group-title"{% if s.group_first %} id="reference"{% endif %}><span class="secno">{{ s.context.group_number }}</span> {{ s.group_title }}</h2>
+{% endif %}
+<section class="section section-terms" id="{{ s.id }}">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+    {% if s.context.terms|length > 8 %}<input class="term-filter" type="search" placeholder="{{ t('filter') }}…" aria-label="{{ t('filter') }} {{ s.title|lower }}">{% endif %}
+  </div>
+  {% for x in s.context.terms %}{{ m.term(x) }}{% endfor %}
+</section>

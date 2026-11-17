@@ -1,0 +1,3 @@
+CQ ID,Competency question,SPARQL query,Expected answer,Related terms
+CQ1,Which toppings exist?,"SELECT ?t WHERE { ?t rdfs:subClassOf pizza:PizzaTopping }",Meat and cheese toppings,pizza:PizzaTopping
+2,Broken query?,SELECT WHERE {,,

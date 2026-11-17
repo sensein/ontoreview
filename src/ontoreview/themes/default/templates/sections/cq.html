@@ -1,0 +1,31 @@
+{% import "macros.html" as m with context %}
+<section class="section" id="{{ s.id }}">
+  {% set cqs = s.context.cqs %}
+  {% set sm = cqs.summary %}
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <p class="prose">{{ cqs.questions|length }} {{ t('competency_questions')|lower }}: {{ sm.passed }} {{ t('cq_passed') }}{% if sm.failed %}, {{ sm.failed }} {{ t('cq_failed') }}{% endif %}{% if sm.error %}, {{ sm.error }} {{ t('cq_error') }}{% endif %}{% if sm.untested %}, {{ sm.untested }} {{ t('cq_untested') }}{% endif %}. Each query is run against the ontology{% if cqs.example_data %} and its example data{% endif %} when this document is generated.</p>
+  <ol class="cq-list">
+  {% for q in cqs.questions %}
+    <li class="cq cq-{{ q.status }}" id="{{ q.anchor }}">
+      <h3 class="cq-title"><a href="#{{ q.anchor }}"><span class="cq-id">{{ q.id }}</span> {{ q.question }}</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        {{ m.row(t('cq_status'), '<span class="cq-status">'|safe ~ t('cq_' ~ q.status) ~ '</span>'|safe ~ ((' · ' ~ q.total_rows ~ ' ' ~ ('result' if q.total_rows == 1 else 'results')) if q.status in ('passed', 'failed') and q.columns != ['answer'] else '')) }}
+        {% if q.term_refs %}{{ m.row(t('cq_terms'), m.refs(q.term_refs)) }}{% endif %}
+        {% if q.answer %}{{ m.row(t('cq_answer'), q.answer) }}{% endif %}
+        {% if q.notes %}{{ m.row(t('cq_notes'), q.notes|mdinline) }}{% endif %}
+        </tbody>
+      </table>
+      {% if q.sparql %}<pre class="sparql"><code>{{ q.sparql }}</code></pre>{% endif %}
+      {% if q.error %}<p class="note-line">{{ q.error }}</p>{% endif %}
+      {% if q.rows %}
+      <details class="cq-results"{% if q.total_rows <= 5 %} open{% endif %}>
+        <summary>{{ t('cq_results') }}{% if q.total_rows > q.rows|length %} ({{ q.rows|length }} of {{ q.total_rows }}){% endif %}</summary>
+        <table class="plain"><thead><tr>{% for c in q.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+        <tbody>{% for r in q.rows %}<tr>{% for v in r %}<td><code>{{ v }}</code></td>{% endfor %}</tr>{% endfor %}</tbody></table>
+      </details>
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ol>
+</section>

@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+type: dataset
+title: "Core organization ontology"
+version: "0.8"
+url: "http://www.w3.org/ns/org#"
+date-released: 2010-06-09
+authors:
+  - name: Anonymous

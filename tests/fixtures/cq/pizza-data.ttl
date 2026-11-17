@@ -1,0 +1,8 @@
+@prefix : <https://example.org/pizza#> .
+@prefix d: <https://example.org/pizza-data/> .
+d:pepperoni a :Pizza ; :hasTopping d:salami ; :hasBase d:thin .
+d:veggie a :VegetarianPizza , :Pizza ; :hasTopping d:mushroom ; :hasBase d:thick .
+d:salami a :MeatTopping .
+d:mushroom a :PizzaTopping .
+d:thin a :PizzaBase .
+d:thick a :PizzaBase .

@@ -1,0 +1,18 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:wasDerivedFrom org: ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+org: a prov:Entity ;
+    dcterms:modified "2010-06-09" ;
+    dcterms:title "Core organization ontology" .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-17T03:28:19+00:00"^^xsd:dateTime ;
+    prov:used "org.ttl" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+

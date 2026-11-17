@@ -1,0 +1,16 @@
+{% import "macros.html" as m with context %}
+<section class="section" id="{{ s.id }}">
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <table class="rel">
+    <tbody>
+    {% if meta.creators %}{{ m.row(t('creators'), m.agent_line(meta.creators)) }}{% endif %}
+    {% if meta.contributors %}{{ m.row(t('contributors'), m.agent_line(meta.contributors)) }}{% endif %}
+    {% if meta.created %}{{ m.row(t('created'), meta.created) }}{% endif %}
+    {% if meta.issued %}{{ m.row(t('issued'), meta.issued) }}{% endif %}
+    {% if meta.modified %}{{ m.row(t('modified'), meta.modified) }}{% endif %}
+    {% if meta.version_iri %}{{ m.row(t('this_version'), m.link_or_text(meta.version_iri)) }}{% endif %}
+    {% if meta.prior_version %}{{ m.row(t('prior_version'), m.link_or_text(meta.prior_version)) }}{% endif %}
+    </tbody>
+  </table>
+  <p class="small muted">{{ t('prov_generated', source=onto.source_kind == 'linkml' and 'a LinkML schema' or 'the ontology source', version=version) }} <a href="{{ root }}provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
+</section>

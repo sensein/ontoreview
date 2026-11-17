@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="es" data-font="serif" data-width="wide">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontología de Pizza</title>
+<meta name="description" content="Pizzas, bases and toppings."><meta name="generator" content="OntoReview 0.1.0">
+<link rel="alternate" type="text/turtle" href="../ontology.ttl" title="Turtle">
+<link rel="alternate" type="application/rdf+xml" href="../ontology.owl" title="RDF/XML">
+<link rel="alternate" type="application/ld+json" href="../ontology.jsonld" title="JSON-LD">
+<link rel="alternate" type="application/n-triples" href="../ontology.nt" title="N-Triples">
+<link rel="alternate" type="text/markdown" href="../index.md" title="Markdown">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="llms.txt"><link rel="stylesheet" href="../assets/ontoreview.css?v=6afbc9d1">
+<script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org/",
+ "@type": "DefinedTermSet",
+ "@id": "https://example.org/pizza",
+ "name": "Ontología de Pizza",
+ "description": "Pizzas, bases and toppings.",
+ "url": "https://example.org/pizza",
+ "version": "1.3.0",
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "dateModified": "2026-11-01",
+ "dateCreated": "2024-01-01",
+ "keywords": [
+  "food",
+  "pizza"
+ ],
+ "creator": [
+  {
+   "@type": "Person",
+   "name": "Alice Example",
+   "@id": "https://orcid.org/0000-0000-0000-0001",
+   "affiliation": {
+    "@type": "Organization",
+    "name": "Example University"
+   }
+  },
+  {
+   "@type": "Person",
+   "name": "Jane Doe"
+  }
+ ],
+ "contributor": [
+  {
+   "@type": "Person",
+   "name": "Anonymous Helper"
+  }
+ ],
+ "hasDefinedTerm": [
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#PizzaTopping",
+   "name": "Pizza topping",
+   "description": "Something placed on a pizza.",
+   "termCode": "pizza:PizzaTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#MeatTopping",
+   "name": "Meat topping",
+   "termCode": "pizza:MeatTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasIngredient",
+   "name": "has ingredient",
+   "description": "Any ingredient.",
+   "termCode": "pizza:hasIngredient"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasBase",
+   "name": "has base",
+   "termCode": "pizza:hasBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#PizzaBase",
+   "name": "Pizza base",
+   "description": "The bread base of a pizza.",
+   "termCode": "pizza:PizzaBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Calzone",
+   "name": "Calzone",
+   "description": "A folded pizza.",
+   "termCode": "pizza:Calzone"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Food",
+   "name": "Comida",
+   "description": "Cualquier cosa comestible.",
+   "termCode": "pizza:Food"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#CheeseTopping",
+   "name": "Cheese topping",
+   "description": "Cheese.",
+   "termCode": "pizza:CheeseTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Pizza",
+   "name": "Pizza",
+   "description": "A flat **baked** dish topped with ingredients.",
+   "termCode": "pizza:Pizza"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
+  }
+ ]
+}</script></head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div id="a11y-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<header class="mobilebar">
+  <button class="textbtn" data-action="menu" aria-controls="sidebar" aria-expanded="false">Contenido</button>
+  <a class="mobilebar-title" href="index.html">Ontología de Pizza</a>
+  <button class="textbtn" data-action="search">Buscar</button>
+</header>
+
+<div class="layout">
+  <aside class="toc" id="sidebar">
+<div class="toc-inner">
+  <a class="toc-title" href="index.html">Ontología de Pizza</a>
+<div class="toc-version">Versión 1.3.0</div>
+  <button class="toc-search" data-action="search" aria-label="Buscar">
+    <span>Buscar…</span><span class="toc-key">/</span>
+  </button>
+
+  <nav aria-label="Contenido">
+    <ol class="toc-list">
+      <li>
+        <a href="#introduction" data-section="introduction"><span class="secno">1</span><span class="toc-label">Introducción</span></a>
+      </li>
+      <li>
+        <a href="#competency-questions" data-section="competency-questions"><span class="secno">2</span><span class="toc-label">Competency questions</span><span class="toc-count">7</span></a>
+      </li>
+      <li>
+        <a href="#graph" data-section="graph"><span class="secno">3</span><span class="toc-label">Visualización</span></a>
+      </li>
+      <li>
+        <a href="#classes" data-section="classes"><span class="secno">4</span><span class="toc-label">Referencia</span></a>
+        <ol>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#classes" data-section="classes"><span class="secno">4.1</span><span class="toc-label">Clases</span><span class="toc-count">8</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><details><summary><a href="#Food" class="ref" title="pizza:Food">Comida</a></summary><ul class="tree"><li><details><summary><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></summary><ul class="tree"><li><span class="leaf"><a href="#Calzone" class="ref" title="pizza:Calzone">Calzone</a></span></li></ul></details></li><li><span class="leaf"><a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li><li><details><summary><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></summary><ul class="tree"><li><span class="leaf"><a href="#CheeseTopping" class="ref" title="pizza:CheeseTopping">Cheese topping</a></span></li><li><span class="leaf"><a href="#MeatTopping" class="ref" title="pizza:MeatTopping">Meat topping</a></span></li></ul></details></li></ul></details></li><li><span class="leaf"><a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#object-properties" data-section="object-properties"><span class="secno">4.2</span><span class="toc-label">Propiedades de objeto</span><span class="toc-count">4</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><details><summary><a href="#hasIngredient" class="ref" title="pizza:hasIngredient">has ingredient</a></summary><ul class="tree"><li><span class="leaf"><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a></span></li></ul></details></li><li><span class="leaf"><a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></span></li><li><span class="leaf"><a href="#isToppingOf" class="ref" title="pizza:isToppingOf">is topping of</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#datatype-properties" data-section="datatype-properties"><span class="secno">4.3</span><span class="toc-label">Propiedades de datos</span><span class="toc-count">2</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a></span></li><li><span class="leaf"><a href="#Name" class="ref" title="pizza:Name">Pizza</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#individuals" data-section="individuals"><span class="secno">4.4</span><span class="toc-label">Individuos</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#Margherita" class="ref" title="pizza:Margherita">Margherita</a></span></li></ul></div>
+            </details>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#namespaces" data-section="namespaces"><span class="secno">5</span><span class="toc-label">Espacios de nombres</span></a>
+      </li>
+      <li>
+        <a href="#changelog" data-section="changelog"><span class="secno">6</span><span class="toc-label">Cambios</span></a>
+      </li>
+      <li>
+        <a href="#quality" data-section="quality"><span class="secno">7</span><span class="toc-label">Informe de calidad</span></a>
+      </li>
+      <li>
+        <a href="#downloads" data-section="downloads"><span class="secno">8</span><span class="toc-label">Descargar</span></a>
+      </li>
+      <li>
+        <a href="#llm" data-section="llm"><span class="secno">9</span><span class="toc-label">For LLMs and agents</span></a>
+      </li>
+      <li>
+        <a href="#citation" data-section="citation"><span class="secno">10</span><span class="toc-label">Cómo citar</span></a>
+      </li>
+      <li>
+        <a href="#provenance" data-section="provenance"><span class="secno">11</span><span class="toc-label">Procedencia</span></a>
+      </li>
+    </ol>
+  </nav>
+
+  <div class="toc-foot">
+    <label class="sr-only" for="lang-select">Idioma</label>
+    <select id="lang-select" data-action="lang">
+<option value="../index.html">English</option><option value="index.html" selected>Español</option>    </select>
+    <button class="textbtn" data-action="theme" data-dark="Dark" data-light="Light" aria-pressed="false">Dark</button>
+    <button class="textbtn" data-action="textsize" aria-label="Tamaño del texto" title="Tamaño del texto"><span aria-hidden="true">A</span><span class="textsize-val">100%</span></button>
+  </div>
+</div>  </aside>
+  <main class="main" id="main" tabindex="-1">
+<header class="doc-header" id="top">
+  <p class="kicker">Especificación de la ontología</p>
+  <h1 class="doc-title">Ontología de Pizza</h1>
+<div class="lede"><p>Pizzas, bases and toppings.</p>
+</div>
+  <div class="doc-meta">
+    <dl class="meta-table">
+<div><dt>IRI</dt><dd><code>https://example.org/pizza</code> <button class="copy" data-copy="https://example.org/pizza">copy</button></dd></div><div><dt>Versión</dt><dd>1.3.0 · <a href="https://example.org/pizza/1.2.0">https://example.org/pizza/1.2.0</a></dd></div><div><dt>Versión anterior</dt><dd><a href="https://example.org/pizza/1.1.0">https://example.org/pizza/1.1.0</a></dd></div><div><dt>Namespace</dt><dd><code>https://example.org/pizza#</code> &nbsp;<span class="muted">Prefix</span> <code>pizza:</code></dd></div><div><dt>Autores</dt><dd><span class="agent"><a href="https://orcid.org/0000-0000-0000-0001">Alice Example</a>, <span class="affil">Example University</span></span>; <span class="agent">Jane Doe</span></dd></div><div><dt>Colaboradores</dt><dd><span class="agent">Anonymous Helper</span></dd></div><div><dt>Licencia</dt><dd><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></dd></div><div><dt>Última modificación</dt><dd>2026-11-01 <span class="muted">(creado 2024-01-01)</span></dd></div>    </dl>
+    <aside class="doc-downloads">
+      <h2 class="label">Descargar</h2>
+      <ul>
+<li><a href="../ontology.ttl" download="ontology.ttl">Turtle</a> <span class="muted">ttl, 4.2 KB</span></li><li><a href="../ontology.owl" download="ontology.owl">RDF/XML</a> <span class="muted">owl, 10.6 KB</span></li><li><a href="../ontology.jsonld" download="ontology.jsonld">JSON-LD</a> <span class="muted">jsonld, 13.2 KB</span></li><li><a href="../ontology.nt" download="ontology.nt">N-Triples</a> <span class="muted">nt, 12.7 KB</span></li>      </ul>
+<p><a href="#citation">Citar →</a></p><p><a href="#llm">For LLMs and agents →</a></p>    </aside>
+  </div>
+
+  <details class="more-meta">
+    <summary>Más metadatos</summary>
+    <dl class="meta-table">
+<div><dt>Palabras clave</dt><dd>food, pizza</dd></div>    </dl>
+  </details>
+</header><section class="section" id="introduction">
+  <h2><span class="secno">1</span> Introducción</h2>
+  <div class="prose"><p>A small ontology about <strong>pizzas</strong> and their toppings, used to test OntoReview.</p>
+</div>
+</section><section class="section" id="competency-questions">
+  <h2><span class="secno">2</span> Competency questions</h2>
+  <p class="prose">7 competency questions: 4 answerable, 1 not answerable, 1 query error, 1 not tested. Each query is run against the ontology and its example data when this document is generated.</p>
+  <ol class="cq-list">
+    <li class="cq cq-passed" id="cq-CQ1">
+      <h3 class="cq-title"><a href="#cq-CQ1"><span class="cq-id">CQ1</span> Which pizzas have a meat topping?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">answerable</span> · 1 result</td></tr>
+<tr><th scope="row">Terms</th><td><a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a>, <a href="#MeatTopping" class="ref" title="pizza:MeatTopping">Meat topping</a></td></tr><tr><th scope="row">Answer</th><td>The pepperoni pizza.</td></tr><tr><th scope="row">Notes</th><td>From the menu-planning use case.</td></tr>        </tbody>
+      </table>
+<pre class="sparql"><code>SELECT ?pizza WHERE { ?pizza pizza:hasTopping ?t . ?t a pizza:MeatTopping . }</code></pre>      <details class="cq-results" open>
+        <summary>Results</summary>
+        <table class="plain"><thead><tr><th>pizza</th></tr></thead>
+        <tbody><tr><td><code>d:pepperoni</code></td></tr></tbody></table>
+      </details>
+    </li>
+    <li class="cq cq-passed" id="cq-CQ2">
+      <h3 class="cq-title"><a href="#cq-CQ2"><span class="cq-id">CQ2</span> What kinds of base can a pizza have?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">answerable</span> · 2 results</td></tr>
+<tr><th scope="row">Terms</th><td><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a></td></tr>        </tbody>
+      </table>
+<pre class="sparql"><code>SELECT DISTINCT ?base WHERE { ?p pizza:hasBase ?base . }</code></pre>      <details class="cq-results" open>
+        <summary>Results</summary>
+        <table class="plain"><thead><tr><th>base</th></tr></thead>
+        <tbody><tr><td><code>d:thin</code></td></tr><tr><td><code>d:thick</code></td></tr></tbody></table>
+      </details>
+    </li>
+    <li class="cq cq-failed" id="cq-CQ3">
+      <h3 class="cq-title"><a href="#cq-CQ3"><span class="cq-id">CQ3</span> Which pizzas contain fish?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">not answerable</span> · 0 results</td></tr>
+<tr><th scope="row">Terms</th><td><a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></td></tr><tr><th scope="row">Notes</th><td>The ontology has no fish toppings yet, so this question is not answerable.</td></tr>        </tbody>
+      </table>
+<pre class="sparql"><code>SELECT ?pizza WHERE { ?pizza pizza:hasTopping ?t . ?t a pizza:FishTopping . }</code></pre>    </li>
+    <li class="cq cq-passed" id="cq-CQ4">
+      <h3 class="cq-title"><a href="#cq-CQ4"><span class="cq-id">CQ4</span> Is every pizza made of food?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">answerable</span></td></tr>
+<tr><th scope="row">Terms</th><td><a href="#Food" class="ref" title="pizza:Food">Food</a>, <a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></td></tr>        </tbody>
+      </table>
+<pre class="sparql"><code>ASK { pizza:Pizza rdfs:subClassOf pizza:Food }</code></pre>      <details class="cq-results" open>
+        <summary>Results</summary>
+        <table class="plain"><thead><tr><th>answer</th></tr></thead>
+        <tbody><tr><td><code>true</code></td></tr></tbody></table>
+      </details>
+    </li>
+    <li class="cq cq-untested" id="cq-CQ5">
+      <h3 class="cq-title"><a href="#cq-CQ5"><span class="cq-id">CQ5</span> How many calories does a pizza have?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">not tested</span></td></tr>
+<tr><th scope="row">Terms</th><td><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a></td></tr>        </tbody>
+      </table>
+    </li>
+    <li class="cq cq-passed" id="cq-CQ1">
+      <h3 class="cq-title"><a href="#cq-CQ1"><span class="cq-id">CQ1</span> Which toppings exist?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">answerable</span> · 2 results</td></tr>
+<tr><th scope="row">Terms</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Answer</th><td>Meat and cheese toppings</td></tr>        </tbody>
+      </table>
+<pre class="sparql"><code>SELECT ?t WHERE { ?t rdfs:subClassOf pizza:PizzaTopping }</code></pre>      <details class="cq-results" open>
+        <summary>Results</summary>
+        <table class="plain"><thead><tr><th>t</th></tr></thead>
+        <tbody><tr><td><code>pizza:CheeseTopping</code></td></tr><tr><td><code>pizza:MeatTopping</code></td></tr></tbody></table>
+      </details>
+    </li>
+    <li class="cq cq-error" id="cq-CQ2">
+      <h3 class="cq-title"><a href="#cq-CQ2"><span class="cq-id">CQ2</span> Broken query?</a></h3>
+      <table class="rel cq-meta">
+        <tbody>
+        <tr><th scope="row">Status</th><td><span class="cq-status">query error</span></td></tr>
+        </tbody>
+      </table>
+<pre class="sparql"><code>SELECT WHERE {</code></pre><p class="note-line">Expected SelectQuery, found &#39;WHERE&#39; (at char 7), (line:1, col:8)</p>    </li>
+  </ol>
+</section><section class="section section-wide" id="graph">
+  <h2><span class="secno">3</span> Visualización</h2>
+  <figure class="figure" id="figure-graph" data-notation="vowl">
+    <div class="figure-tools">
+      <input id="g-focus" type="search" placeholder="Focus on term…" list="g-terms" aria-label="Focus on term…">
+      <datalist id="g-terms"></datalist>
+      <label class="check"><input type="checkbox" id="g-prop"> Property edges</label>
+      <select id="g-notation" aria-label="Notation">
+        <option value="vowl">VOWL</option>
+        <option value="uml">UML</option>
+      </select>
+      <select id="g-layout" aria-label="Layout">
+        <option value="hierarchy">Hierarchy</option>
+        <option value="cose">Force</option>
+        <option value="concentric">Concentric</option>
+      </select>
+      <button class="textbtn" id="g-reset">Reset</button>
+      <button class="textbtn" id="g-png">PNG</button>
+      <button class="textbtn" id="g-expand" data-expand="Expand" data-collapse="Close">Expand</button>
+    </div>
+    <div id="cy" class="graph" role="img" aria-label="Jerarquía de clases de Ontología de Pizza. Las flechas van de una subclase a su superclase. La misma jerarquía está disponible como texto en el índice de términos y en la barra lateral."></div>
+    <div class="legend legend-uml" aria-hidden="true">
+      <span><svg width="44" height="12"><line x1="10" y1="6" x2="44" y2="6" stroke="currentColor" stroke-width="1.4"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/></svg> subclass of</span>
+      <span><svg width="44" height="12"><line x1="10" y1="6" x2="44" y2="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.5 2.5"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/></svg> part of an equivalence definition</span>
+      <span class="legend-prop"><svg width="44" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 3"/><path d="M34 2 L43 6 L34 10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg> object property (domain to range)</span>
+      <span><svg width="30" height="14"><rect x="1" y="1" width="28" height="12" fill="none" stroke="currentColor"/></svg> class; datatype properties listed inside</span>
+    </div>
+    <div class="legend legend-vowl" aria-hidden="true">
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-class)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> class</span>
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-class)" stroke="var(--vowl-stroke)" stroke-width="1"/><circle cx="9" cy="9" r="5.8" fill="none" stroke="var(--vowl-stroke)" stroke-width="1"/></svg> defined (equivalent) class</span>
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-external)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> external class</span>
+      <span><svg width="46" height="12"><line x1="10" y1="6" x2="46" y2="6" stroke="var(--vowl-stroke)" stroke-width="1.3" stroke-dasharray="5 3"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> subclass of</span>
+      <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" rx="3" fill="var(--vowl-oprop)"/></svg> object property</span>
+      <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" rx="3" fill="var(--vowl-dprop)"/></svg> datatype property</span>
+      <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" fill="var(--vowl-literal)" stroke="var(--vowl-stroke)" stroke-dasharray="3 2"/></svg> datatype / literal</span>
+    </div>
+    <figcaption><span class="fig-label">Figura 1.</span> Jerarquía de clases de Ontología de Pizza. Las flechas van de una subclase a su superclase. <span id="g-status" class="muted" role="status" aria-live="polite"></span></figcaption>
+  </figure>
+</section><h2 class="group-title" id="reference"><span class="secno">4</span> Referencia</h2>
+<section class="section section-terms" id="classes">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.1</span> Clases</h2>
+  </div>
+<article class="term" id="Calzone" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Calzone">Calzone</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#Calzone</code> <button class="copy" data-copy="https://example.org/pizza#Calzone" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>A folded pizza.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Calzone</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#Calzone">Ver en la figura</a></p></article>
+<article class="term is-deprecated" id="CheeseTopping" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#CheeseTopping">Cheese topping</a></h3>
+    <span class="term-kind">Class</span>
+<span class="term-flag">obsoleto</span>  </header>
+  <p class="term-iri"><code>https://example.org/pizza#CheeseTopping</code> <button class="copy" data-copy="https://example.org/pizza#CheeseTopping" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>Cheese.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:CheeseTopping</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#CheeseTopping">Ver en la figura</a></p></article>
+<article class="term" id="Food" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Food">Comida</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#Food</code> <button class="copy" data-copy="https://example.org/pizza#Food" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>Cualquier cosa comestible.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Food</code></td></tr><tr><th scope="row">Subclases</th><td><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a>, <a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a>, <a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a></div></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ4">CQ4</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#Food">Ver en la figura</a></p></article>
+<article class="term" id="MeatTopping" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#MeatTopping">Meat topping</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#MeatTopping</code> <button class="copy" data-copy="https://example.org/pizza#MeatTopping" aria-label="Copiar IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:MeatTopping</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ1">CQ1</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#MeatTopping">Ver en la figura</a></p></article>
+<article class="term" id="Pizza" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Pizza">Pizza</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#Pizza</code> <button class="copy" data-copy="https://example.org/pizza#Pizza" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>A flat <strong>baked</strong> dish topped with ingredients.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Pizza</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Restricciones</th><td><ul class="vlist"><li><span class="expr"><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a> <span class="kw">some</span> <a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li><li><span class="expr"><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a> <span class="kw">max</span> <span class="lit">1</span></span></li></ul></td></tr><tr><th scope="row">Subclases</th><td><a href="#Calzone" class="ref" title="pizza:Calzone">Calzone</a></td></tr><tr><th scope="row">Disjunta con</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Instancias</th><td><a href="#Margherita" class="ref" title="pizza:Margherita">Margherita</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasBase" class="ref" title="pizza:hasBase">has base</a>, <a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Ejemplos</th><td><code class="example">Margherita</code></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ4">CQ4</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#Pizza">Ver en la figura</a></p></article>
+<article class="term" id="PizzaBase" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#PizzaBase">Pizza base</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#PizzaBase</code> <button class="copy" data-copy="https://example.org/pizza#PizzaBase" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>The bread base of a pizza.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:PizzaBase</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in range of</span> <a href="#hasBase" class="ref" title="pizza:hasBase">has base</a>, <a href="#Name" class="ref" title="pizza:Name">Pizza</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></div></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#PizzaBase">Ver en la figura</a></p></article>
+<article class="term" id="PizzaTopping" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#PizzaTopping">Pizza topping</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#PizzaTopping</code> <button class="copy" data-copy="https://example.org/pizza#PizzaTopping" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>Something placed on a pizza.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:PizzaTopping</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Subclases</th><td><a href="#CheeseTopping" class="ref" title="pizza:CheeseTopping">Cheese topping</a>, <a href="#MeatTopping" class="ref" title="pizza:MeatTopping">Meat topping</a></td></tr><tr><th scope="row">Disjunta con</th><td><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in range of</span> <a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></div></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ1">CQ1</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#PizzaTopping">Ver en la figura</a></p></article>
+<article class="term" id="VegetarianPizza" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#VegetarianPizza">Vegetarian pizza</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#VegetarianPizza</code> <button class="copy" data-copy="https://example.org/pizza#VegetarianPizza" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>A pizza with no meat toppings.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:VegetarianPizza</code></td></tr><tr><th scope="row">Equivalente a</th><td><span class="expr"><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a> <span class="kw">and</span> (<span class="kw">not</span> (<a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a> <span class="kw">some</span> <a href="#MeatTopping" class="ref" title="pizza:MeatTopping">Meat topping</a>))</span></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#VegetarianPizza">Ver en la figura</a></p></article>
+</section><section class="section section-terms" id="object-properties">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.2</span> Propiedades de objeto</h2>
+  </div>
+<article class="term" id="hasBase" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#hasBase">has base</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#hasBase</code> <button class="copy" data-copy="https://example.org/pizza#hasBase" aria-label="Copiar IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:hasBase</code></td></tr><tr><th scope="row">Superpropiedades</th><td><a href="#hasIngredient" class="ref" title="pizza:hasIngredient">has ingredient</a></td></tr><tr><th scope="row">Dominio</th><td><span class="expr"><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></span></td></tr><tr><th scope="row">Rango</th><td><span class="expr"><a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></td></tr><tr><th scope="row">Características</th><td>Functional</td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">used in axioms of</span> <a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></div></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ2">CQ2</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="hasIngredient" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#hasIngredient">has ingredient</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#hasIngredient</code> <button class="copy" data-copy="https://example.org/pizza#hasIngredient" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>Any ingredient.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:hasIngredient</code></td></tr><tr><th scope="row">Subpropiedades</th><td><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a></td></tr><tr><th scope="row">Características</th><td>Transitive</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="hasTopping" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#hasTopping">has topping</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#hasTopping</code> <button class="copy" data-copy="https://example.org/pizza#hasTopping" aria-label="Copiar IRI">copy</button></p>
+<div class="definition"><p>Relates a pizza to its toppings.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:hasTopping</code></td></tr><tr><th scope="row">Dominio</th><td><span class="expr"><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></span></td></tr><tr><th scope="row">Rango</th><td><span class="expr"><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></span></td></tr><tr><th scope="row">Inversa de</th><td><span class="expr"><a href="#isToppingOf" class="ref" title="pizza:isToppingOf">is topping of</a></span></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ1">CQ1</a>, <a href="#cq-CQ3">CQ3</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="isToppingOf" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#isToppingOf">is topping of</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#isToppingOf</code> <button class="copy" data-copy="https://example.org/pizza#isToppingOf" aria-label="Copiar IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:isToppingOf</code></td></tr><tr><th scope="row">Inversa de</th><td><span class="expr"><a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></span></td></tr>    </tbody>
+  </table>
+</article>
+</section><section class="section section-terms" id="datatype-properties">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.3</span> Propiedades de datos</h2>
+  </div>
+<article class="term" id="hasCalories" data-kind="datatype_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#hasCalories">has calories</a></h3>
+    <span class="term-kind">Datatype property</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#hasCalories</code> <button class="copy" data-copy="https://example.org/pizza#hasCalories" aria-label="Copiar IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:hasCalories</code></td></tr><tr><th scope="row">Dominio</th><td><span class="expr"><a href="#Food" class="ref" title="pizza:Food">Comida</a></span></td></tr><tr><th scope="row">Rango</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#integer" class="ref ext" title="xsd:integer">xsd:integer</a>[<span class="kw">&gt;=</span> <span class="lit">0</span>]</span></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">used in axioms of</span> <a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></div></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ5">CQ5</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="Name" data-kind="datatype_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Name">Pizza</a></h3>
+    <span class="term-kind">Datatype property</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#Name</code> <button class="copy" data-copy="https://example.org/pizza#Name" aria-label="Copiar IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Name</code></td></tr><tr><th scope="row">Rango</th><td><span class="expr"><a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></td></tr>    </tbody>
+  </table>
+</article>
+</section><section class="section section-terms" id="individuals">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.4</span> Individuos</h2>
+  </div>
+<article class="term" id="Margherita" data-kind="individual">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Margherita">Margherita</a></h3>
+    <span class="term-kind">Named individual</span>
+  </header>
+  <p class="term-iri"><code>https://example.org/pizza#Margherita</code> <button class="copy" data-copy="https://example.org/pizza#Margherita" aria-label="Copiar IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Margherita</code></td></tr><tr><th scope="row">Tipos</th><td><span class="expr"><a href="#Pizza" class="ref" title="pizza:Pizza">Pizza</a></span></td></tr><tr><th scope="row">Property assertions</th><td><ul class="vlist"><li><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a> <span class="expr"><span class="lit">800</span></span></li></ul></td></tr>    </tbody>
+  </table>
+</article>
+</section><section class="section" id="namespaces">
+  <h2><span class="secno">5</span> Espacios de nombres</h2>
+  <table class="plain">
+    <thead><tr><th>Prefix</th><th>Namespace</th></tr></thead>
+    <tbody>
+<tr><td><code>dcterms</code></td><td><code>http://purl.org/dc/terms/</code></td></tr><tr><td><code>foaf</code></td><td><code>http://xmlns.com/foaf/0.1/</code></td></tr><tr><td><code>owl</code></td><td><code>http://www.w3.org/2002/07/owl#</code></td></tr><tr><td><code>pizza</code></td><td><code>https://example.org/pizza#</code></td></tr><tr><td><code>rdf</code></td><td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td></tr><tr><td><code>rdfs</code></td><td><code>http://www.w3.org/2000/01/rdf-schema#</code></td></tr><tr><td><code>schema</code></td><td><code>https://schema.org/</code></td></tr><tr><td><code>skos</code></td><td><code>http://www.w3.org/2004/02/skos/core#</code></td></tr><tr><td><code>vann</code></td><td><code>http://purl.org/vocab/vann/</code></td></tr><tr><td><code>xsd</code></td><td><code>http://www.w3.org/2001/XMLSchema#</code></td></tr>    </tbody>
+  </table>
+</section><section class="section" id="changelog">
+  <h2><span class="secno">6</span> Cambios</h2>
+  <p class="prose">Compared with 1.2.0: 1 añadido, 1 eliminado, 1 modificado.</p>
+  <table class="plain changes">
+    <thead><tr><th></th><th>Term</th><th>Kind</th><th>Details</th></tr></thead>
+    <tbody>
+<tr><td class="mark add">+</td><td><a href="#Calzone">Calzone</a></td><td>class</td><td><code>pizza:Calzone</code></td></tr><tr><td class="mark del">−</td><td>spicy_thing</td><td>class</td><td><code>pizza:spicy_thing</code></td></tr><tr><td class="mark mod">~</td><td>Ontology metadata</td><td>ontology</td><td>
+<div class="del"><span class="mark">−</span> <code>owl:versionInfo</code> &#34;1.2.0&#34;</div><div class="add"><span class="mark">+</span> <code>owl:versionInfo</code> &#34;1.3.0&#34;</div>    </td></tr><tr><td class="mark mod">~</td><td><a href="#Food">Food</a></td><td>class</td><td>
+<div class="del"><span class="mark">−</span> <code>skos:definition</code> &#34;Anything edible.&#34;@en</div><div class="add"><span class="mark">+</span> <code>skos:definition</code> &#34;Anything that can be eaten.&#34;@en</div>    </td></tr>    </tbody>
+  </table>
+</section><section class="section" id="quality">
+  <h2><span class="secno">7</span> Informe de calidad</h2>
+  <p class="prose">ontoreview checks: 2 errors, 7 warnings y 5 suggestions. OOPS!: 0 errors, 1 warnings, 3 suggestions.</p>
+
+<h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Competency question query error <span class="muted">(1) CQ002</span></summary>
+    <p class="muted rule-desc">The SPARQL query of a competency question could not be executed.</p>
+    <ul class="findings">
+<li>CQ2: Broken query? (Expected SelectQuery, found &#x27;WHERE&#x27; (at char 7), (line:1, col:8))</li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Wrong kind of range <span class="muted">(1) OB024</span></summary>
+    <p class="muted rule-desc">Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like).</p>
+    <ul class="findings">
+<li>Datatype property “Pizza” has class range “Pizza base”. <a href="#Name">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Competency question not answerable <span class="muted">(1) CQ001</span></summary>
+    <p class="muted rule-desc">The SPARQL query of a competency question returned no results.</p>
+    <ul class="findings">
+<li>CQ3: Which pizzas contain fish?</li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Term without a definition <span class="muted">(5) OB011</span></summary>
+    <p class="muted rule-desc">Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08).</p>
+    <ul class="findings">
+<li>Class “Meat topping” has no definition. <a href="#MeatTopping">§</a></li><li>Datatype property “Pizza” has no definition. <a href="#Name">§</a></li><li>Object property “has base” has no definition. <a href="#hasBase">§</a></li><li>Datatype property “has calories” has no definition. <a href="#hasCalories">§</a></li><li>Object property “is topping of” has no definition. <a href="#isToppingOf">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Duplicate labels <span class="muted">(1) OB016</span></summary>
+    <p class="muted rule-desc">Two or more terms share the same label, which confuses readers and tools.</p>
+    <ul class="findings">
+<li>Label “pizza” @en is used by <code>pizza:Pizza</code>, <code>pizza:Name</code>. <a href="#Pizza">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Property without domain <span class="muted">(2) OB012</span></summary>
+    <p class="muted rule-desc">Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms.</p>
+    <ul class="findings">
+<li>Property “Pizza” has no domain. <a href="#Name">§</a></li><li>Property “has ingredient” has no domain. <a href="#hasIngredient">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Property without range <span class="muted">(1) OB013</span></summary>
+    <p class="muted rule-desc">Consider declaring rdfs:range (OOPS! P11).</p>
+    <ul class="findings">
+<li>Property “has ingredient” has no range. <a href="#hasIngredient">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Deprecated term without replacement <span class="muted">(1) OB018</span></summary>
+    <p class="muted rule-desc">Deprecated terms should point to their replacement with dcterms:isReplacedBy.</p>
+    <ul class="findings">
+<li>“Cheese topping” is deprecated but has no replacement. <a href="#CheeseTopping">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inconsistent naming convention <span class="muted">(1) OB019</span></summary>
+    <p class="muted rule-desc">Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22).</p>
+    <ul class="findings">
+<li>Property name <code>Name</code> is not lowerCamelCase. <a href="#Name">§</a></li>    </ul>
+  </details>
+
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(3) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing annotations <span class="muted">(5) P08</span></summary>
+<p class="muted rule-desc">This pitfall consists in creating an ontology element and failing to provide human readable annotations attached to it. Consequently, ontology elements lack annotation properties that label them (e.g. rdfs:label, lemon:LexicalEntry, skos:prefLabel or skos:altLabel) or that define them (e.g. rdfs:comment or dc:description). This pitfall is related to the guidelines provided in [5].</p>    <ul class="findings">
+<li><a href="#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#hasBase">has base</a> <code class="muted">pizza:hasBase</code></li><li><a href="#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Using different naming conventions in the ontology <span class="muted">P22</span></summary>
+<p class="muted rule-desc">The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &amp;quot;-&amp;quot; or &amp;quot;_&amp;quot;) . Some notions about naming conventions are provided in [2].</p><p class="rule-desc">There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name</p>  </details>
+</section><section class="section" id="downloads">
+  <h2><span class="secno">8</span> Descargar</h2>
+  <p class="prose">Descargue la ontología en su formato preferido:</p>
+  <table class="plain">
+    <thead><tr><th>Format</th><th>File</th><th>Media type</th><th class="num">Size</th><th></th></tr></thead>
+    <tbody>
+    <tr><td><a href="../ontology.ttl" download="ontology.ttl">Turtle</a></td><td><code>ontology.ttl</code></td><td><code>text/turtle</code></td><td class="num">4.2 KB</td><td><button class="copy" data-copy-href="../ontology.ttl">copy link</button></td></tr>
+    <tr><td><a href="../ontology.owl" download="ontology.owl">RDF/XML</a></td><td><code>ontology.owl</code></td><td><code>application/rdf+xml</code></td><td class="num">10.6 KB</td><td><button class="copy" data-copy-href="../ontology.owl">copy link</button></td></tr>
+    <tr><td><a href="../ontology.jsonld" download="ontology.jsonld">JSON-LD</a></td><td><code>ontology.jsonld</code></td><td><code>application/ld+json</code></td><td class="num">13.2 KB</td><td><button class="copy" data-copy-href="../ontology.jsonld">copy link</button></td></tr>
+    <tr><td><a href="../ontology.nt" download="ontology.nt">N-Triples</a></td><td><code>ontology.nt</code></td><td><code>application/n-triples</code></td><td class="num">12.7 KB</td><td><button class="copy" data-copy-href="../ontology.nt">copy link</button></td></tr>
+    </tbody>
+  </table>
+<p class="small muted">The ontology IRI supports content negotiation when deployed with the generated server configuration.</p></section><section class="section" id="llm">
+  <h2><span class="secno">9</span> For LLMs and agents</h2>
+  <p class="prose">Plain-text and JSON versions of this document, generated with it, for language models, agents and other tools. They contain the same terms, definitions and axioms as the pages above.</p>
+  <table class="plain">
+    <thead><tr><th>File</th><th>Purpose</th><th class="num">Size</th><th></th></tr></thead>
+    <tbody>
+    <tr><td><a href="../llms.txt">llms.txt</a></td><td>Index for language models (llmstxt.org): summary and links to the Markdown pages</td><td class="num">1.3 KB</td><td><button class="copy" data-copy-href="../llms.txt">copy link</button></td></tr>
+    <tr><td><a href="../llms-full.txt">llms-full.txt</a></td><td>The complete documentation as a single Markdown file</td><td class="num">6.5 KB</td><td><button class="copy" data-copy-href="../llms-full.txt">copy link</button></td></tr>
+    <tr><td><a href="../ontology.json">ontology.json</a></td><td>Every term as JSON: IRI, CURIE, label, definition, hierarchy, domain and range</td><td class="num">6.2 KB</td><td><button class="copy" data-copy-href="../ontology.json">copy link</button></td></tr>
+    </tbody>
+  </table>
+  <h3 class="subhead">Markdown pages</h3>
+  <ul class="index-cols">
+<li><a href="../index.md">index.md</a> <span class="muted small">532 B</span></li><li><a href="../classes.md">classes.md</a> <span class="muted small">2.6 KB</span></li><li><a href="../object-properties.md">object-properties.md</a> <span class="muted small">1.1 KB</span></li><li><a href="../datatype-properties.md">datatype-properties.md</a> <span class="muted small">438 B</span></li><li><a href="../individuals.md">individuals.md</a> <span class="muted small">163 B</span></li><li><a href="../competency-questions.md">competency-questions.md</a> <span class="muted small">1.6 KB</span></li>  </ul>
+  <h3 class="subhead">Using these files with an agent</h3>
+  <div class="prose">
+    <p>Give the agent the address of llms.txt; it links to everything else. For code that needs exact identifiers, ontology.json lists every term with its IRI and relations. The instruction below can be pasted into a prompt or a system message.</p>
+  </div>
+  <pre id="llm-prompt"><code>Read llms.txt for Ontología de Pizza (prefix pizza:). Use only terms defined there; look up IRIs, definitions, domains and ranges in ontology.json before writing SPARQL or RDF.</code></pre>
+  <p class="small"><button class="copy" data-copy-target="llm-prompt">copy instruction</button></p>
+</section><section class="section" id="citation">
+  <h2><span class="secno">10</span> Cómo citar</h2>
+  <p>Por favor, cite esta ontología como:</p>
+  <blockquote class="cite" id="cite-text">Alice Example, Jane Doe (2026). Ontología de Pizza. Version 1.3.0. https://example.org/pizza</blockquote>
+  <p class="small"><button class="copy" data-copy-target="cite-text">copy</button> &middot; <a href="../CITATION.cff">CITATION.cff</a></p>
+  <pre id="cite-bib"><code>@misc{pizza2026,
+  title = {Ontología de Pizza},
+  author = {Alice Example and Jane Doe},
+  year = {2026},
+  version = {1.3.0},
+  url = {https://example.org/pizza},
+  note = {Ontology}
+}</code></pre>
+  <p class="small"><button class="copy" data-copy-target="cite-bib">copy BibTeX</button></p>
+</section><section class="section" id="provenance">
+  <h2><span class="secno">11</span> Procedencia</h2>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">Autores</th><td><span class="agent"><a href="https://orcid.org/0000-0000-0000-0001">Alice Example</a>, <span class="affil">Example University</span></span>; <span class="agent">Jane Doe</span></td></tr><tr><th scope="row">Colaboradores</th><td><span class="agent">Anonymous Helper</span></td></tr><tr><th scope="row">Creado</th><td>2024-01-01</td></tr><tr><th scope="row">Última modificación</th><td>2026-11-01</td></tr><tr><th scope="row">Esta versión</th><td><a href="https://example.org/pizza/1.2.0">https://example.org/pizza/1.2.0</a></td></tr><tr><th scope="row">Versión anterior</th><td><a href="https://example.org/pizza/1.1.0">https://example.org/pizza/1.1.0</a></td></tr>    </tbody>
+  </table>
+  <p class="small muted">This documentation was generated from the ontology source with ontoreview 0.1.0. <a href="../provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
+</section>    <footer class="colophon">
+      Generado con <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> 0.1.0. Licencia: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+    </footer>
+  </main>
+</div>
+
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-backdrop" data-action="close-search"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Buscar">
+    <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Buscar clases, propiedades, individuos…"
+      role="combobox" aria-label="Buscar" aria-autocomplete="list" aria-controls="search-results" aria-expanded="false">
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Buscar"></ul>
+    <p id="search-count" class="sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<script src="ontoreview-data.js?v=6afbc9d1"></script>
+<script src="../assets/vendor/minisearch.min.js"></script>
+<script src="../assets/vendor/cytoscape.min.js"></script>
+<script src="../assets/vendor/dagre.min.js"></script>
+<script src="../assets/vendor/cytoscape-dagre.js"></script><script src="../assets/ontoreview.js?v=6afbc9d1"></script>
+</body>
+</html>

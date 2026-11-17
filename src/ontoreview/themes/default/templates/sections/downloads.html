@@ -1,0 +1,13 @@
+<section class="section" id="{{ s.id }}">
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <p class="prose">{{ t('download_as') }}</p>
+  <table class="plain">
+    <thead><tr><th>{{ t('format') }}</th><th>{{ t('file') }}</th><th>{{ t('media_type') }}</th><th class="num">{{ t('size') }}</th><th></th></tr></thead>
+    <tbody>
+    {% for d in downloads %}
+    <tr><td><a href="{{ d.href }}" download="{{ d.file }}">{{ d.label }}</a></td><td><code>{{ d.file }}</code></td><td><code>{{ d.media }}</code></td><td class="num">{{ d.size|filesize }}</td><td><button class="copy" data-copy-href="{{ d.href }}">copy link</button></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if cfg.conneg %}<p class="small muted">{{ t('conneg_note') }}</p>{% endif %}
+</section>

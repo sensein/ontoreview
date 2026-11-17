@@ -1,0 +1,355 @@
+{
+  "summary": {
+    "error": 2,
+    "warning": 7,
+    "info": 5
+  },
+  "external": [
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P08",
+          "name": "Missing annotations",
+          "severity": "info",
+          "description": "This pitfall consists in creating an ontology element and failing to provide human readable annotations attached to it. Consequently, ontology elements lack annotation properties that label them (e.g. rdfs:label, lemon:LexicalEntry, skos:prefLabel or skos:altLabel) or that define them (e.g. rdfs:comment or dc:description). This pitfall is related to the guidelines provided in [5].",
+          "affected": [
+            "https://example.org/pizza#MeatTopping",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasBase",
+            "https://example.org/pizza#hasCalories",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P22",
+          "name": "Using different naming conventions in the ontology",
+          "severity": "info",
+          "description": "The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &quot;-&quot; or &quot;_&quot;) . Some notions about naming conventions are provided in [2].",
+          "affected": [],
+          "note": "There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name"
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 0,
+        "warning": 1,
+        "info": 3
+      }
+    }
+  ],
+  "findings": [
+    {
+      "rule": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "message": "Datatype property “Pizza” has class range “Pizza base”.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Class “Meat topping” has no definition.",
+      "subject": "https://example.org/pizza#MeatTopping",
+      "subject_label": "Meat topping",
+      "anchor": "MeatTopping"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Datatype property “Pizza” has no definition.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Object property “has base” has no definition.",
+      "subject": "https://example.org/pizza#hasBase",
+      "subject_label": "has base",
+      "anchor": "hasBase"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Datatype property “has calories” has no definition.",
+      "subject": "https://example.org/pizza#hasCalories",
+      "subject_label": "has calories",
+      "anchor": "hasCalories"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Object property “is topping of” has no definition.",
+      "subject": "https://example.org/pizza#isToppingOf",
+      "subject_label": "is topping of",
+      "anchor": "isToppingOf"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “pizza” @en is used by `pizza:Pizza`, `pizza:Name`.",
+      "subject": "https://example.org/pizza#Pizza",
+      "subject_label": "Pizza",
+      "anchor": "Pizza"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “Pizza” has no domain.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “has ingredient” has no domain.",
+      "subject": "https://example.org/pizza#hasIngredient",
+      "subject_label": "has ingredient",
+      "anchor": "hasIngredient"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “has ingredient” has no range.",
+      "subject": "https://example.org/pizza#hasIngredient",
+      "subject_label": "has ingredient",
+      "anchor": "hasIngredient"
+    },
+    {
+      "rule": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "message": "“Cheese topping” is deprecated but has no replacement.",
+      "subject": "https://example.org/pizza#CheeseTopping",
+      "subject_label": "Cheese topping",
+      "anchor": "CheeseTopping"
+    },
+    {
+      "rule": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "message": "Property name `Name` is not lowerCamelCase.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "CQ001",
+      "title": "Competency question not answerable",
+      "severity": "warning",
+      "message": "CQ3: Which pizzas contain fish?",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "CQ002",
+      "title": "Competency question query error",
+      "severity": "error",
+      "message": "CQ2: Broken query? (Expected SelectQuery, found 'WHERE' (at char 7), (line:1, col:8))",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    }
+  ],
+  "rules": [
+    {
+      "id": "OB001",
+      "title": "Ontology has no title",
+      "severity": "warning",
+      "description": "Add dcterms:title (or rdfs:label) to the owl:Ontology node."
+    },
+    {
+      "id": "OB002",
+      "title": "Ontology has no description",
+      "severity": "warning",
+      "description": "Add dcterms:description or dcterms:abstract so readers know what the ontology is for."
+    },
+    {
+      "id": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "description": "Declare a license with dcterms:license so others know how they may reuse the ontology."
+    },
+    {
+      "id": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "description": "Add owl:versionInfo and owl:versionIRI to make releases citable and comparable."
+    },
+    {
+      "id": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "description": "Credit the authors with dcterms:creator."
+    },
+    {
+      "id": "OB006",
+      "title": "No preferred prefix/namespace",
+      "severity": "info",
+      "description": "Add vann:preferredNamespacePrefix and vann:preferredNamespaceUri."
+    },
+    {
+      "id": "OB010",
+      "title": "Term without a label",
+      "severity": "warning",
+      "description": "Every term should have a human-readable rdfs:label or skos:prefLabel (OOPS! P08)."
+    },
+    {
+      "id": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "description": "Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08)."
+    },
+    {
+      "id": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "description": "Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms."
+    },
+    {
+      "id": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "description": "Consider declaring rdfs:range (OOPS! P11)."
+    },
+    {
+      "id": "OB014",
+      "title": "Cycle in class hierarchy",
+      "severity": "error",
+      "description": "A class is (indirectly) a subclass of itself, which makes the classes equivalent (OOPS! P06)."
+    },
+    {
+      "id": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "description": "A term in the ontology namespace is used but never declared (no rdf:type) (OOPS! P34/P35)."
+    },
+    {
+      "id": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "description": "Two or more terms share the same label, which confuses readers and tools."
+    },
+    {
+      "id": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "description": "A term has more than one rdfs:label/skos:prefLabel in the same language."
+    },
+    {
+      "id": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "description": "Deprecated terms should point to their replacement with dcterms:isReplacedBy."
+    },
+    {
+      "id": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "description": "Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22)."
+    },
+    {
+      "id": "OB020",
+      "title": "Class both subclass of and disjoint with another",
+      "severity": "error",
+      "description": "A class that is a subclass of a class it is disjoint with is unsatisfiable."
+    },
+    {
+      "id": "OB021",
+      "title": "Transitive property used as functional",
+      "severity": "error",
+      "description": "In OWL 2 DL a transitive property cannot be functional or inverse functional."
+    },
+    {
+      "id": "OB022",
+      "title": "Self-referencing definition",
+      "severity": "warning",
+      "description": "A class is declared equivalent to or a subclass of itself (OOPS! P24/P27)."
+    },
+    {
+      "id": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "description": "A class with no superclass, no subclasses and no usage is disconnected from the model."
+    },
+    {
+      "id": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "description": "Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like)."
+    },
+    {
+      "id": "OB025",
+      "title": "Inverse of itself but not symmetric",
+      "severity": "warning",
+      "description": "A property declared as inverse of itself should be declared symmetric instead (OOPS! P25)."
+    },
+    {
+      "id": "OB026",
+      "title": "Missing language tags",
+      "severity": "info",
+      "description": "When some labels carry language tags, all of them should (helps multilingual docs)."
+    },
+    {
+      "id": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "description": "Declared terms that live in other namespaces are documented as external."
+    },
+    {
+      "id": "OB028",
+      "title": "Multiple domains or ranges",
+      "severity": "warning",
+      "description": "Several rdfs:domain (or range) axioms are interpreted as their intersection, which is often not intended (OOPS! P19)."
+    },
+    {
+      "id": "CQ001",
+      "title": "Competency question not answerable",
+      "severity": "warning",
+      "description": "The SPARQL query of a competency question returned no results."
+    },
+    {
+      "id": "CQ002",
+      "title": "Competency question query error",
+      "severity": "error",
+      "description": "The SPARQL query of a competency question could not be executed."
+    }
+  ]
+}

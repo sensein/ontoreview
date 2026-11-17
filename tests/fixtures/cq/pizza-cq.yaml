@@ -1,0 +1,26 @@
+prefixes:
+  d: https://example.org/pizza-data/
+example_data: [pizza-data.ttl]
+questions:
+  - id: CQ1
+    question: Which pizzas have a meat topping?
+    sparql: |
+      SELECT ?pizza WHERE { ?pizza pizza:hasTopping ?t . ?t a pizza:MeatTopping . }
+    answer: The pepperoni pizza.
+    notes: From the menu-planning use case.
+  - id: CQ2
+    question: What kinds of base can a pizza have?
+    sparql: |
+      SELECT DISTINCT ?base WHERE { ?p pizza:hasBase ?base . }
+  - id: CQ3
+    question: Which pizzas contain fish?
+    sparql: |
+      SELECT ?pizza WHERE { ?pizza pizza:hasTopping ?t . ?t a pizza:FishTopping . }
+    notes: The ontology has no fish toppings yet, so this question is not answerable.
+  - id: CQ4
+    question: Is every pizza made of food?
+    sparql: ASK { pizza:Pizza rdfs:subClassOf pizza:Food }
+    terms: [pizza:Food]
+  - id: CQ5
+    question: How many calories does a pizza have?
+    terms: [pizza:hasCalories]

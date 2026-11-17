@@ -1,0 +1,531 @@
+{
+  "summary": {
+    "error": 6,
+    "warning": 25,
+    "info": 10
+  },
+  "external": [],
+  "findings": [
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://www.w3.org/ns/dcat#inCatalog` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://www.w3.org/ns/dcat#isDistributionOf` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://www.w3.org/ns/dcat#isVersionOf` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://www.w3.org/ns/dcat#next` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://www.w3.org/ns/dcat#nextVersion` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://www.w3.org/ns/dcat#seriesMember` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “catalog” @en is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “catalogo” @it is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “catálogo” @es is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “katalog” @cs is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “katalog” @da is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “datatjeneste” @da is used by `dcat:DataService`, `dcat:service`.",
+      "subject": "http://www.w3.org/ns/dcat#DataService",
+      "subject_label": "Data service",
+      "anchor": "DataService"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “conjunto de datos” @es is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “dataset” @en is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “dataset” @it is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “datasæt” @da is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “datová sada” @cs is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “jeu de données” @fr is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “σύνολο δεδομένων” @el is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “قائمة بيانات” @ar is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “データセット” @ja is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “distribuce” @cs is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “distribución” @es is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “distribution” @da is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “distribution” @en is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “distribution” @fr is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “distribuzione” @it is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “διανομή” @el is used by `dcat:Distribution`, `dcat:distribution`.",
+      "subject": "http://www.w3.org/ns/dcat#Distribution",
+      "subject_label": "Distribution",
+      "anchor": "Distribution"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “سجل” @ar is used by `dcat:record`, `dcat:CatalogRecord`.",
+      "subject": "http://www.w3.org/ns/dcat#record",
+      "subject_label": "record",
+      "anchor": "record"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “カタログ・レコード” @ja is used by `dcat:record`, `dcat:CatalogRecord`.",
+      "subject": "http://www.w3.org/ns/dcat#record",
+      "subject_label": "record",
+      "anchor": "record"
+    },
+    {
+      "rule": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "message": "“hadRole” has 2 labels in @it.",
+      "subject": "http://www.w3.org/ns/dcat#hadRole",
+      "subject_label": "hadRole",
+      "anchor": "hadRole"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “data access service” has no domain.",
+      "subject": "http://www.w3.org/ns/dcat#accessService",
+      "subject_label": "data access service",
+      "anchor": "accessService"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “contact point” has no domain.",
+      "subject": "http://www.w3.org/ns/dcat#contactPoint",
+      "subject_label": "contact point",
+      "anchor": "contactPoint"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “keyword” has no domain.",
+      "subject": "http://www.w3.org/ns/dcat#keyword",
+      "subject_label": "keyword",
+      "anchor": "keyword"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “risoluzione spaziale (metri)” has no domain.",
+      "subject": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
+      "subject_label": "risoluzione spaziale (metri)",
+      "anchor": "spatialResolutionInMeters"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “temporal resolution” has no domain.",
+      "subject": "http://www.w3.org/ns/dcat#temporalResolution",
+      "subject_label": "temporal resolution",
+      "anchor": "temporalResolution"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “version” has no domain.",
+      "subject": "http://www.w3.org/ns/dcat#version",
+      "subject_label": "version",
+      "anchor": "version"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “description of service end-point” has no range.",
+      "subject": "http://www.w3.org/ns/dcat#endpointDescription",
+      "subject_label": "description of service end-point",
+      "anchor": "endpointDescription"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “version” has no range.",
+      "subject": "http://www.w3.org/ns/dcat#version",
+      "subject_label": "version",
+      "anchor": "version"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`foaf:homepage` is declared here but is outside the namespace.",
+      "subject": "http://xmlns.com/foaf/0.1/homepage",
+      "subject_label": "homepage",
+      "anchor": "homepage"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`foaf:primaryTopic` is declared here but is outside the namespace.",
+      "subject": "http://xmlns.com/foaf/0.1/primaryTopic",
+      "subject_label": "primaryTopic",
+      "anchor": "primaryTopic"
+    }
+  ],
+  "rules": [
+    {
+      "id": "OB001",
+      "title": "Ontology has no title",
+      "severity": "warning",
+      "description": "Add dcterms:title (or rdfs:label) to the owl:Ontology node."
+    },
+    {
+      "id": "OB002",
+      "title": "Ontology has no description",
+      "severity": "warning",
+      "description": "Add dcterms:description or dcterms:abstract so readers know what the ontology is for."
+    },
+    {
+      "id": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "description": "Declare a license with dcterms:license so others know how they may reuse the ontology."
+    },
+    {
+      "id": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "description": "Add owl:versionInfo and owl:versionIRI to make releases citable and comparable."
+    },
+    {
+      "id": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "description": "Credit the authors with dcterms:creator."
+    },
+    {
+      "id": "OB006",
+      "title": "No preferred prefix/namespace",
+      "severity": "info",
+      "description": "Add vann:preferredNamespacePrefix and vann:preferredNamespaceUri."
+    },
+    {
+      "id": "OB010",
+      "title": "Term without a label",
+      "severity": "warning",
+      "description": "Every term should have a human-readable rdfs:label or skos:prefLabel (OOPS! P08)."
+    },
+    {
+      "id": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "description": "Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08)."
+    },
+    {
+      "id": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "description": "Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms."
+    },
+    {
+      "id": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "description": "Consider declaring rdfs:range (OOPS! P11)."
+    },
+    {
+      "id": "OB014",
+      "title": "Cycle in class hierarchy",
+      "severity": "error",
+      "description": "A class is (indirectly) a subclass of itself, which makes the classes equivalent (OOPS! P06)."
+    },
+    {
+      "id": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "description": "A term in the ontology namespace is used but never declared (no rdf:type) (OOPS! P34/P35)."
+    },
+    {
+      "id": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "description": "Two or more terms share the same label, which confuses readers and tools."
+    },
+    {
+      "id": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "description": "A term has more than one rdfs:label/skos:prefLabel in the same language."
+    },
+    {
+      "id": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "description": "Deprecated terms should point to their replacement with dcterms:isReplacedBy."
+    },
+    {
+      "id": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "description": "Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22)."
+    },
+    {
+      "id": "OB020",
+      "title": "Class both subclass of and disjoint with another",
+      "severity": "error",
+      "description": "A class that is a subclass of a class it is disjoint with is unsatisfiable."
+    },
+    {
+      "id": "OB021",
+      "title": "Transitive property used as functional",
+      "severity": "error",
+      "description": "In OWL 2 DL a transitive property cannot be functional or inverse functional."
+    },
+    {
+      "id": "OB022",
+      "title": "Self-referencing definition",
+      "severity": "warning",
+      "description": "A class is declared equivalent to or a subclass of itself (OOPS! P24/P27)."
+    },
+    {
+      "id": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "description": "A class with no superclass, no subclasses and no usage is disconnected from the model."
+    },
+    {
+      "id": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "description": "Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like)."
+    },
+    {
+      "id": "OB025",
+      "title": "Inverse of itself but not symmetric",
+      "severity": "warning",
+      "description": "A property declared as inverse of itself should be declared symmetric instead (OOPS! P25)."
+    },
+    {
+      "id": "OB026",
+      "title": "Missing language tags",
+      "severity": "info",
+      "description": "When some labels carry language tags, all of them should (helps multilingual docs)."
+    },
+    {
+      "id": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "description": "Declared terms that live in other namespaces are documented as external."
+    },
+    {
+      "id": "OB028",
+      "title": "Multiple domains or ranges",
+      "severity": "warning",
+      "description": "Several rdfs:domain (or range) axioms are interpreted as their intersection, which is often not intended (OOPS! P19)."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{% import "macros.html" as m with context %}
+<div class="toc-inner">
+  <a class="toc-title" href="index.html">{{ meta.title or "Ontology" }}</a>
+  {% if meta.version_info %}<div class="toc-version">{% if meta.version_info[:1].isdigit() %}{{ t('version') }} {% endif %}{{ meta.version_info|truncate(40, True, '…') }}</div>{% endif %}
+
+  <button class="toc-search" data-action="search" aria-label="{{ t('search') }}">
+    <span>{{ t('search') }}…</span><span class="toc-key">/</span>
+  </button>
+
+  <nav aria-label="{{ t('contents') }}">
+    <ol class="toc-list">
+      {% for e in toc %}
+      <li>
+        {% if e.section %}
+        <a href="{{ page_href(e.section, page) }}" data-section="{{ e.id }}"{% if multi and e.page == page and e.page != 'index.html' %} class="active"{% endif %}><span class="secno">{{ e.number }}</span><span class="toc-label">{{ e.title }}</span>{% if e.count %}<span class="toc-count">{{ e.count }}</span>{% endif %}</a>
+        {% else %}
+        <a href="{{ page_href(e.children[0].section, page) }}" data-section="{{ e.children[0].id }}"><span class="secno">{{ e.number }}</span><span class="toc-label">{{ e.title }}</span></a>
+        {% endif %}
+        {% if e.children %}
+        <ol>
+          {% for c in e.children %}
+          {% set kind = c.section.context.kind %}
+          {% set tree = onto.kind_trees.get(kind) if kind else none %}
+          {% if tree and ui.term_index in ('sidebar', 'both') and (c.count or 0) <= ui.sidebar_term_limit %}
+          <li class="toc-kind">
+            <details{% if ui.sidebar_expanded or (multi and c.page == page) %} open{% endif %}>
+              <summary><a href="{{ page_href(c.section, page) }}" data-section="{{ c.id }}"{% if multi and c.page == page %} class="active"{% endif %}><span class="secno">{{ c.number }}</span><span class="toc-label">{{ c.title }}</span>{% if c.count %}<span class="toc-count">{{ c.count }}</span>{% endif %}</a><span class="toc-toggle" title="{{ t('expand') }}" aria-hidden="true"></span></summary>
+              <div class="toc-tree">{{ m.tree(tree, 1) }}</div>
+            </details>
+          </li>
+          {% else %}
+          <li><a href="{{ page_href(c.section, page) }}" data-section="{{ c.id }}"{% if multi and c.page == page %} class="active"{% endif %}><span class="secno">{{ c.number }}</span><span class="toc-label">{{ c.title }}</span>{% if c.count %}<span class="toc-count">{{ c.count }}</span>{% endif %}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ol>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <div class="toc-foot">
+    {% if languages %}
+    <label class="sr-only" for="lang-select">{{ t('language') }}</label>
+    <select id="lang-select" data-action="lang">
+      {% for l in languages %}<option value="{{ l.href }}"{% if l.current %} selected{% endif %}>{{ l.name }}</option>{% endfor %}
+    </select>
+    {% endif %}
+    <button class="textbtn" data-action="theme" data-dark="{{ t('dark') }}" data-light="{{ t('light') }}" aria-pressed="false">{{ t('dark') }}</button>
+    <button class="textbtn" data-action="textsize" aria-label="{{ t('text_size') }}" title="{{ t('text_size') }}"><span aria-hidden="true">A</span><span class="textsize-val">100%</span></button>
+  </div>
+</div>

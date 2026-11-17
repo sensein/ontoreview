@@ -1,0 +1,18 @@
+<section class="section" id="{{ s.id }}">
+  {% set log = s.context.log %}
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <p class="prose">{{ t('compared_with') }} {{ log.old_version or "the previous version" }}: {{ log.added|length }} {{ t('added')|lower }}, {{ log.removed|length }} {{ t('removed')|lower }}, {{ log.modified|length }} {{ t('changed')|lower }}.</p>
+  {% if log.empty %}<p>{{ t('no_changes') }}</p>{% else %}
+  <table class="plain changes">
+    <thead><tr><th></th><th>Term</th><th>Kind</th><th>Details</th></tr></thead>
+    <tbody>
+    {% for c in log.added %}<tr><td class="mark add">+</td><td>{% if c.anchor %}<a href="{{ '#' ~ c.anchor if not multi else (c.kind|slug) ~ '.html#' ~ c.anchor }}">{{ c.label }}</a>{% else %}{{ c.label }}{% endif %}</td><td>{{ c.kind|replace('_', ' ') }}</td><td><code>{{ c.curie or c.iri }}</code></td></tr>{% endfor %}
+    {% for c in log.removed %}<tr><td class="mark del">−</td><td>{{ c.label }}</td><td>{{ c.kind|replace('_', ' ') }}</td><td><code>{{ c.curie or c.iri }}</code></td></tr>{% endfor %}
+    {% for c in log.metadata_changes + log.modified %}<tr><td class="mark mod">~</td><td>{% if c.anchor %}<a href="{{ '#' ~ c.anchor if not multi else (c.kind|slug) ~ '.html#' ~ c.anchor }}">{{ c.label }}</a>{% else %}{{ c.label }}{% endif %}</td><td>{{ c.kind|replace('_', ' ') }}</td><td>
+      {% for p, v in c.removed %}<div class="del"><span class="mark">−</span> <code>{{ p }}</code> {{ v }}</div>{% endfor %}
+      {% for p, v in c.added %}<div class="add"><span class="mark">+</span> <code>{{ p }}</code> {{ v }}</div>{% endfor %}
+    </td></tr>{% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>

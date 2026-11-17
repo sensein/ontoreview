@@ -1,0 +1,37 @@
+<section class="section" id="{{ s.id }}">
+  {% set r = s.context.report %}
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <p class="prose">{{ t('quality_builtin') }}: {{ r.summary.error }} {{ t('errors') }}, {{ r.summary.warning }} {{ t('warnings') }} {{ t('and') }} {{ r.summary.info }} {{ t('infos') }}.{% if not r.findings %} {{ t('no_findings') }}{% endif %}{% for ext in r.external %}{% if not ext.error %} {{ ext.tool }}: {{ ext.summary.error }} {{ t('errors') }}, {{ ext.summary.warning }} {{ t('warnings') }}, {{ ext.summary.info }} {{ t('infos') }}.{% endif %}{% endfor %}</p>
+
+  {% if r.external %}<h3 class="subhead">{{ t('quality_builtin') }}</h3>{% endif %}
+  {% for rule, findings in r.by_rule() %}
+  <details class="finding sev-{{ findings[0].severity }}"{% if findings[0].severity == 'error' %} open{% endif %}>
+    <summary><span class="sev">{{ findings[0].severity }}</span> {{ rule.title }} <span class="muted">({{ findings|length }}) {{ rule.id }}</span></summary>
+    <p class="muted rule-desc">{{ rule.description }}</p>
+    <ul class="findings">
+      {% for f in findings %}<li>{{ f.message|codeticks }}{% if f.anchor and f.subject in onto.terms %} <a href="{{ href(onto.terms[f.subject].ref()) }}">§</a>{% endif %}</li>{% endfor %}
+    </ul>
+  </details>
+  {% endfor %}
+
+  {% for ext in r.external %}
+  <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '') }}">{{ ext.tool }} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a></h3>
+  {% if ext.error %}<p class="note-line">{{ ext.error }}</p>
+  {% elif not ext.items %}<p>{{ t('no_findings') }}</p>
+  {% else %}
+  {% for it in ext.items %}
+  <details class="finding sev-{{ it.severity }}"{% if it.severity == 'error' %} open{% endif %}>
+    <summary><span class="sev">{{ it.severity }}</span> {{ it.name }} <span class="muted">{% if it.affected %}({{ it.affected|length }}) {% endif %}{{ it.code }}</span></summary>
+    {% if it.description %}<p class="muted rule-desc">{{ it.description }}</p>{% endif %}
+    {% if it.note %}<p class="rule-desc">{{ it.note }}</p>{% endif %}
+    {% if it.affected %}
+    <ul class="findings">
+      {% for iri in it.affected[:200] %}{% set term = onto.terms.get(iri) %}<li>{% if term %}<a href="{{ href(term.ref()) }}">{{ term.label }}</a> <code class="muted">{{ term.curie or iri }}</code>{% else %}<code>{{ iri }}</code>{% endif %}</li>{% endfor %}
+      {% if it.affected|length > 200 %}<li class="muted">… {{ it.affected|length - 200 }} more</li>{% endif %}
+    </ul>
+    {% endif %}
+  </details>
+  {% endfor %}
+  {% endif %}
+  {% endfor %}
+</section>

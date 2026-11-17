@@ -1,0 +1,6 @@
+OntoReview
+Copyright 2026 CAIR-Nepal (https://cair-nepal.org)
+
+This product bundles third-party JavaScript libraries under their own licenses:
+Cytoscape.js (MIT), cytoscape-dagre (MIT), dagre (MIT) and MiniSearch (MIT),
+in src/ontoreview/themes/default/static/vendor/.

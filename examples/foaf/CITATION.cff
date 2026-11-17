@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+type: dataset
+title: "Friend of a Friend (FOAF) vocabulary"
+url: "http://xmlns.com/foaf/0.1/"
+authors:
+  - name: Anonymous

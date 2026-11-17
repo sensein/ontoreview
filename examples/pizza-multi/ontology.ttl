@@ -1,0 +1,124 @@
+@prefix : <https://example.org/pizza#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.org/pizza> a owl:Ontology ;
+    dcterms:abstract "Pizzas, bases and toppings."@en ;
+    dcterms:contributor [ foaf:name "Anonymous Helper" ] ;
+    dcterms:created "2024-01-01" ;
+    dcterms:creator <https://orcid.org/0000-0000-0000-0001>,
+        "Jane Doe <jane@example.org>" ;
+    dcterms:description "A small ontology about **pizzas** and their toppings, used to test OntoReview."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-11-01" ;
+    dcterms:title "Pizza Ontology"@en,
+        "Ontología de Pizza"@es ;
+    vann:preferredNamespacePrefix "pizza" ;
+    vann:preferredNamespaceUri "https://example.org/pizza#" ;
+    owl:priorVersion <https://example.org/pizza/1.1.0> ;
+    owl:versionIRI <https://example.org/pizza/1.2.0> ;
+    owl:versionInfo "1.3.0" ;
+    schema:keywords "food",
+        "pizza" .
+
+:Calzone a owl:Class ;
+    rdfs:label "Calzone"@en ;
+    rdfs:subClassOf :Pizza ;
+    skos:definition "A folded pizza."@en .
+
+:CheeseTopping a owl:Class ;
+    rdfs:label "Cheese topping"@en ;
+    rdfs:subClassOf :PizzaTopping ;
+    owl:deprecated true ;
+    skos:definition "Cheese."@en .
+
+:Margherita a owl:NamedIndividual,
+        :Pizza ;
+    rdfs:label "Margherita"@en ;
+    :hasCalories 800 .
+
+:Name a owl:DatatypeProperty ;
+    rdfs:label "Pizza"@en ;
+    rdfs:range :PizzaBase .
+
+:VegetarianPizza a owl:Class ;
+    rdfs:label "Vegetarian pizza"@en ;
+    owl:equivalentClass [ owl:intersectionOf ( :Pizza [ a owl:Class ;
+                        owl:complementOf [ a owl:Restriction ;
+                                owl:onProperty :hasTopping ;
+                                owl:someValuesFrom :MeatTopping ] ] ) ] ;
+    skos:definition "A pizza with no meat toppings."@en .
+
+:MeatTopping a owl:Class ;
+    rdfs:label "Meat topping"@en ;
+    rdfs:subClassOf :PizzaTopping .
+
+:hasBase a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "has base"@en ;
+    rdfs:domain :Pizza ;
+    rdfs:range :PizzaBase ;
+    rdfs:subPropertyOf :hasIngredient .
+
+:hasCalories a owl:DatatypeProperty ;
+    rdfs:label "has calories"@en ;
+    rdfs:domain :Food ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] .
+
+:hasIngredient a owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:label "has ingredient"@en ;
+    skos:definition "Any ingredient."@en .
+
+:hasTopping a owl:ObjectProperty ;
+    rdfs:label "has topping"@en ;
+    rdfs:domain :Pizza ;
+    rdfs:range :PizzaTopping ;
+    owl:inverseOf :isToppingOf ;
+    skos:definition "Relates a pizza to its toppings."@en .
+
+:isToppingOf a owl:ObjectProperty ;
+    rdfs:label "is topping of"@en .
+
+<https://orcid.org/0000-0000-0000-0001> foaf:name "Alice Example" ;
+    schema:affiliation [ schema:name "Example University" ] .
+
+:PizzaBase a owl:Class ;
+    rdfs:label "Pizza base"@en ;
+    rdfs:subClassOf :Food ;
+    skos:definition "The bread base of a pizza."@en .
+
+:Food a owl:Class ;
+    rdfs:label "Food"@en,
+        "Comida"@es ;
+    skos:definition "Anything that can be eaten."@en,
+        "Cualquier cosa comestible."@es .
+
+:PizzaTopping a owl:Class ;
+    rdfs:label "Pizza topping"@en ;
+    rdfs:subClassOf :Food ;
+    skos:definition "Something placed on a pizza."@en .
+
+:Pizza a owl:Class ;
+    rdfs:label "Pizza"@en,
+        "Pizza"@es ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty :hasBase ;
+            owl:someValuesFrom :PizzaBase ],
+        [ a owl:Restriction ;
+            owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onProperty :hasCalories ],
+        :Food ;
+    owl:disjointWith :PizzaTopping ;
+    skos:definition "A flat **baked** dish topped with ingredients."@en ;
+    skos:example "Margherita" .
+

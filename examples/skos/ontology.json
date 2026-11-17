@@ -1,0 +1,495 @@
+{
+ "title": "SKOS Vocabulary",
+ "iri": "http://www.w3.org/2004/02/skos/core",
+ "version": null,
+ "namespace": "http://www.w3.org/2004/02/skos/core#",
+ "prefix": "skos",
+ "description": "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies.",
+ "license": null,
+ "creators": [
+  "Alistair Miles",
+  "Sean Bechhofer"
+ ],
+ "prefixes": {
+  "dcterms": "http://purl.org/dc/terms/",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "skos": "http://www.w3.org/2004/02/skos/core#"
+ },
+ "counts": {
+  "class": 4,
+  "object_property": 17,
+  "datatype_property": 1,
+  "annotation_property": 10,
+  "triples": 252
+ },
+ "terms": [
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#Collection",
+   "curie": "skos:Collection",
+   "kind": "class",
+   "label": "Collection",
+   "definition": "A meaningful collection of concepts.",
+   "subclasses": [
+    "skos:OrderedCollection"
+   ],
+   "disjoint_with": [
+    "skos:Concept",
+    "skos:ConceptScheme"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#Concept",
+   "curie": "skos:Concept",
+   "kind": "class",
+   "label": "Concept",
+   "definition": "An idea or notion; a unit of thought.",
+   "disjoint_with": [
+    "skos:Collection",
+    "skos:ConceptScheme"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+   "curie": "skos:ConceptScheme",
+   "kind": "class",
+   "label": "Concept Scheme",
+   "definition": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
+   "examples": [
+    "Thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', and other types of controlled vocabulary are all examples of concept schemes. Concept schemes are also embedded in glossaries and terminologies."
+   ],
+   "disjoint_with": [
+    "skos:Collection",
+    "skos:Concept"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+   "curie": "skos:OrderedCollection",
+   "kind": "class",
+   "label": "Ordered Collection",
+   "definition": "An ordered collection of concepts, where both the grouping and the ordering are meaningful.",
+   "superclasses": [
+    "skos:Collection"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#broader",
+   "curie": "skos:broader",
+   "kind": "object_property",
+   "label": "has broader",
+   "definition": "Relates a concept to a concept that is more general in meaning.",
+   "comments": [
+    "Broader concepts are typically rendered as parents in a concept hierarchy (tree)."
+   ],
+   "super_properties": [
+    "skos:broaderTransitive"
+   ],
+   "sub_properties": [
+    "skos:broadMatch"
+   ],
+   "inverse_of": [
+    "skos:narrower"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#broadMatch",
+   "curie": "skos:broadMatch",
+   "kind": "object_property",
+   "label": "has broader match",
+   "definition": "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "super_properties": [
+    "skos:broader",
+    "skos:mappingRelation"
+   ],
+   "inverse_of": [
+    "skos:narrowMatch"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+   "curie": "skos:broaderTransitive",
+   "kind": "object_property",
+   "label": "has broader transitive",
+   "definition": "skos:broaderTransitive is a transitive superproperty of skos:broader.",
+   "super_properties": [
+    "skos:semanticRelation"
+   ],
+   "sub_properties": [
+    "skos:broader"
+   ],
+   "characteristics": [
+    "Transitive"
+   ],
+   "inverse_of": [
+    "skos:narrowerTransitive"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#closeMatch",
+   "curie": "skos:closeMatch",
+   "kind": "object_property",
+   "label": "has close match",
+   "definition": "skos:closeMatch is used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of \"compound errors\" when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property.",
+   "super_properties": [
+    "skos:mappingRelation"
+   ],
+   "sub_properties": [
+    "skos:exactMatch"
+   ],
+   "characteristics": [
+    "Symmetric"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#exactMatch",
+   "curie": "skos:exactMatch",
+   "kind": "object_property",
+   "label": "has exact match",
+   "definition": "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch.",
+   "comments": [
+    "skos:exactMatch is disjoint with each of the properties skos:broadMatch and skos:relatedMatch."
+   ],
+   "super_properties": [
+    "skos:closeMatch"
+   ],
+   "characteristics": [
+    "Transitive",
+    "Symmetric"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#member",
+   "curie": "skos:member",
+   "kind": "object_property",
+   "label": "has member",
+   "definition": "Relates a collection to one of its members.",
+   "domain": [
+    "skos:Collection"
+   ],
+   "range": [
+    "skos:Concept or skos:Collection"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#memberList",
+   "curie": "skos:memberList",
+   "kind": "object_property",
+   "label": "has member list",
+   "definition": "Relates an ordered collection to the RDF list containing its members.",
+   "comments": [
+    "For any resource, every item in the list given as the value of the\n      skos:memberList property is also a value of the skos:member property."
+   ],
+   "domain": [
+    "skos:OrderedCollection"
+   ],
+   "range": [
+    "rdf:List"
+   ],
+   "characteristics": [
+    "Functional"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#narrower",
+   "curie": "skos:narrower",
+   "kind": "object_property",
+   "label": "has narrower",
+   "definition": "Relates a concept to a concept that is more specific in meaning.",
+   "comments": [
+    "Narrower concepts are typically rendered as children in a concept hierarchy (tree)."
+   ],
+   "super_properties": [
+    "skos:narrowerTransitive"
+   ],
+   "sub_properties": [
+    "skos:narrowMatch"
+   ],
+   "inverse_of": [
+    "skos:broader"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#narrowMatch",
+   "curie": "skos:narrowMatch",
+   "kind": "object_property",
+   "label": "has narrower match",
+   "definition": "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "super_properties": [
+    "skos:narrower",
+    "skos:mappingRelation"
+   ],
+   "inverse_of": [
+    "skos:broadMatch"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+   "curie": "skos:narrowerTransitive",
+   "kind": "object_property",
+   "label": "has narrower transitive",
+   "definition": "skos:narrowerTransitive is a transitive superproperty of skos:narrower.",
+   "super_properties": [
+    "skos:semanticRelation"
+   ],
+   "sub_properties": [
+    "skos:narrower"
+   ],
+   "characteristics": [
+    "Transitive"
+   ],
+   "inverse_of": [
+    "skos:broaderTransitive"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#related",
+   "curie": "skos:related",
+   "kind": "object_property",
+   "label": "has related",
+   "definition": "Relates a concept to a concept with which there is an associative semantic relationship.",
+   "comments": [
+    "skos:related is disjoint with skos:broaderTransitive"
+   ],
+   "super_properties": [
+    "skos:semanticRelation"
+   ],
+   "sub_properties": [
+    "skos:relatedMatch"
+   ],
+   "characteristics": [
+    "Symmetric"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#relatedMatch",
+   "curie": "skos:relatedMatch",
+   "kind": "object_property",
+   "label": "has related match",
+   "definition": "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes.",
+   "super_properties": [
+    "skos:related",
+    "skos:mappingRelation"
+   ],
+   "characteristics": [
+    "Symmetric"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+   "curie": "skos:hasTopConcept",
+   "kind": "object_property",
+   "label": "has top concept",
+   "definition": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
+   "domain": [
+    "skos:ConceptScheme"
+   ],
+   "range": [
+    "skos:Concept"
+   ],
+   "inverse_of": [
+    "skos:topConceptOf"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#mappingRelation",
+   "curie": "skos:mappingRelation",
+   "kind": "object_property",
+   "label": "is in mapping relation with",
+   "definition": "Relates two concepts coming, by convention, from different schemes, and that have comparable meanings",
+   "comments": [
+    "These concept mapping relations mirror semantic relations, and the data model defined below is similar (with the exception of skos:exactMatch) to the data model defined for semantic relations. A distinct vocabulary is provided for concept mapping relations, to provide a convenient way to differentiate links within a concept scheme from links between concept schemes. However, this pattern of usage is not a formal requirement of the SKOS data model, and relies on informal definitions of best practice."
+   ],
+   "super_properties": [
+    "skos:semanticRelation"
+   ],
+   "sub_properties": [
+    "skos:broadMatch",
+    "skos:closeMatch",
+    "skos:narrowMatch",
+    "skos:relatedMatch"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#inScheme",
+   "curie": "skos:inScheme",
+   "kind": "object_property",
+   "label": "is in scheme",
+   "definition": "Relates a resource (for example a concept) to a concept scheme in which it is included.",
+   "sub_properties": [
+    "skos:topConceptOf"
+   ],
+   "range": [
+    "skos:ConceptScheme"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#semanticRelation",
+   "curie": "skos:semanticRelation",
+   "kind": "object_property",
+   "label": "is in semantic relation with",
+   "definition": "Links a concept to a concept related by meaning.",
+   "sub_properties": [
+    "skos:broaderTransitive",
+    "skos:narrowerTransitive",
+    "skos:related",
+    "skos:mappingRelation"
+   ],
+   "domain": [
+    "skos:Concept"
+   ],
+   "range": [
+    "skos:Concept"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+   "curie": "skos:topConceptOf",
+   "kind": "object_property",
+   "label": "is top concept in scheme",
+   "definition": "Relates a concept to the concept scheme that it is a top level concept of.",
+   "super_properties": [
+    "skos:inScheme"
+   ],
+   "domain": [
+    "skos:Concept"
+   ],
+   "range": [
+    "skos:ConceptScheme"
+   ],
+   "inverse_of": [
+    "skos:hasTopConcept"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#notation",
+   "curie": "skos:notation",
+   "kind": "datatype_property",
+   "label": "notation",
+   "definition": "A notation, also known as classification code, is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme."
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+   "curie": "skos:altLabel",
+   "kind": "annotation_property",
+   "label": "alternative label",
+   "definition": "An alternative lexical label for a resource.",
+   "comments": [
+    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.",
+    "The range of skos:altLabel is the class of RDF plain literals."
+   ],
+   "examples": [
+    "Acronyms, abbreviations, spelling variants, and irregular plural/singular forms may be included among the alternative labels for a concept. Mis-spelled terms are normally included as hidden labels (see skos:hiddenLabel)."
+   ],
+   "super_properties": [
+    "rdfs:label"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#changeNote",
+   "curie": "skos:changeNote",
+   "kind": "annotation_property",
+   "label": "change note",
+   "definition": "A note about a modification to a concept.",
+   "super_properties": [
+    "skos:note"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#definition",
+   "curie": "skos:definition",
+   "kind": "annotation_property",
+   "label": "definition",
+   "definition": "A statement or formal explanation of the meaning of a concept.",
+   "super_properties": [
+    "skos:note"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#editorialNote",
+   "curie": "skos:editorialNote",
+   "kind": "annotation_property",
+   "label": "editorial note",
+   "definition": "A note for an editor, translator or maintainer of the vocabulary.",
+   "super_properties": [
+    "skos:note"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#example",
+   "curie": "skos:example",
+   "kind": "annotation_property",
+   "label": "example",
+   "definition": "An example of the use of a concept.",
+   "super_properties": [
+    "skos:note"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+   "curie": "skos:hiddenLabel",
+   "kind": "annotation_property",
+   "label": "hidden label",
+   "definition": "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.",
+   "comments": [
+    "The range of skos:hiddenLabel is the class of RDF plain literals.",
+    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties."
+   ],
+   "super_properties": [
+    "rdfs:label"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#historyNote",
+   "curie": "skos:historyNote",
+   "kind": "annotation_property",
+   "label": "history note",
+   "definition": "A note about the past state/use/meaning of a concept.",
+   "super_properties": [
+    "skos:note"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#note",
+   "curie": "skos:note",
+   "kind": "annotation_property",
+   "label": "note",
+   "definition": "A general note, for any purpose.",
+   "sub_properties": [
+    "skos:changeNote",
+    "skos:definition",
+    "skos:editorialNote",
+    "skos:example",
+    "skos:historyNote",
+    "skos:scopeNote"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#prefLabel",
+   "curie": "skos:prefLabel",
+   "kind": "annotation_property",
+   "label": "preferred label",
+   "definition": "The preferred lexical label for a resource, in a given language.",
+   "comments": [
+    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise\n      disjoint properties.",
+    "A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.",
+    "The range of skos:prefLabel is the class of RDF plain literals."
+   ],
+   "super_properties": [
+    "rdfs:label"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#scopeNote",
+   "curie": "skos:scopeNote",
+   "kind": "annotation_property",
+   "label": "scope note",
+   "definition": "A note that helps to clarify the meaning and/or the use of a concept.",
+   "super_properties": [
+    "skos:note"
+   ]
+  }
+ ],
+ "competency_questions": []
+}

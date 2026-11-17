@@ -1,0 +1,9 @@
+<section class="section" id="{{ s.id }}">
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <table class="plain">
+    <thead><tr><th>{{ t('prefix') }}</th><th>{{ t('namespace') }}</th></tr></thead>
+    <tbody>
+    {% for p, ns in onto.prefixes %}<tr><td><code>{{ p }}</code></td><td><code>{{ ns }}</code></td></tr>{% endfor %}
+    </tbody>
+  </table>
+</section>

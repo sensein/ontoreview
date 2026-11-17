@@ -1,0 +1,29 @@
+# Pizza Ontology
+
+> Pizzas, bases and toppings.
+
+- Ontology IRI: https://example.org/pizza
+- Namespace: https://example.org/pizza# (prefix `pizza:`)
+- Version: 1.3.0
+- License: CC BY 4.0
+- Contents: 8 classes, 4 object properties, 2 datatype properties, 1 named individual
+
+Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
+
+## Documentation
+
+- [Overview](index.md): metadata and contents
+- [Classes](classes.md): 8 classes with definitions and axioms
+- [Object properties](object-properties.md): 4 object properties with definitions and axioms
+- [Datatype properties](datatype-properties.md): 2 datatype properties with definitions and axioms
+- [Named individuals](individuals.md): 1 named individual with definitions and axioms
+- [Competency questions](competency-questions.md): example questions with SPARQL queries
+
+## Machine-readable
+
+- [ontology.json](ontology.json): all terms as JSON (IRI, label, definition, hierarchy, domain/range)
+- [llms-full.txt](llms-full.txt): the complete documentation as one Markdown file
+- [Turtle](ontology.ttl): the ontology source (text/turtle)
+- [RDF/XML](ontology.owl): the ontology source (application/rdf+xml)
+- [JSON-LD](ontology.jsonld): the ontology source (application/ld+json)
+- [N-Triples](ontology.nt): the ontology source (application/n-triples)

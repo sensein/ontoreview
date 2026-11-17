@@ -1,0 +1,14 @@
+@prefix : <https://example.org/colors/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+:scheme a skos:ConceptScheme ;
+    dcterms:title "Colour thesaurus"@en ;
+    dcterms:description "A tiny SKOS vocabulary of colours."@en ;
+    dcterms:license <https://creativecommons.org/publicdomain/zero/1.0/> ;
+    skos:hasTopConcept :color .
+:color a skos:Concept ; skos:prefLabel "colour"@en ; skos:definition "A visual property."@en ; skos:inScheme :scheme .
+:red a skos:Concept ; skos:prefLabel "red"@en ; skos:altLabel "crimson"@en ; skos:broader :color ; skos:inScheme :scheme ;
+    skos:exactMatch <http://dbpedia.org/resource/Red> .
+:darkred a skos:Concept ; skos:prefLabel "dark red"@en ; skos:broader :red ; skos:related :maroon .
+:maroon a skos:Concept ; skos:prefLabel "maroon"@en ; skos:broader :red .

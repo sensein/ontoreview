@@ -1,0 +1,16 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:wasDerivedFrom <https://example.org/colors/scheme> ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<https://example.org/colors/scheme> a prov:Entity ;
+    dcterms:title "Colour thesaurus" .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-17T03:28:18+00:00"^^xsd:dateTime ;
+    prov:used "colors-skos.ttl" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+

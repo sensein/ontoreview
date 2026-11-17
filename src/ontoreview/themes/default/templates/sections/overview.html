@@ -1,0 +1,17 @@
+{% import "macros.html" as m with context %}
+<section class="section" id="{{ s.id }}">
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  {% for kind in onto.kinds_present() %}
+  {% set items = onto.by_kind(kind) %}
+  <div class="index-group{% if items|length > large_index %} is-large{% endif %}">
+    <h3 class="index-head">{{ t.kind_title(kind) }} <span class="muted">({{ items|length }})</span></h3>
+    {% if items|length > large_index %}
+    <input class="index-filter" type="search" placeholder="{{ t('filter') }} {{ t.kind_title(kind)|lower }}…" aria-label="{{ t('filter') }} {{ t.kind_title(kind)|lower }}">
+    {% endif %}
+    <ul class="index-cols">
+      {% for x in items %}<li{% if x.deprecated %} class="dep"{% endif %}><a href="{{ href(x.ref()) }}">{{ x.label }}</a>{% if x.external or x.imported %}<span class="muted" title="{{ t('external') }}">*</span>{% endif %}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+  {% if onto.terms.values()|selectattr('external')|list %}<p class="footnote">* {{ t('external') }}: declared in this ontology, outside its namespace.</p>{% endif %}
+</section>

@@ -1,0 +1,24 @@
+# Colour thesaurus
+
+> A tiny SKOS vocabulary of colours.
+
+- Ontology IRI: https://example.org/colors/scheme
+- Namespace: https://example.org/colors/ (prefix `colors:`)
+- License: CC0 1.0 (Public Domain)
+- Contents: 4 concepts
+
+Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
+
+## Documentation
+
+- [Overview](index.md): metadata and contents
+- [Concepts](concepts.md): 4 concepts with definitions and axioms
+
+## Machine-readable
+
+- [ontology.json](ontology.json): all terms as JSON (IRI, label, definition, hierarchy, domain/range)
+- [llms-full.txt](llms-full.txt): the complete documentation as one Markdown file
+- [Turtle](ontology.ttl): the ontology source (text/turtle)
+- [RDF/XML](ontology.owl): the ontology source (application/rdf+xml)
+- [JSON-LD](ontology.jsonld): the ontology source (application/ld+json)
+- [N-Triples](ontology.nt): the ontology source (application/n-triples)

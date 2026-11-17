@@ -1,0 +1,22 @@
+<section class="section" id="{{ s.id }}">
+  <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <p class="prose">{{ t('llm_intro') }}</p>
+  <table class="plain">
+    <thead><tr><th>{{ t('file') }}</th><th>{{ t('purpose') }}</th><th class="num">{{ t('size') }}</th><th></th></tr></thead>
+    <tbody>
+    {% for f in s.context.files if f.kind == 'index' %}
+    <tr><td><a href="{{ root }}{{ f.file }}">{{ f.file }}</a></td><td>{{ f.purpose }}</td><td class="num">{{ f.size|filesize }}</td><td><button class="copy" data-copy-href="{{ root }}{{ f.file }}">copy link</button></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <h3 class="subhead">{{ t('llm_pages') }}</h3>
+  <ul class="index-cols">
+    {% for f in s.context.files if f.kind == 'page' %}<li><a href="{{ root }}{{ f.file }}">{{ f.file }}</a> <span class="muted small">{{ f.size|filesize }}</span></li>{% endfor %}
+  </ul>
+  <h3 class="subhead">{{ t('llm_howto') }}</h3>
+  <div class="prose">
+    <p>{{ t('llm_howto_text') }}</p>
+  </div>
+  <pre id="llm-prompt"><code>Read {{ (cfg.base_url.rstrip('/') ~ '/') if cfg.base_url else '' }}llms.txt for {{ meta.title or 'this ontology' }}{% if meta.preferred_prefix %} (prefix {{ meta.preferred_prefix }}:){% endif %}. Use only terms defined there; look up IRIs, definitions, domains and ranges in ontology.json before writing SPARQL or RDF.</code></pre>
+  <p class="small"><button class="copy" data-copy-target="llm-prompt">copy instruction</button></p>
+</section>

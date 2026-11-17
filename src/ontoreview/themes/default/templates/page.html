@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="{{ onto.language }}" data-font="{{ ui.font }}" data-width="{{ ui.width }}"{% if not ui.section_numbers %} data-nonumbers{% endif %}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title }}</title>
+{% set summary = meta.abstract or meta.description %}
+{% if summary %}<meta name="description" content="{{ summary|striptags|truncate(180) }}">{% endif %}
+<meta name="generator" content="OntoReview {{ version }}">
+{% if cfg.base_url %}<link rel="canonical" href="{{ cfg.base_url.rstrip('/') }}/{{ page if page != 'index.html' else '' }}">{% endif %}
+{% if not inline %}
+{% for d in downloads %}
+<link rel="alternate" type="{{ d.media }}" href="{{ d.href }}" title="{{ d.label }}">
+{% endfor %}
+{% if llm %}<link rel="alternate" type="text/markdown" href="{{ root }}{{ 'index.md' if page == 'index.html' else page|replace('.html', '.md') }}" title="Markdown">
+<link rel="alternate" type="text/plain" href="{{ root }}llms.txt" title="llms.txt">{% endif %}
+<link rel="stylesheet" href="{{ assets }}ontoreview.css?v={{ build_id }}">
+{% else %}
+<style>{{ inline.css }}</style>
+{% endif %}
+<script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
+{% if ui.accent %}<style>:root,:root[data-theme]{--link:{{ ui.accent|e }}}</style>{% endif %}
+{% if custom_css %}<style>{{ custom_css|safe }}</style>{% endif %}
+{{ head_html }}
+{% if jsonld %}<script type="application/ld+json">{{ jsonld }}</script>{% endif %}
+</head>
+<body>
+<a class="skip" href="#main">{{ t('skip_to_content') }}</a>
+<div id="a11y-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<header class="mobilebar">
+  <button class="textbtn" data-action="menu" aria-controls="sidebar" aria-expanded="false">{{ t('contents') }}</button>
+  <a class="mobilebar-title" href="index.html">{{ meta.title or "Ontology" }}</a>
+  <button class="textbtn" data-action="search">{{ t('search') }}</button>
+</header>
+
+<div class="layout">
+  <aside class="toc" id="sidebar">
+    {% include "sidebar.html" %}
+  </aside>
+  <main class="main" id="main" tabindex="-1">
+    {% if page == "index.html" %}{% include "hero.html" %}{% endif %}
+    {% for s in page_sections %}
+    {% include "sections/" ~ s.template %}
+    {% endfor %}
+    <footer class="colophon">
+      {{ t('generated_with') }} <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> {{ version }}{% if meta.license %}. {{ t('license') }}: <a href="{{ meta.license }}">{{ meta.license_label or meta.license }}</a>{% endif %}.
+    </footer>
+  </main>
+</div>
+
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-backdrop" data-action="close-search"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="{{ t('search') }}">
+    <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="{{ t('search_placeholder') }}"
+      role="combobox" aria-label="{{ t('search') }}" aria-autocomplete="list" aria-controls="search-results" aria-expanded="false">
+    <ul id="search-results" class="search-results" role="listbox" aria-label="{{ t('search') }}"></ul>
+    <p id="search-count" class="sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+{% if inline %}
+<script>{{ inline.data }}</script>
+<script>{{ inline.minisearch }}</script>
+{% if has_graph %}<script>{{ inline.cytoscape }}</script><script>{{ inline.dagre }}</script><script>{{ inline.cydagre }}</script>{% endif %}
+<script>{{ inline.js }}</script>
+{% else %}
+<script src="ontoreview-data.js?v={{ build_id }}"></script>
+<script src="{{ assets }}vendor/minisearch.min.js"></script>
+{% if page_sections|selectattr("id", "equalto", "graph")|list %}<script src="{{ assets }}vendor/cytoscape.min.js"></script>
+<script src="{{ assets }}vendor/dagre.min.js"></script>
+<script src="{{ assets }}vendor/cytoscape-dagre.js"></script>{% endif %}
+<script src="{{ assets }}ontoreview.js?v={{ build_id }}"></script>
+{% endif %}
+{% if live_reload %}<script>(function(){var last=null;setInterval(function(){fetch("{{ root }}.ontoreview-build",{cache:"no-store"}).then(function(r){return r.text()}).then(function(v){if(last&&v!==last)location.reload();last=v}).catch(function(){})},1000)})();</script>{% endif %}
+</body>
+</html>

@@ -1,0 +1,20 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:wasDerivedFrom <https://w3id.org/example/personinfo> ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<https://orcid.org/0000-0000-0000-0002> a prov:Agent .
+
+<https://w3id.org/example/personinfo> a prov:Entity ;
+    dcterms:modified "2026-10-15" ;
+    dcterms:title "Person Information Model" ;
+    prov:wasAttributedTo <https://orcid.org/0000-0000-0000-0002> .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-17T03:28:17+00:00"^^xsd:dateTime ;
+    prov:used "personinfo.yaml" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+

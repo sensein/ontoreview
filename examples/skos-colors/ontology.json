@@ -1,0 +1,67 @@
+{
+ "title": "Colour thesaurus",
+ "iri": "https://example.org/colors/scheme",
+ "version": null,
+ "namespace": "https://example.org/colors/",
+ "prefix": "colors",
+ "description": "A tiny SKOS vocabulary of colours.",
+ "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+ "creators": [],
+ "prefixes": {
+  "colors": "https://example.org/colors/",
+  "dcterms": "http://purl.org/dc/terms/",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "skos": "http://www.w3.org/2004/02/skos/core#"
+ },
+ "counts": {
+  "concept": 4,
+  "triples": 22
+ },
+ "terms": [
+  {
+   "iri": "https://example.org/colors/color",
+   "curie": "colors:color",
+   "kind": "concept",
+   "label": "colour",
+   "definition": "A visual property.",
+   "narrower": [
+    "colors:red"
+   ]
+  },
+  {
+   "iri": "https://example.org/colors/darkred",
+   "curie": "colors:darkred",
+   "kind": "concept",
+   "label": "dark red",
+   "broader": [
+    "colors:red"
+   ]
+  },
+  {
+   "iri": "https://example.org/colors/maroon",
+   "curie": "colors:maroon",
+   "kind": "concept",
+   "label": "maroon",
+   "broader": [
+    "colors:red"
+   ]
+  },
+  {
+   "iri": "https://example.org/colors/red",
+   "curie": "colors:red",
+   "kind": "concept",
+   "label": "red",
+   "synonyms": [
+    "crimson"
+   ],
+   "broader": [
+    "colors:color"
+   ],
+   "narrower": [
+    "colors:darkred",
+    "colors:maroon"
+   ]
+  }
+ ],
+ "competency_questions": []
+}

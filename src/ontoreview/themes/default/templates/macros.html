@@ -1,0 +1,98 @@
+{% macro ref(r) -%}
+<a href="{{ href(r) }}" class="ref{% if not r.internal %} ext{% endif %}" title="{{ r.curie or r.iri }}">{{ r.label }}</a>
+{%- endmacro %}
+
+{% macro expr(e) -%}
+<span class="expr">{% for k, v in e %}{% if k == "ref" %}{{ ref(v) }}{% elif k == "kw" %}<span class="kw">{{ v }}</span>{% elif k == "lit" %}<span class="lit">{{ v }}</span>{% elif k == "url" %}<a class="url" href="{{ v }}">{{ v }}</a>{% else %}{{ v }}{% endif %}{% endfor %}</span>
+{%- endmacro %}
+
+{% macro refs(items) -%}
+{% for r in items %}{{ ref(r) }}{% if not loop.last %}, {% endif %}{% endfor %}
+{%- endmacro %}
+
+{% macro exprs(items) -%}
+{% if items|length == 1 %}{{ expr(items[0]) }}{% else %}<ul class="vlist">{% for e in items %}<li>{{ expr(e) }}</li>{% endfor %}</ul>{% endif %}
+{%- endmacro %}
+
+{% macro row(label, body) -%}
+<tr><th scope="row">{{ label }}</th><td>{{ body }}</td></tr>
+{%- endmacro %}
+
+{% macro agent(a) -%}
+<span class="agent">{% if a.iri or a.homepage %}<a href="{{ a.homepage or a.iri }}">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% if a.orcid and a.orcid != (a.homepage or a.iri) %} (<a href="{{ a.orcid }}">ORCID</a>){% endif %}{% if a.affiliation %}, <span class="affil">{{ a.affiliation }}</span>{% endif %}</span>
+{%- endmacro %}
+
+{% macro agent_line(items) -%}
+{% for a in items %}{{ agent(a) }}{% if not loop.last %}; {% endif %}{% endfor %}
+{%- endmacro %}
+
+{% macro agents(items) -%}
+{{ agent_line(items) }}
+{%- endmacro %}
+
+{% macro link_or_text(v) -%}
+{% if v and (v.startswith("http://") or v.startswith("https://")) %}<a href="{{ v }}">{{ v }}</a>{% else %}{{ v }}{% endif %}
+{%- endmacro %}
+
+{% macro tree(nodes, depth=0) -%}
+<ul class="tree">{% for n in nodes %}<li>{% if n.children %}<details{% if depth < 1 %} open{% endif %}><summary>{{ ref(n.ref) }}</summary>{{ tree(n.children, depth + 1) }}</details>{% else %}<span class="leaf">{{ ref(n.ref) }}</span>{% endif %}</li>{% endfor %}</ul>
+{%- endmacro %}
+
+{% macro term(x) %}
+<article class="term{% if x.deprecated %} is-deprecated{% endif %}" id="{{ x.anchor }}" data-kind="{{ x.kind }}">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#{{ x.anchor }}">{{ x.label }}</a></h3>
+    <span class="term-kind">{{ x.kind_label }}</span>
+    {% if x.deprecated %}<span class="term-flag">{{ t('deprecated') }}</span>{% endif %}
+    {% if x.imported %}<span class="term-flag">{{ t('imported') }}</span>{% elif x.external %}<span class="term-flag">{{ t('external') }}</span>{% endif %}
+    {% if x.status %}<span class="term-flag">{{ x.status }}</span>{% endif %}
+  </header>
+  <p class="term-iri"><code>{{ x.iri }}</code> <button class="copy" data-copy="{{ x.iri }}" aria-label="{{ t('copy_iri') }}">copy</button></p>
+  {% if x.definition %}<div class="definition">{{ x.definition|md }}</div>{% endif %}
+  {% for c in x.comments %}<div class="comment">{{ c|md }}</div>{% endfor %}
+  {% if x.replaced_by %}<p class="note-line">{{ t('replaced_by') }}: {{ refs(x.replaced_by) }}</p>{% endif %}
+  <table class="rel">
+    <tbody>
+    {% if x.curie %}{{ row('CURIE', '<code>'|safe ~ x.curie ~ '</code>'|safe) }}{% endif %}
+    {% if x.alt_labels %}{{ row(t('alt_labels'), x.alt_labels|join(", ")) }}{% endif %}
+    {% if x.superclasses %}{{ row(t('superclasses'), refs(x.superclasses)) }}{% endif %}
+    {% if x.inferred_superclasses %}{{ row(t('inferred_superclasses'), refs(x.inferred_superclasses)) }}{% endif %}
+    {% if x.restrictions %}{{ row(t('restrictions'), exprs(x.restrictions)) }}{% endif %}
+    {% if x.equivalent %}{{ row(t('equivalent'), exprs(x.equivalent)) }}{% endif %}
+    {% if x.subclasses %}{{ row(t('subclasses'), refs(x.subclasses)) }}{% endif %}
+    {% if x.disjoint %}{{ row(t('disjoint'), refs(x.disjoint)) }}{% endif %}
+    {% if x.disjoint_union %}{{ row(t('disjoint_union'), exprs(x.disjoint_union)) }}{% endif %}
+    {% if x.keys %}{{ row(t('keys'), exprs(x.keys)) }}{% endif %}
+    {% if x.super_properties %}{{ row(t('super_properties'), refs(x.super_properties)) }}{% endif %}
+    {% if x.sub_properties %}{{ row(t('sub_properties'), refs(x.sub_properties)) }}{% endif %}
+    {% if x.domain %}{{ row(t('domain'), exprs(x.domain)) }}{% endif %}
+    {% if x.range %}{{ row(t('range'), exprs(x.range)) }}{% endif %}
+    {% if x.characteristics %}{{ row(t('characteristics'), x.characteristics|join(", ")) }}{% endif %}
+    {% if x.inverse_of %}{{ row(t('inverse_of'), exprs(x.inverse_of)) }}{% endif %}
+    {% if x.equivalent_properties %}{{ row(t('equivalent_properties'), refs(x.equivalent_properties)) }}{% endif %}
+    {% if x.disjoint_properties %}{{ row(t('disjoint_properties'), refs(x.disjoint_properties)) }}{% endif %}
+    {% if x.chains %}{{ row(t('chains'), exprs(x.chains)) }}{% endif %}
+    {% if x.types %}{{ row(t('types'), exprs(x.types)) }}{% endif %}
+    {% if x.facts %}{% set body %}<ul class="vlist">{% for p, v in x.facts %}<li>{{ ref(p) }} {{ expr(v) }}</li>{% endfor %}</ul>{% endset %}{{ row(t('facts'), body) }}{% endif %}
+    {% if x.same_as %}{{ row(t('same_as'), refs(x.same_as)) }}{% endif %}
+    {% if x.top_concepts %}{{ row(t('top_concepts'), refs(x.top_concepts)) }}{% endif %}
+    {% if x.broader %}{{ row(t('broader'), refs(x.broader)) }}{% endif %}
+    {% if x.narrower %}{{ row(t('narrower'), refs(x.narrower)) }}{% endif %}
+    {% if x.related %}{{ row(t('related'), refs(x.related)) }}{% endif %}
+    {% if x.in_scheme %}{{ row(t('in_scheme'), refs(x.in_scheme)) }}{% endif %}
+    {% for label, items in x.mappings.items() %}{{ row(label[:1]|upper ~ label[1:], refs(items)) }}{% endfor %}
+    {% if x.instances %}{{ row(t('instances'), refs(x.instances)) }}{% endif %}
+    {% if x.used_in %}{% set body %}{% for role, items in x.used_in|groupby('role') %}<div class="usage"><span class="muted">{{ role }}</span> {% for u in items %}{{ ref(u.ref) }}{% if not loop.last %}, {% endif %}{% endfor %}</div>{% endfor %}{% endset %}{{ row(t('used_in'), body) }}{% endif %}
+    {% if x.examples %}{% set body %}{% for e in x.examples %}<code class="example">{{ e }}</code>{% if not loop.last %}<br>{% endif %}{% endfor %}{% endset %}{{ row(t('examples'), body) }}{% endif %}
+    {% for label, notes in x.notes.items() %}{% set body %}{% for n in notes %}<div class="note">{{ n|md }}</div>{% endfor %}{% endset %}{{ row(label, body) }}{% endfor %}
+    {% if x.see_also %}{{ row(t('see_also'), exprs(x.see_also)) }}{% endif %}
+    {% if x.source %}{{ row(t('source'), exprs(x.source)) }}{% endif %}
+    {% if x.is_defined_by %}{{ row(t('is_defined_by'), refs(x.is_defined_by)) }}{% endif %}
+    {% for a in x.annotations %}{{ row(ref(a.prop), exprs(a.values)) }}{% endfor %}
+    {% if x.competency_questions and cq_page %}{% set body %}{% for cid, anchor in x.competency_questions %}<a href="{{ ('#' if not multi or cq_page == page else cq_page ~ '#') ~ anchor }}">{{ cid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% endset %}{{ row(t('competency_questions'), body) }}{% endif %}
+    </tbody>
+  </table>
+  {% for block in x.extra_blocks %}{{ block|safe }}{% endfor %}
+  {% if has_graph and x.kind in ('class', 'concept') %}<p class="term-foot"><a class="graph-link" href="{{ graph_href() }}{% if multi %}?focus={{ x.iri|urlencode }}{% endif %}" data-focus="{{ x.iri }}">{{ t('show_in_graph') }}</a></p>{% endif %}
+</article>
+{% endmacro %}

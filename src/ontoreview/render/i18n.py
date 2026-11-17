@@ -1,0 +1,349 @@
+"""UI strings. Missing keys fall back to English."""
+
+from __future__ import annotations
+
+EN = {
+    "search": "Search",
+    "search_placeholder": "Search classes, properties, individuals…",
+    "no_results": "No matching terms",
+    "contents": "Contents",
+    "introduction": "Introduction",
+    "metadata": "Metadata",
+    "overview": "Overview",
+    "graph": "Visualization",
+    "namespaces": "Namespaces",
+    "terms": "Reference",
+    "changelog": "Changelog",
+    "quality": "Quality report",
+    "provenance": "Provenance",
+    "citation": "How to cite",
+    "serializations": "Download",
+    "iri": "IRI",
+    "this_version": "This version",
+    "prior_version": "Previous version",
+    "latest_version": "Latest version",
+    "version": "Version",
+    "license": "License",
+    "rights": "Rights",
+    "created": "Created",
+    "issued": "Published",
+    "modified": "Last modified",
+    "creators": "Authors",
+    "contributors": "Contributors",
+    "publishers": "Publisher",
+    "funders": "Funded by",
+    "imports": "Imports",
+    "status": "Status",
+    "keywords": "Keywords",
+    "doi": "DOI",
+    "homepage": "Homepage",
+    "repository": "Source code",
+    "prefix": "Prefix",
+    "namespace": "Namespace",
+    "backward_compatible_with": "Backward compatible with",
+    "incompatible_with": "Incompatible with",
+    "source": "Source",
+    "see_also": "See also",
+    "abstract": "Abstract",
+    "description": "Description",
+    "superclasses": "Superclasses",
+    "inferred_superclasses": "Inferred superclasses",
+    "subclasses": "Subclasses",
+    "restrictions": "Restrictions",
+    "equivalent": "Equivalent to",
+    "disjoint": "Disjoint with",
+    "disjoint_union": "Disjoint union of",
+    "keys": "Has key",
+    "instances": "Instances",
+    "domain": "Domain",
+    "range": "Range",
+    "characteristics": "Characteristics",
+    "inverse_of": "Inverse of",
+    "super_properties": "Super-properties",
+    "sub_properties": "Sub-properties",
+    "equivalent_properties": "Equivalent properties",
+    "disjoint_properties": "Disjoint properties",
+    "chains": "Property chain",
+    "types": "Types",
+    "facts": "Property assertions",
+    "same_as": "Same as",
+    "broader": "Broader",
+    "narrower": "Narrower",
+    "related": "Related",
+    "in_scheme": "In scheme",
+    "top_concepts": "Top concepts",
+    "used_in": "Used in",
+    "examples": "Examples",
+    "comments": "Comments",
+    "alt_labels": "Also known as",
+    "is_defined_by": "Defined by",
+    "replaced_by": "Replaced by",
+    "annotations": "Other annotations",
+    "deprecated": "deprecated",
+    "external": "external",
+    "imported": "imported",
+    "copy_iri": "Copy IRI",
+    "copied": "Copied!",
+    "toggle_theme": "Toggle dark mode",
+    "language": "Language",
+    "generated_with": "Generated with",
+    "on": "on",
+    "count_terms": "terms",
+    "all_terms": "All terms",
+    "graph_hint": "Click a node to jump to its documentation. Scroll to zoom, drag to pan.",
+    "graph_hierarchy": "Subclass edges",
+    "graph_properties": "Property edges",
+    "graph_fit": "Fit",
+    "graph_png": "Export PNG",
+    "graph_focus": "Focus on term…",
+    "added": "Added",
+    "removed": "Removed",
+    "changed": "Modified",
+    "no_changes": "No changes compared with the previous version.",
+    "compared_with": "Compared with",
+    "errors": "errors",
+    "warnings": "warnings",
+    "infos": "suggestions",
+    "no_findings": "No issues found.",
+    "rule": "Rule",
+    "download_as": "Download the ontology in your preferred format:",
+    "conneg_note": "The ontology IRI supports content negotiation when deployed with the generated server configuration.",
+    "cite_as": "Please cite this ontology as:",
+    "intro_auto": "This document describes {title}{version}. It defines {counts}.",
+    "intro_ns": "All terms use the namespace {ns} with the preferred prefix {prefix}.",
+    "intro_linkml": "This documentation was generated from a LinkML schema.",
+    "stats": "At a glance",
+    "triples": "triples",
+    "class_hierarchy": "Class hierarchy",
+    "property_hierarchy": "Property hierarchy",
+    "concept_hierarchy": "Concept hierarchy",
+    "prov_generated": "This documentation was generated from {source} with ontoreview {version}.",
+    "and": "and",
+    "none": "None",
+    "term_index": "Index of terms",
+    "show_in_graph": "Show in figure",
+    "expand": "Expand",
+    "collapse": "Close",
+    "reset": "Reset",
+    "download": "Download",
+    "more_metadata": "More metadata",
+    "cite": "Cite",
+    "figure": "Figure",
+    "figure_caption": "Classes of {title}. Hover over a class to highlight its superclasses and subclasses; select it to show only its neighbourhood, and double-click to open its entry.",
+    "graph_showing_top": "Showing the top levels of the hierarchy. Search or select a term to see its neighbourhood.",
+    "graph_showing_focus": "Showing the neighbourhood of the selected term.",
+    "graph_showing_all": "Showing the complete class hierarchy.",
+    "dark": "Dark",
+    "light": "Light",
+    "filter": "Filter",
+    "kind_class": "Class",
+    "linkml_source": "Generated from a LinkML schema",
+    "spec_kicker": "Ontology specification",
+    "quality_builtin": "ontoreview checks",
+    "for_llms": "For LLMs and agents",
+    "format": "Format",
+    "file": "File",
+    "media_type": "Media type",
+    "size": "Size",
+    "purpose": "Purpose",
+    "llm_intro": "Plain-text and JSON versions of this document, generated with it, for language models, agents and other tools. They contain the same terms, definitions and axioms as the pages above.",
+    "llm_pages": "Markdown pages",
+    "llm_howto": "Using these files with an agent",
+    "llm_howto_text": "Give the agent the address of llms.txt; it links to everything else. For code that needs exact identifiers, ontology.json lists every term with its IRI and relations. The instruction below can be pasted into a prompt or a system message.",
+    "legend_sub": "subclass of",
+    "legend_eq": "part of an equivalence definition",
+    "legend_prop": "object property (domain to range)",
+    "legend_class": "class; datatype properties listed inside",
+    "legend_class_v": "class",
+    "legend_defined": "defined (equivalent) class",
+    "legend_external": "external class",
+    "legend_oprop": "object property",
+    "legend_dprop": "datatype property",
+    "legend_literal": "datatype / literal",
+    "competency_questions": "Competency questions",
+    "cq_question": "Question",
+    "cq_answer": "Answer",
+    "cq_query": "SPARQL query",
+    "cq_terms": "Terms",
+    "cq_status": "Status",
+    "cq_passed": "answerable",
+    "cq_failed": "not answerable",
+    "cq_error": "query error",
+    "cq_untested": "not tested",
+    "cq_results": "Results",
+    "cq_notes": "Notes",
+    "skip_to_content": "Skip to content",
+    "text_size": "Text size",
+    "close": "Close",
+    "results_count": "{n} results",
+    "filter_count": "{shown} of {total} terms shown",
+    "graph_text_alt": "The same hierarchy is available as text in the term index and the sidebar.",
+}
+
+ES = {
+    "search": "Buscar", "search_placeholder": "Buscar clases, propiedades, individuos…",
+    "no_results": "No hay términos que coincidan", "contents": "Contenido",
+    "introduction": "Introducción", "metadata": "Metadatos", "overview": "Resumen",
+    "graph": "Visualización", "namespaces": "Espacios de nombres", "terms": "Referencia",
+    "changelog": "Cambios", "quality": "Informe de calidad", "provenance": "Procedencia",
+    "citation": "Cómo citar", "serializations": "Descargar", "this_version": "Esta versión",
+    "prior_version": "Versión anterior", "version": "Versión", "license": "Licencia",
+    "created": "Creado", "issued": "Publicado", "modified": "Última modificación",
+    "creators": "Autores", "contributors": "Colaboradores", "publishers": "Editor",
+    "imports": "Importa", "status": "Estado", "keywords": "Palabras clave",
+    "abstract": "Resumen", "description": "Descripción", "superclasses": "Superclases",
+    "subclasses": "Subclases", "restrictions": "Restricciones", "equivalent": "Equivalente a",
+    "disjoint": "Disjunta con", "instances": "Instancias", "domain": "Dominio", "range": "Rango",
+    "characteristics": "Características", "inverse_of": "Inversa de",
+    "super_properties": "Superpropiedades", "sub_properties": "Subpropiedades", "types": "Tipos",
+    "used_in": "Usado en", "examples": "Ejemplos", "comments": "Comentarios",
+    "deprecated": "obsoleto", "copy_iri": "Copiar IRI", "copied": "¡Copiado!",
+    "language": "Idioma", "generated_with": "Generado con", "classes": "Clases",
+    "added": "Añadido", "removed": "Eliminado", "changed": "Modificado",
+    "cite_as": "Por favor, cite esta ontología como:",
+    "download_as": "Descargue la ontología en su formato preferido:",
+    "intro_auto": "Este documento describe {title}{version}. Define {counts}.",
+    "intro_ns": "Todos los términos usan el espacio de nombres {ns} con el prefijo {prefix}.",
+    "stats": "De un vistazo", "and": "y", "term_index": "Índice de términos",
+    "show_in_graph": "Ver en la figura", "download": "Descargar", "cite": "Citar", "figure": "Figura",
+    "figure_caption": "Jerarquía de clases de {title}. Las flechas van de una subclase a su superclase.",
+    "spec_kicker": "Especificación de la ontología", "more_metadata": "Más metadatos",
+    "skip_to_content": "Saltar al contenido", "text_size": "Tamaño del texto", "close": "Cerrar",
+    "results_count": "{n} resultados", "filter_count": "{shown} de {total} términos mostrados",
+    "graph_text_alt": "La misma jerarquía está disponible como texto en el índice de términos y en la barra lateral.",
+}
+
+PT = {
+    "skip_to_content": "Ir para o conteúdo", "text_size": "Tamanho do texto",
+    "search": "Pesquisar", "search_placeholder": "Pesquisar classes, propriedades, indivíduos…",
+    "contents": "Conteúdo", "introduction": "Introdução", "metadata": "Metadados",
+    "overview": "Visão geral", "graph": "Visualização", "terms": "Referência",
+    "changelog": "Alterações", "quality": "Relatório de qualidade", "provenance": "Proveniência",
+    "citation": "Como citar", "serializations": "Download", "version": "Versão",
+    "license": "Licença", "creators": "Autores", "contributors": "Contribuidores",
+    "description": "Descrição", "superclasses": "Superclasses", "subclasses": "Subclasses",
+    "domain": "Domínio", "range": "Contradomínio", "used_in": "Usado em",
+    "examples": "Exemplos", "language": "Idioma", "generated_with": "Gerado com",
+    "intro_auto": "Este documento descreve {title}{version}. Define {counts}.", "and": "e",
+}
+
+FR = {
+    "skip_to_content": "Aller au contenu", "text_size": "Taille du texte",
+    "search": "Rechercher", "search_placeholder": "Rechercher classes, propriétés, individus…",
+    "contents": "Sommaire", "introduction": "Introduction", "metadata": "Métadonnées",
+    "overview": "Aperçu", "graph": "Visualisation", "terms": "Référence",
+    "changelog": "Journal des modifications", "quality": "Rapport de qualité",
+    "provenance": "Provenance", "citation": "Comment citer", "serializations": "Télécharger",
+    "version": "Version", "license": "Licence", "creators": "Auteurs",
+    "contributors": "Contributeurs", "description": "Description",
+    "superclasses": "Superclasses", "subclasses": "Sous-classes", "domain": "Domaine",
+    "range": "Portée", "used_in": "Utilisé dans", "examples": "Exemples", "language": "Langue",
+    "generated_with": "Généré avec",
+    "intro_auto": "Ce document décrit {title}{version}. Il définit {counts}.", "and": "et",
+}
+
+DE = {
+    "skip_to_content": "Zum Inhalt springen", "text_size": "Textgröße",
+    "search": "Suchen", "search_placeholder": "Klassen, Eigenschaften, Individuen suchen…",
+    "contents": "Inhalt", "introduction": "Einleitung", "metadata": "Metadaten",
+    "overview": "Überblick", "graph": "Visualisierung", "terms": "Referenz",
+    "changelog": "Änderungen", "quality": "Qualitätsbericht", "provenance": "Herkunft",
+    "citation": "Zitieren", "serializations": "Herunterladen", "version": "Version",
+    "license": "Lizenz", "creators": "Autoren", "contributors": "Mitwirkende",
+    "description": "Beschreibung", "superclasses": "Oberklassen", "subclasses": "Unterklassen",
+    "domain": "Domäne", "range": "Wertebereich", "used_in": "Verwendet in",
+    "examples": "Beispiele", "language": "Sprache", "generated_with": "Erstellt mit",
+    "intro_auto": "Dieses Dokument beschreibt {title}{version}. Es definiert {counts}.", "and": "und",
+}
+
+IT = {
+    "skip_to_content": "Vai al contenuto", "text_size": "Dimensione del testo",
+    "search": "Cerca", "contents": "Indice", "introduction": "Introduzione",
+    "metadata": "Metadati", "overview": "Panoramica", "graph": "Visualizzazione",
+    "terms": "Riferimento", "changelog": "Modifiche", "quality": "Rapporto di qualità",
+    "citation": "Come citare", "serializations": "Scarica", "version": "Versione",
+    "license": "Licenza", "creators": "Autori", "description": "Descrizione",
+    "superclasses": "Superclassi", "subclasses": "Sottoclassi", "domain": "Dominio",
+    "range": "Codominio", "language": "Lingua", "generated_with": "Generato con", "and": "e",
+}
+
+ZH = {
+    "skip_to_content": "跳到正文", "text_size": "文字大小",
+    "search": "搜索", "contents": "目录", "introduction": "简介", "metadata": "元数据",
+    "overview": "概览", "graph": "可视化", "terms": "参考", "changelog": "变更记录",
+    "quality": "质量报告", "citation": "引用方式", "serializations": "下载", "version": "版本",
+    "license": "许可", "creators": "作者", "description": "描述", "superclasses": "父类",
+    "subclasses": "子类", "domain": "定义域", "range": "值域", "language": "语言",
+    "generated_with": "生成工具", "and": "和",
+}
+
+STRINGS = {"en": EN, "es": ES, "pt": PT, "fr": FR, "de": DE, "it": IT, "zh": ZH}
+
+LANGUAGE_NAMES = {
+    "en": "English", "es": "Español", "pt": "Português", "fr": "Français", "de": "Deutsch",
+    "it": "Italiano", "zh": "中文", "nl": "Nederlands", "ja": "日本語", "ru": "Русский",
+}
+
+PLURAL_KINDS = {
+    "en": {
+        "class": "classes", "object_property": "object properties",
+        "datatype_property": "datatype properties", "property": "properties",
+        "annotation_property": "annotation properties", "datatype": "datatypes",
+        "individual": "named individuals", "concept_scheme": "concept schemes",
+        "concept": "concepts",
+    },
+    "es": {
+        "class": "clases", "object_property": "propiedades de objeto",
+        "datatype_property": "propiedades de datos", "property": "propiedades",
+        "annotation_property": "propiedades de anotación", "datatype": "tipos de datos",
+        "individual": "individuos", "concept_scheme": "esquemas de conceptos",
+        "concept": "conceptos",
+    },
+}
+
+SINGULAR_KINDS = {
+    "es": {
+        "class": "clase", "object_property": "propiedad de objeto",
+        "datatype_property": "propiedad de datos", "property": "propiedad",
+        "annotation_property": "propiedad de anotación", "datatype": "tipo de datos",
+        "individual": "individuo", "concept_scheme": "esquema de conceptos", "concept": "concepto",
+    },
+}
+
+KIND_TITLES = {
+    "es": {
+        "class": "Clases", "object_property": "Propiedades de objeto",
+        "datatype_property": "Propiedades de datos", "property": "Propiedades",
+        "annotation_property": "Propiedades de anotación", "datatype": "Tipos de datos",
+        "individual": "Individuos", "concept_scheme": "Esquemas de conceptos",
+        "concept": "Conceptos",
+    },
+}
+
+
+class Translator:
+    def __init__(self, lang: str):
+        self.lang = lang
+        self.table = {**EN, **STRINGS.get(lang, {})}
+
+    def __call__(self, key: str, **kw) -> str:
+        s = self.table.get(key, key)
+        return s.format(**kw) if kw else s
+
+    def kind_count(self, kind: str, n: int) -> str:
+        if n == 1:
+            if self.lang in SINGULAR_KINDS:
+                return f"1 {SINGULAR_KINDS[self.lang][kind]}"
+            from ..model.entities import KIND_LABELS
+
+            if self.lang == "en" or self.lang not in PLURAL_KINDS:
+                return f"1 {KIND_LABELS[kind][0].lower()}"
+        return f"{n} {self.kind_plural(kind)}"
+
+    def kind_plural(self, kind: str) -> str:
+        return PLURAL_KINDS.get(self.lang, PLURAL_KINDS["en"]).get(kind) or PLURAL_KINDS["en"][kind]
+
+    def kind_title(self, kind: str) -> str:
+        from ..model.entities import KIND_LABELS
+
+        return KIND_TITLES.get(self.lang, {}).get(kind) or KIND_LABELS[kind][1]
