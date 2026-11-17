@@ -4,7 +4,78 @@
     "warning": 8,
     "info": 1
   },
-  "external": [],
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "deprecated_property_reference",
+          "name": "Deprecated property reference",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "schema:Person"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "https://w3id.org/example/personinfo/Container",
+            "https://w3id.org/example/personinfo/GenderType",
+            "https://w3id.org/example/personinfo/HasAliases",
+            "https://w3id.org/example/personinfo/NamedThing",
+            "https://w3id.org/example/personinfo/Organization",
+            "https://w3id.org/example/personinfo/PhoneNumberType",
+            "https://w3id.org/example/personinfo/age_in_years",
+            "https://w3id.org/example/personinfo/aliases",
+            "https://w3id.org/example/personinfo/employees",
+            "https://w3id.org/example/personinfo/founding_date",
+            "https://w3id.org/example/personinfo/gender",
+            "https://w3id.org/example/personinfo/id",
+            "https://w3id.org/example/personinfo/organizations",
+            "https://w3id.org/example/personinfo/persons",
+            "schema:Person",
+            "schema:birthDate",
+            "schema:description",
+            "schema:email",
+            "schema:name"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_obsolete_label",
+          "name": "Missing obsolete label",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "https://w3id.org/example/personinfo/employed_by"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "https://w3id.org/example/personinfo/GenderType"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 1,
+        "warning": 2,
+        "info": 1
+      }
+    }
+  ],
   "findings": [
     {
       "rule": "OB011",

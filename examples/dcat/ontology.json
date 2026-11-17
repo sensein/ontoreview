@@ -748,6 +748,16 @@
    ]
   },
   {
+   "iri": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
+   "curie": "dcat:spatialResolutionInMeters",
+   "kind": "datatype_property",
+   "label": "geografisk opløsning (meter)",
+   "definition": "separazione spaziale minima risolvibile in un set di dati, misurata in metri.",
+   "range": [
+    "xsd:decimal"
+   ]
+  },
+  {
    "iri": "http://www.w3.org/ns/dcat#keyword",
    "curie": "dcat:keyword",
    "kind": "datatype_property",
@@ -758,16 +768,6 @@
    ],
    "range": [
     "rdfs:Literal"
-   ]
-  },
-  {
-   "iri": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
-   "curie": "dcat:spatialResolutionInMeters",
-   "kind": "datatype_property",
-   "label": "risoluzione spaziale (metri)",
-   "definition": "minimální prostorový rozestup rozeznatelný v datové sadě, měřeno v metrech.",
-   "range": [
-    "xsd:decimal"
    ]
   },
   {

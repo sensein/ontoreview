@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbc9d1">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd135">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,16 +52,16 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaTopping",
-   "name": "Pizza topping",
-   "description": "Something placed on a pizza.",
-   "termCode": "pizza:PizzaTopping"
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#MeatTopping",
-   "name": "Meat topping",
-   "termCode": "pizza:MeatTopping"
+   "@id": "https://example.org/pizza#Food",
+   "name": "Food",
+   "description": "Anything that can be eaten.",
+   "termCode": "pizza:Food"
   },
   {
    "@type": "DefinedTerm",
@@ -72,9 +72,41 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasBase",
-   "name": "has base",
-   "termCode": "pizza:hasBase"
+   "@id": "https://example.org/pizza#MeatTopping",
+   "name": "Meat topping",
+   "termCode": "pizza:MeatTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Pizza",
+   "name": "Pizza",
+   "description": "A flat **baked** dish topped with ingredients.",
+   "termCode": "pizza:Pizza"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
   },
   {
    "@type": "DefinedTerm",
@@ -92,19 +124,6 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Food",
-   "name": "Food",
-   "description": "Anything that can be eaten.",
-   "termCode": "pizza:Food"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://example.org/pizza#CheeseTopping",
    "name": "Cheese topping",
    "description": "Cheese.",
@@ -112,29 +131,16 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
+   "@id": "https://example.org/pizza#hasBase",
+   "name": "has base",
+   "termCode": "pizza:hasBase"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#isToppingOf",
-   "name": "is topping of",
-   "termCode": "pizza:isToppingOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Pizza",
-   "name": "Pizza",
-   "description": "A flat **baked** dish topped with ingredients.",
-   "termCode": "pizza:Pizza"
+   "@id": "https://example.org/pizza#PizzaTopping",
+   "name": "Pizza topping",
+   "description": "Something placed on a pizza.",
+   "termCode": "pizza:PizzaTopping"
   },
   {
    "@type": "DefinedTerm",
@@ -142,12 +148,6 @@
    "name": "Vegetarian pizza",
    "description": "A pizza with no meat toppings.",
    "termCode": "pizza:VegetarianPizza"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
   }
  ]
 }</script></head>
@@ -596,7 +596,7 @@
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">7</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 2 errors, 7 warnings and 5 suggestions. OOPS!: 0 errors, 1 warnings, 3 suggestions.</p>
+  <p class="prose">ontoreview checks: 2 errors, 7 warnings and 5 suggestions. ROBOT: 4 errors, 2 warnings, 1 suggestions. OOPS!: 0 errors, 1 warnings, 3 suggestions.</p>
 
 <h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Competency question query error <span class="muted">(1) CQ002</span></summary>
@@ -653,6 +653,42 @@
 <li>Property name <code>Name</code> is not lowerCamelCase. <a href="#Name">§</a></li>    </ul>
   </details>
 
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Deprecated class reference <span class="muted">(1) deprecated_class_reference</span></summary>
+    <ul class="findings">
+<li><a href="#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Duplicate label <span class="muted">(2) duplicate_label</span></summary>
+    <ul class="findings">
+<li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing label <span class="muted">(1) missing_label</span></summary>
+    <ul class="findings">
+<li><code>https://orcid.org/0000-0000-0000-0001</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Multiple labels <span class="muted">(2) multiple_labels</span></summary>
+    <ul class="findings">
+<li><a href="#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing definition <span class="muted">(14) missing_definition</span></summary>
+    <ul class="findings">
+<li><a href="#Calzone">Calzone</a> <code class="muted">pizza:Calzone</code></li><li><a href="#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li><li><a href="#PizzaBase">Pizza base</a> <code class="muted">pizza:PizzaBase</code></li><li><a href="#PizzaTopping">Pizza topping</a> <code class="muted">pizza:PizzaTopping</code></li><li><a href="#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li><li><a href="#hasBase">has base</a> <code class="muted">pizza:hasBase</code></li><li><a href="#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="#hasTopping">has topping</a> <code class="muted">pizza:hasTopping</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li><li><code>https://orcid.org/0000-0000-0000-0001</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing obsolete label <span class="muted">(1) missing_obsolete_label</span></summary>
+    <ul class="findings">
+<li><a href="#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing superclass <span class="muted">(2) missing_superclass</span></summary>
+    <ul class="findings">
+<li><a href="#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li>    </ul>
+  </details>
   <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
   <details class="finding sev-warning">
     <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(3) P11</span></summary>
@@ -739,10 +775,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbc9d1"></script>
+<script src="ontoreview-data.js?v=6afbd135"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbc9d1"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd135"></script>
 </body>
 </html>

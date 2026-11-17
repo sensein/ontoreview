@@ -79,13 +79,54 @@ def _overrides(**kw) -> dict:
 def _eval_overrides(oops: bool | None, robot: str | None) -> dict | None:
     ev = {}
     if oops is not None:
-        ev["oops"] = oops
+        ev["oops"] = "on" if oops else "off"
     if robot is not None:
         if robot not in ("auto", "on", "off"):
             ev["robot"], ev["robot_path"] = "on", robot
         else:
             ev["robot"] = robot
     return ev or None
+
+
+def _folder_source(source: str | None, config: Path | None) -> Path | None:
+    """The input folder when the source (argument, or `source` in the config) is a directory."""
+    if source and not source.startswith(("http://", "https://")):
+        return Path(source) if Path(source).is_dir() else None
+    if source is None:
+        from .config import load_config
+
+        try:
+            cfg = load_config(config)
+        except Exception:  # noqa: BLE001 - let the normal path report config errors
+            return None
+        if cfg.source and not cfg.source.startswith(("http://", "https://")):
+            p = cfg.resolve(cfg.source)
+            return p if p and p.is_dir() else None
+    return None
+
+
+def _print_collection(res, verb: str) -> None:
+    table = Table(box=None, pad_edge=False, show_header=True, header_style="bold")
+    table.add_column("ontology")
+    table.add_column("terms", justify="right")
+    table.add_column("quality")
+    table.add_column("output")
+    for e in res.entries:
+        if e.error:
+            table.add_row(f"[red]✗[/] {_rich_escape(e.source)}", "", "", f"[red]{_rich_escape(e.error)[:80]}[/]")
+            continue
+        q = e.quality
+        qual = f"[red]{q.get('error', 0)}[/] err, [yellow]{q.get('warning', 0)}[/] warn" if q else ""
+        ext = "; ".join(f"{x['tool']}: " + ("failed" if x["problem"] else f"{x['summary']['error']} err")
+                        for x in e.external)
+        table.add_row(f"[green]✓[/] {_rich_escape(e.title)}", str(e.terms), qual + (f"  [dim]{ext}[/]" if ext else ""),
+                      f"{e.slug}/")
+    console.print(table)
+    for sk in res.skipped:
+        console.print(f"  [dim]skipped (unsupported format): {_rich_escape(sk)}[/]")
+    index = res.output / ("index.html" if verb == "built" else "index.md")
+    console.print(f"[green]✓[/] {verb} {len(res.ok)} of {len(res.entries)} ontologies → {index}"
+                  f"  [dim]{res.seconds:.2f}s[/]")
 
 
 def _print_external(report) -> None:
@@ -115,7 +156,7 @@ def main(
     pass
 
 
-SourceArg = typer.Argument(None, help="Ontology file or URL (RDF in any syntax, or a LinkML YAML schema).")
+SourceArg = typer.Argument(None, help="Ontology file, URL or folder of ontologies (RDF in any syntax, or LinkML YAML).")
 ConfigOpt = typer.Option(None, "--config", "-c", help="Path to ontoreview.toml (auto-discovered by default).")
 
 
@@ -134,13 +175,14 @@ def build(
     include_imported: bool | None = typer.Option(None, help="Also document imported terms."),
     individuals: bool | None = typer.Option(None, "--individuals/--no-individuals"),
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file (.yaml/.json/.csv/.tsv/.xlsx); repeatable."),
-    oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Add the OOPS! evaluation (uploads the ontology to oops.linkeddata.es)."),
-    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (local robot or an already-pulled Docker image), on (pulls the image if needed), off, or a path to a robot executable."),
+    oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Always run OOPS! (uploads the ontology to oops.linkeddata.es), or never. By default it runs only when ROBOT cannot."),
+    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
-    """Generate the documentation website."""
+    """Generate the documentation website. SOURCE may be a folder: each ontology in it gets its own
+    sub-folder in the output, mirroring the source layout, plus an index page."""
     _setup_logging(verbose)
     from .build import build as do_build
     from .build import build_single_file
@@ -150,6 +192,23 @@ def build(
                     load_imports=imports, include_imported=include_imported,
                     include_individuals=individuals, evaluation=_eval_overrides(oops, robot),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
+    folder = _folder_source(source, config)
+    if folder is not None:
+        from .collection import build_collection
+
+        try:
+            with console.status(f"Building documentation for every ontology in {folder}…"):
+                res = build_collection(folder, output or Path("docs"), config=config,
+                                       single_file=single_file, **ov)
+        except (ValueError, FileNotFoundError) as e:
+            err.print(f"[bold red]Error:[/] {e}")
+            raise typer.Exit(2) from e
+        _print_collection(res, "built")
+        if open_browser:
+            webbrowser.open((res.output / "index.html").resolve().as_uri())
+        if res.failed:
+            raise typer.Exit(1)
+        return
     try:
         with console.status("Building documentation…"):
             if single_file:
@@ -314,13 +373,19 @@ def check(
     fail_on: FailOn = typer.Option(FailOn.error, "--fail-on", help="Exit 1 if findings at/above this severity."),
     output: Path | None = typer.Option(None, "--output", "-o", help="Write the report to a file."),
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file; repeatable."),
-    oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Also run OOPS! (uploads the ontology to oops.linkeddata.es)."),
-    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (local robot or an already-pulled Docker image), on (pulls the image if needed), off, or a path to a robot executable."),
+    oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Always run OOPS! (uploads the ontology to oops.linkeddata.es), or never. By default it runs only when ROBOT cannot."),
+    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
-    """Run quality checks: built-in rules, plus ROBOT and OOPS! when enabled (great for CI)."""
+    """Run quality checks: built-in rules plus ROBOT (Docker), with OOPS! as fallback (great for CI).
+    SOURCE may be a folder: every ontology in it is checked; JSON output is keyed by file."""
     _setup_logging(verbose)
     from .build import check as do_check
+
+    folder = _folder_source(source, config)
+    if folder is not None:
+        _check_folder(folder, config, fmt, fail_on, output, oops, robot)
+        return
 
     try:
         ev = _eval_overrides(oops, robot)
@@ -362,6 +427,56 @@ def check(
         console.print(f"\n[bold]{s['error']}[/] errors, [bold]{s['warning']}[/] warnings, "
                       f"[bold]{s['info']}[/] suggestions in {len(onto.terms)} terms.")
     if fail_on != FailOn.never and report.failed(fail_on.value):
+        raise typer.Exit(1)
+
+
+def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path | None,
+                  oops: bool | None, robot: str | None) -> None:
+    import json
+
+    from .build import check as do_check
+    from .collection import _config_for, find_ontologies
+
+    files, skipped = find_ontologies(folder, [output] if output else None)
+    if not files:
+        err.print(f"[bold red]Error:[/] No ontology files found in {folder}")
+        raise typer.Exit(2)
+    ev = _eval_overrides(oops, robot)
+    extra = {"evaluation": ev} if ev else {}
+    results, failed, broken = {}, False, False
+    for f in files:
+        rel = f.relative_to(folder.resolve()).as_posix()
+        try:
+            onto, report = do_check(f, config=_config_for(f, folder, config), **extra)
+        except Exception as e:  # noqa: BLE001
+            broken = True
+            results[rel] = {"error": str(e)}
+            if fmt == CheckFormat.console:
+                console.print(f"[red]✗ {_rich_escape(rel)}[/]: {_rich_escape(str(e))}")
+            continue
+        failed = failed or (fail_on != FailOn.never and report.failed(fail_on.value))
+        results[rel] = json.loads(report.to_json())
+        if fmt == CheckFormat.console:
+            s = report.summary
+            mark = "[red]✗[/]" if fail_on != FailOn.never and report.failed(fail_on.value) else "[green]✓[/]"
+            console.print(f"{mark} [bold]{_rich_escape(rel)}[/]  {s['error']} errors, {s['warning']} warnings, "
+                          f"{s['info']} suggestions in {len(onto.terms)} terms")
+            for x in report.external:
+                console.print(f"    {x.tool}: " + (f"[yellow]{_rich_escape(x.error)}[/]" if x.error else
+                              f"{x.summary['error']} errors, {x.summary['warning']} warnings, {x.summary['info']} suggestions"))
+    for sk in skipped:
+        if fmt == CheckFormat.console:
+            console.print(f"  [dim]skipped (unsupported format): {_rich_escape(sk.relative_to(folder.resolve()).as_posix())}[/]")
+    if fmt != CheckFormat.console:
+        text = json.dumps(results, indent=2, ensure_ascii=False)
+        if output:
+            output.write_text(text, "utf-8")
+            console.print(f"Report written to {output}")
+        else:
+            console.print_json(text)
+    if broken:
+        raise typer.Exit(2)
+    if failed:
         raise typer.Exit(1)
 
 
@@ -456,11 +571,25 @@ def export_cmd(
     output: Path = typer.Option(Path("docs-md"), "--output", "-o"),
     config: Path | None = ConfigOpt,
 ) -> None:
-    """Export the documentation as Markdown or MyST for another static-site generator."""
+    """Export the documentation as Markdown or MyST for another static-site generator.
+    SOURCE may be a folder: each ontology is exported to its own sub-folder, plus an index.md."""
     from .build import load, resolve_config
     from .export import export_markdown
     from .model.extract import extract
 
+    folder = _folder_source(source, config)
+    if folder is not None:
+        from .collection import export_collection
+
+        try:
+            res = export_collection(folder, output, config=config, myst=fmt == ExportFormat.myst)
+        except (ValueError, FileNotFoundError) as e:
+            err.print(f"[bold red]Error:[/] {e}")
+            raise typer.Exit(2) from e
+        _print_collection(res, "exported")
+        if res.failed:
+            raise typer.Exit(1)
+        return
     cfg = resolve_config(source, config)
     onto = extract(load(cfg), cfg)
     files = export_markdown(onto, output, myst=fmt == ExportFormat.myst)

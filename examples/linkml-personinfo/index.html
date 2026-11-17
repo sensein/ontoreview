@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbc9d1">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd138">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -44,10 +44,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/PhoneNumberType",
-   "name": "PhoneNumberType",
-   "description": "A phone number.",
-   "termCode": "personinfo:PhoneNumberType"
+   "@id": "https://w3id.org/example/personinfo/id",
+   "name": "id",
+   "description": "A unique identifier for a thing.",
+   "termCode": "personinfo:id"
   },
   {
    "@type": "DefinedTerm",
@@ -58,91 +58,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://purl.obolibrary.org/obo/GSSO_009254",
-   "name": "nonbinary man",
-   "termCode": "GSSO:009254"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/founding_date",
-   "name": "founding_date",
-   "description": "When the organization was founded.",
-   "termCode": "personinfo:founding_date"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.obolibrary.org/obo/GSSO_000384",
-   "name": "transgender woman",
-   "termCode": "GSSO:000384"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/NamedThing",
-   "name": "NamedThing",
-   "description": "A generic grouping for any identifiable entity.",
-   "termCode": "personinfo:NamedThing"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://w3id.org/example/personinfo/age_in_years",
    "name": "age_in_years",
    "termCode": "personinfo:age_in_years"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://schema.org/name",
-   "name": "name",
-   "description": "A human-readable name for a thing.",
-   "termCode": "schema:name"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/gender",
-   "name": "gender",
-   "termCode": "personinfo:gender"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/organizations",
-   "name": "organizations",
-   "termCode": "personinfo:organizations"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/employed_by",
-   "name": "employed_by",
-   "termCode": "personinfo:employed_by"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/id",
-   "name": "id",
-   "description": "A unique identifier for a thing.",
-   "termCode": "personinfo:id"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://schema.org/birthDate",
-   "name": "birth_date",
-   "termCode": "schema:birthDate"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/employees",
-   "name": "employees",
-   "termCode": "personinfo:employees"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/Container",
-   "name": "Container",
-   "termCode": "personinfo:Container"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.obolibrary.org/obo/GSSO_009253",
-   "name": "nonbinary woman",
-   "termCode": "GSSO:009253"
   },
   {
    "@type": "DefinedTerm",
@@ -153,17 +71,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://schema.org/email",
-   "name": "primary_email",
-   "description": "The main email address of a person.",
-   "termCode": "schema:email"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/GenderType",
-   "name": "GenderType",
-   "description": "Gender of a person.",
-   "termCode": "personinfo:GenderType"
+   "@id": "https://w3id.org/example/personinfo/HasAliases",
+   "name": "HasAliases",
+   "description": "A mixin applied to any class that can have aliases.",
+   "termCode": "personinfo:HasAliases"
   },
   {
    "@type": "DefinedTerm",
@@ -174,10 +85,79 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/HasAliases",
-   "name": "HasAliases",
-   "description": "A mixin applied to any class that can have aliases.",
-   "termCode": "personinfo:HasAliases"
+   "@id": "https://w3id.org/example/personinfo/organizations",
+   "name": "organizations",
+   "termCode": "personinfo:organizations"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.obolibrary.org/obo/GSSO_009253",
+   "name": "nonbinary woman",
+   "termCode": "GSSO:009253"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/name",
+   "name": "name",
+   "description": "A human-readable name for a thing.",
+   "termCode": "schema:name"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/employed_by",
+   "name": "employed_by",
+   "termCode": "personinfo:employed_by"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.obolibrary.org/obo/GSSO_009254",
+   "name": "nonbinary man",
+   "termCode": "GSSO:009254"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/Container",
+   "name": "Container",
+   "termCode": "personinfo:Container"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/founding_date",
+   "name": "founding_date",
+   "description": "When the organization was founded.",
+   "termCode": "personinfo:founding_date"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/PhoneNumberType",
+   "name": "PhoneNumberType",
+   "description": "A phone number.",
+   "termCode": "personinfo:PhoneNumberType"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/NamedThing",
+   "name": "NamedThing",
+   "description": "A generic grouping for any identifiable entity.",
+   "termCode": "personinfo:NamedThing"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/employees",
+   "name": "employees",
+   "termCode": "personinfo:employees"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/aliases",
+   "name": "aliases",
+   "termCode": "personinfo:aliases"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/birthDate",
+   "name": "birth_date",
+   "termCode": "schema:birthDate"
   },
   {
    "@type": "DefinedTerm",
@@ -187,15 +167,35 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
-   "name": "cisgender man",
-   "description": "A man whose gender matches the sex assigned at birth."
+   "@id": "https://w3id.org/example/personinfo/GenderType",
+   "name": "GenderType",
+   "description": "Gender of a person.",
+   "termCode": "personinfo:GenderType"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/aliases",
-   "name": "aliases",
-   "termCode": "personinfo:aliases"
+   "@id": "http://schema.org/email",
+   "name": "primary_email",
+   "description": "The main email address of a person.",
+   "termCode": "schema:email"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/gender",
+   "name": "gender",
+   "termCode": "personinfo:gender"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.obolibrary.org/obo/GSSO_000384",
+   "name": "transgender woman",
+   "termCode": "GSSO:000384"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
+   "name": "cisgender man",
+   "description": "A man whose gender matches the sex assigned at birth."
   }
  ]
 }</script></head>
@@ -357,7 +357,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
   <p class="term-iri"><code>https://w3id.org/example/personinfo/Container</code> <button class="copy" data-copy="https://w3id.org/example/personinfo/Container" aria-label="Copy IRI">copy</button></p>
   <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>personinfo:Container</code></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#organizations" class="ref" title="personinfo:organizations">organizations</a> <span class="kw">only</span> <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></span></li><li><span class="expr"><a href="#persons" class="ref" title="personinfo:persons">persons</a> <span class="kw">only</span> <a href="#Person" class="ref" title="schema:Person">Person</a></span></li></ul></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr><tr><th scope="row"><a href="https://w3id.org/linkml/tree_root" class="ref ext" title="linkml:tree_root">tree root (LinkML)</a></th><td><span class="expr"><span class="lit">true</span></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>personinfo:Container</code></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#persons" class="ref" title="personinfo:persons">persons</a> <span class="kw">only</span> <a href="#Person" class="ref" title="schema:Person">Person</a></span></li><li><span class="expr"><a href="#organizations" class="ref" title="personinfo:organizations">organizations</a> <span class="kw">only</span> <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></span></li></ul></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr><tr><th scope="row"><a href="https://w3id.org/linkml/tree_root" class="ref ext" title="linkml:tree_root">tree root (LinkML)</a></th><td><span class="expr"><span class="lit">true</span></span></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://w3id.org/example/personinfo/Container">Show in figure</a></p></article>
 <article class="term" id="GenderType" data-kind="class">
@@ -393,7 +393,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <div class="definition"><p>A generic grouping for any identifiable entity.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>personinfo:NamedThing</code></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#description" class="ref" title="schema:description">description</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#name" class="ref" title="schema:name">name</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#id" class="ref" title="personinfo:id">id</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#anyURI" class="ref ext" title="xsd:anyURI">xsd:anyURI</a></span></li></ul></td></tr><tr><th scope="row">Subclasses</th><td><a href="#Organization" class="ref" title="personinfo:Organization">Organization</a>, <a href="#Person" class="ref" title="schema:Person">Person</a></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/core" class="ref ext" title="https://w3id.org/example/core">core</a></td></tr><tr><th scope="row"><a href="https://w3id.org/linkml/abstract" class="ref ext" title="linkml:abstract">abstract (LinkML)</a></th><td><span class="expr"><span class="lit">true</span></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>personinfo:NamedThing</code></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#name" class="ref" title="schema:name">name</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#description" class="ref" title="schema:description">description</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#id" class="ref" title="personinfo:id">id</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#anyURI" class="ref ext" title="xsd:anyURI">xsd:anyURI</a></span></li></ul></td></tr><tr><th scope="row">Subclasses</th><td><a href="#Organization" class="ref" title="personinfo:Organization">Organization</a>, <a href="#Person" class="ref" title="schema:Person">Person</a></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/core" class="ref ext" title="https://w3id.org/example/core">core</a></td></tr><tr><th scope="row"><a href="https://w3id.org/linkml/abstract" class="ref ext" title="linkml:abstract">abstract (LinkML)</a></th><td><span class="expr"><span class="lit">true</span></span></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://w3id.org/example/personinfo/NamedThing">Show in figure</a></p></article>
 <article class="term" id="Organization" data-kind="class">
@@ -417,7 +417,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <div class="definition"><p>A person (alive, dead, undead, or fictional).</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>schema:Person</code></td></tr><tr><th scope="row">Also known as</th><td>human being</td></tr><tr><th scope="row">Superclasses</th><td><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a>, <a href="#NamedThing" class="ref" title="personinfo:NamedThing">NamedThing</a></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#gender" class="ref" title="personinfo:gender">gender</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#GenderType" class="ref" title="personinfo:GenderType">GenderType</a></span></li><li><span class="expr"><a href="#age_in_years" class="ref" title="personinfo:age_in_years">age_in_years</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#integer" class="ref ext" title="xsd:integer">xsd:integer</a>[<span class="kw">&gt;=</span> <span class="lit">0</span>, <span class="kw">&lt;=</span> <span class="lit">999</span>]</span></li><li><span class="expr"><a href="#birthDate" class="ref" title="schema:birthDate">birth_date</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#date" class="ref ext" title="xsd:date">xsd:date</a></span></li><li><span class="expr"><a href="#employed_by" class="ref" title="personinfo:employed_by">employed_by</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></span></li><li><span class="expr"><a href="#email" class="ref" title="schema:email">primary_email</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a>[<span class="kw">pattern</span> <span class="lit">&#34;^\S+@[\S+\.]+\S+&#34;</span>]</span></li></ul></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#employees" class="ref" title="personinfo:employees">employees</a>, <a href="#persons" class="ref" title="personinfo:persons">persons</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Container" class="ref" title="personinfo:Container">Container</a>, <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Ada Lovelace — a famous mathematician</code></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr><tr><th scope="row"><a href="https://w3id.org/linkml/mixins" class="ref ext" title="linkml:mixins">mixins (LinkML)</a></th><td><span class="expr"><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>schema:Person</code></td></tr><tr><th scope="row">Also known as</th><td>human being</td></tr><tr><th scope="row">Superclasses</th><td><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a>, <a href="#NamedThing" class="ref" title="personinfo:NamedThing">NamedThing</a></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#email" class="ref" title="schema:email">primary_email</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a>[<span class="kw">pattern</span> <span class="lit">&#34;^\S+@[\S+\.]+\S+&#34;</span>]</span></li><li><span class="expr"><a href="#employed_by" class="ref" title="personinfo:employed_by">employed_by</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></span></li><li><span class="expr"><a href="#age_in_years" class="ref" title="personinfo:age_in_years">age_in_years</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#integer" class="ref ext" title="xsd:integer">xsd:integer</a>[<span class="kw">&gt;=</span> <span class="lit">0</span>, <span class="kw">&lt;=</span> <span class="lit">999</span>]</span></li><li><span class="expr"><a href="#birthDate" class="ref" title="schema:birthDate">birth_date</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#date" class="ref ext" title="xsd:date">xsd:date</a></span></li><li><span class="expr"><a href="#gender" class="ref" title="personinfo:gender">gender</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#GenderType" class="ref" title="personinfo:GenderType">GenderType</a></span></li></ul></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#employees" class="ref" title="personinfo:employees">employees</a>, <a href="#persons" class="ref" title="personinfo:persons">persons</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Container" class="ref" title="personinfo:Container">Container</a>, <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Ada Lovelace — a famous mathematician</code></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr><tr><th scope="row"><a href="https://w3id.org/linkml/mixins" class="ref ext" title="linkml:mixins">mixins (LinkML)</a></th><td><span class="expr"><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a></span></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://schema.org/Person">Show in figure</a></p></article>
 </section><section class="section section-terms" id="object-properties">
@@ -651,9 +651,9 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 8 warnings and 1 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 8 warnings and 1 suggestions. ROBOT: 1 errors, 2 warnings, 1 suggestions.</p>
 
-  <details class="finding sev-warning">
+<h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> Term without a definition <span class="muted">(8) OB011</span></summary>
     <p class="muted rule-desc">Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08).</p>
     <ul class="findings">
@@ -666,6 +666,27 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <li>“employed_by” is deprecated but has no replacement. <a href="#employed_by">§</a></li>    </ul>
   </details>
 
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Deprecated property reference <span class="muted">(1) deprecated_property_reference</span></summary>
+    <ul class="findings">
+<li><code>schema:Person</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing definition <span class="muted">(19) missing_definition</span></summary>
+    <ul class="findings">
+<li><a href="#Container">Container</a> <code class="muted">personinfo:Container</code></li><li><a href="#GenderType">GenderType</a> <code class="muted">personinfo:GenderType</code></li><li><a href="#HasAliases">HasAliases</a> <code class="muted">personinfo:HasAliases</code></li><li><a href="#NamedThing">NamedThing</a> <code class="muted">personinfo:NamedThing</code></li><li><a href="#Organization">Organization</a> <code class="muted">personinfo:Organization</code></li><li><a href="#PhoneNumberType">PhoneNumberType</a> <code class="muted">personinfo:PhoneNumberType</code></li><li><a href="#age_in_years">age_in_years</a> <code class="muted">personinfo:age_in_years</code></li><li><a href="#aliases">aliases</a> <code class="muted">personinfo:aliases</code></li><li><a href="#employees">employees</a> <code class="muted">personinfo:employees</code></li><li><a href="#founding_date">founding_date</a> <code class="muted">personinfo:founding_date</code></li><li><a href="#gender">gender</a> <code class="muted">personinfo:gender</code></li><li><a href="#id">id</a> <code class="muted">personinfo:id</code></li><li><a href="#organizations">organizations</a> <code class="muted">personinfo:organizations</code></li><li><a href="#persons">persons</a> <code class="muted">personinfo:persons</code></li><li><code>schema:Person</code></li><li><code>schema:birthDate</code></li><li><code>schema:description</code></li><li><code>schema:email</code></li><li><code>schema:name</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing obsolete label <span class="muted">(1) missing_obsolete_label</span></summary>
+    <ul class="findings">
+<li><a href="#employed_by">employed_by</a> <code class="muted">personinfo:employed_by</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing superclass <span class="muted">(1) missing_superclass</span></summary>
+    <ul class="findings">
+<li><a href="#GenderType">GenderType</a> <code class="muted">personinfo:GenderType</code></li>    </ul>
+  </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">5</span> Download</h2>
   <p class="prose">Download the ontology in your preferred format:</p>
@@ -735,10 +756,10 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbc9d1"></script>
+<script src="ontoreview-data.js?v=6afbd138"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbc9d1"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd138"></script>
 </body>
 </html>

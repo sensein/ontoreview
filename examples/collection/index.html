@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="OntoReview 0.1.0">
+<title>real ontologies</title>
+<style>
+:root { --paper:#fff; --ink:#1a1917; --muted:#5d5950; --rule:#e2ded4; --link:#174a8b; --del:#9a2b20; --mod:#8a5a00; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --paper:#1c1b18; --ink:#ece8de; --muted:#a49e91; --rule:#34312a; --link:#9dbbe6; --del:#ef9a8f; --mod:#e2bd6a; color-scheme: dark; } }
+@media (prefers-contrast: more) { :root { --muted: var(--ink); --rule: var(--muted); } a { text-decoration: underline; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.6 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; }
+main { max-width: 64rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin: 0 0 .3rem; }
+h2 { font-size: 1.25rem; margin: 2.4rem 0 .6rem; }
+.lede { color: var(--muted); margin: 0 0 2rem; }
+a { color: var(--link); }
+a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.skip { position:absolute; left:-999px; top:8px; background:var(--ink); color:var(--paper); padding:4px 8px; }
+.skip:focus { left: 8px; }
+.table-wrap { overflow-x: auto; }
+table { width:100%; border-collapse:collapse; font-size:.95rem; }
+caption { text-align:left; color:var(--muted); font:.8rem/1.4 system-ui,sans-serif; padding-bottom:.4rem; }
+thead th { font:600 .72rem/1.9 system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); text-align:left; border-bottom:1px solid var(--ink); padding:.35rem .8rem .35rem 0; }
+tbody th, td { text-align:left; vertical-align:top; padding:.7rem .8rem .7rem 0; border-bottom:1px solid var(--rule); font-weight:400; }
+tbody th a { font-weight:600; font-size:1.05rem; }
+.desc { margin:.2rem 0 0; color:var(--muted); font-size:.9rem; max-width:60ch; }
+.ver { color:var(--muted); font:.78rem system-ui,sans-serif; margin-left:.4rem; }
+.num { font-variant-numeric: tabular-nums; }
+.n { font-variant-numeric: tabular-nums; font-weight:600; }
+.err { color: var(--del); } .warn { color: var(--mod); }
+code { font: .82em ui-monospace, Menlo, Consolas, monospace; overflow-wrap:anywhere; }
+.plain-list { padding-left: 1.2rem; }
+footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--rule); color:var(--muted); font-size:.85rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<main id="main">
+<h1>real ontologies</h1>
+<p class="lede">5 ontologies, each documented separately.</p>
+<div class="table-wrap">
+<table>
+<caption>Ontologies in this collection</caption>
+<thead><tr><th scope="col">Ontology</th><th scope="col">Terms</th><th scope="col">Quality</th><th scope="col">Source file</th></tr></thead>
+<tbody>
+<tr><th scope="row"><a href="dcat/index.html">The data catalog vocabulary</a> <span class="ver">3</span><p class="desc">DCAT is an RDF vocabulary designed to facilitate interoperability between data catalogs published on the Web. By using DCAT to describe datasets in data catalogs, publishers increase discoverability and enable applications easily to consume…</p></th><td class="num">48</td><td><span class="n err">6</span> errors, <span class="n warn">25</span> warnings</td><td><code>dcat.ttl</code></td></tr>
+<tr><th scope="row"><a href="foaf/index.html">Friend of a Friend (FOAF) vocabulary</a><p class="desc">The Friend of a Friend (FOAF) RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language.</p></th><td class="num">82</td><td><span class="n err">0</span> errors, <span class="n warn">5</span> warnings</td><td><code>foaf.rdf</code></td></tr>
+<tr><th scope="row"><a href="org/index.html">Core organization ontology</a> <span class="ver">0.8</span><p class="desc">Vocabulary for describing organizational structures, specializable to a broad variety of types of organization.</p></th><td class="num">45</td><td><span class="n err">0</span> errors, <span class="n warn">17</span> warnings</td><td><code>org.ttl</code></td></tr>
+<tr><th scope="row"><a href="prov-o/index.html">W3C PROVenance Interchange Ontology (PROV-O)</a> <span class="ver">Recommendation version 2013-04-30</span><p class="desc">This document is published by the Provenance Working Group (http://www.w3.org/2011/prov/wiki/Main_Page). If you wish to make comments regarding this document, please send them to public-prov-comments@w3.org (subscribe public-prov-comments-r…</p></th><td class="num">95</td><td><span class="n err">0</span> errors, <span class="n warn">35</span> warnings</td><td><code>prov-o.ttl</code></td></tr>
+<tr><th scope="row"><a href="skos/index.html">SKOS Vocabulary</a><p class="desc">An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, &#x27;folksonomies&#x27;, other types of controlled vocabulary, and also concept schemes …</p></th><td class="num">32</td><td><span class="n err">0</span> errors, <span class="n warn">1</span> warnings</td><td><code>skos.rdf</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<footer>Generated with <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> 0.1.0. <a href="collection.json">collection.json</a></footer>
+</main>
+</body>
+</html>

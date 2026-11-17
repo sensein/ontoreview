@@ -120,7 +120,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start); [Influence](classes.md#influence) |
+| Domain | [Influence](classes.md#influence); [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start) |
 | Range | [Activity](classes.md#activity) |
 | Used in | used in axioms of [ActivityInfluence](classes.md#activityinfluence) |
 | category | qualified |
@@ -198,7 +198,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent); [Influence](classes.md#influence) |
+| Domain | [Influence](classes.md#influence); [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Role](classes.md#role) |
 | category | qualified |
 | component | agents-responsibility |
@@ -611,7 +611,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | expanded |
 | component | entities-activities |
 | inverse | ended |
-| qualifiedForm | prov:End; prov:qualifiedEnd |
+| qualifiedForm | prov:qualifiedEnd; prov:End |
 
 ### wasGeneratedBy
 
@@ -627,7 +627,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | starting-point |
 | component | entities-activities |
 | inverse | generated |
-| qualifiedForm | prov:Generation; prov:qualifiedGeneration |
+| qualifiedForm | prov:qualifiedGeneration; prov:Generation |
 
 ### wasInfluencedBy
 
@@ -681,7 +681,7 @@ An activity a2 is dependent on or informed by another activity a1, by way of som
 | category | expanded |
 | component | entities-activities |
 | inverse | invalidated |
-| qualifiedForm | prov:qualifiedInvalidation; prov:Invalidation |
+| qualifiedForm | prov:Invalidation; prov:qualifiedInvalidation |
 
 ### wasQuotedFrom
 
@@ -715,7 +715,7 @@ A revision is a derivation that revises an entity into a revised version.
 | category | expanded |
 | component | derivations |
 | inverse | hadRevision |
-| qualifiedForm | prov:qualifiedRevision; prov:Revision |
+| qualifiedForm | prov:Revision; prov:qualifiedRevision |
 
 ### wasStartedBy
 

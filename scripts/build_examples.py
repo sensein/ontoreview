@@ -12,6 +12,7 @@ from pathlib import Path
 
 import ontoreview
 from ontoreview.build import load, resolve_config
+from ontoreview.collection import build_collection, export_collection
 from ontoreview.export import export_markdown
 from ontoreview.model.extract import extract
 
@@ -23,7 +24,7 @@ CQ = [str(FIX / "cq" / "pizza-cq.yaml"), str(FIX / "cq" / "pizza-cq.csv")]
 
 SITES = [
     ("pizza", FIX / "pizza-v2.ttl", {"previous_version": str(FIX / "pizza.ttl"), "languages": ["en", "es"],
-                                     "competency_questions": CQ, "evaluation": {"oops": True}},
+                                     "competency_questions": CQ, "evaluation": {"oops": "on"}},
      "OWL ontology: competency questions, OOPS! evaluation, changelog, English/Spanish"),
     ("pizza-index", FIX / "pizza-v2.ttl", {"competency_questions": CQ,
                                            "ui": {"term_index": "both", "font": "sans", "sidebar_expanded": True}},
@@ -32,7 +33,7 @@ SITES = [
      "Same ontology, multi-page layout"),
     ("linkml-personinfo", FIX / "linkml" / "personinfo.yaml", {}, "LinkML schema (with an imported module)"),
     ("skos-colors", FIX / "colors-skos.ttl", {}, "SKOS concept scheme"),
-    ("prov-o", FIX / "real" / "prov-o.ttl", {"evaluation": {"oops": True}}, "W3C PROV-O, with OOPS! evaluation"),
+    ("prov-o", FIX / "real" / "prov-o.ttl", {"evaluation": {"oops": "on"}}, "W3C PROV-O, with OOPS! evaluation"),
     ("foaf", FIX / "real" / "foaf.rdf", {}, "FOAF (RDF/XML)"),
     ("org", FIX / "real" / "org.ttl", {}, "W3C Organization ontology"),
     ("skos", FIX / "real" / "skos.rdf", {}, "W3C SKOS core"),
@@ -52,6 +53,10 @@ def main() -> None:
         print(f"✓ {name:20} {len(res.ontology.terms):4} terms  {res.seconds:.2f}s")
     ontoreview.build_single_file(FIX / "pizza-v2.ttl", OUT / "pizza-single-file.html", competency_questions=CQ)
     print("✓ pizza-single-file.html")
+    coll = build_collection(FIX / "real", OUT / "collection")
+    print(f"✓ collection             {len(coll.ok)} ontologies  {coll.seconds:.2f}s")
+    export_collection(FIX / "real", OUT / "collection-markdown")
+    print("✓ collection-markdown")
     for fmt, myst in (("markdown", False), ("myst", True)):
         cfg = resolve_config(FIX / "pizza.ttl")
         export_markdown(extract(load(cfg), cfg), OUT / f"export-{fmt}" , myst=myst)
@@ -62,11 +67,13 @@ def main() -> None:
         for n, t, d, c, s in rows
     )
     (OUT / "index.html").write_text(f"""<!doctype html><html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>ontoreview examples</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>OntoReview examples</title>
 <style>body{{font:17px/1.6 "Iowan Old Style",Palatino,Georgia,serif;max-width:46rem;margin:56px auto;padding:0 16px;color:#1c1b18;background:#fbfaf7}}
 h1{{font-weight:600}} ul{{list-style:none;padding:0;border-top:1px solid #d9d4c7}} li{{padding:.6rem 0;border-bottom:1px solid #d9d4c7}}
 span{{color:#6e6a60;font:14px -apple-system,Segoe UI,Arial,sans-serif;display:block}} a{{color:#1d4f91;text-decoration:none}}</style>
-</head><body><h1>ontoreview examples</h1><ul>{items}
+</head><body><h1>OntoReview examples</h1><ul>{items}
+<li><a href="collection/index.html"><b>Folder of ontologies</b></a><span>ontoreview build tests/fixtures/real: PROV-O, FOAF, ORG, SKOS and DCAT, one sub-site each plus an index page</span></li>
+<li><a href="collection-markdown/index.md"><b>Folder export (Markdown)</b></a><span>ontoreview export on the same folder: one sub-folder per ontology plus index.md</span></li>
 <li><a href="pizza-single-file.html"><b>Single-file export</b></a><span>One self-contained HTML file (what Export HTML in the studio produces)</span></li>
 <li><a href="pizza/llms.txt"><b>llms.txt</b></a><span>Index for LLMs and agents; see also pizza/ontology.json and pizza/llms-full.txt</span></li>
 <li><a href="export-markdown/index.md"><b>Markdown export</b></a><span>For MkDocs / Docusaurus</span></li>

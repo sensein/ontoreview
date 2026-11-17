@@ -4,7 +4,83 @@
     "warning": 1,
     "info": 5
   },
-  "external": [],
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "missing_ontology_license",
+          "name": "Missing ontology license",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "skos:Collection",
+            "skos:Concept",
+            "skos:ConceptScheme",
+            "skos:OrderedCollection",
+            "skos:altLabel",
+            "skos:broadMatch",
+            "skos:broader",
+            "skos:broaderTransitive",
+            "skos:changeNote",
+            "skos:closeMatch",
+            "skos:definition",
+            "skos:editorialNote",
+            "skos:exactMatch",
+            "skos:example",
+            "skos:hasTopConcept",
+            "skos:hiddenLabel",
+            "skos:historyNote",
+            "skos:inScheme",
+            "skos:mappingRelation",
+            "skos:member",
+            "skos:memberList",
+            "skos:narrowMatch",
+            "skos:narrower",
+            "skos:narrowerTransitive",
+            "skos:notation",
+            "skos:note",
+            "skos:prefLabel",
+            "skos:related",
+            "skos:relatedMatch",
+            "skos:scopeNote",
+            "skos:semanticRelation",
+            "skos:topConceptOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "skos:Collection",
+            "skos:Concept",
+            "skos:ConceptScheme"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 1,
+        "warning": 1,
+        "info": 1
+      }
+    }
+  ],
   "findings": [
     {
       "rule": "OB003",

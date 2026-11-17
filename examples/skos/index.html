@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbc9d3">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd140">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -47,45 +47,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#related",
-   "name": "has related",
-   "description": "Relates a concept to a concept with which there is an associative semantic relationship.",
-   "termCode": "skos:related"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
-   "name": "hidden label",
-   "description": "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.",
-   "termCode": "skos:hiddenLabel"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
-   "name": "has top concept",
-   "description": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
-   "termCode": "skos:hasTopConcept"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#exactMatch",
-   "name": "has exact match",
-   "description": "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch.",
-   "termCode": "skos:exactMatch"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#relatedMatch",
-   "name": "has related match",
-   "description": "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes.",
-   "termCode": "skos:relatedMatch"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#altLabel",
-   "name": "alternative label",
-   "description": "An alternative lexical label for a resource.",
-   "termCode": "skos:altLabel"
+   "@id": "http://www.w3.org/2004/02/skos/core#definition",
+   "name": "definition",
+   "description": "A statement or formal explanation of the meaning of a concept.",
+   "termCode": "skos:definition"
   },
   {
    "@type": "DefinedTerm",
@@ -96,24 +61,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#scopeNote",
-   "name": "scope note",
-   "description": "A note that helps to clarify the meaning and/or the use of a concept.",
-   "termCode": "skos:scopeNote"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#narrowMatch",
-   "name": "has narrower match",
-   "description": "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
-   "termCode": "skos:narrowMatch"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#historyNote",
-   "name": "history note",
-   "description": "A note about the past state/use/meaning of a concept.",
-   "termCode": "skos:historyNote"
+   "@id": "http://www.w3.org/2004/02/skos/core#exactMatch",
+   "name": "has exact match",
+   "description": "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch.",
+   "termCode": "skos:exactMatch"
   },
   {
    "@type": "DefinedTerm",
@@ -124,24 +75,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
-   "name": "has narrower transitive",
-   "description": "skos:narrowerTransitive is a transitive superproperty of skos:narrower.",
-   "termCode": "skos:narrowerTransitive"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#semanticRelation",
-   "name": "is in semantic relation with",
-   "description": "Links a concept to a concept related by meaning.",
-   "termCode": "skos:semanticRelation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#broadMatch",
-   "name": "has broader match",
-   "description": "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
-   "termCode": "skos:broadMatch"
+   "@id": "http://www.w3.org/2004/02/skos/core#historyNote",
+   "name": "history note",
+   "description": "A note about the past state/use/meaning of a concept.",
+   "termCode": "skos:historyNote"
   },
   {
    "@type": "DefinedTerm",
@@ -152,17 +89,24 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#Concept",
-   "name": "Concept",
-   "description": "An idea or notion; a unit of thought.",
-   "termCode": "skos:Concept"
+   "@id": "http://www.w3.org/2004/02/skos/core#altLabel",
+   "name": "alternative label",
+   "description": "An alternative lexical label for a resource.",
+   "termCode": "skos:altLabel"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#memberList",
-   "name": "has member list",
-   "description": "Relates an ordered collection to the RDF list containing its members.",
-   "termCode": "skos:memberList"
+   "@id": "http://www.w3.org/2004/02/skos/core#example",
+   "name": "example",
+   "description": "An example of the use of a concept.",
+   "termCode": "skos:example"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#relatedMatch",
+   "name": "has related match",
+   "description": "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:relatedMatch"
   },
   {
    "@type": "DefinedTerm",
@@ -173,6 +117,13 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#Concept",
+   "name": "Concept",
+   "description": "An idea or notion; a unit of thought.",
+   "termCode": "skos:Concept"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#inScheme",
    "name": "is in scheme",
    "description": "Relates a resource (for example a concept) to a concept scheme in which it is included.",
@@ -180,45 +131,24 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
-   "name": "has broader transitive",
-   "description": "skos:broaderTransitive is a transitive superproperty of skos:broader.",
-   "termCode": "skos:broaderTransitive"
+   "@id": "http://www.w3.org/2004/02/skos/core#scopeNote",
+   "name": "scope note",
+   "description": "A note that helps to clarify the meaning and/or the use of a concept.",
+   "termCode": "skos:scopeNote"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
-   "name": "Ordered Collection",
-   "description": "An ordered collection of concepts, where both the grouping and the ordering are meaningful.",
-   "termCode": "skos:OrderedCollection"
+   "@id": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+   "name": "hidden label",
+   "description": "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.",
+   "termCode": "skos:hiddenLabel"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#topConceptOf",
-   "name": "is top concept in scheme",
-   "description": "Relates a concept to the concept scheme that it is a top level concept of.",
-   "termCode": "skos:topConceptOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#definition",
-   "name": "definition",
-   "description": "A statement or formal explanation of the meaning of a concept.",
-   "termCode": "skos:definition"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#note",
-   "name": "note",
-   "description": "A general note, for any purpose.",
-   "termCode": "skos:note"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#narrower",
-   "name": "has narrower",
-   "description": "Relates a concept to a concept that is more specific in meaning.",
-   "termCode": "skos:narrower"
+   "@id": "http://www.w3.org/2004/02/skos/core#memberList",
+   "name": "has member list",
+   "description": "Relates an ordered collection to the RDF list containing its members.",
+   "termCode": "skos:memberList"
   },
   {
    "@type": "DefinedTerm",
@@ -236,6 +166,20 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#semanticRelation",
+   "name": "is in semantic relation with",
+   "description": "Links a concept to a concept related by meaning.",
+   "termCode": "skos:semanticRelation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+   "name": "Ordered Collection",
+   "description": "An ordered collection of concepts, where both the grouping and the ordering are meaningful.",
+   "termCode": "skos:OrderedCollection"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#editorialNote",
    "name": "editorial note",
    "description": "A note for an editor, translator or maintainer of the vocabulary.",
@@ -243,10 +187,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#example",
-   "name": "example",
-   "description": "An example of the use of a concept.",
-   "termCode": "skos:example"
+   "@id": "http://www.w3.org/2004/02/skos/core#related",
+   "name": "has related",
+   "description": "Relates a concept to a concept with which there is an associative semantic relationship.",
+   "termCode": "skos:related"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+   "name": "Concept Scheme",
+   "description": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
+   "termCode": "skos:ConceptScheme"
   },
   {
    "@type": "DefinedTerm",
@@ -257,6 +208,55 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+   "name": "has narrower transitive",
+   "description": "skos:narrowerTransitive is a transitive superproperty of skos:narrower.",
+   "termCode": "skos:narrowerTransitive"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+   "name": "has broader transitive",
+   "description": "skos:broaderTransitive is a transitive superproperty of skos:broader.",
+   "termCode": "skos:broaderTransitive"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#note",
+   "name": "note",
+   "description": "A general note, for any purpose.",
+   "termCode": "skos:note"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+   "name": "is top concept in scheme",
+   "description": "Relates a concept to the concept scheme that it is a top level concept of.",
+   "termCode": "skos:topConceptOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broadMatch",
+   "name": "has broader match",
+   "description": "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:broadMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrower",
+   "name": "has narrower",
+   "description": "Relates a concept to a concept that is more specific in meaning.",
+   "termCode": "skos:narrower"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrowMatch",
+   "name": "has narrower match",
+   "description": "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:narrowMatch"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#Collection",
    "name": "Collection",
    "description": "A meaningful collection of concepts.",
@@ -264,10 +264,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
-   "name": "Concept Scheme",
-   "description": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
-   "termCode": "skos:ConceptScheme"
+   "@id": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+   "name": "has top concept",
+   "description": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
+   "termCode": "skos:hasTopConcept"
   }
  ]
 }</script></head>
@@ -815,10 +815,10 @@ skos:memberList property is also a value of the skos:member property.</p>
   </header>
   <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#prefLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#prefLabel" aria-label="Copy IRI">copy</button></p>
 <div class="definition"><p>The preferred lexical label for a resource, in a given language.</p>
+</div><div class="comment"><p>The range of skos:prefLabel is the class of RDF plain literals.</p>
 </div><div class="comment"><p>skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise
 disjoint properties.</p>
 </div><div class="comment"><p>A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.</p>
-</div><div class="comment"><p>The range of skos:prefLabel is the class of RDF plain literals.</p>
 </div>  <table class="rel">
     <tbody>
 <tr><th scope="row">CURIE</th><td><code>skos:prefLabel</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="http://www.w3.org/2000/01/rdf-schema#label" class="ref ext" title="rdfs:label">rdfs:label</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
@@ -845,9 +845,9 @@ disjoint properties.</p>
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 1 warnings and 5 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 1 warnings and 5 suggestions. ROBOT: 1 errors, 1 warnings, 1 suggestions.</p>
 
-  <details class="finding sev-warning">
+<h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No license declared <span class="muted">(1) OB003</span></summary>
     <p class="muted rule-desc">Declare a license with dcterms:license so others know how they may reuse the ontology.</p>
     <ul class="findings">
@@ -872,6 +872,22 @@ disjoint properties.</p>
 <li>Property “notation” has no range. <a href="#notation">§</a></li>    </ul>
   </details>
 
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing ontology license <span class="muted">(1) missing_ontology_license</span></summary>
+    <ul class="findings">
+<li><code>http://www.w3.org/2004/02/skos/core</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing definition <span class="muted">(32) missing_definition</span></summary>
+    <ul class="findings">
+<li><code>skos:Collection</code></li><li><code>skos:Concept</code></li><li><code>skos:ConceptScheme</code></li><li><code>skos:OrderedCollection</code></li><li><code>skos:altLabel</code></li><li><code>skos:broadMatch</code></li><li><code>skos:broader</code></li><li><code>skos:broaderTransitive</code></li><li><code>skos:changeNote</code></li><li><code>skos:closeMatch</code></li><li><code>skos:definition</code></li><li><code>skos:editorialNote</code></li><li><code>skos:exactMatch</code></li><li><code>skos:example</code></li><li><code>skos:hasTopConcept</code></li><li><code>skos:hiddenLabel</code></li><li><code>skos:historyNote</code></li><li><code>skos:inScheme</code></li><li><code>skos:mappingRelation</code></li><li><code>skos:member</code></li><li><code>skos:memberList</code></li><li><code>skos:narrowMatch</code></li><li><code>skos:narrower</code></li><li><code>skos:narrowerTransitive</code></li><li><code>skos:notation</code></li><li><code>skos:note</code></li><li><code>skos:prefLabel</code></li><li><code>skos:related</code></li><li><code>skos:relatedMatch</code></li><li><code>skos:scopeNote</code></li><li><code>skos:semanticRelation</code></li><li><code>skos:topConceptOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing superclass <span class="muted">(3) missing_superclass</span></summary>
+    <ul class="findings">
+<li><code>skos:Collection</code></li><li><code>skos:Concept</code></li><li><code>skos:ConceptScheme</code></li>    </ul>
+  </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">5</span> Download</h2>
   <p class="prose">Download the ontology in your preferred format:</p>
@@ -940,10 +956,10 @@ disjoint properties.</p>
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbc9d3"></script>
+<script src="ontoreview-data.js?v=6afbd140"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbc9d3"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd140"></script>
 </body>
 </html>

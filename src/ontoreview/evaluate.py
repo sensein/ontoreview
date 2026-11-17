@@ -1,10 +1,10 @@
 """External ontology evaluators: OOPS! (web service) and ROBOT report (local or Docker).
 
-* OOPS! (https://oops.linkeddata.es) sends the ontology to a remote service, so it only runs
-  when enabled (``[evaluation] oops = true`` or ``--oops``).
 * ROBOT (http://robot.obolibrary.org/report) runs on this machine: a ``robot`` executable on
-  PATH, or the ``obolibrary/robot`` Docker image. With ``robot = "auto"`` (default) it runs
-  when either is available without downloading anything; ``robot = "on"`` pulls the image.
+  PATH, or the ``obolibrary/robot`` Docker image (pulled on first use). It runs by default.
+* OOPS! (https://oops.linkeddata.es/webservice.html) is a web service: the ontology is sent to
+  it. With ``oops = "auto"`` (default) it is the fallback when ROBOT cannot run (no Docker, or
+  ROBOT failed); ``oops = "on"`` always runs it, ``oops = "off"`` never does.
 """
 
 from __future__ import annotations
@@ -26,6 +26,8 @@ log = logging.getLogger(__name__)
 
 OOPS_ENDPOINT = "https://oops.linkeddata.es/rest"
 OOPS = Namespace("http://oops.linkeddata.es/def#")
+# the web service documentation's RDF/XML responses use this namespace; accept both
+OOPS_OEG = Namespace("http://www.oeg-upm.net/oops#")
 OOPS_LEVELS = {"critical": "error", "important": "warning", "minor": "info"}
 ROBOT_LEVELS = {"error": "error", "warn": "warning", "info": "info"}
 
@@ -84,8 +86,17 @@ def run_oops(graph: Graph, timeout: int = 90, endpoint: str = OOPS_ENDPOINT) -> 
 
 
 def parse_oops(rdfxml: str) -> list[ExternalItem]:
+    items: list[ExternalItem] = []
     g = Graph()
     g.parse(data=rdfxml, format="xml")
+    for ns in (OOPS, OOPS_OEG):
+        items += _parse_oops_ns(g, ns)
+    rank = {"error": 0, "warning": 1, "info": 2}
+    items.sort(key=lambda i: (rank[i.severity], i.code))
+    return items
+
+
+def _parse_oops_ns(g: Graph, OOPS: Namespace) -> list[ExternalItem]:  # noqa: N803
     items: list[ExternalItem] = []
     for kind, default_sev in ((OOPS.pitfall, None), (OOPS.warning, "warning"), (OOPS.suggestion, "info")):
         for node in g.subjects(RDF.type, kind):
@@ -105,8 +116,6 @@ def parse_oops(rdfxml: str) -> list[ExternalItem]:
                 description=" ".join(str(g.value(node, OOPS.hasDescription) or "").split()),
                 affected=sorted(set(affected)), note=" ".join(note),
             ))
-    rank = {"error": 0, "warning": 1, "info": 2}
-    items.sort(key=lambda i: (rank[i.severity], i.code))
     return items
 
 
@@ -156,12 +165,14 @@ def robot_command(robot: str | None = None, image: str | None = None,
 
 
 def run_robot(graph: Graph, robot: str | None = None, profile: str | None = None,
-              timeout: int = 600, image: str | None = None, pull: bool = False) -> ExternalReport | None:
+              timeout: int = 900, image: str | None = None, pull: bool = True) -> ExternalReport | None:
     """Run ``robot report`` locally or in Docker. Returns None when ROBOT is not available."""
     resolved = robot_command(robot, image, pull)
     if resolved is None:
         return None
     mode, cmd = resolved
+    if mode == "docker":
+        log.info("Running ROBOT report in Docker (%s)", cmd[-1])
     report = ExternalReport("ROBOT", "http://robot.obolibrary.org/report")
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / "ontology.owl"
@@ -220,18 +231,25 @@ def parse_robot_tsv(text: str) -> list[ExternalItem]:
 
 
 def run_evaluations(graph: Graph, config) -> list[ExternalReport]:
+    """ROBOT first (local or Docker); OOPS! web service as fallback, or always with oops = "on"."""
     ev = config.evaluation
     out: list[ExternalReport] = []
+    robot_ok = False
     if ev.robot != "off":
-        r = run_robot(graph, ev.robot_path, ev.robot_profile, image=ev.robot_image,
-                      pull=ev.robot == "on")
-        if r is None and ev.robot == "on":
-            out.append(ExternalReport("ROBOT", "http://robot.obolibrary.org/report",
-                                      error="ROBOT is not available: start Docker (image "
-                                            f"{ev.robot_image}) or put `robot` on PATH."))
-        elif r is not None:
+        r = run_robot(graph, ev.robot_path, ev.robot_profile, image=ev.robot_image)
+        if r is None:
+            if ev.robot == "on":
+                out.append(ExternalReport("ROBOT", "http://robot.obolibrary.org/report",
+                                          error="ROBOT is not available: start Docker (image "
+                                                f"{ev.robot_image}) or put `robot` on PATH."))
+        else:
             out.append(r)
-    if ev.oops:
+            robot_ok = r.error is None
+    fallback = ev.oops == "auto" and ev.robot != "off" and not robot_ok
+    if ev.oops == "on" or fallback:
+        if fallback:
+            log.info("ROBOT could not run; using the OOPS! web service instead (uploads the ontology "
+                     "to oops.linkeddata.es; set evaluation.oops = \"off\" to disable).")
         out.append(run_oops(graph, ev.oops_timeout))
     for r in out:
         if r.error:

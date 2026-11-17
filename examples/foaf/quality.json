@@ -4,7 +4,158 @@
     "warning": 5,
     "info": 27
   },
-  "external": [],
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "duplicate_label",
+          "name": "Duplicate label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "foaf:account",
+            "foaf:givenName",
+            "foaf:givenname",
+            "foaf:holdsAccount"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_license",
+          "name": "Missing ontology license",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/"
+          ],
+          "note": ""
+        },
+        {
+          "code": "equivalent_pair",
+          "name": "Equivalent pair",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "dc:Agent",
+            "http://www.w3.org/2000/10/swap/pim/contact#Person",
+            "schema:CreativeWork",
+            "schema:ImageObject",
+            "schema:Person"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "foaf:Agent",
+            "foaf:Document",
+            "foaf:Group",
+            "foaf:Image",
+            "foaf:LabelProperty",
+            "foaf:OnlineAccount",
+            "foaf:OnlineChatAccount",
+            "foaf:OnlineEcommerceAccount",
+            "foaf:OnlineGamingAccount",
+            "foaf:Organization",
+            "foaf:Person",
+            "foaf:PersonalProfileDocument",
+            "foaf:Project",
+            "foaf:account",
+            "foaf:accountName",
+            "foaf:accountServiceHomepage",
+            "foaf:age",
+            "foaf:aimChatID",
+            "foaf:based_near",
+            "foaf:birthday",
+            "foaf:currentProject",
+            "foaf:depiction",
+            "foaf:depicts",
+            "foaf:dnaChecksum",
+            "foaf:familyName",
+            "foaf:family_name",
+            "foaf:firstName",
+            "foaf:focus",
+            "foaf:fundedBy",
+            "foaf:geekcode",
+            "foaf:gender",
+            "foaf:givenName",
+            "foaf:givenname",
+            "foaf:holdsAccount",
+            "foaf:homepage",
+            "foaf:icqChatID",
+            "foaf:img",
+            "foaf:interest",
+            "foaf:isPrimaryTopicOf",
+            "foaf:jabberID",
+            "foaf:knows",
+            "foaf:lastName",
+            "foaf:logo",
+            "foaf:made",
+            "foaf:maker",
+            "foaf:mbox",
+            "foaf:mbox_sha1sum",
+            "foaf:member",
+            "foaf:membershipClass",
+            "foaf:msnChatID",
+            "foaf:myersBriggs",
+            "foaf:name",
+            "foaf:nick",
+            "foaf:openid",
+            "foaf:page",
+            "foaf:pastProject",
+            "foaf:phone",
+            "foaf:plan",
+            "foaf:primaryTopic",
+            "foaf:publications",
+            "foaf:schoolHomepage",
+            "foaf:sha1",
+            "foaf:skypeID",
+            "foaf:status",
+            "foaf:surname",
+            "foaf:theme",
+            "foaf:thumbnail",
+            "foaf:tipjar",
+            "foaf:title",
+            "foaf:topic",
+            "foaf:topic_interest",
+            "foaf:weblog",
+            "foaf:workInfoHomepage",
+            "foaf:workplaceHomepage",
+            "foaf:yahooChatID",
+            "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+            "skos:Concept"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "foaf:Agent",
+            "foaf:Document",
+            "foaf:LabelProperty",
+            "foaf:Project",
+            "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+            "skos:Concept"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 2,
+        "warning": 2,
+        "info": 1
+      }
+    }
+  ],
   "findings": [
     {
       "rule": "OB003",
@@ -28,15 +179,6 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “image” is used by `foaf:Image`, `foaf:img`.",
-      "subject": "http://xmlns.com/foaf/0.1/Image",
-      "subject_label": "Image",
-      "anchor": "Image"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
       "message": "Label “given name” is used by `foaf:givenname`, `foaf:givenName`.",
       "subject": "http://xmlns.com/foaf/0.1/givenname",
       "subject_label": "Given name",
@@ -50,6 +192,15 @@
       "subject": "http://xmlns.com/foaf/0.1/holdsAccount",
       "subject_label": "account",
       "anchor": "holdsAccount"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “image” is used by `foaf:img`, `foaf:Image`.",
+      "subject": "http://xmlns.com/foaf/0.1/img",
+      "subject_label": "image",
+      "anchor": "img"
     },
     {
       "rule": "OB004",

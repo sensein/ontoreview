@@ -4,7 +4,173 @@
     "warning": 17,
     "info": 5
   },
-  "external": [],
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "missing_label",
+          "name": "Missing label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "prov:wasDerivedFrom"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_description",
+          "name": "Missing ontology description",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#"
+          ],
+          "note": ""
+        },
+        {
+          "code": "multiple_labels",
+          "name": "Multiple labels",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#",
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#FormalOrganization",
+            "http://www.w3.org/ns/org#Head",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#OrganizationalUnit",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#Site",
+            "http://www.w3.org/ns/org#basedAt",
+            "http://www.w3.org/ns/org#changedBy",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#hasMember",
+            "http://www.w3.org/ns/org#hasMembership",
+            "http://www.w3.org/ns/org#hasPost",
+            "http://www.w3.org/ns/org#hasPrimarySite",
+            "http://www.w3.org/ns/org#hasRegisteredSite",
+            "http://www.w3.org/ns/org#hasSite",
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#heldBy",
+            "http://www.w3.org/ns/org#holds",
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#location",
+            "http://www.w3.org/ns/org#member",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#memberOf",
+            "http://www.w3.org/ns/org#organization",
+            "http://www.w3.org/ns/org#originalOrganization",
+            "http://www.w3.org/ns/org#postIn",
+            "http://www.w3.org/ns/org#purpose",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#resultedFrom",
+            "http://www.w3.org/ns/org#resultingOrganization",
+            "http://www.w3.org/ns/org#role",
+            "http://www.w3.org/ns/org#roleProperty",
+            "http://www.w3.org/ns/org#siteAddress",
+            "http://www.w3.org/ns/org#siteOf",
+            "http://www.w3.org/ns/org#subOrganizationOf",
+            "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "equivalent_pair",
+          "name": "Equivalent pair",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#Organization"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#FormalOrganization",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#OrganizationalUnit",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#Site",
+            "http://www.w3.org/ns/org#basedAt",
+            "http://www.w3.org/ns/org#changedBy",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#hasMember",
+            "http://www.w3.org/ns/org#hasMembership",
+            "http://www.w3.org/ns/org#hasPost",
+            "http://www.w3.org/ns/org#hasPrimarySite",
+            "http://www.w3.org/ns/org#hasRegisteredSite",
+            "http://www.w3.org/ns/org#hasSite",
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#heldBy",
+            "http://www.w3.org/ns/org#holds",
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#location",
+            "http://www.w3.org/ns/org#member",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#memberOf",
+            "http://www.w3.org/ns/org#organization",
+            "http://www.w3.org/ns/org#originalOrganization",
+            "http://www.w3.org/ns/org#postIn",
+            "http://www.w3.org/ns/org#purpose",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#resultedFrom",
+            "http://www.w3.org/ns/org#resultingOrganization",
+            "http://www.w3.org/ns/org#role",
+            "http://www.w3.org/ns/org#roleProperty",
+            "http://www.w3.org/ns/org#siteAddress",
+            "http://www.w3.org/ns/org#siteOf",
+            "http://www.w3.org/ns/org#subOrganizationOf",
+            "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf",
+            "prov:wasDerivedFrom"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Site"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 3,
+        "warning": 2,
+        "info": 1
+      }
+    }
+  ],
   "findings": [
     {
       "rule": "OB005",
@@ -73,46 +239,46 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “role” @en is used by `org:Role`, `org:role`.",
-      "subject": "http://www.w3.org/ns/org#Role",
-      "subject_label": "Role",
-      "anchor": "Role"
+      "message": "Label “impiego” @it is used by `org:Post`, `org:hasPost`.",
+      "subject": "http://www.w3.org/ns/org#Post",
+      "subject_label": "Post",
+      "anchor": "Post"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “ruolo” @it is used by `org:Role`, `org:role`.",
-      "subject": "http://www.w3.org/ns/org#Role",
-      "subject_label": "Role",
-      "anchor": "Role"
+      "message": "Label “post” @en is used by `org:Post`, `org:hasPost`.",
+      "subject": "http://www.w3.org/ns/org#Post",
+      "subject_label": "Post",
+      "anchor": "Post"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “rôle” @fr is used by `org:Role`, `org:role`.",
-      "subject": "http://www.w3.org/ns/org#Role",
-      "subject_label": "Role",
-      "anchor": "Role"
+      "message": "Label “role” @en is used by `org:role`, `org:Role`.",
+      "subject": "http://www.w3.org/ns/org#role",
+      "subject_label": "role",
+      "anchor": "role"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “impiego” @it is used by `org:hasPost`, `org:Post`.",
-      "subject": "http://www.w3.org/ns/org#hasPost",
-      "subject_label": "post",
-      "anchor": "hasPost"
+      "message": "Label “ruolo” @it is used by `org:role`, `org:Role`.",
+      "subject": "http://www.w3.org/ns/org#role",
+      "subject_label": "role",
+      "anchor": "role"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “post” @en is used by `org:hasPost`, `org:Post`.",
-      "subject": "http://www.w3.org/ns/org#hasPost",
-      "subject_label": "post",
-      "anchor": "hasPost"
+      "message": "Label “rôle” @fr is used by `org:role`, `org:Role`.",
+      "subject": "http://www.w3.org/ns/org#role",
+      "subject_label": "role",
+      "anchor": "role"
     },
     {
       "rule": "OB017",

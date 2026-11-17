@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 if sys.version_info >= (3, 11):
     import tomllib
@@ -111,13 +111,22 @@ class EvaluationConfig(BaseModel):
     """External evaluators shown in the quality report."""
 
     model_config = ConfigDict(extra="forbid")
-    oops: bool = Field(False, description="Run the OOPS! pitfall scanner (uploads the ontology to "
-                                          "https://oops.linkeddata.es)")
+    oops: Literal["auto", "on", "off"] = Field(
+        "auto", description="OOPS! pitfall scanner web service (uploads the ontology to "
+                            "https://oops.linkeddata.es): auto = only when ROBOT cannot run, on = always, off = never")
     oops_timeout: int = 90
-    robot: Literal["auto", "on", "off"] = Field("auto", description="Run `robot report` when ROBOT is available")
+    robot: Literal["auto", "on", "off"] = Field(
+        "auto", description="Run `robot report` (local robot, else Docker). auto = run, falling back to OOPS! "
+                            "when unavailable; on = same, and report an error if unavailable; off = never")
     robot_path: str | None = Field(None, description="A local `robot` executable (optional; Docker is used otherwise)")
     robot_image: str = Field("obolibrary/robot", description="Docker image used to run ROBOT")
     robot_profile: str | None = Field(None, description="Custom ROBOT report profile (TSV)")
+
+    @field_validator("oops", "robot", mode="before")
+    @classmethod
+    def _bool_to_mode(cls, v):
+        # older configs used oops = true / false
+        return {True: "on", False: "off"}.get(v, v) if isinstance(v, bool) else v
 
 
 class ChecksConfig(BaseModel):

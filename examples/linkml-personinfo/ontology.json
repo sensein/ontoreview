@@ -36,8 +36,8 @@
    "kind": "class",
    "label": "Container",
    "restrictions": [
-    "personinfo:organizations only personinfo:Organization",
-    "personinfo:persons only schema:Person"
+    "personinfo:persons only schema:Person",
+    "personinfo:organizations only personinfo:Organization"
    ]
   },
   {
@@ -74,8 +74,8 @@
     "schema:Person"
    ],
    "restrictions": [
-    "schema:description max 1 xsd:string",
     "schema:name max 1 xsd:string",
+    "schema:description max 1 xsd:string",
     "personinfo:id exactly 1 xsd:anyURI"
    ]
   },
@@ -110,11 +110,11 @@
     "personinfo:NamedThing"
    ],
    "restrictions": [
-    "personinfo:gender max 1 personinfo:GenderType",
+    "schema:email exactly 1 xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]",
+    "personinfo:employed_by max 1 personinfo:Organization",
     "personinfo:age_in_years max 1 xsd:integer[>= 0, <= 999]",
     "schema:birthDate max 1 xsd:date",
-    "personinfo:employed_by max 1 personinfo:Organization",
-    "schema:email exactly 1 xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]"
+    "personinfo:gender max 1 personinfo:GenderType"
    ]
   },
   {

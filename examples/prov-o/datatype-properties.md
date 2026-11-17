@@ -13,7 +13,7 @@ The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.
 | category | qualified |
 | component | entities-activities |
 | sharesDefinitionWith | prov:InstantaneousEvent |
-| unqualifiedForm | prov:startedAtTime; prov:invalidatedAtTime; prov:endedAtTime; prov:generatedAtTime |
+| unqualifiedForm | prov:generatedAtTime; prov:invalidatedAtTime; prov:endedAtTime; prov:startedAtTime |
 
 ### endedAtTime
 
@@ -28,7 +28,7 @@ The time at which an activity ended. See also prov:startedAtTime.
 | category | starting-point |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedEnd o prov:atTime) rdfs:subPropertyOf prov:endedAtTime. |
-| qualifiedForm | prov:atTime; prov:End |
+| qualifiedForm | prov:End; prov:atTime |
 
 ### generatedAtTime
 
@@ -73,7 +73,7 @@ The time at which an activity started. See also prov:endedAtTime.
 | category | starting-point |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedStart o prov:atTime) rdfs:subPropertyOf prov:startedAtTime. |
-| qualifiedForm | prov:atTime; prov:Start |
+| qualifiedForm | prov:Start; prov:atTime |
 
 ### value
 

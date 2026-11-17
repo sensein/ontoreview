@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+type: dataset
+title: "W3C PROVenance Interchange Ontology (PROV-O)"
+version: "Recommendation version 2013-04-30"
+url: "http://www.w3.org/ns/prov-o#"
+authors:
+  - name: Anonymous

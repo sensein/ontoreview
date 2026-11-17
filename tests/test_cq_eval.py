@@ -2,7 +2,10 @@ import os
 import stat
 import textwrap
 
+import pytest
+
 import ontoreview
+from ontoreview import evaluate as evaluators
 from ontoreview.config import Config
 from ontoreview.cq import evaluate, load_cqs, load_many, write_template
 from ontoreview.evaluate import parse_oops, parse_robot_tsv, run_evaluations, run_robot
@@ -98,8 +101,21 @@ def test_parse_robot():
         ("missing_label", "error", 1), ("missing_definition", "warning", 2), ("lowercase_definition", "info", 1)]
 
 
+def _fake_oops(monkeypatch):
+    """Replace the OOPS! web call; returns the list of graphs it was called with."""
+    calls = []
+
+    def fake(graph, *a, **k):
+        calls.append(graph)
+        return evaluators.ExternalReport("OOPS!", "https://oops.linkeddata.es", items=parse_oops(OOPS_SAMPLE))
+    monkeypatch.setattr(evaluators, "run_oops", fake)
+    return calls
+
+
+@pytest.mark.real_evaluators
 def test_robot_stub(tmp_path, pizza, monkeypatch):
     loaded, _ = pizza
+    oops_calls = _fake_oops(monkeypatch)
     canned = tmp_path / "canned.tsv"
     canned.write_text(ROBOT_TSV)
     stub = tmp_path / "robot"
@@ -113,17 +129,40 @@ def test_robot_stub(tmp_path, pizza, monkeypatch):
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}{os.environ['PATH']}")
     rep = run_robot(loaded.graph)
     assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 1, "info": 1}
-    cfg = Config(evaluation={"robot": "on"})
-    assert run_evaluations(loaded.graph, cfg)[0].tool == "ROBOT"
+    reports = run_evaluations(loaded.graph, Config())
+    assert [r.tool for r in reports] == ["ROBOT"] and not oops_calls  # ROBOT worked: no OOPS! fallback
 
 
-def test_robot_missing_is_reported_only_when_forced(pizza, monkeypatch):
+@pytest.mark.real_evaluators
+def test_no_robot_falls_back_to_oops(pizza, monkeypatch):
     loaded, _ = pizza
-    monkeypatch.setenv("PATH", "/nonexistent")
-    assert run_evaluations(loaded.graph, Config()) == []
+    oops_calls = _fake_oops(monkeypatch)
+    monkeypatch.setenv("PATH", "/nonexistent")  # no robot, no docker
+    reports = run_evaluations(loaded.graph, Config())
+    assert [r.tool for r in reports] == ["OOPS!"] and len(oops_calls) == 1
     forced = run_evaluations(loaded.graph, Config(evaluation={"robot": "on"}))
-    assert forced[0].error and "not available" in forced[0].error
+    assert [r.tool for r in forced] == ["ROBOT", "OOPS!"] and "not available" in forced[0].error
 
+
+@pytest.mark.real_evaluators
+def test_oops_off_never_uploads(pizza, monkeypatch):
+    loaded, _ = pizza
+    oops_calls = _fake_oops(monkeypatch)
+    monkeypatch.setenv("PATH", "/nonexistent")
+    assert run_evaluations(loaded.graph, Config(evaluation={"oops": "off"})) == []
+    assert run_evaluations(loaded.graph, Config(evaluation={"robot": "off"})) == []
+    assert not oops_calls
+
+
+def test_oops_config_accepts_booleans():
+    assert Config(evaluation={"oops": True}).evaluation.oops == "on"
+    assert Config(evaluation={"oops": False}).evaluation.oops == "off"
+    assert Config().evaluation.oops == "auto" and Config().evaluation.robot == "auto"
+
+
+def test_parse_oops_documented_namespace():
+    doc = OOPS_SAMPLE.replace("http://oops.linkeddata.es/def#", "http://www.oeg-upm.net/oops#")
+    assert [i.code for i in parse_oops(doc)] == [i.code for i in parse_oops(OOPS_SAMPLE)]
 
 
 def _docker_stub(tmp_path, canned, has_image):
@@ -149,8 +188,10 @@ def _docker_stub(tmp_path, canned, has_image):
     return log
 
 
+@pytest.mark.real_evaluators
 def test_robot_docker(tmp_path, pizza, monkeypatch):
     loaded, _ = pizza
+    oops_calls = _fake_oops(monkeypatch)
     canned = tmp_path / "canned.tsv"
     canned.write_text(ROBOT_TSV)
     log = _docker_stub(tmp_path, canned, has_image=True)
@@ -159,18 +200,21 @@ def test_robot_docker(tmp_path, pizza, monkeypatch):
     assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 1, "info": 1}
     calls = log.read_text()
     assert "run --rm" in calls and ":/work -w /work" in calls and "obolibrary/robot robot report" in calls
+    assert not oops_calls
 
 
-def test_robot_docker_auto_never_pulls(tmp_path, pizza, monkeypatch):
+@pytest.mark.real_evaluators
+def test_robot_docker_pulls_by_default(tmp_path, pizza, monkeypatch):
     loaded, _ = pizza
+    oops_calls = _fake_oops(monkeypatch)
     canned = tmp_path / "canned.tsv"
     canned.write_text(ROBOT_TSV)
     log = _docker_stub(tmp_path, canned, has_image=False)
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}/usr/bin{os.pathsep}/bin")
-    assert run_evaluations(loaded.graph, Config()) == []  # auto: image missing -> skipped
-    assert " run " not in f" {log.read_text()}"
-    forced = run_evaluations(loaded.graph, Config(evaluation={"robot": "on"}))  # on: docker run pulls
-    assert forced[0].tool == "ROBOT" and forced[0].error is None
+    reports = run_evaluations(loaded.graph, Config())  # image missing: `docker run` pulls it
+    assert [r.tool for r in reports] == ["ROBOT"] and reports[0].error is None
+    assert "\nrun --rm" in f"\n{log.read_text()}" and not oops_calls
+
 
 def test_llm_files(fixtures, tmp_path):
     import json

@@ -20,9 +20,9 @@ An activity is something that occurs over a period of time and acts upon or with
 
 **IRI:** `http://www.w3.org/ns/prov#ActivityInfluence` · `prov:ActivityInfluence`
 
-ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
-
 It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.
+
+ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
 
 | | |
 |---|---|
@@ -54,9 +54,9 @@ An agent is something that bears some form of responsibility for an activity tak
 
 **IRI:** `http://www.w3.org/ns/prov#AgentInfluence` · `prov:AgentInfluence`
 
-AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
-
 It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.
+
+AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
 
 | | |
 |---|---|
@@ -286,9 +286,9 @@ An instance of prov:Generation provides additional descriptions about the binary
 
 Influence is the capacity of an entity, activity, or agent to have an effect on the character, development, or behavior of another by means of usage, start, end, generation, invalidation, communication, derivation, attribution, association, or delegation.
 
-An instance of prov:Influence provides additional descriptions about the binary prov:wasInfluencedBy relation from some influenced Activity, Entity, or Agent to the influencing Activity, Entity, or Agent. For example, :stomach_ache prov:wasInfluencedBy :spoon; prov:qualifiedInfluence [ a prov:Influence; prov:entity :spoon; :foo :bar ] . Because prov:Influence is a broad relation, the more specific relations (Communication, Delegation, End, etc.) should be used when applicable.
-
 Because prov:Influence is a broad relation, its most specific subclasses (e.g. prov:Communication, prov:Delegation, prov:End, prov:Revision, etc.) should be used when applicable.
+
+An instance of prov:Influence provides additional descriptions about the binary prov:wasInfluencedBy relation from some influenced Activity, Entity, or Agent to the influencing Activity, Entity, or Agent. For example, :stomach_ache prov:wasInfluencedBy :spoon; prov:qualifiedInfluence [ a prov:Influence; prov:entity :spoon; :foo :bar ] . Because prov:Influence is a broad relation, the more specific relations (Communication, Delegation, End, etc.) should be used when applicable.
 
 | | |
 |---|---|

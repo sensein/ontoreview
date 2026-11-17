@@ -130,7 +130,7 @@ A person.
 | | |
 |---|---|
 | Superclasses | [Agent](classes.md#agent), [Spatial Thing](classes.md#spatialthing) |
-| Equivalent to | [Person](http://www.w3.org/2000/10/swap/pim/contact#Person); [Person](http://schema.org/Person) |
+| Equivalent to | [Person](http://schema.org/Person); [Person](http://www.w3.org/2000/10/swap/pim/contact#Person) |
 | Disjoint with | [Organization](classes.md#organization), [Project](classes.md#project) |
 | Used in | in domain of [current project](object-properties.md#currentproject); in domain of [family_name](datatype-properties.md#family_name); in domain of [familyName](datatype-properties.md#familyname); in domain of [firstName](datatype-properties.md#firstname); in domain of [geekcode](datatype-properties.md#geekcode); in domain of [image](object-properties.md#img); in domain of [knows](object-properties.md#knows); in domain of [lastName](datatype-properties.md#lastname); in domain of [myersBriggs](datatype-properties.md#myersbriggs); in domain of [past project](object-properties.md#pastproject); in domain of [plan](datatype-properties.md#plan); in domain of [publications](object-properties.md#publications); in domain of [schoolHomepage](object-properties.md#schoolhomepage); in domain of [Surname](datatype-properties.md#surname); in domain of [work info homepage](object-properties.md#workinfohomepage); in domain of [workplace homepage](object-properties.md#workplacehomepage); in range of [knows](object-properties.md#knows) |
 

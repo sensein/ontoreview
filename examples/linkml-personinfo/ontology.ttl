@@ -2,8 +2,8 @@
 @prefix ORCID: <https://orcid.org/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix linkml: <https://w3id.org/linkml/> .
-@prefix ns1: <https://schema.org/> .
-@prefix ns2: <http://purl.org/vocab/vann/> .
+@prefix ns1: <http://purl.org/vocab/vann/> .
+@prefix ns2: <https://schema.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix personinfo: <https://w3id.org/example/personinfo/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -151,11 +151,11 @@ personinfo:Container a owl:Class ;
     rdfs:label "Container" ;
     rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom personinfo:Organization ;
-            owl:onProperty personinfo:organizations ],
-        [ a owl:Restriction ;
             owl:allValuesFrom schema:Person ;
-            owl:onProperty personinfo:persons ] ;
+            owl:onProperty personinfo:persons ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom personinfo:Organization ;
+            owl:onProperty personinfo:organizations ] ;
     linkml:tree_root true .
 
 personinfo:HasAliases a owl:Class ;
@@ -171,17 +171,17 @@ personinfo:NamedThing a owl:Class ;
     rdfs:label "NamedThing" ;
     rdfs:isDefinedBy <https://w3id.org/example/core> ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:onDataRange xsd:anyURI ;
+            owl:onProperty personinfo:id ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onDataRange xsd:string ;
             owl:onProperty schema:name ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onDataRange xsd:string ;
-            owl:onProperty schema:description ],
-        [ a owl:Restriction ;
-            owl:onDataRange xsd:anyURI ;
-            owl:onProperty personinfo:id ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] ;
+            owl:onProperty schema:description ] ;
     skos:definition "A generic grouping for any identifiable entity." ;
     linkml:abstract true .
 
@@ -197,12 +197,12 @@ personinfo:Organization a owl:Class ;
     rdfs:label "Organization" ;
     rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom schema:Person ;
-            owl:onProperty personinfo:employees ],
-        [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onDataRange xsd:date ;
             owl:onProperty personinfo:founding_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom schema:Person ;
+            owl:onProperty personinfo:employees ],
         personinfo:NamedThing ;
     skos:definition "An organization such as a company or university." .
 
@@ -210,6 +210,14 @@ schema:Person a owl:Class ;
     rdfs:label "Person" ;
     rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass personinfo:Organization ;
+            owl:onProperty personinfo:employed_by ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:date ;
+            owl:onProperty schema:birthDate ],
+        [ a owl:Restriction ;
             owl:onDataRange [ a rdfs:Datatype ;
                     owl:onDatatype xsd:string ;
                     owl:withRestrictions ( [ xsd:pattern "^\\S+@[\\S+\\.]+\\S+" ] ) ] ;
@@ -217,18 +225,10 @@ schema:Person a owl:Class ;
             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onDataRange xsd:date ;
-            owl:onProperty schema:birthDate ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onDataRange [ a rdfs:Datatype ;
                     owl:onDatatype xsd:integer ;
                     owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 999 ] ) ] ;
             owl:onProperty personinfo:age_in_years ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass personinfo:Organization ;
-            owl:onProperty personinfo:employed_by ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onClass personinfo:GenderType ;
@@ -250,10 +250,10 @@ Used to test **OntoReview**'s LinkML support.""" ;
     dcterms:license <https://creativecommons.org/publicdomain/zero/1.0/> ;
     dcterms:modified "2026-10-15" ;
     dcterms:title "Person Information Model" ;
-    ns2:preferredNamespacePrefix "personinfo" ;
-    ns2:preferredNamespaceUri "https://w3id.org/example/personinfo/" ;
+    ns1:preferredNamespacePrefix "personinfo" ;
+    ns1:preferredNamespaceUri "https://w3id.org/example/personinfo/" ;
     owl:versionInfo "0.3.0" ;
-    ns1:keywords "organizations",
+    ns2:keywords "organizations",
         "people" ;
     linkml:generation_source "LinkML schema" .
 
