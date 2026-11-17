@@ -35,3 +35,8 @@ def _no_external_evaluators(request, monkeypatch):
         return
     monkeypatch.setattr(evaluate, "run_robot", lambda *a, **k: None)
     monkeypatch.setattr(evaluate, "run_oops", lambda *a, **k: evaluate.ExternalReport("OOPS!", "https://oops.linkeddata.es"))
+
+
+@pytest.fixture
+def anyio_backend():
+    return "asyncio"

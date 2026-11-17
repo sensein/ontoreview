@@ -101,6 +101,28 @@ Every build also writes Stripe-style machine-readable versions of the docs, whic
 
 Turn this off with `llm = false`.
 
+## Desktop-style UI (`ontoreview-ui`)
+
+If you'd rather not use the command line, there's a local web UI built with [NiceGUI](https://nicegui.io/):
+
+```
+pip install "ontoreview[ui]"      # Python 3.11+
+ontoreview-ui                     # opens http://127.0.0.1:8765
+```
+
+1. **What to document:** type a path or URL, or click **File…** / **Folder…** to browse this machine. The UI tells you how many ontologies a folder holds.
+2. **What to produce:** a website, a single HTML file, Markdown, MyST (Sphinx) or a quality check.
+3. **Where:** the output folder (a sensible default is filled in). If it already holds OntoReview output, from the UI or the CLI, you'll see when it was built, with **Open** and **Open folder** buttons.
+
+**Options** covers layout, languages, public URL, imports, individuals, reasoning, competency questions, the previous version (for the changelog), and the ROBOT/OOPS! settings. Press **Run** to see a results table, with one row per ontology for folders, each with **open** and **open folder** links. You also get a live log and the equivalent `ontoreview` command line, so you can move a working setup to CI.
+
+- **Previous runs:** every run is kept in a history you can filter by text or task. It shows only runs whose output still exists unless you turn that off. Each entry can open the result, open its folder, or load its settings back into the form.
+- **Save as / Load `ontoreview.toml`:** write the current settings next to your ontology, or read an existing config.
+- Settings and history are stored in `~/.config/ontoreview/` (set `ONTOREVIEW_UI_SETTINGS` to move them).
+- The UI listens on `127.0.0.1` only. `--host` can change that, but anyone who can reach it could read and write files on your machine. Other flags: `--port`, `--no-browser`, `--native` (desktop window, needs `pywebview`).
+
+`ontoreview studio` is still available as the minimal open-a-file-and-preview tool.
+
 ## Studio and single-file export
 
 ```bash
