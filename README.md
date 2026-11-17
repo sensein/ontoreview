@@ -4,9 +4,17 @@
 A pure-Python alternative to [Widoco](https://github.com/dgarijo/Widoco). No Java, no web services, one command.
 
 ```bash
-pip install ontoreview
+pip install "ontoreview[ui]"              # Python 3.11+
+ontoreview ui                             # opens the app at http://127.0.0.1:8765
+```
+
+Pick an ontology (or a whole folder, or drag it in), choose **Website**, press **Build docs**. The app shows the quality issues found by the built-in checks, ROBOT and OOPS!, and keeps a history of your runs.
+
+For scripts and CI, the same features are commands (see [Commands](#commands)):
+
+```bash
 ontoreview build my-ontology.ttl          # → docs/index.html
-ontoreview serve my-ontology.ttl          # live-reload preview
+ontoreview check my-ontology.ttl --fail-on error
 ```
 
 ## Why OntoReview?
@@ -101,25 +109,22 @@ Every build also writes Stripe-style machine-readable versions of the docs, whic
 
 Turn this off with `llm = false`.
 
-## Desktop-style UI (`ontoreview-ui`)
+## The app (`ontoreview ui`)
 
-If you'd rather not use the command line, there's a local web UI built with [NiceGUI](https://nicegui.io/):
+If you'd rather not use the command line, use the local app built with [NiceGUI](https://nicegui.io/):
 
 ```
 pip install "ontoreview[ui]"      # Python 3.11+
-ontoreview-ui                     # opens http://127.0.0.1:8765
+ontoreview ui                     # or: ontoreview-ui; opens http://127.0.0.1:8765
 ```
 
-1. **What to document:** type a path or URL, or click **File…** / **Folder…** to browse this machine. The UI tells you how many ontologies a folder holds.
-2. **What to produce:** a website, a single HTML file, Markdown, MyST (Sphinx) or a quality check.
-3. **Where:** the output folder (a sensible default is filled in). If it already holds OntoReview output, from the UI or the CLI, you'll see when it was built, with **Open** and **Open folder** buttons.
-
-**Options** covers layout, languages, public URL, imports, individuals, reasoning, competency questions, the previous version (for the changelog), and the ROBOT/OOPS! settings. Press **Run** to see a results table, with one row per ontology for folders, each with **open** and **open folder** links. You also get a live log and the equivalent `ontoreview` command line, so you can move a working setup to CI.
-
-- **Previous runs:** every run is kept in a history you can filter by text or task. It shows only runs whose output still exists unless you turn that off. Each entry can open the result, open its folder, or load its settings back into the form.
-- **Save as / Load `ontoreview.toml`:** write the current settings next to your ontology, or read an existing config.
-- Settings and history are stored in `~/.config/ontoreview/` (set `ONTOREVIEW_UI_SETTINGS` to move them).
-- The UI listens on `127.0.0.1` only. `--host` can change that, but anyone who can reach it could read and write files on your machine. Other flags: `--port`, `--no-browser`, `--native` (desktop window, needs `pywebview`).
+- **Build:** choose a file, a folder or a URL (or drag files and folders onto the page), pick the output (**Website** is recommended for publishing docs), and press **Build docs**. You'll see progress step by step, then the term count, errors and warnings, and a filterable list of issues from the built-in checks, ROBOT and OOPS!. **Open docs** and **Show in folder** take you to the result. The equivalent `ontoreview` command is under **Command line**, ready for CI.
+- **Run history:** every run, searchable and filterable. Each can be opened, shown in its folder, re-run with the same settings or removed from the list.
+- **Settings:** defaults for every build. *General* covers the output folder, default format and history. *Documentation* covers layout, languages, public URL, imports, reasoning, competency questions and previous version. *Quality checks* covers ROBOT (Docker or a local `robot`), the OOPS! service and when a check fails. *Appearance* covers the theme and compact layout. A project's `ontoreview.toml` overrides these.
+- **About:** version, system info for bug reports, and links.
+- The sidebar shows whether ROBOT (Docker) and the OOPS! service are available. **OOPS! uploads your ontology to oops.linkeddata.es.** By default it only runs when ROBOT can't, and you can turn it off in Settings.
+- Settings, preferences and history are stored in `~/.config/ontoreview/` (set `ONTOREVIEW_UI_SETTINGS` to move them). Dropped files are copied to `~/.config/ontoreview/uploads/`.
+- The app listens on `127.0.0.1` only. It uses the first free port from 8765, or `--port N` (or `ONTOREVIEW_UI_PORT`). `--no-browser` skips opening a tab. `--host` exposes it to your network, and anyone who can reach it could read and write files on your machine.
 
 `ontoreview studio` is still available as the minimal open-a-file-and-preview tool.
 

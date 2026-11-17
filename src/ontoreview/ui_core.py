@@ -120,7 +120,9 @@ class Settings:
             ev["robot_path"] = self.robot_path.strip()
         if self.robot_image.strip() and self.robot_image.strip() != "obolibrary/robot":
             ev["robot_image"] = self.robot_image.strip()
-        if self.oops_endpoint.strip():
+        from .evaluate import OOPS_ENDPOINT
+
+        if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
             ev["oops_endpoint"] = self.oops_endpoint.strip()
         return ev
 
@@ -673,10 +675,21 @@ class Prefs:
     robot_path: str = ""
     robot_image: str = "obolibrary/robot"
     oops: Literal["auto", "on", "off"] = "auto"
-    oops_endpoint: str = ""
+    oops_endpoint: str = "https://oops.linkeddata.es/rest"
     oops_timeout: int = 90
     theme: Literal["light", "dark", "system"] = "system"
     compact: bool = False
+    # documentation options (Settings > Documentation)
+    layout: Literal["single", "multi"] = "single"
+    languages: str = "en"
+    base_url: str = ""
+    load_imports: bool = True
+    include_individuals: bool = True
+    reason: bool = False
+    verbose: bool = False
+    competency_questions: str = ""
+    previous_version: str = ""
+    fail_on: Literal["error", "warning", "info", "never"] = "error"
 
     @staticmethod
     def path() -> Path:
@@ -694,7 +707,10 @@ class Prefs:
         try:
             data = json.loads(cls.path().read_text("utf-8"))
             known = {f.name for f in fields(cls)}
-            return cls(**{k: v for k, v in data.items() if k in known})
+            prefs = cls(**{k: v for k, v in data.items() if k in known})
+            if not (prefs.oops_endpoint or "").strip():   # an emptied field means "the standard service"
+                prefs.oops_endpoint = cls.oops_endpoint
+            return prefs
         except (OSError, ValueError, TypeError):
             return cls()
 
@@ -705,6 +721,9 @@ class Prefs:
         s.robot_path = self.robot_path if self.robot_mode == "local" else ""
         s.robot_image = self.robot_image or "obolibrary/robot"
         s.oops, s.oops_endpoint, s.oops_timeout = self.oops, self.oops_endpoint, self.oops_timeout
+        for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",
+                  "competency_questions", "previous_version", "fail_on"):
+            setattr(s, k, getattr(self, k))
         if new:
             s.task = self.default_task
 

@@ -32,8 +32,9 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
 
     async with user_simulation(root=build_page) as user:
         await user.open("/")
-        await user.should_see("1. What to document")
-        user.find(marker="source").type(str(src))
+        await user.should_see("New build")
+        await user.should_see("No build yet")
+        user.find(marker="source").type(str(src)).trigger("keydown.enter")
         await user.should_see("Folder with 2 ontologies.")
         user.find(marker="output").type(str(out))
         await user.should_see(f"ontoreview build {src} -o {out}")
@@ -43,9 +44,9 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
                 break
             await asyncio.sleep(0.1)
         await user.should_see("2 of 2 succeeded")
-        await user.should_see("Open folder")
-        await user.should_see("Previous runs")
-        await user.should_see("1 of 1 shown")
+        await user.should_see("Show in folder")
+        await user.should_see("Terms documented")
+        await user.should_see("Issues")
         await user.should_see(ui.table)
 
     assert (out / "vocab" / "colors" / "index.html").is_file()
@@ -58,9 +59,47 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
 async def test_missing_source_is_reported(isolated):
     async with user_simulation(root=build_page) as user:
         await user.open("/")
-        user.find(marker="source").clear()
         user.find(marker="run").click()
         await user.should_see("Choose an ontology file or a folder of ontologies.")
+
+
+@pytest.mark.anyio
+async def test_pages_render(isolated, fixtures):
+    s = ui_core.Settings(source=str(fixtures / "pizza.ttl"), output=str(isolated / "d"))
+    ui_core.record_run(s, ui_core.run_task(s))
+    ui_core.Settings(source=str(fixtures / "pizza.ttl"), output=str(isolated / "d"), task="check",
+                     fail_on="warning", languages="en, es").save()       # saved form state used to crash the page
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("pizza.ttl")
+        await user.should_see("Run checks")
+        await user.open("/history")
+        await user.should_see("Run history")
+        await user.should_see("1 of 1 runs shown")     # badges are drawn client-side, inside the table slot
+        await user.open("/settings")
+        await user.should_see("Defaults used for every new build")
+        await user.should_see("Default output folder")
+        user.find(marker="save-settings").click()
+        await user.should_see("Settings saved")
+        await user.open("/about")
+        await user.should_see("Developed by CAIR-Nepal")
+        await user.should_see("System info")
+    assert ui_core.Prefs.path().is_file()
+
+
+def test_choose_port():
+    import socket
+
+    from ontoreview.ui import DEFAULT_PORT, choose_port, port_free
+
+    with socket.socket() as busy:
+        busy.bind(("127.0.0.1", 0))
+        busy.listen()
+        taken = busy.getsockname()[1]
+        assert not port_free("127.0.0.1", taken)
+        with pytest.raises(SystemExit, match="already in use"):
+            choose_port("127.0.0.1", taken)
+    assert DEFAULT_PORT <= choose_port("127.0.0.1", None) < DEFAULT_PORT + 50
 
 
 @pytest.mark.anyio
@@ -86,3 +125,14 @@ async def test_drop_upload_endpoint(isolated, fixtures):
     assert (root / "myonto" / "vocab" / "colors.ttl").is_file()
     assert ui_core.upload_source("00112233aabbccdd") == str(root / "myonto")
     assert not (isolated / "evil.ttl").exists()
+
+
+@pytest.mark.anyio
+async def test_sidebar_shows_environment(isolated, monkeypatch):
+    monkeypatch.setattr(ui_core, "robot_status", lambda prefs: {"state": "ok", "label": "ROBOT · Docker ready"})
+    import ontoreview.ui as ui_mod
+    monkeypatch.setattr(ui_mod, "robot_status", ui_core.robot_status)
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("ROBOT · Docker ready", retries=30)
+        await user.should_see("OOPS! · not checked")

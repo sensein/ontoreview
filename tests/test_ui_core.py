@@ -33,7 +33,7 @@ def test_cli_and_overrides_for_a_file(fixtures, tmp_path):
     assert cmd.startswith("ontoreview build ") and "--lang en,es" in cmd and "--cq " in cmd
     assert "--robot off" in cmd and "--no-oops" in cmd
     ov = s.overrides()
-    assert ov["languages"] == ["en", "es"] and ov["evaluation"] == {"robot": "off", "oops": "off"}
+    assert ov["languages"] == ["en", "es"] and ov["evaluation"] == {"robot": "off", "oops": "off", "oops_timeout": 90}
     assert ov["competency_questions"][0].endswith("pizza-cq.yaml")
 
 
