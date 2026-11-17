@@ -76,7 +76,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | Domain | [Activity](classes.md#activity) *or* [Agent](classes.md#agent) *or* [Entity](classes.md#entity) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Location](classes.md#location) |
 | category | expanded |
-| editorialNote | This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).; The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes. |
+| editorialNote | The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.; This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair). |
 | inverse | locationOf |
 | sharesDefinitionWith | prov:Location |
 
@@ -120,7 +120,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start); [Influence](classes.md#influence) |
+| Domain | [Influence](classes.md#influence); [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start) |
 | Range | [Activity](classes.md#activity) |
 | Used in | used in axioms of [ActivityInfluence](classes.md#activityinfluence) |
 | category | qualified |
@@ -538,7 +538,7 @@ A prov:Entity that was used by this prov:Activity. For example, :baking prov:use
 | category | starting-point |
 | component | entities-activities |
 | inverse | wasUsedBy |
-| qualifiedForm | prov:Usage; prov:qualifiedUsage |
+| qualifiedForm | prov:qualifiedUsage; prov:Usage |
 
 ### wasAssociatedWith
 
@@ -627,7 +627,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | starting-point |
 | component | entities-activities |
 | inverse | generated |
-| qualifiedForm | prov:Generation; prov:qualifiedGeneration |
+| qualifiedForm | prov:qualifiedGeneration; prov:Generation |
 
 ### wasInfluencedBy
 
@@ -647,7 +647,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | component | agents-responsibility |
 | editorialNote | The sub-properties of prov:wasInfluencedBy can be elaborated in more detail using the Qualification Pattern. For example, the binary relation :baking prov:used :spoon can be qualified by asserting :baking prov:qualifiedUsage [ a prov:Usage; prov:entity :spoon; prov:atLocation :kitchen ] .  Subproperties of prov:wasInfluencedBy may also be asserted directly without being qualified.  prov:wasInfluencedBy should not be used without also using one of its subproperties.   |
 | inverse | influenced |
-| qualifiedForm | prov:qualifiedInfluence; prov:Influence |
+| qualifiedForm | prov:Influence; prov:qualifiedInfluence |
 | sharesDefinitionWith | prov:Influence |
 
 ### wasInformedBy
@@ -698,7 +698,7 @@ An entity is derived from an original entity by copying, or 'quoting', some or a
 | category | expanded |
 | component | derivations |
 | inverse | quotedAs |
-| qualifiedForm | prov:qualifiedQuotation; prov:Quotation |
+| qualifiedForm | prov:Quotation; prov:qualifiedQuotation |
 
 ### wasRevisionOf
 

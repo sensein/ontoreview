@@ -55,3 +55,4 @@ ignore = ["E501", "B008"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["real_evaluators: run the real ROBOT/OOPS! dispatch (with stubbed tools) instead of the offline default"]

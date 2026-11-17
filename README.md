@@ -55,10 +55,39 @@ questions:
 
 Spreadsheet column names are matched loosely: "CQ ID", "Competency question", "SPARQL query", "Expected answer" and "Related terms" are all recognised.
 
+## A folder of ontologies
+
+Give `build`, `export` or `check` a folder instead of a file to document every ontology in it:
+
+```
+ontoreview build ontologies/ -o docs
+ontoreview export ontologies/ -o docs-md            # or --format myst
+ontoreview check ontologies/ --fail-on error        # CI: checks every file, JSON keyed by file
+```
+
+Each ontology gets its own sub-folder in the output, mirroring the source folder, plus an index page that links them all:
+
+```
+ontologies/                 docs/
+  core.ttl          ->        core/index.html
+  bio/anatomy.owl   ->        bio/anatomy/index.html
+  bio/cells.ttl     ->        bio/cells/index.html
+                              index.html          (lists every ontology, with term counts and quality)
+                              collection.json     (machine-readable manifest)
+```
+
+- Sub-folders are searched recursively. RDF files (`.ttl`, `.owl`, `.rdf`, `.jsonld`, `.nt`, `.n3`, `.trig`, `.nq`) and LinkML schemas are picked up. A `.json` file counts only if it's JSON-LD, and a `.yaml` file only if it's a LinkML schema, so competency-question files and other data are ignored. Hidden folders, `.venv`, `node_modules` and the output folder itself are skipped.
+- If two files share a name (`core.ttl` and `core.owl`), the extension is kept in their folder names (`core-ttl/`, `core-owl/`).
+- An `ontoreview.toml` inside a sub-folder applies to the ontologies in that sub-folder. Use it for per-ontology settings like `previous_version` or competency questions, which are ignored when given for the whole folder.
+- One broken file doesn't stop the rest. It's listed on the index page and the command exits with status 1. OWL functional and Manchester syntax files (`.ofn`, `.omn`) are listed as skipped.
+- `--single-file` writes one self-contained `index.html` per sub-folder.
+- `source = "ontologies/"` in `ontoreview.toml` works too.
+
 ## External evaluators: OOPS! and ROBOT
 
-- **ROBOT** (`robot report`) runs locally and is used automatically when `robot` is on your PATH, or when `ROBOT_JAR` or `evaluation.robot_path` points to `robot.jar`.
-- **OOPS!** sends the ontology to https://oops.linkeddata.es, so it runs only when you turn it on with `--oops` or `evaluation.oops = true`.
+- **ROBOT** (`robot report`) runs by default, on your machine, in Docker using the official `obolibrary/robot` image. You don't need Java or `robot.jar`. The first build pulls the image. A `robot` executable on your PATH, or one set with `evaluation.robot_path`, is used instead of Docker when present. Use `evaluation.robot_image` (or `ROBOT_DOCKER_IMAGE`) to pin a version tag, such as `obolibrary/robot:<version>`.
+- **OOPS!** is the fallback. When ROBOT can't run (Docker isn't installed or running, or ROBOT fails), OntoReview calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html) instead. **This sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to never upload it, or `"on"` (`--oops`) to run OOPS! alongside ROBOT.
+- To skip external evaluators entirely, set `evaluation.robot = "off"`; OOPS! then runs only if `oops = "on"`.
 
 Both tools' results go in the quality report next to OntoReview's own checks, with affected elements linked to their term entries.
 
@@ -99,8 +128,9 @@ graph_property_edges = "auto" # true | false | auto (on for small ontologies)
 section_order = ["introduction", "competency-questions", "reference", "graph"]
 
 [evaluation]
-oops = false
-robot = "auto"                # "on" | "off"
+robot = "auto"                # ROBOT via local robot or Docker; "on" | "off"
+oops = "auto"                 # OOPS! web service only when ROBOT can't run; "on" | "off"
+robot_image = "obolibrary/robot"
 ```
 
 ## LinkML

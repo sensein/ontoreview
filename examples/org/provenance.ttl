@@ -12,7 +12,7 @@ org: a prov:Entity ;
     dcterms:title "Core organization ontology" .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T03:28:19+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-17T04:10:43+00:00"^^xsd:dateTime ;
     prov:used "org.ttl" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

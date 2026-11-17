@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbc9d1">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3be">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -22,12 +22,6 @@
  "url": "https://example.org/colors/scheme",
  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
  "hasDefinedTerm": [
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/colors/red",
-   "name": "red",
-   "termCode": "colors:red"
-  },
   {
    "@type": "DefinedTerm",
    "@id": "https://example.org/colors/maroon",
@@ -46,6 +40,12 @@
    "name": "colour",
    "description": "A visual property.",
    "termCode": "colors:color"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/colors/red",
+   "name": "red",
+   "termCode": "colors:red"
   }
  ]
 }</script></head>
@@ -228,9 +228,9 @@
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 4 warnings and 2 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 4 warnings and 2 suggestions. ROBOT: 4 errors, 0 warnings, 0 suggestions.</p>
 
-  <details class="finding sev-warning">
+<h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No creators <span class="muted">(1) OB005</span></summary>
     <p class="muted rule-desc">Credit the authors with dcterms:creator.</p>
     <ul class="findings">
@@ -249,6 +249,27 @@
 <li>No owl:versionInfo.</li><li>No owl:versionIRI.</li>    </ul>
   </details>
 
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing label <span class="muted">(5) missing_label</span></summary>
+    <ul class="findings">
+<li><a href="#color">colour</a> <code class="muted">colors:color</code></li><li><a href="#darkred">dark red</a> <code class="muted">colors:darkred</code></li><li><a href="#maroon">maroon</a> <code class="muted">colors:maroon</code></li><li><a href="#red">red</a> <code class="muted">colors:red</code></li><li><code>https://example.org/colors/scheme</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing ontology description <span class="muted">(1) missing_ontology_description</span></summary>
+    <ul class="findings">
+<li><code>blank node</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing ontology license <span class="muted">(1) missing_ontology_license</span></summary>
+    <ul class="findings">
+<li><code>blank node</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing ontology title <span class="muted">(1) missing_ontology_title</span></summary>
+    <ul class="findings">
+<li><code>blank node</code></li>    </ul>
+  </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">5</span> Download</h2>
   <p class="prose">Download the ontology in your preferred format:</p>
@@ -301,7 +322,7 @@
   </table>
   <p class="small muted">This documentation was generated from the ontology source with ontoreview 0.1.0. <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
 </section>    <footer class="colophon">
-      Generated with <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 (Public Domain)</a>.
+      Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 (Public Domain)</a>.
     </footer>
   </main>
 </div>
@@ -316,10 +337,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbc9d1"></script>
+<script src="ontoreview-data.js?v=6afbd3be"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbc9d1"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd3be"></script>
 </body>
 </html>

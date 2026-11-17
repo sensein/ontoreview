@@ -6,6 +6,104 @@
   },
   "external": [
     {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "deprecated_class_reference",
+          "name": "Deprecated class reference",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#CheeseTopping"
+          ],
+          "note": ""
+        },
+        {
+          "code": "duplicate_label",
+          "name": "Duplicate label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#Pizza"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_label",
+          "name": "Missing label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://orcid.org/0000-0000-0000-0001"
+          ],
+          "note": ""
+        },
+        {
+          "code": "multiple_labels",
+          "name": "Multiple labels",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#Pizza"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Calzone",
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#MeatTopping",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#Pizza",
+            "https://example.org/pizza#PizzaBase",
+            "https://example.org/pizza#PizzaTopping",
+            "https://example.org/pizza#VegetarianPizza",
+            "https://example.org/pizza#hasBase",
+            "https://example.org/pizza#hasCalories",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#hasTopping",
+            "https://example.org/pizza#isToppingOf",
+            "https://orcid.org/0000-0000-0000-0001"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_obsolete_label",
+          "name": "Missing obsolete label",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#CheeseTopping"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#VegetarianPizza"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 4,
+        "warning": 2,
+        "info": 1
+      }
+    },
+    {
       "tool": "OOPS!",
       "url": "https://oops.linkeddata.es",
       "items": [
@@ -119,10 +217,10 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “pizza” @en is used by `pizza:Pizza`, `pizza:Name`.",
-      "subject": "https://example.org/pizza#Pizza",
+      "message": "Label “pizza” @en is used by `pizza:Name`, `pizza:Pizza`.",
+      "subject": "https://example.org/pizza#Name",
       "subject_label": "Pizza",
-      "anchor": "Pizza"
+      "anchor": "Name"
     },
     {
       "rule": "OB012",

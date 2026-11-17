@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="quality.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbc9d1">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3bc">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 </head>
@@ -102,9 +102,9 @@
   <main class="main" id="main" tabindex="-1">
 <section class="section" id="quality">
   <h2><span class="secno">6</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 1 errors, 6 warnings and 5 suggestions.</p>
+  <p class="prose">ontoreview checks: 1 errors, 6 warnings and 5 suggestions. ROBOT: 4 errors, 2 warnings, 1 suggestions.</p>
 
-  <details class="finding sev-error" open>
+<h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Wrong kind of range <span class="muted">(1) OB024</span></summary>
     <p class="muted rule-desc">Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like).</p>
     <ul class="findings">
@@ -120,7 +120,7 @@
     <summary><span class="sev">warning</span> Duplicate labels <span class="muted">(1) OB016</span></summary>
     <p class="muted rule-desc">Two or more terms share the same label, which confuses readers and tools.</p>
     <ul class="findings">
-<li>Label “pizza” @en is used by <code>pizza:Pizza</code>, <code>pizza:Name</code>. <a href="classes.html#Pizza">§</a></li>    </ul>
+<li>Label “pizza” @en is used by <code>pizza:Name</code>, <code>pizza:Pizza</code>. <a href="datatype-properties.html#Name">§</a></li>    </ul>
   </details>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Property without domain <span class="muted">(2) OB012</span></summary>
@@ -147,8 +147,44 @@
 <li>Property name <code>Name</code> is not lowerCamelCase. <a href="datatype-properties.html#Name">§</a></li>    </ul>
   </details>
 
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Deprecated class reference <span class="muted">(1) deprecated_class_reference</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Duplicate label <span class="muted">(2) duplicate_label</span></summary>
+    <ul class="findings">
+<li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing label <span class="muted">(1) missing_label</span></summary>
+    <ul class="findings">
+<li><code>https://orcid.org/0000-0000-0000-0001</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Multiple labels <span class="muted">(2) multiple_labels</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing definition <span class="muted">(14) missing_definition</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#Calzone">Calzone</a> <code class="muted">pizza:Calzone</code></li><li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li><li><a href="classes.html#PizzaBase">Pizza base</a> <code class="muted">pizza:PizzaBase</code></li><li><a href="classes.html#PizzaTopping">Pizza topping</a> <code class="muted">pizza:PizzaTopping</code></li><li><a href="classes.html#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li><li><a href="object-properties.html#hasBase">has base</a> <code class="muted">pizza:hasBase</code></li><li><a href="datatype-properties.html#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#hasTopping">has topping</a> <code class="muted">pizza:hasTopping</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li><li><code>https://orcid.org/0000-0000-0000-0001</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing obsolete label <span class="muted">(1) missing_obsolete_label</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing superclass <span class="muted">(2) missing_superclass</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li>    </ul>
+  </details>
 </section>    <footer class="colophon">
-      Generated with <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+      Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
     </footer>
   </main>
 </div>
@@ -163,8 +199,8 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbc9d1"></script>
+<script src="ontoreview-data.js?v=6afbd3bc"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6afbc9d1"></script>
+<script src="assets/ontoreview.js?v=6afbd3bc"></script>
 </body>
 </html>

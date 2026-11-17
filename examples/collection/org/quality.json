@@ -1,0 +1,526 @@
+{
+  "summary": {
+    "error": 0,
+    "warning": 17,
+    "info": 5
+  },
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "missing_label",
+          "name": "Missing label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "prov:wasDerivedFrom"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_description",
+          "name": "Missing ontology description",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#"
+          ],
+          "note": ""
+        },
+        {
+          "code": "multiple_labels",
+          "name": "Multiple labels",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#",
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#FormalOrganization",
+            "http://www.w3.org/ns/org#Head",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#OrganizationalUnit",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#Site",
+            "http://www.w3.org/ns/org#basedAt",
+            "http://www.w3.org/ns/org#changedBy",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#hasMember",
+            "http://www.w3.org/ns/org#hasMembership",
+            "http://www.w3.org/ns/org#hasPost",
+            "http://www.w3.org/ns/org#hasPrimarySite",
+            "http://www.w3.org/ns/org#hasRegisteredSite",
+            "http://www.w3.org/ns/org#hasSite",
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#heldBy",
+            "http://www.w3.org/ns/org#holds",
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#location",
+            "http://www.w3.org/ns/org#member",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#memberOf",
+            "http://www.w3.org/ns/org#organization",
+            "http://www.w3.org/ns/org#originalOrganization",
+            "http://www.w3.org/ns/org#postIn",
+            "http://www.w3.org/ns/org#purpose",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#resultedFrom",
+            "http://www.w3.org/ns/org#resultingOrganization",
+            "http://www.w3.org/ns/org#role",
+            "http://www.w3.org/ns/org#roleProperty",
+            "http://www.w3.org/ns/org#siteAddress",
+            "http://www.w3.org/ns/org#siteOf",
+            "http://www.w3.org/ns/org#subOrganizationOf",
+            "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "equivalent_pair",
+          "name": "Equivalent pair",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#Organization"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#FormalOrganization",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#OrganizationalUnit",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#Site",
+            "http://www.w3.org/ns/org#basedAt",
+            "http://www.w3.org/ns/org#changedBy",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#hasMember",
+            "http://www.w3.org/ns/org#hasMembership",
+            "http://www.w3.org/ns/org#hasPost",
+            "http://www.w3.org/ns/org#hasPrimarySite",
+            "http://www.w3.org/ns/org#hasRegisteredSite",
+            "http://www.w3.org/ns/org#hasSite",
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#heldBy",
+            "http://www.w3.org/ns/org#holds",
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#location",
+            "http://www.w3.org/ns/org#member",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#memberOf",
+            "http://www.w3.org/ns/org#organization",
+            "http://www.w3.org/ns/org#originalOrganization",
+            "http://www.w3.org/ns/org#postIn",
+            "http://www.w3.org/ns/org#purpose",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#resultedFrom",
+            "http://www.w3.org/ns/org#resultingOrganization",
+            "http://www.w3.org/ns/org#role",
+            "http://www.w3.org/ns/org#roleProperty",
+            "http://www.w3.org/ns/org#siteAddress",
+            "http://www.w3.org/ns/org#siteOf",
+            "http://www.w3.org/ns/org#subOrganizationOf",
+            "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf",
+            "prov:wasDerivedFrom"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Site"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 3,
+        "warning": 2,
+        "info": 1
+      }
+    }
+  ],
+  "findings": [
+    {
+      "rule": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "message": "No creator is declared (dcterms:creator).",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “organisation” @fr is used by `org:Organization`, `org:organization`.",
+      "subject": "http://www.w3.org/ns/org#Organization",
+      "subject_label": "Organization",
+      "anchor": "Organization"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “organization” @en is used by `org:Organization`, `org:organization`.",
+      "subject": "http://www.w3.org/ns/org#Organization",
+      "subject_label": "Organization",
+      "anchor": "Organization"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “organizzazione” @it is used by `org:Organization`, `org:organization`.",
+      "subject": "http://www.w3.org/ns/org#Organization",
+      "subject_label": "Organization",
+      "anchor": "Organization"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “role” @en is used by `org:Role`, `org:role`.",
+      "subject": "http://www.w3.org/ns/org#Role",
+      "subject_label": "Role",
+      "anchor": "Role"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “ruolo” @it is used by `org:Role`, `org:role`.",
+      "subject": "http://www.w3.org/ns/org#Role",
+      "subject_label": "Role",
+      "anchor": "Role"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “rôle” @fr is used by `org:Role`, `org:role`.",
+      "subject": "http://www.w3.org/ns/org#Role",
+      "subject_label": "Role",
+      "anchor": "Role"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “appartenenza” @it is used by `org:hasMembership`, `org:Membership`.",
+      "subject": "http://www.w3.org/ns/org#hasMembership",
+      "subject_label": "membership",
+      "anchor": "hasMembership"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “engagement” @fr is used by `org:hasMembership`, `org:Membership`.",
+      "subject": "http://www.w3.org/ns/org#hasMembership",
+      "subject_label": "membership",
+      "anchor": "hasMembership"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “membership” @en is used by `org:hasMembership`, `org:Membership`.",
+      "subject": "http://www.w3.org/ns/org#hasMembership",
+      "subject_label": "membership",
+      "anchor": "hasMembership"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “impiego” @it is used by `org:hasPost`, `org:Post`.",
+      "subject": "http://www.w3.org/ns/org#hasPost",
+      "subject_label": "post",
+      "anchor": "hasPost"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “post” @en is used by `org:hasPost`, `org:Post`.",
+      "subject": "http://www.w3.org/ns/org#hasPost",
+      "subject_label": "post",
+      "anchor": "hasPost"
+    },
+    {
+      "rule": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "message": "“head” has 2 labels in @es.",
+      "subject": "http://www.w3.org/ns/org#Head",
+      "subject_label": "head",
+      "anchor": "Head"
+    },
+    {
+      "rule": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "message": "“changed by” has 2 labels in @es.",
+      "subject": "http://www.w3.org/ns/org#changedBy",
+      "subject_label": "changed by",
+      "anchor": "changedBy"
+    },
+    {
+      "rule": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "message": "“linked to” has 2 labels in @es.",
+      "subject": "http://www.w3.org/ns/org#linkedTo",
+      "subject_label": "linked to",
+      "anchor": "linkedTo"
+    },
+    {
+      "rule": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "message": "“location” has 2 labels in @es.",
+      "subject": "http://www.w3.org/ns/org#location",
+      "subject_label": "location",
+      "anchor": "location"
+    },
+    {
+      "rule": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "message": "“transitive sub-organization” has 2 labels in @es.",
+      "subject": "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+      "subject_label": "transitive sub-organization",
+      "anchor": "transitiveSubOrganizationOf"
+    },
+    {
+      "rule": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "message": "No owl:versionIRI.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “member During” has no range.",
+      "subject": "http://www.w3.org/ns/org#memberDuring",
+      "subject_label": "member During",
+      "anchor": "memberDuring"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “purpose” has no range.",
+      "subject": "http://www.w3.org/ns/org#purpose",
+      "subject_label": "purpose",
+      "anchor": "purpose"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “remuneration” has no range.",
+      "subject": "http://www.w3.org/ns/org#remuneration",
+      "subject_label": "remuneration",
+      "anchor": "remuneration"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “site Address” has no range.",
+      "subject": "http://www.w3.org/ns/org#siteAddress",
+      "subject_label": "site Address",
+      "anchor": "siteAddress"
+    }
+  ],
+  "rules": [
+    {
+      "id": "OB001",
+      "title": "Ontology has no title",
+      "severity": "warning",
+      "description": "Add dcterms:title (or rdfs:label) to the owl:Ontology node."
+    },
+    {
+      "id": "OB002",
+      "title": "Ontology has no description",
+      "severity": "warning",
+      "description": "Add dcterms:description or dcterms:abstract so readers know what the ontology is for."
+    },
+    {
+      "id": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "description": "Declare a license with dcterms:license so others know how they may reuse the ontology."
+    },
+    {
+      "id": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "description": "Add owl:versionInfo and owl:versionIRI to make releases citable and comparable."
+    },
+    {
+      "id": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "description": "Credit the authors with dcterms:creator."
+    },
+    {
+      "id": "OB006",
+      "title": "No preferred prefix/namespace",
+      "severity": "info",
+      "description": "Add vann:preferredNamespacePrefix and vann:preferredNamespaceUri."
+    },
+    {
+      "id": "OB010",
+      "title": "Term without a label",
+      "severity": "warning",
+      "description": "Every term should have a human-readable rdfs:label or skos:prefLabel (OOPS! P08)."
+    },
+    {
+      "id": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "description": "Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08)."
+    },
+    {
+      "id": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "description": "Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms."
+    },
+    {
+      "id": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "description": "Consider declaring rdfs:range (OOPS! P11)."
+    },
+    {
+      "id": "OB014",
+      "title": "Cycle in class hierarchy",
+      "severity": "error",
+      "description": "A class is (indirectly) a subclass of itself, which makes the classes equivalent (OOPS! P06)."
+    },
+    {
+      "id": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "description": "A term in the ontology namespace is used but never declared (no rdf:type) (OOPS! P34/P35)."
+    },
+    {
+      "id": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "description": "Two or more terms share the same label, which confuses readers and tools."
+    },
+    {
+      "id": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "description": "A term has more than one rdfs:label/skos:prefLabel in the same language."
+    },
+    {
+      "id": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "description": "Deprecated terms should point to their replacement with dcterms:isReplacedBy."
+    },
+    {
+      "id": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "description": "Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22)."
+    },
+    {
+      "id": "OB020",
+      "title": "Class both subclass of and disjoint with another",
+      "severity": "error",
+      "description": "A class that is a subclass of a class it is disjoint with is unsatisfiable."
+    },
+    {
+      "id": "OB021",
+      "title": "Transitive property used as functional",
+      "severity": "error",
+      "description": "In OWL 2 DL a transitive property cannot be functional or inverse functional."
+    },
+    {
+      "id": "OB022",
+      "title": "Self-referencing definition",
+      "severity": "warning",
+      "description": "A class is declared equivalent to or a subclass of itself (OOPS! P24/P27)."
+    },
+    {
+      "id": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "description": "A class with no superclass, no subclasses and no usage is disconnected from the model."
+    },
+    {
+      "id": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "description": "Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like)."
+    },
+    {
+      "id": "OB025",
+      "title": "Inverse of itself but not symmetric",
+      "severity": "warning",
+      "description": "A property declared as inverse of itself should be declared symmetric instead (OOPS! P25)."
+    },
+    {
+      "id": "OB026",
+      "title": "Missing language tags",
+      "severity": "info",
+      "description": "When some labels carry language tags, all of them should (helps multilingual docs)."
+    },
+    {
+      "id": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "description": "Declared terms that live in other namespaces are documented as external."
+    },
+    {
+      "id": "OB028",
+      "title": "Multiple domains or ranges",
+      "severity": "warning",
+      "description": "Several rdfs:domain (or range) axioms are interpreted as their intersection, which is often not intended (OOPS! P19)."
+    }
+  ]
+}

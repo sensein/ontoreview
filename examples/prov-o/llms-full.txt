@@ -39,9 +39,9 @@ An activity is something that occurs over a period of time and acts upon or with
 
 **IRI:** `http://www.w3.org/ns/prov#ActivityInfluence` · `prov:ActivityInfluence`
 
-ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
-
 It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.
+
+ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
 
 | | |
 |---|---|
@@ -73,9 +73,9 @@ An agent is something that bears some form of responsibility for an activity tak
 
 **IRI:** `http://www.w3.org/ns/prov#AgentInfluence` · `prov:AgentInfluence`
 
-AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
-
 It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.
+
+AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
 
 | | |
 |---|---|
@@ -199,9 +199,9 @@ An instance of prov:Delegation provides additional descriptions about the binary
 
 A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.
 
-The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.
-
 An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].
+
+The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.
 
 | | |
 |---|---|
@@ -408,7 +408,7 @@ There exist no prescriptive requirement on the nature of plans, their representa
 |---|---|
 | Superclasses | [Entity](classes.md#entity) |
 | Used in | in range of [hadPlan](object-properties.md#hadplan) |
-| category | qualified; expanded |
+| category | expanded; qualified |
 | component | agents-responsibility |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association |
 | n | http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association |
@@ -617,7 +617,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | Domain | [Activity](classes.md#activity) *or* [Agent](classes.md#agent) *or* [Entity](classes.md#entity) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Location](classes.md#location) |
 | category | expanded |
-| editorialNote | This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).; The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes. |
+| editorialNote | The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.; This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair). |
 | inverse | locationOf |
 | sharesDefinitionWith | prov:Location |
 
@@ -661,7 +661,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start); [Influence](classes.md#influence) |
+| Domain | [Influence](classes.md#influence); [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start) |
 | Range | [Activity](classes.md#activity) |
 | Used in | used in axioms of [ActivityInfluence](classes.md#activityinfluence) |
 | category | qualified |
@@ -1079,7 +1079,7 @@ A prov:Entity that was used by this prov:Activity. For example, :baking prov:use
 | category | starting-point |
 | component | entities-activities |
 | inverse | wasUsedBy |
-| qualifiedForm | prov:Usage; prov:qualifiedUsage |
+| qualifiedForm | prov:qualifiedUsage; prov:Usage |
 
 ### wasAssociatedWith
 
@@ -1168,7 +1168,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | starting-point |
 | component | entities-activities |
 | inverse | generated |
-| qualifiedForm | prov:Generation; prov:qualifiedGeneration |
+| qualifiedForm | prov:qualifiedGeneration; prov:Generation |
 
 ### wasInfluencedBy
 
@@ -1188,7 +1188,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | component | agents-responsibility |
 | editorialNote | The sub-properties of prov:wasInfluencedBy can be elaborated in more detail using the Qualification Pattern. For example, the binary relation :baking prov:used :spoon can be qualified by asserting :baking prov:qualifiedUsage [ a prov:Usage; prov:entity :spoon; prov:atLocation :kitchen ] .  Subproperties of prov:wasInfluencedBy may also be asserted directly without being qualified.  prov:wasInfluencedBy should not be used without also using one of its subproperties.   |
 | inverse | influenced |
-| qualifiedForm | prov:qualifiedInfluence; prov:Influence |
+| qualifiedForm | prov:Influence; prov:qualifiedInfluence |
 | sharesDefinitionWith | prov:Influence |
 
 ### wasInformedBy
@@ -1239,7 +1239,7 @@ An entity is derived from an original entity by copying, or 'quoting', some or a
 | category | expanded |
 | component | derivations |
 | inverse | quotedAs |
-| qualifiedForm | prov:qualifiedQuotation; prov:Quotation |
+| qualifiedForm | prov:Quotation; prov:qualifiedQuotation |
 
 ### wasRevisionOf
 
@@ -1292,7 +1292,7 @@ The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.
 | category | qualified |
 | component | entities-activities |
 | sharesDefinitionWith | prov:InstantaneousEvent |
-| unqualifiedForm | prov:startedAtTime; prov:invalidatedAtTime; prov:endedAtTime; prov:generatedAtTime |
+| unqualifiedForm | prov:startedAtTime; prov:generatedAtTime; prov:endedAtTime; prov:invalidatedAtTime |
 
 ### endedAtTime
 
@@ -1352,7 +1352,7 @@ The time at which an activity started. See also prov:endedAtTime.
 | category | starting-point |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedStart o prov:atTime) rdfs:subPropertyOf prov:startedAtTime. |
-| qualifiedForm | prov:atTime; prov:Start |
+| qualifiedForm | prov:Start; prov:atTime |
 
 ### value
 
@@ -1366,7 +1366,7 @@ Provides a value that is a direct representation of an entity.
 | category | expanded |
 | component | entities-activities |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-attribute-value |
-| editorialNote | This property serves the same purpose as rdf:value, but has been reintroduced to avoid some of the definitional ambiguity in the RDF specification (specifically, 'may be used in describing structured values').; The editor's definition comes from http://www.w3.org/TR/rdf-primer/#rdfvalue |
+| editorialNote | The editor's definition comes from http://www.w3.org/TR/rdf-primer/#rdfvalue; This property serves the same purpose as rdf:value, but has been reintroduced to avoid some of the definitional ambiguity in the RDF specification (specifically, 'may be used in describing structured values'). |
 
 ---
 

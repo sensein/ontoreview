@@ -1,0 +1,601 @@
+{
+  "summary": {
+    "error": 0,
+    "warning": 5,
+    "info": 27
+  },
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "duplicate_label",
+          "name": "Duplicate label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "foaf:account",
+            "foaf:givenName",
+            "foaf:givenname",
+            "foaf:holdsAccount"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_license",
+          "name": "Missing ontology license",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/"
+          ],
+          "note": ""
+        },
+        {
+          "code": "equivalent_pair",
+          "name": "Equivalent pair",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "dc:Agent",
+            "http://www.w3.org/2000/10/swap/pim/contact#Person",
+            "schema:CreativeWork",
+            "schema:ImageObject",
+            "schema:Person"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "foaf:Agent",
+            "foaf:Document",
+            "foaf:Group",
+            "foaf:Image",
+            "foaf:LabelProperty",
+            "foaf:OnlineAccount",
+            "foaf:OnlineChatAccount",
+            "foaf:OnlineEcommerceAccount",
+            "foaf:OnlineGamingAccount",
+            "foaf:Organization",
+            "foaf:Person",
+            "foaf:PersonalProfileDocument",
+            "foaf:Project",
+            "foaf:account",
+            "foaf:accountName",
+            "foaf:accountServiceHomepage",
+            "foaf:age",
+            "foaf:aimChatID",
+            "foaf:based_near",
+            "foaf:birthday",
+            "foaf:currentProject",
+            "foaf:depiction",
+            "foaf:depicts",
+            "foaf:dnaChecksum",
+            "foaf:familyName",
+            "foaf:family_name",
+            "foaf:firstName",
+            "foaf:focus",
+            "foaf:fundedBy",
+            "foaf:geekcode",
+            "foaf:gender",
+            "foaf:givenName",
+            "foaf:givenname",
+            "foaf:holdsAccount",
+            "foaf:homepage",
+            "foaf:icqChatID",
+            "foaf:img",
+            "foaf:interest",
+            "foaf:isPrimaryTopicOf",
+            "foaf:jabberID",
+            "foaf:knows",
+            "foaf:lastName",
+            "foaf:logo",
+            "foaf:made",
+            "foaf:maker",
+            "foaf:mbox",
+            "foaf:mbox_sha1sum",
+            "foaf:member",
+            "foaf:membershipClass",
+            "foaf:msnChatID",
+            "foaf:myersBriggs",
+            "foaf:name",
+            "foaf:nick",
+            "foaf:openid",
+            "foaf:page",
+            "foaf:pastProject",
+            "foaf:phone",
+            "foaf:plan",
+            "foaf:primaryTopic",
+            "foaf:publications",
+            "foaf:schoolHomepage",
+            "foaf:sha1",
+            "foaf:skypeID",
+            "foaf:status",
+            "foaf:surname",
+            "foaf:theme",
+            "foaf:thumbnail",
+            "foaf:tipjar",
+            "foaf:title",
+            "foaf:topic",
+            "foaf:topic_interest",
+            "foaf:weblog",
+            "foaf:workInfoHomepage",
+            "foaf:workplaceHomepage",
+            "foaf:yahooChatID",
+            "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+            "skos:Concept"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "foaf:Agent",
+            "foaf:Document",
+            "foaf:LabelProperty",
+            "foaf:Project",
+            "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+            "skos:Concept"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 2,
+        "warning": 2,
+        "info": 1
+      }
+    }
+  ],
+  "findings": [
+    {
+      "rule": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "message": "No license is declared (dcterms:license).",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "message": "No creator is declared (dcterms:creator).",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “image” is used by `foaf:Image`, `foaf:img`.",
+      "subject": "http://xmlns.com/foaf/0.1/Image",
+      "subject_label": "Image",
+      "anchor": "Image"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “given name” is used by `foaf:givenname`, `foaf:givenName`.",
+      "subject": "http://xmlns.com/foaf/0.1/givenname",
+      "subject_label": "Given name",
+      "anchor": "givenname"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “account” is used by `foaf:holdsAccount`, `foaf:account`.",
+      "subject": "http://xmlns.com/foaf/0.1/holdsAccount",
+      "subject_label": "account",
+      "anchor": "holdsAccount"
+    },
+    {
+      "rule": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "message": "No owl:versionInfo.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "message": "No owl:versionIRI.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “DNA checksum” has no domain.",
+      "subject": "http://xmlns.com/foaf/0.1/dnaChecksum",
+      "subject_label": "DNA checksum",
+      "anchor": "dnaChecksum"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “Given name” has no domain.",
+      "subject": "http://xmlns.com/foaf/0.1/givenName",
+      "subject_label": "Given name",
+      "anchor": "givenName"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “Given name” has no domain.",
+      "subject": "http://xmlns.com/foaf/0.1/givenname",
+      "subject_label": "Given name",
+      "anchor": "givenname"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “nickname” has no domain.",
+      "subject": "http://xmlns.com/foaf/0.1/nick",
+      "subject_label": "nickname",
+      "anchor": "nick"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “phone” has no domain.",
+      "subject": "http://xmlns.com/foaf/0.1/phone",
+      "subject_label": "phone",
+      "anchor": "phone"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “title” has no domain.",
+      "subject": "http://xmlns.com/foaf/0.1/title",
+      "subject_label": "title",
+      "anchor": "title"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “Given name” has no range.",
+      "subject": "http://xmlns.com/foaf/0.1/givenName",
+      "subject_label": "Given name",
+      "anchor": "givenName"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “Given name” has no range.",
+      "subject": "http://xmlns.com/foaf/0.1/givenname",
+      "subject_label": "Given name",
+      "anchor": "givenname"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “nickname” has no range.",
+      "subject": "http://xmlns.com/foaf/0.1/nick",
+      "subject_label": "nickname",
+      "anchor": "nick"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “phone” has no range.",
+      "subject": "http://xmlns.com/foaf/0.1/phone",
+      "subject_label": "phone",
+      "anchor": "phone"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “sha1sum (hex)” has no range.",
+      "subject": "http://xmlns.com/foaf/0.1/sha1",
+      "subject_label": "sha1sum (hex)",
+      "anchor": "sha1"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “title” has no range.",
+      "subject": "http://xmlns.com/foaf/0.1/title",
+      "subject_label": "title",
+      "anchor": "title"
+    },
+    {
+      "rule": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "message": "Property name `based_near` is not lowerCamelCase.",
+      "subject": "http://xmlns.com/foaf/0.1/based_near",
+      "subject_label": "based near",
+      "anchor": "based_near"
+    },
+    {
+      "rule": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "message": "Property name `family_name` is not lowerCamelCase.",
+      "subject": "http://xmlns.com/foaf/0.1/family_name",
+      "subject_label": "family_name",
+      "anchor": "family_name"
+    },
+    {
+      "rule": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "message": "Property name `mbox_sha1sum` is not lowerCamelCase.",
+      "subject": "http://xmlns.com/foaf/0.1/mbox_sha1sum",
+      "subject_label": "sha1sum of a personal mailbox URI name",
+      "anchor": "mbox_sha1sum"
+    },
+    {
+      "rule": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "message": "Property name `topic_interest` is not lowerCamelCase.",
+      "subject": "http://xmlns.com/foaf/0.1/topic_interest",
+      "subject_label": "topic_interest",
+      "anchor": "topic_interest"
+    },
+    {
+      "rule": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "message": "“Label Property” is not connected to any other term.",
+      "subject": "http://xmlns.com/foaf/0.1/LabelProperty",
+      "subject_label": "Label Property",
+      "anchor": "LabelProperty"
+    },
+    {
+      "rule": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "message": "“Project” is not connected to any other term.",
+      "subject": "http://xmlns.com/foaf/0.1/Project",
+      "subject_label": "Project",
+      "anchor": "Project"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`dc:date` is declared here but is outside the namespace.",
+      "subject": "http://purl.org/dc/elements/1.1/date",
+      "subject_label": "date",
+      "anchor": "date"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`dc:description` is declared here but is outside the namespace.",
+      "subject": "http://purl.org/dc/elements/1.1/description",
+      "subject_label": "description",
+      "anchor": "description"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`dc:title` is declared here but is outside the namespace.",
+      "subject": "http://purl.org/dc/elements/1.1/title",
+      "subject_label": "title",
+      "anchor": "title-2"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing` is declared here but is outside the namespace.",
+      "subject": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+      "subject_label": "Spatial Thing",
+      "anchor": "SpatialThing"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`vs:term_status` is declared here but is outside the namespace.",
+      "subject": "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
+      "subject_label": "term_status",
+      "anchor": "term_status"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`wot:assurance` is declared here but is outside the namespace.",
+      "subject": "http://xmlns.com/wot/0.1/assurance",
+      "subject_label": "assurance",
+      "anchor": "assurance"
+    },
+    {
+      "rule": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "message": "`wot:src_assurance` is declared here but is outside the namespace.",
+      "subject": "http://xmlns.com/wot/0.1/src_assurance",
+      "subject_label": "src_assurance",
+      "anchor": "src_assurance"
+    }
+  ],
+  "rules": [
+    {
+      "id": "OB001",
+      "title": "Ontology has no title",
+      "severity": "warning",
+      "description": "Add dcterms:title (or rdfs:label) to the owl:Ontology node."
+    },
+    {
+      "id": "OB002",
+      "title": "Ontology has no description",
+      "severity": "warning",
+      "description": "Add dcterms:description or dcterms:abstract so readers know what the ontology is for."
+    },
+    {
+      "id": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "description": "Declare a license with dcterms:license so others know how they may reuse the ontology."
+    },
+    {
+      "id": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "description": "Add owl:versionInfo and owl:versionIRI to make releases citable and comparable."
+    },
+    {
+      "id": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "description": "Credit the authors with dcterms:creator."
+    },
+    {
+      "id": "OB006",
+      "title": "No preferred prefix/namespace",
+      "severity": "info",
+      "description": "Add vann:preferredNamespacePrefix and vann:preferredNamespaceUri."
+    },
+    {
+      "id": "OB010",
+      "title": "Term without a label",
+      "severity": "warning",
+      "description": "Every term should have a human-readable rdfs:label or skos:prefLabel (OOPS! P08)."
+    },
+    {
+      "id": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "description": "Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08)."
+    },
+    {
+      "id": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "description": "Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms."
+    },
+    {
+      "id": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "description": "Consider declaring rdfs:range (OOPS! P11)."
+    },
+    {
+      "id": "OB014",
+      "title": "Cycle in class hierarchy",
+      "severity": "error",
+      "description": "A class is (indirectly) a subclass of itself, which makes the classes equivalent (OOPS! P06)."
+    },
+    {
+      "id": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "description": "A term in the ontology namespace is used but never declared (no rdf:type) (OOPS! P34/P35)."
+    },
+    {
+      "id": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "description": "Two or more terms share the same label, which confuses readers and tools."
+    },
+    {
+      "id": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "description": "A term has more than one rdfs:label/skos:prefLabel in the same language."
+    },
+    {
+      "id": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "description": "Deprecated terms should point to their replacement with dcterms:isReplacedBy."
+    },
+    {
+      "id": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "description": "Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22)."
+    },
+    {
+      "id": "OB020",
+      "title": "Class both subclass of and disjoint with another",
+      "severity": "error",
+      "description": "A class that is a subclass of a class it is disjoint with is unsatisfiable."
+    },
+    {
+      "id": "OB021",
+      "title": "Transitive property used as functional",
+      "severity": "error",
+      "description": "In OWL 2 DL a transitive property cannot be functional or inverse functional."
+    },
+    {
+      "id": "OB022",
+      "title": "Self-referencing definition",
+      "severity": "warning",
+      "description": "A class is declared equivalent to or a subclass of itself (OOPS! P24/P27)."
+    },
+    {
+      "id": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "description": "A class with no superclass, no subclasses and no usage is disconnected from the model."
+    },
+    {
+      "id": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "description": "Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like)."
+    },
+    {
+      "id": "OB025",
+      "title": "Inverse of itself but not symmetric",
+      "severity": "warning",
+      "description": "A property declared as inverse of itself should be declared symmetric instead (OOPS! P25)."
+    },
+    {
+      "id": "OB026",
+      "title": "Missing language tags",
+      "severity": "info",
+      "description": "When some labels carry language tags, all of them should (helps multilingual docs)."
+    },
+    {
+      "id": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "description": "Declared terms that live in other namespaces are documented as external."
+    },
+    {
+      "id": "OB028",
+      "title": "Multiple domains or ranges",
+      "severity": "warning",
+      "description": "Several rdfs:domain (or range) axioms are interpreted as their intersection, which is often not intended (OOPS! P19)."
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "title": "real ontologies",
+  "generator": "OntoReview 0.1.0",
+  "ontologies": [
+    {
+      "source": "dcat.ttl",
+      "slug": "dcat",
+      "title": "The data catalog vocabulary",
+      "description": "DCAT is an RDF vocabulary designed to facilitate interoperability between data catalogs published on the Web. By using DCAT to describe datasets in data catalogs, publishers increase discoverability and enable applications easily to consume metadata from multiple catalogs. It further enables decentralized publishing of catalogs and facilitates federated dataset search across sites. Aggregated DCAT metadata can serve as a manifest file to facilitate digital preservation. DCAT is defined at http://www.w3.org/TR/vocab-dcat/. Any variance between that normative document and this schema is an error in this schema.",
+      "version": "3",
+      "terms": 48,
+      "quality": {
+        "error": 6,
+        "warning": 25,
+        "info": 10
+      },
+      "external": [
+        {
+          "tool": "ROBOT",
+          "problem": null,
+          "summary": {
+            "error": 4,
+            "warning": 1,
+            "info": 1
+          }
+        }
+      ],
+      "files": 12,
+      "error": null
+    },
+    {
+      "source": "foaf.rdf",
+      "slug": "foaf",
+      "title": "Friend of a Friend (FOAF) vocabulary",
+      "description": "The Friend of a Friend (FOAF) RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language.",
+      "version": "",
+      "terms": 82,
+      "quality": {
+        "error": 0,
+        "warning": 5,
+        "info": 27
+      },
+      "external": [
+        {
+          "tool": "ROBOT",
+          "problem": null,
+          "summary": {
+            "error": 2,
+            "warning": 2,
+            "info": 1
+          }
+        }
+      ],
+      "files": 13,
+      "error": null
+    },
+    {
+      "source": "org.ttl",
+      "slug": "org",
+      "title": "Core organization ontology",
+      "description": "Vocabulary for describing organizational structures, specializable to a broad variety of types of organization.",
+      "version": "0.8",
+      "terms": 45,
+      "quality": {
+        "error": 0,
+        "warning": 17,
+        "info": 5
+      },
+      "external": [
+        {
+          "tool": "ROBOT",
+          "problem": null,
+          "summary": {
+            "error": 3,
+            "warning": 2,
+            "info": 1
+          }
+        }
+      ],
+      "files": 15,
+      "error": null
+    },
+    {
+      "source": "prov-o.ttl",
+      "slug": "prov-o",
+      "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+      "description": "This document is published by the Provenance Working Group (http://www.w3.org/2011/prov/wiki/Main_Page). If you wish to make comments regarding this document, please send them to public-prov-comments@w3.org (subscribe public-prov-comments-request@w3.org, archives http://lists.w3.org/Archives/Public/public-prov-comments/). All feedback is welcome.",
+      "version": "Recommendation version 2013-04-30",
+      "terms": 95,
+      "quality": {
+        "error": 0,
+        "warning": 35,
+        "info": 80
+      },
+      "external": [
+        {
+          "tool": "ROBOT",
+          "problem": null,
+          "summary": {
+            "error": 4,
+            "warning": 2,
+            "info": 1
+          }
+        }
+      ],
+      "files": 13,
+      "error": null
+    },
+    {
+      "source": "skos.rdf",
+      "slug": "skos",
+      "title": "SKOS Vocabulary",
+      "description": "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies.",
+      "version": "",
+      "terms": 32,
+      "quality": {
+        "error": 0,
+        "warning": 1,
+        "info": 5
+      },
+      "external": [
+        {
+          "tool": "ROBOT",
+          "problem": null,
+          "summary": {
+            "error": 1,
+            "warning": 1,
+            "info": 1
+          }
+        }
+      ],
+      "files": 13,
+      "error": null
+    }
+  ],
+  "skipped": []
+}

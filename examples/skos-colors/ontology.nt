@@ -1,22 +1,22 @@
-<https://example.org/colors/scheme> <http://purl.org/dc/terms/description> "A tiny SKOS vocabulary of colours."@en .
-<https://example.org/colors/red> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<https://example.org/colors/darkred> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<https://example.org/colors/color> <http://www.w3.org/2004/02/skos/core#prefLabel> "colour"@en .
-<https://example.org/colors/scheme> <http://purl.org/dc/terms/title> "Colour thesaurus"@en .
 <https://example.org/colors/darkred> <http://www.w3.org/2004/02/skos/core#prefLabel> "dark red"@en .
-<https://example.org/colors/color> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
-<https://example.org/colors/maroon> <http://www.w3.org/2004/02/skos/core#broader> <https://example.org/colors/red> .
-<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#broader> <https://example.org/colors/color> .
+<https://example.org/colors/darkred> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
 <https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#prefLabel> "red"@en .
-<https://example.org/colors/color> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/colors/scheme> .
-<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#altLabel> "crimson"@en .
-<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/colors/scheme> .
+<https://example.org/colors/scheme> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
 <https://example.org/colors/darkred> <http://www.w3.org/2004/02/skos/core#related> <https://example.org/colors/maroon> .
 <https://example.org/colors/scheme> <http://www.w3.org/2004/02/skos/core#hasTopConcept> <https://example.org/colors/color> .
-<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://dbpedia.org/resource/Red> .
+<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/colors/scheme> .
+<https://example.org/colors/color> <http://www.w3.org/2004/02/skos/core#prefLabel> "colour"@en .
 <https://example.org/colors/darkred> <http://www.w3.org/2004/02/skos/core#broader> <https://example.org/colors/red> .
-<https://example.org/colors/scheme> <http://purl.org/dc/terms/license> <https://creativecommons.org/publicdomain/zero/1.0/> .
-<https://example.org/colors/maroon> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://example.org/colors/color> <http://www.w3.org/2004/02/skos/core#inScheme> <https://example.org/colors/scheme> .
+<https://example.org/colors/color> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#altLabel> "crimson"@en .
 <https://example.org/colors/maroon> <http://www.w3.org/2004/02/skos/core#prefLabel> "maroon"@en .
+<https://example.org/colors/scheme> <http://purl.org/dc/terms/description> "A tiny SKOS vocabulary of colours."@en .
+<https://example.org/colors/scheme> <http://purl.org/dc/terms/title> "Colour thesaurus"@en .
+<https://example.org/colors/maroon> <http://www.w3.org/2004/02/skos/core#broader> <https://example.org/colors/red> .
+<https://example.org/colors/maroon> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://example.org/colors/red> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://dbpedia.org/resource/Red> .
+<https://example.org/colors/scheme> <http://purl.org/dc/terms/license> <https://creativecommons.org/publicdomain/zero/1.0/> .
 <https://example.org/colors/color> <http://www.w3.org/2004/02/skos/core#definition> "A visual property."@en .
-<https://example.org/colors/scheme> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+<https://example.org/colors/red> <http://www.w3.org/2004/02/skos/core#broader> <https://example.org/colors/color> .

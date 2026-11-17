@@ -4,7 +4,64 @@
     "warning": 4,
     "info": 2
   },
-  "external": [],
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "missing_label",
+          "name": "Missing label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/colors/color",
+            "https://example.org/colors/darkred",
+            "https://example.org/colors/maroon",
+            "https://example.org/colors/red",
+            "https://example.org/colors/scheme"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_description",
+          "name": "Missing ontology description",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "blank node"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_license",
+          "name": "Missing ontology license",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "blank node"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_ontology_title",
+          "name": "Missing ontology title",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "blank node"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "summary": {
+        "error": 4,
+        "warning": 0,
+        "info": 0
+      }
+    }
+  ],
   "findings": [
     {
       "rule": "OB005",

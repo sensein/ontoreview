@@ -1,111 +1,111 @@
-<https://example.org/pizza#Calzone> <http://www.w3.org/2004/02/skos/core#definition> "A folded pizza."@en .
-<https://example.org/pizza#Food> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:nfa42466097a249ebaef063fe4efe8722b3 <http://www.w3.org/2002/07/owl#someValuesFrom> <https://example.org/pizza#PizzaBase> .
-<https://example.org/pizza#hasIngredient> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<https://example.org/pizza#isToppingOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-_:nfa42466097a249ebaef063fe4efe8722b10 <http://www.w3.org/2002/07/owl#withRestrictions> _:nfa42466097a249ebaef063fe4efe8722b12 .
-_:nfa42466097a249ebaef063fe4efe8722b4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:nfa42466097a249ebaef063fe4efe8722b4 <http://www.w3.org/2002/07/owl#onProperty> <https://example.org/pizza#hasCalories> .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:nfa42466097a249ebaef063fe4efe8722b3 .
-<https://example.org/pizza> <http://purl.org/dc/terms/creator> "Jane Doe <jane@example.org>" .
-<https://example.org/pizza> <https://schema.org/keywords> "pizza" .
-<https://example.org/pizza#hasTopping> <http://www.w3.org/2002/07/owl#inverseOf> <https://example.org/pizza#isToppingOf> .
-_:nfa42466097a249ebaef063fe4efe8722b9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:nfa42466097a249ebaef063fe4efe8722b6 .
-<https://example.org/pizza#isToppingOf> <http://www.w3.org/2000/01/rdf-schema#label> "is topping of"@en .
+<https://example.org/pizza#hasCalories> <http://www.w3.org/2000/01/rdf-schema#domain> <https://example.org/pizza#Food> .
 <https://example.org/pizza#Food> <http://www.w3.org/2004/02/skos/core#definition> "Anything that can be eaten."@en .
-<https://example.org/pizza#PizzaBase> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:nfa42466097a249ebaef063fe4efe8722b6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://example.org/pizza#PizzaTopping> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Food> .
-_:nfa42466097a249ebaef063fe4efe8722b12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:nfa42466097a249ebaef063fe4efe8722b11 .
+<https://example.org/pizza#MeatTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://orcid.org/0000-0000-0000-0001> <http://xmlns.com/foaf/0.1/name> "Alice Example" .
 <https://example.org/pizza> <http://purl.org/dc/terms/modified> "2026-11-01" .
-_:nfa42466097a249ebaef063fe4efe8722b10 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<https://example.org/pizza#hasTopping> <http://www.w3.org/2004/02/skos/core#definition> "Relates a pizza to its toppings."@en .
+<https://example.org/pizza#hasTopping> <http://www.w3.org/2000/01/rdf-schema#label> "has topping"@en .
+<https://example.org/pizza#hasIngredient> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2004/02/skos/core#definition> "A flat **baked** dish topped with ingredients."@en .
+<https://example.org/pizza#Food> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://example.org/pizza#Margherita> <http://www.w3.org/2000/01/rdf-schema#label> "Margherita"@en .
+<https://example.org/pizza#hasTopping> <http://www.w3.org/2002/07/owl#inverseOf> <https://example.org/pizza#isToppingOf> .
+<https://example.org/pizza#Pizza> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:n7f2ac110595c4764b668028009ddc9ddb7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<https://example.org/pizza#PizzaBase> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Food> .
+<https://example.org/pizza#CheeseTopping> <http://www.w3.org/2004/02/skos/core#definition> "Cheese."@en .
+<https://example.org/pizza#VegetarianPizza> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://example.org/pizza#PizzaTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://example.org/pizza> <https://schema.org/keywords> "food" .
+_:n7f2ac110595c4764b668028009ddc9ddb4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:n7f2ac110595c4764b668028009ddc9ddb10 <http://www.w3.org/2002/07/owl#withRestrictions> _:n7f2ac110595c4764b668028009ddc9ddb12 .
+<https://example.org/pizza> <http://purl.org/vocab/vann/preferredNamespaceUri> "https://example.org/pizza#" .
+<https://example.org/pizza#PizzaTopping> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza topping"@en .
+<https://example.org/pizza> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/> .
+<https://example.org/pizza#isToppingOf> <http://www.w3.org/2000/01/rdf-schema#label> "is topping of"@en .
+<https://example.org/pizza> <http://purl.org/dc/terms/abstract> "Pizzas, bases and toppings."@en .
+<https://example.org/pizza> <http://purl.org/dc/terms/title> "Pizza Ontology"@en .
+<https://example.org/pizza#Food> <http://www.w3.org/2004/02/skos/core#definition> "Cualquier cosa comestible."@es .
+_:n7f2ac110595c4764b668028009ddc9ddb10 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<https://example.org/pizza> <http://www.w3.org/2002/07/owl#versionIRI> <https://example.org/pizza/1.2.0> .
+<https://example.org/pizza#CheeseTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://example.org/pizza#Margherita> <https://example.org/pizza#hasCalories> "800"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://example.org/pizza> <http://purl.org/dc/terms/description> "A small ontology about **pizzas** and their toppings, used to test OntoReview."@en .
+<https://example.org/pizza#hasIngredient> <http://www.w3.org/2004/02/skos/core#definition> "Any ingredient."@en .
+<https://example.org/pizza> <http://purl.org/dc/terms/creator> "Jane Doe <jane@example.org>" .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:n7f2ac110595c4764b668028009ddc9ddb3 .
+<https://example.org/pizza#Name> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza"@en .
+_:n7f2ac110595c4764b668028009ddc9ddb5 <http://www.w3.org/2002/07/owl#intersectionOf> _:n7f2ac110595c4764b668028009ddc9ddb8 .
+<https://example.org/pizza#Margherita> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://example.org/pizza#Calzone> <http://www.w3.org/2004/02/skos/core#definition> "A folded pizza."@en .
+<https://example.org/pizza> <http://www.w3.org/2002/07/owl#priorVersion> <https://example.org/pizza/1.1.0> .
 <https://example.org/pizza> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<https://example.org/pizza> <http://purl.org/dc/terms/title> "Ontología de Pizza"@es .
+<https://example.org/pizza#Calzone> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://example.org/pizza#hasTopping> <http://www.w3.org/2000/01/rdf-schema#range> <https://example.org/pizza#PizzaTopping> .
+<https://example.org/pizza#isToppingOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+_:n7f2ac110595c4764b668028009ddc9ddb2 <https://schema.org/name> "Example University" .
+<https://example.org/pizza#hasBase> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
 <https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza"@en .
 <https://example.org/pizza> <http://purl.org/dc/terms/creator> <https://orcid.org/0000-0000-0000-0001> .
-_:nfa42466097a249ebaef063fe4efe8722b7 <http://www.w3.org/2002/07/owl#someValuesFrom> <https://example.org/pizza#MeatTopping> .
-_:nfa42466097a249ebaef063fe4efe8722b8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://example.org/pizza#Pizza> .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2004/02/skos/core#example> "Margherita" .
-<https://example.org/pizza#PizzaTopping> <http://www.w3.org/2004/02/skos/core#definition> "Something placed on a pizza."@en .
-<https://example.org/pizza#hasTopping> <http://www.w3.org/2000/01/rdf-schema#range> <https://example.org/pizza#PizzaTopping> .
-<https://orcid.org/0000-0000-0000-0001> <http://xmlns.com/foaf/0.1/name> "Alice Example" .
-<https://example.org/pizza> <http://purl.org/vocab/vann/preferredNamespaceUri> "https://example.org/pizza#" .
-<https://example.org/pizza#hasTopping> <http://www.w3.org/2000/01/rdf-schema#label> "has topping"@en .
-_:nfa42466097a249ebaef063fe4efe8722b8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:nfa42466097a249ebaef063fe4efe8722b9 .
-<https://example.org/pizza#hasCalories> <http://www.w3.org/2000/01/rdf-schema#range> _:nfa42466097a249ebaef063fe4efe8722b10 .
-<https://example.org/pizza#VegetarianPizza> <http://www.w3.org/2004/02/skos/core#definition> "A pizza with no meat toppings."@en .
-<https://example.org/pizza#CheeseTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:nfa42466097a249ebaef063fe4efe8722b4 .
-<https://example.org/pizza#VegetarianPizza> <http://www.w3.org/2002/07/owl#equivalentClass> _:nfa42466097a249ebaef063fe4efe8722b5 .
-<https://example.org/pizza#hasCalories> <http://www.w3.org/2000/01/rdf-schema#label> "has calories"@en .
-_:nfa42466097a249ebaef063fe4efe8722b3 <http://www.w3.org/2002/07/owl#onProperty> <https://example.org/pizza#hasBase> .
-_:nfa42466097a249ebaef063fe4efe8722b3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<https://example.org/pizza> <http://purl.org/dc/terms/description> "A small ontology about **pizzas** and their toppings, used to test OntoReview."@en .
-<https://example.org/pizza#Calzone> <http://www.w3.org/2000/01/rdf-schema#label> "Calzone"@en .
-<https://example.org/pizza> <http://purl.org/dc/terms/created> "2024-01-01" .
-<https://example.org/pizza> <http://purl.org/dc/terms/contributor> _:nfa42466097a249ebaef063fe4efe8722b1 .
-<https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#domain> <https://example.org/pizza#Pizza> .
 <https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://example.org/pizza#hasIngredient> .
-_:nfa42466097a249ebaef063fe4efe8722b4 <http://www.w3.org/2002/07/owl#maxCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<https://example.org/pizza> <http://purl.org/vocab/vann/preferredNamespacePrefix> "pizza" .
-<https://example.org/pizza#Margherita> <http://www.w3.org/2000/01/rdf-schema#label> "Margherita"@en .
-_:nfa42466097a249ebaef063fe4efe8722b9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-<https://example.org/pizza#PizzaBase> <http://www.w3.org/2004/02/skos/core#definition> "The bread base of a pizza."@en .
-<https://example.org/pizza#hasCalories> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-_:nfa42466097a249ebaef063fe4efe8722b1 <http://xmlns.com/foaf/0.1/name> "Anonymous Helper" .
-<https://example.org/pizza#Food> <http://www.w3.org/2000/01/rdf-schema#label> "Comida"@es .
-_:nfa42466097a249ebaef063fe4efe8722b7 <http://www.w3.org/2002/07/owl#onProperty> <https://example.org/pizza#hasTopping> .
-<https://example.org/pizza#MeatTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://example.org/pizza#Name> <http://www.w3.org/2000/01/rdf-schema#range> <https://example.org/pizza#PizzaBase> .
-<https://example.org/pizza#hasTopping> <http://www.w3.org/2000/01/rdf-schema#domain> <https://example.org/pizza#Pizza> .
-<https://example.org/pizza#CheeseTopping> <http://www.w3.org/2000/01/rdf-schema#label> "Cheese topping"@en .
-<https://example.org/pizza> <https://schema.org/keywords> "food" .
-<https://example.org/pizza#Food> <http://www.w3.org/2000/01/rdf-schema#label> "Food"@en .
-<https://orcid.org/0000-0000-0000-0001> <https://schema.org/affiliation> _:nfa42466097a249ebaef063fe4efe8722b2 .
-<https://example.org/pizza#Calzone> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:nfa42466097a249ebaef063fe4efe8722b10 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#integer> .
-<https://example.org/pizza#hasBase> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
-<https://example.org/pizza#Margherita> <https://example.org/pizza#hasCalories> "800"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<https://example.org/pizza> <http://purl.org/dc/terms/title> "Pizza Ontology"@en .
-<https://example.org/pizza#Margherita> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
-<https://example.org/pizza#hasIngredient> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#TransitiveProperty> .
+_:n7f2ac110595c4764b668028009ddc9ddb12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:n7f2ac110595c4764b668028009ddc9ddb11 .
+_:n7f2ac110595c4764b668028009ddc9ddb3 <http://www.w3.org/2002/07/owl#onProperty> <https://example.org/pizza#hasBase> .
+_:n7f2ac110595c4764b668028009ddc9ddb9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:n7f2ac110595c4764b668028009ddc9ddb6 .
 <https://example.org/pizza#MeatTopping> <http://www.w3.org/2000/01/rdf-schema#label> "Meat topping"@en .
+<https://example.org/pizza#hasTopping> <http://www.w3.org/2000/01/rdf-schema#domain> <https://example.org/pizza#Pizza> .
+_:n7f2ac110595c4764b668028009ddc9ddb6 <http://www.w3.org/2002/07/owl#complementOf> _:n7f2ac110595c4764b668028009ddc9ddb7 .
 <https://example.org/pizza#PizzaBase> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza base"@en .
-_:nfa42466097a249ebaef063fe4efe8722b11 <http://www.w3.org/2001/XMLSchema#minInclusive> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<https://example.org/pizza> <http://www.w3.org/2002/07/owl#versionInfo> "1.3.0" .
-_:nfa42466097a249ebaef063fe4efe8722b2 <https://schema.org/name> "Example University" .
-<https://example.org/pizza#Food> <http://www.w3.org/2004/02/skos/core#definition> "Cualquier cosa comestible."@es .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Food> .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza"@es .
-<https://example.org/pizza> <http://www.w3.org/2002/07/owl#versionIRI> <https://example.org/pizza/1.2.0> .
-<https://example.org/pizza#CheeseTopping> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#PizzaTopping> .
-<https://example.org/pizza#hasBase> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-_:nfa42466097a249ebaef063fe4efe8722b12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:nfa42466097a249ebaef063fe4efe8722b6 <http://www.w3.org/2002/07/owl#complementOf> _:nfa42466097a249ebaef063fe4efe8722b7 .
-<https://example.org/pizza#PizzaTopping> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza topping"@en .
-<https://example.org/pizza#MeatTopping> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#PizzaTopping> .
-<https://example.org/pizza#PizzaBase> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Food> .
-<https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#range> <https://example.org/pizza#PizzaBase> .
-_:nfa42466097a249ebaef063fe4efe8722b5 <http://www.w3.org/2002/07/owl#intersectionOf> _:nfa42466097a249ebaef063fe4efe8722b8 .
-<https://example.org/pizza#hasIngredient> <http://www.w3.org/2000/01/rdf-schema#label> "has ingredient"@en .
-<https://example.org/pizza#hasCalories> <http://www.w3.org/2000/01/rdf-schema#domain> <https://example.org/pizza#Food> .
-<https://example.org/pizza#hasTopping> <http://www.w3.org/2004/02/skos/core#definition> "Relates a pizza to its toppings."@en .
-<https://example.org/pizza#CheeseTopping> <http://www.w3.org/2004/02/skos/core#definition> "Cheese."@en .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2002/07/owl#disjointWith> <https://example.org/pizza#PizzaTopping> .
-<https://example.org/pizza> <http://www.w3.org/2002/07/owl#priorVersion> <https://example.org/pizza/1.1.0> .
-<https://example.org/pizza> <http://purl.org/dc/terms/license> <https://creativecommons.org/licenses/by/4.0/> .
-<https://example.org/pizza#hasTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<https://example.org/pizza#Margherita> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://example.org/pizza#Pizza> .
-<https://example.org/pizza#VegetarianPizza> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://example.org/pizza#hasIngredient> <http://www.w3.org/2004/02/skos/core#definition> "Any ingredient."@en .
-<https://example.org/pizza#Pizza> <http://www.w3.org/2004/02/skos/core#definition> "A flat **baked** dish topped with ingredients."@en .
-<https://example.org/pizza#Name> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza"@en .
-<https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#label> "has base"@en .
-<https://example.org/pizza#Pizza> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:n7f2ac110595c4764b668028009ddc9ddb9 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<https://example.org/pizza#VegetarianPizza> <http://www.w3.org/2004/02/skos/core#definition> "A pizza with no meat toppings."@en .
 <https://example.org/pizza#CheeseTopping> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://example.org/pizza#Name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-<https://example.org/pizza#PizzaTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://example.org/pizza> <http://purl.org/dc/terms/abstract> "Pizzas, bases and toppings."@en .
+<https://example.org/pizza#Margherita> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://example.org/pizza#Pizza> .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Food> .
+_:n7f2ac110595c4764b668028009ddc9ddb8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://example.org/pizza#Pizza> .
+<https://example.org/pizza#PizzaTopping> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Food> .
+<https://orcid.org/0000-0000-0000-0001> <https://schema.org/affiliation> _:n7f2ac110595c4764b668028009ddc9ddb2 .
+_:n7f2ac110595c4764b668028009ddc9ddb4 <http://www.w3.org/2002/07/owl#maxCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<https://example.org/pizza#CheeseTopping> <http://www.w3.org/2000/01/rdf-schema#label> "Cheese topping"@en .
+<https://example.org/pizza#PizzaTopping> <http://www.w3.org/2004/02/skos/core#definition> "Something placed on a pizza."@en .
+<https://example.org/pizza> <http://purl.org/dc/terms/created> "2024-01-01" .
+<https://example.org/pizza#MeatTopping> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#PizzaTopping> .
+<https://example.org/pizza#hasBase> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
 <https://example.org/pizza#VegetarianPizza> <http://www.w3.org/2000/01/rdf-schema#label> "Vegetarian pizza"@en .
+_:n7f2ac110595c4764b668028009ddc9ddb8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:n7f2ac110595c4764b668028009ddc9ddb9 .
+<https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#label> "has base"@en .
+<https://example.org/pizza#hasCalories> <http://www.w3.org/2000/01/rdf-schema#range> _:n7f2ac110595c4764b668028009ddc9ddb10 .
+<https://example.org/pizza> <http://purl.org/dc/terms/title> "Ontología de Pizza"@es .
+<https://example.org/pizza#hasIngredient> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2002/07/owl#disjointWith> <https://example.org/pizza#PizzaTopping> .
+_:n7f2ac110595c4764b668028009ddc9ddb7 <http://www.w3.org/2002/07/owl#onProperty> <https://example.org/pizza#hasTopping> .
+<https://example.org/pizza#Calzone> <http://www.w3.org/2000/01/rdf-schema#label> "Calzone"@en .
+<https://example.org/pizza#hasCalories> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2004/02/skos/core#example> "Margherita" .
+<https://example.org/pizza#hasIngredient> <http://www.w3.org/2000/01/rdf-schema#label> "has ingredient"@en .
+_:n7f2ac110595c4764b668028009ddc9ddb6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://example.org/pizza#Name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://example.org/pizza> <http://purl.org/dc/terms/contributor> _:n7f2ac110595c4764b668028009ddc9ddb1 .
+<https://example.org/pizza#VegetarianPizza> <http://www.w3.org/2002/07/owl#equivalentClass> _:n7f2ac110595c4764b668028009ddc9ddb5 .
+<https://example.org/pizza#Food> <http://www.w3.org/2000/01/rdf-schema#label> "Comida"@es .
+<https://example.org/pizza#PizzaBase> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:n7f2ac110595c4764b668028009ddc9ddb4 <http://www.w3.org/2002/07/owl#onProperty> <https://example.org/pizza#hasCalories> .
+<https://example.org/pizza#Food> <http://www.w3.org/2000/01/rdf-schema#label> "Food"@en .
+<https://example.org/pizza#CheeseTopping> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#PizzaTopping> .
+_:n7f2ac110595c4764b668028009ddc9ddb7 <http://www.w3.org/2002/07/owl#someValuesFrom> <https://example.org/pizza#MeatTopping> .
+_:n7f2ac110595c4764b668028009ddc9ddb3 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:n7f2ac110595c4764b668028009ddc9ddb11 <http://www.w3.org/2001/XMLSchema#minInclusive> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#domain> <https://example.org/pizza#Pizza> .
+<https://example.org/pizza> <http://www.w3.org/2002/07/owl#versionInfo> "1.3.0" .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:n7f2ac110595c4764b668028009ddc9ddb4 .
+_:n7f2ac110595c4764b668028009ddc9ddb3 <http://www.w3.org/2002/07/owl#someValuesFrom> <https://example.org/pizza#PizzaBase> .
+<https://example.org/pizza#hasCalories> <http://www.w3.org/2000/01/rdf-schema#label> "has calories"@en .
+<https://example.org/pizza#Name> <http://www.w3.org/2000/01/rdf-schema#range> <https://example.org/pizza#PizzaBase> .
+<https://example.org/pizza#hasBase> <http://www.w3.org/2000/01/rdf-schema#range> <https://example.org/pizza#PizzaBase> .
+_:n7f2ac110595c4764b668028009ddc9ddb1 <http://xmlns.com/foaf/0.1/name> "Anonymous Helper" .
+_:n7f2ac110595c4764b668028009ddc9ddb10 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#integer> .
+<https://example.org/pizza> <http://purl.org/vocab/vann/preferredNamespacePrefix> "pizza" .
+<https://example.org/pizza> <https://schema.org/keywords> "pizza" .
+<https://example.org/pizza#PizzaBase> <http://www.w3.org/2004/02/skos/core#definition> "The bread base of a pizza."@en .
+<https://example.org/pizza#Pizza> <http://www.w3.org/2000/01/rdf-schema#label> "Pizza"@es .
+<https://example.org/pizza#hasTopping> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
 <https://example.org/pizza#Calzone> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://example.org/pizza#Pizza> .
-_:nfa42466097a249ebaef063fe4efe8722b7 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:n7f2ac110595c4764b668028009ddc9ddb12 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
