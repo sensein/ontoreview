@@ -77,7 +77,7 @@ async def test_pages_render(isolated, fixtures):
         await user.should_see("Run history")
         await user.should_see("1 of 1 runs shown")     # badges are drawn client-side, inside the table slot
         await user.open("/settings")
-        await user.should_see("Defaults used for every new build")
+        await user.should_see("Your defaults for every build")
         await user.should_see("Default output folder")
         user.find(marker="save-settings").click()
         await user.should_see("Settings saved")
@@ -156,3 +156,12 @@ async def test_config_editor_saves_and_applies(isolated, fixtures):
         await user.should_see("Loaded")
     saved = (src / "ontoreview.toml").read_text()
     assert 'source = "pizza.ttl"' in saved and "[evaluation]" in saved
+
+
+@pytest.mark.anyio
+async def test_help_links_navigate(isolated):
+    async with user_simulation(root=build_page) as user:
+        await user.open("/help")
+        await user.should_see("Open Run history")
+        user.find("Open Run history").click()
+        await user.should_see("Every build and check you've run")

@@ -173,7 +173,8 @@ NAV = [  # key, path, label, svg path data
      '<path d="M12 17h.01"/>'),
 ]
 
-# Help page: (anchor, title, screenshot file in ui_assets/help/ or "", steps, notes)
+# Help page: (anchor, title, screenshot in ui_assets/help/ or "", steps, note, links)
+# a link target is an app path ("/history"), "settings:<tab>" (general | docs | checks | look) or an https URL
 HELP = [
     ("start", "Getting started", "build.png", [
         "Install the app once: <code>pip install \"ontoreview[ui]\"</code> (Python 3.11 or newer).",
@@ -182,20 +183,20 @@ HELP = [
         "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
         "files or folders onto the page.",
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
-    ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service."),
+    ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service.", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
         "While it runs you see each step: parse, built-in checks, ROBOT, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
         "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
         "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
-    ], ""),
+    ], "", [("Open Build", "/")]),
     ("folder", "Documenting a folder of ontologies", "folder.png", [
         "Choose <b>Folder</b> (or drop a folder). Every ontology inside, including sub-folders, is documented.",
         "Each one gets its own sub-folder in the output, mirroring your folder, plus an index page that links them.",
         "One broken file doesn't stop the rest: it is listed with its error in the <b>Ontologies</b> table.",
     ], "Competency questions and the previous version apply to one ontology; for folders, put them in an "
-       "ontoreview.toml inside that ontology's sub-folder."),
+       "ontoreview.toml inside that ontology's sub-folder.", [("Open Build", "/")]),
     ("publish", "Publishing the website", "", [
         "The output folder (by default <code>docs</code> next to your ontology) is a complete static website: "
         "copy it to any web server.",
@@ -204,7 +205,7 @@ HELP = [
         "on every push.",
         "Set <b>Public URL</b> in Settings › Documentation so links, search engines and llms.txt use the final address.",
         "For permanent identifiers, the output includes ready-made <code>.htaccess</code> files for w3id.org.",
-    ], ""),
+    ], "", [("Settings › Documentation (Public URL)", "settings:docs"), ("GitHub Pages documentation", "https://docs.github.com/en/pages"), ("w3id.org permanent identifiers", "https://w3id.org")]),
     ("config", "Project config (ontoreview.toml)", "config.png", [
         "<b>Why save it?</b> The file keeps the build settings next to your ontology, so the command line, CI and "
         "teammates produce exactly the same documentation.",
@@ -218,13 +219,13 @@ HELP = [
         "<b>Save current settings</b> turns what you chose in Settings and on the Build page into an "
         "ontoreview.toml, which is the quickest way to share your setup. <b>Open another config…</b> loads any "
         "ontoreview.toml.",
-    ], "In CI, <code>ontoreview build</code> and <code>ontoreview check</code> find ontoreview.toml automatically."),
+    ], "In CI, <code>ontoreview build</code> and <code>ontoreview check</code> find ontoreview.toml automatically.", [("Build › Project config", "/"), ("Settings", "settings:general")]),
     ("history", "Run history", "history.png", [
         "Every build and check is listed with its status, issues and time.",
         "Search by ontology or output path, filter documentation vs. checks, and hide runs whose output was deleted.",
         "Use the row buttons to open the output, show it in its folder, load its settings to run again, or remove it "
         "from the list (files are kept).",
-    ], ""),
+    ], "", [("Open Run history", "/history")]),
     ("settings", "Settings", "settings.png", [
         "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
         "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
@@ -234,7 +235,7 @@ HELP = [
         "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
        "command line, CI and teammates, use Project config › Save current settings to write an ontoreview.toml; "
-       "its values override these."),
+       "its values override these.", [("General", "settings:general"), ("Documentation", "settings:docs"), ("Quality checks", "settings:checks"), ("Appearance", "settings:look")]),
     ("trouble", "Troubleshooting", "", [
         "<b>ROBOT · Docker not running:</b> start Docker Desktop, or choose “Local robot command” in Settings › "
         "Quality checks. The first run downloads the ROBOT image, which can take a minute.",
@@ -245,7 +246,7 @@ HELP = [
         "<b>Dropped files:</b> browsers don't share real paths, so dropped items are copied to "
         "<code>~/.config/ontoreview/uploads/</code>. Use File / Folder to work on the originals.",
         "<b>Reporting a bug:</b> About › System info › Copy for bug report, then open an issue on GitHub.",
-    ], ""),
+    ], "", [("Settings › Quality checks", "settings:checks"), ("About › System info", "/about"), ("Report an issue", REPO + "/issues/new/choose")]),
 ]
 
 
@@ -1200,7 +1201,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             return r
 
         with ui.element("div").classes("or-body").style("padding-top: 16px"):
-            with ui.tab_panels(tabs, value=t_general, animated=False).classes("w-full").style("background: transparent"):
+            start_tab = {"general": t_general, "docs": t_docs, "checks": t_checks, "look": t_look} \
+                .get(state.pop("settings_tab", "general"), t_general)
+            tabs.set_value(start_tab)
+            with ui.tab_panels(tabs, value=start_tab, animated=False).classes("w-full").style("background: transparent"):
                 with ui.tab_panel(t_general).classes("q-pa-none"):
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
@@ -1500,7 +1504,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     for anchor, title, *_ in HELP:
                         ui.link(title, f"#{anchor}").classes("or-hint").style("color: var(--or-ink-2)")
                 with ui.column().classes("gap-4 grow min-w-0"):
-                    for n, (anchor, title, shot, steps, note) in enumerate(HELP, 1):
+                    for n, (anchor, title, shot, steps, note, links) in enumerate(HELP, 1):
                         with ui.card().classes("or-card w-full").props(f'flat id="{anchor}"'):
                             with ui.column().classes("or-sec gap-3"):
                                 with ui.row().classes("items-center gap-2"):
@@ -1512,11 +1516,27 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                         ui.html(f'<ol class="or-helplist">{items}</ol>', sanitize=False)
                                         if note:
                                             ui.html(f'<p class="or-hint" style="margin:0">{note}</p>', sanitize=False)
+                                        with ui.row().classes("gap-2 q-mt-xs"):
+                                            for label, target in links:
+                                                external = target.startswith("http")
+                                                ui.button(label, icon="open_in_new" if external else "arrow_forward",
+                                                          on_click=lambda t=target: go(t)) \
+                                                    .props("outline dense no-caps size=sm") \
+                                                    .classes("px-2")
                                     if shot and (ASSETS / "help" / shot).is_file():
                                         img = ui.image(f"{STATIC_URL}/help/{shot}") \
                                             .props(f'alt="Screenshot: {title}" fit=contain no-spinner') \
                                             .classes("or-shot cursor-pointer").style("flex: 1 1 520px; max-width: 760px")
                                         img.on("click", lambda shot=shot, title=title: zoom(shot, title))
+
+        def go(target: str) -> None:
+            if target.startswith("http"):
+                ui.navigate.to(target, new_tab=True)
+            elif target.startswith("settings:"):
+                state["settings_tab"] = target.split(":", 1)[1]
+                ui.navigate.to("/settings")
+            else:
+                ui.navigate.to(target)
 
         def zoom(shot: str, title: str) -> None:
             with ui.dialog() as d, ui.card().classes("or-card q-pa-sm").style("max-width: 96vw; width: 1400px"):
