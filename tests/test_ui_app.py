@@ -86,6 +86,7 @@ async def test_pages_render(isolated, fixtures):
         await user.open("/help")
         await user.should_see("Getting started")
         await user.should_see("Project config (ontoreview.toml)")
+        await user.should_see("How the comparison works")
         await user.should_see("System info")
     assert ui_core.Prefs.path().is_file()
 
@@ -165,3 +166,46 @@ async def test_help_links_navigate(isolated):
         await user.should_see("Open Run history")
         user.find("Open Run history").click()
         await user.should_see("Every build and check you've run")
+
+
+@pytest.mark.anyio
+async def test_compare_versions_from_the_ui(isolated, fixtures):
+    src = isolated / "proj"
+    src.mkdir()
+    shutil.copy(fixtures / "pizza-v2.ttl", src / "pizza.ttl")
+    ui_core.Settings(source=str(src / "pizza.ttl")).save()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        user.find(marker="fmt-diff").click()
+        await user.should_see("Previous version")
+        user.find(marker="previous").type(str(fixtures / "pizza.ttl"))
+        user.find(marker="run").click()
+        for _ in range(100):
+            if (src / "changes.md").exists():
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Changes found")
+        await user.should_see("Open HTML report")
+    assert (src / "changes.json").is_file() and (src / "changes.html").is_file()
+
+
+@pytest.mark.anyio
+async def test_compare_page_runs_automatically(isolated, fixtures):
+    out = isolated / "report" / "pizza-changes.md"
+    async with user_simulation(root=build_page) as user:
+        await user.open("/compare")
+        await user.should_see("Nothing compared yet")
+        user.find(marker="compare-output").type(str(out))
+        user.find(marker="compare-old").type(str(fixtures / "pizza.ttl")).trigger("keydown.enter")
+        await user.should_see("Nothing compared yet")                 # one side only: waits
+        user.find(marker="compare-new").type(str(fixtures / "pizza-v2.ttl")).trigger("keydown.enter")
+        for _ in range(100):                                          # both sides: runs on its own
+            if out.with_suffix(".html").exists():
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Changes found")
+        await user.should_see("Download HTML")
+    html = out.with_suffix(".html").read_text()
+    assert "<table>" in html and "Calzone" in html and out.with_suffix(".json").is_file() and out.is_file()
+    entry = json.loads(ui_core.HISTORY_FILE.read_text())[0]
+    assert entry["task"] == "diff" and "added" in entry["summary"]

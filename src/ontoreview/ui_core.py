@@ -25,13 +25,14 @@ else:  # pragma: no cover
 
 log = logging.getLogger(__name__)
 
-Task = Literal["site", "single", "markdown", "myst", "check"]
+Task = Literal["site", "single", "markdown", "myst", "check", "diff"]
 TASKS: dict[str, str] = {
     "site": "Website",
     "single": "Single HTML file",
     "markdown": "Markdown",
     "myst": "MyST (Sphinx)",
     "check": "Quality check",
+    "diff": "Compare versions",
 }
 SETTINGS_FILE = Path(os.environ.get("ONTOREVIEW_UI_SETTINGS",
                                     Path.home() / ".config" / "ontoreview" / "ui.json"))
@@ -77,11 +78,14 @@ class Settings:
         if self.default_root.strip():
             root = Path(self.default_root.strip()).expanduser()
             stem = (self.source_path.name if self.is_folder else self.source_path.stem) if self.source_path else "ontology"
-            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json"}.get(self.task, stem)
+            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json",
+                    "diff": f"{stem}-changes.md"}.get(self.task, stem)
             return str(root / name)
         base = self.source_path.parent if self.source_path and not self.is_folder else (self.source_path or Path.cwd())
         name = {"site": "docs", "single": "docs", "markdown": "docs-md", "myst": "docs-myst",
-                "check": "quality"}[self.task]
+                "check": "quality", "diff": "changes"}[self.task]
+        if self.task == "diff":
+            return str(base / "changes.md")
         if self.task == "single" and not self.is_folder:
             stem = self.source_path.stem if self.source_path else "ontology"
             return str(base / f"{stem}.html")
@@ -133,6 +137,11 @@ class Settings:
             problems.append("Choose an ontology file or a folder of ontologies.")
         elif not s.startswith(("http://", "https://")) and not Path(s).expanduser().exists():
             problems.append(f"Source not found: {s}")
+        if self.task == "diff":
+            if self.is_folder:
+                problems.append("Compare versions works on one ontology file, not a folder.")
+            if not self.previous_version.strip():
+                problems.append("Choose the previous version to compare against.")
         for label, val in (("Competency questions", self.competency_questions),
                            ("Previous version", self.previous_version)):
             for v in [x.strip() for x in val.split(",") if x.strip()]:
@@ -147,7 +156,11 @@ class Settings:
         cmd = {"site": ["ontoreview", "build"], "single": ["ontoreview", "build", "--single-file"],
                "markdown": ["ontoreview", "export", "--format", "markdown"],
                "myst": ["ontoreview", "export", "--format", "myst"],
-               "check": ["ontoreview", "check", "--format", "json"]}[self.task]
+               "check": ["ontoreview", "check", "--format", "json"],
+               "diff": ["ontoreview", "diff"]}[self.task]
+        if self.task == "diff":
+            return " ".join(cmd + [q(self.previous_version.strip() or "<previous>"), q(self.source or "<source>"),
+                                   "--format", "markdown", "-o", q(str(self.output_path()))])
         args = cmd + [q(self.source or "<source>"), "-o", q(str(self.output_path()))]
         if self.task in ("site", "single"):
             if self.layout != "single":
@@ -268,6 +281,7 @@ class TaskResult:
     skipped: list[str] = field(default_factory=list)
     index: str | None = None        # landing page for folders
     seconds: float = 0.0
+    changes: dict | None = None     # Compare versions: Changelog.to_dict()
 
     @property
     def ok(self) -> int:
@@ -317,6 +331,24 @@ def run_task(settings: Settings) -> TaskResult:
     ov = s.overrides()
     res = TaskResult(s.task, out)
 
+    if s.task == "diff":
+        from .diff import compare_files
+
+        old = s.previous_version.strip()
+        old = old if old.startswith(("http://", "https://")) else str(Path(old).expanduser().resolve())
+        log.info("Parsing ontology %s and previous version %s", src, old)
+        changelog = compare_files(old, src)
+        md = out if out.suffix.lower() == ".md" else out / "changes.md"
+        log.info("Rendering changes → %s", md)
+        md.parent.mkdir(parents=True, exist_ok=True)
+        md.write_text(changelog.to_markdown(), "utf-8")
+        md.with_suffix(".json").write_text(changelog.to_json(), "utf-8")
+        md.with_suffix(".html").write_text(changelog.to_html(
+            title=f"Changes in {Path(src).name}", old_label=Path(old).name, new_label=Path(src).name), "utf-8")
+        res.output, res.index, res.changes = md, str(md.with_suffix(".html")), changelog.to_dict()
+        res.rows = [Row(Path(src).name, Path(src).stem, sum(change_counts(res.changes).values()), output=str(md))]
+        res.seconds = time.perf_counter() - t0
+        return res
     if s.is_folder and s.task in ("site", "single"):
         coll = build_collection(src, out, single_file=s.task == "single", **ov)
         res.rows = [_row_from_entry(e, out, "index.html") for e in coll.entries]
@@ -463,6 +495,7 @@ class HistoryEntry:
     seconds: float
     settings: dict[str, Any]
     failed: str | None = None      # the run raised before producing anything
+    summary: str = ""              # e.g. "+3 added · 1 removed · 2 modified" for comparisons
 
     @property
     def exists(self) -> bool:
@@ -503,7 +536,9 @@ def record_run(settings: Settings, result: TaskResult | None, error: str | None 
         output=str(r.output if r else settings.output_path()), index=r.index if r else None,
         ok=r.ok if r else 0, total=len(r.rows) if r else 0,
         errors=sum(x.errors for x in r.rows) if r else 0, warnings=sum(x.warnings for x in r.rows) if r else 0,
-        seconds=round(r.seconds, 2) if r else 0.0, settings=asdict(settings), failed=error)
+        seconds=round(r.seconds, 2) if r else 0.0, settings=asdict(settings), failed=error,
+        summary="{added} added · {removed} removed · {modified} modified".format(**change_counts(r.changes))
+        if r and r.changes else "")
     entries = [entry] + load_history(path)
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -617,6 +652,12 @@ def upload_source(batch: str) -> str | None:
 
 
 
+def change_counts(changes: dict) -> dict[str, int]:
+    """Added / removed / modified, where modified includes changes to the ontology's own metadata."""
+    return {"added": len(changes["added"]), "removed": len(changes["removed"]),
+            "modified": len(changes["modified"]) + len(changes.get("metadata_changes", []))}
+
+
 def clear_history(path: Path | None = None) -> None:
     path = path or HISTORY_FILE
     try:
@@ -651,11 +692,13 @@ def run_name(entry: HistoryEntry) -> str:
 def issues_text(entry: HistoryEntry) -> str:
     if entry.failed:
         return entry.failed.splitlines()[0][:80]
+    if entry.summary:
+        return entry.summary
     return f"{entry.errors} error{'s' if entry.errors != 1 else ''} · {entry.warnings} warning{'s' if entry.warnings != 1 else ''}"
 
 
 def task_kind(task: str) -> str:
-    return "check" if task == "check" else "docs"
+    return {"check": "check", "diff": "diff"}.get(task, "docs")
 
 
 # ------------------------------------------------------------------ preferences

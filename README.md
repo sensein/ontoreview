@@ -119,6 +119,7 @@ ontoreview ui                     # or: ontoreview-ui; opens http://127.0.0.1:87
 ```
 
 - **Build:** choose a file, a folder or a URL (or drag files and folders onto the page), pick the output (**Website** is recommended for publishing docs), and press **Build docs**. You'll see progress step by step, then the term count, errors and warnings, and a filterable list of issues from the built-in checks, ROBOT and OOPS!. **Open docs** and **Show in folder** take you to the result. The equivalent `ontoreview` command is under **Command line**, ready for CI.
+- **Compare:** drop or choose a previous and a current version of an ontology (files or URLs). The comparison runs as soon as both are there. It shows added, removed and modified terms with the exact statements that changed, and writes a standalone HTML report (open it or download it) plus `changes.md` and `changes.json`. This is the same as `ontoreview diff OLD NEW --format html|markdown|json`. On Build, **Compare versions** is a shortcut for the ontology you're documenting. To put a changelog inside the website instead, set **Previous version** in Settings › Documentation.
 - **Run history:** every run, searchable and filterable. Each can be opened, shown in its folder, re-run with the same settings or removed from the list.
 - **Settings:** defaults for every build. *General* covers the output folder, default format and history. *Documentation* covers layout, languages, public URL, imports, reasoning, competency questions and previous version. *Quality checks* covers ROBOT (Docker or a local `robot`), the OOPS! service and when a check fails. *Appearance* covers the theme and compact layout. A project's `ontoreview.toml` overrides these.
 - **Project config:** the **Project config** menu on Build creates `ontoreview.toml` from a commented template, or opens the existing file in an editor that checks it before saving. It can also save what you selected, or load another config. The file keeps your settings with the ontology, so the command line, CI and teammates build the same docs.
@@ -184,12 +185,17 @@ OntoReview converts the schema to OWL internally and documents it in OntoReview'
 ## Commands
 
 ```bash
+ontoreview ui [--port N] [--no-browser]       # the app (recommended); same as ontoreview-ui
+
+# Advanced / CI. SOURCE is a file, a URL or a folder of ontologies
 ontoreview build [SOURCE] [-o docs] [--layout multi] [--lang en,es] [--previous v1.ttl] [--reason]
-ontoreview serve [SOURCE]                     # rebuilds on change, live reload
-ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html]
-ontoreview diff OLD NEW [--format console|markdown|json]
+                 [--base-url URL] [--cq cq.yaml] [--single-file] [--robot auto|on|off] [--oops/--no-oops] [--open]
+ontoreview serve [SOURCE] [--port 8000]       # rebuilds on change, live reload
+ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html] [-o report]
+ontoreview diff OLD NEW [--format console|markdown|json|html] [-o changes.html]
 ontoreview export [SOURCE] --format markdown|myst -o docs-md
 ontoreview init [SOURCE] [--from-widoco config.properties]   # ontoreview.toml + GitHub Pages workflow
+ontoreview cq-template competency-questions.xlsx             # or .yaml / .csv / .tsv
 ```
 
 Python API:

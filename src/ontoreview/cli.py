@@ -6,6 +6,7 @@ import functools
 import http.server
 import logging
 import re
+import sys
 import threading
 import time
 import webbrowser
@@ -28,9 +29,9 @@ app = typer.Typer(
     add_completion=False,
     rich_markup_mode="rich",
 )
-console = Console()
+console = Console(emoji=False)
 ADVANCED = "Advanced / CI"
-err = Console(stderr=True)
+err = Console(stderr=True, emoji=False)
 
 SEV_STYLE = {"error": "bold red", "warning": "yellow", "info": "cyan"}
 
@@ -57,6 +58,7 @@ class DiffFormat(str, Enum):
     console = "console"
     markdown = "markdown"
     json = "json"
+    html = "html"
 
 
 class ExportFormat(str, Enum):
@@ -425,7 +427,7 @@ def check(
         if output:
             output.write_text(text, "utf-8")
         else:
-            console.print_json(text)
+            sys.stdout.write(text + "\n")   # raw JSON: safe to pipe
     elif fmt == CheckFormat.html:
         from .render.site import SiteRenderer, codeticks  # noqa: F401
 
@@ -496,7 +498,7 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
             output.write_text(text, "utf-8")
             console.print(f"Report written to {output}")
         else:
-            console.print_json(text)
+            sys.stdout.write(text + "\n")   # raw JSON: safe to pipe
     if broken:
         raise typer.Exit(2)
     if failed:
@@ -541,6 +543,8 @@ def diff(
         text = log.to_json()
     elif fmt == DiffFormat.markdown:
         text = log.to_markdown()
+    elif fmt == DiffFormat.html:
+        text = log.to_html(old_label=old, new_label=new)
     else:
         text = None
     if text is not None:
@@ -548,7 +552,7 @@ def diff(
             output.write_text(text, "utf-8")
             console.print(f"Written to {output}")
         else:
-            console.print(text, markup=False, highlight=False)
+            sys.stdout.write(text if text.endswith("\n") else text + "\n")   # raw: no wrapping, safe to pipe
         return
     t = Table(title=f"{log.old_version or old} → {log.new_version or new}", show_lines=False)
     t.add_column("", width=2)
