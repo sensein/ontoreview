@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: How to use OntoReview
+    url: https://github.com/CAIRNepal/ontoreview#readme
+    about: Start with the README; the app's Help page has step-by-step instructions with screenshots.
+  - name: CAIR-Nepal
+    url: https://cair-nepal.org
+    about: Contact the team behind OntoReview.

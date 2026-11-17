@@ -21,12 +21,15 @@ from . import __version__
 
 app = typer.Typer(
     name="ontoreview",
-    help="Beautiful documentation for OWL, RDFS, SKOS and LinkML models.",
-    no_args_is_help=True,
+    help="OntoReview: documentation and quality review for OWL, RDFS, SKOS and LinkML models.\n\n"
+         "Most people use the app: [bold]ontoreview ui[/] (or [bold]ontoreview-ui[/]). The other commands are "
+         "for automation and CI.",
+    no_args_is_help=False,
     add_completion=False,
     rich_markup_mode="rich",
 )
 console = Console()
+ADVANCED = "Advanced / CI"
 err = Console(stderr=True)
 
 SEV_STYLE = {"error": "bold red", "warning": "yellow", "info": "cyan"}
@@ -148,19 +151,39 @@ def _version_cb(value: bool) -> None:
         raise typer.Exit()
 
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def main(
+    ctx: typer.Context,
     version: bool = typer.Option(False, "--version", "-V", callback=_version_cb, is_eager=True,
                                  help="Show version and exit."),
 ) -> None:
-    pass
+    if ctx.invoked_subcommand is None:
+        console.print(f"[bold]OntoReview[/] {__version__}\n")
+        console.print("Start the app:   [bold]ontoreview ui[/]        (or [bold]ontoreview-ui[/])")
+        console.print("                 opens http://127.0.0.1:8765 in your browser; "
+                      "[dim]--port N, --no-browser[/]")
+        console.print('Needs the extra: [bold]pip install "ontoreview\\[ui]"[/]  (Python 3.11+)\n')
+        console.print("[dim]Automation and CI commands (build, export, check, …): ontoreview --help[/]")
+
+
+@app.command("ui")
+def ui_cmd(
+    port: int | None = typer.Option(None, "--port", "-p", help="Port (default: the first free port from 8765)."),
+    host: str = typer.Option("127.0.0.1", "--host", help="Interface to bind; keep 127.0.0.1 unless you know why."),
+    no_browser: bool = typer.Option(False, "--no-browser", help="Do not open a browser window."),
+) -> None:
+    """Start the OntoReview app in your browser (recommended)."""
+    from .ui import main as ui_main
+
+    argv = ["--host", host] + (["--port", str(port)] if port else []) + (["--no-browser"] if no_browser else [])
+    ui_main(argv)
 
 
 SourceArg = typer.Argument(None, help="Ontology file, URL or folder of ontologies (RDF in any syntax, or LinkML YAML).")
 ConfigOpt = typer.Option(None, "--config", "-c", help="Path to ontoreview.toml (auto-discovered by default).")
 
 
-@app.command()
+@app.command(rich_help_panel=ADVANCED)
 def build(
     source: str | None = SourceArg,
     output: Path | None = typer.Option(None, "--output", "-o", help="Output directory [default: docs]."),
@@ -255,7 +278,7 @@ def build(
         webbrowser.open(where.resolve().as_uri())
 
 
-@app.command()
+@app.command(rich_help_panel=ADVANCED)
 def serve(
     source: str | None = SourceArg,
     config: Path | None = ConfigOpt,
@@ -327,7 +350,7 @@ def serve(
         console.print("bye")
 
 
-@app.command()
+@app.command(rich_help_panel=ADVANCED)
 def studio(
     source: str | None = typer.Argument(None, help="Optional ontology to open on start."),
     port: int = typer.Option(8000, "--port", "-P"),
@@ -365,7 +388,7 @@ class _QuietHandler(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-@app.command()
+@app.command(rich_help_panel=ADVANCED)
 def check(
     source: str | None = SourceArg,
     config: Path | None = ConfigOpt,
@@ -503,7 +526,7 @@ def _report_html(onto, report) -> str:
     return tmpl.render(s=s, css=css, page="index.html", sections=[s])
 
 
-@app.command()
+@app.command(rich_help_panel=ADVANCED)
 def diff(
     old: str = typer.Argument(..., help="Previous version (file or URL)."),
     new: str = typer.Argument(..., help="New version (file or URL)."),
@@ -546,7 +569,7 @@ def diff(
         console.print(t)
 
 
-@app.command("cq-template")
+@app.command("cq-template", rich_help_panel=ADVANCED)
 def cq_template(
     path: Path = typer.Argument(Path("competency-questions.yaml"),
                                 help="Where to write the template: .yaml, .csv, .tsv or .xlsx"),
@@ -563,7 +586,7 @@ def cq_template(
                   f"(or competency_questions = [\"{path}\"] in ontoreview.toml)")
 
 
-@app.command("export")
+@app.command("export", rich_help_panel=ADVANCED)
 def export_cmd(
     source: str | None = SourceArg,
     fmt: ExportFormat = typer.Option(ExportFormat.markdown, "--format", "-f",
@@ -637,40 +660,10 @@ jobs:
         uses: actions/deploy-pages@v4
 """
 
-TOML_TEMPLATE = """# ontoreview configuration: https://github.com/CAIRNepal/ontoreview
-source = "{source}"
-output = "docs"
-layout = "single"          # "single" or "multi"
-languages = ["en"]          # first one is the default; others are built under /<lang>/
-# base_url = "https://w3id.org/my-ontology"
-# previous_version = "releases/1.0.0.ttl"   # enables the changelog
-# introduction = "docs/intro.md"
-# custom_css = "docs/custom.css"
-# reason = true             # show inferred superclasses (pip install 'ontoreview[reason]')
-
-serializations = ["ttl", "owl", "jsonld", "nt"]
-
-[sections]
-graph = true
-quality = true
-changelog = true
-
-[checks]
-disable = []                # e.g. ["OB019"]
-
-# Metadata found in the ontology is used automatically; anything here overrides it.
-[metadata]
-# title = "My Ontology"
-# license = "https://creativecommons.org/licenses/by/4.0/"
-
-# [[custom_sections]]
-# title = "Examples"
-# file = "docs/examples.md"
-# position = "after-terms"
-"""
+from .config import CONFIG_TEMPLATE as TOML_TEMPLATE  # noqa: E402  (shared with the app)
 
 
-@app.command()
+@app.command(rich_help_panel=ADVANCED)
 def init(
     source: str | None = typer.Argument(None, help="Ontology file to document."),
     from_widoco: Path | None = typer.Option(None, "--from-widoco", help="Widoco config.properties to migrate."),

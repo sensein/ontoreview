@@ -107,3 +107,10 @@ def test_cli_folder(onto_folder, tmp_path):
     assert r.exit_code == 0, r.output
     data = json.loads((tmp_path / "q.json").read_text())
     assert "vocab/colors.ttl" in data and "summary" in data["vocab/colors.ttl"]
+
+
+def test_discovery_skips_earlier_output(onto_folder, tmp_path):
+    build_collection(onto_folder, onto_folder / "docs")             # output inside the source folder
+    build_collection(onto_folder, onto_folder / "old-site")         # and another, older one
+    files, _ = find_ontologies(onto_folder)
+    assert len(files) == 6 and not any("docs" in f.parts or "old-site" in f.parts for f in files)

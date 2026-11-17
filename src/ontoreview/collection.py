@@ -32,6 +32,7 @@ log = logging.getLogger(__name__)
 
 RDF_SUFFIXES = {".ttl", ".owl", ".rdf", ".jsonld", ".nt", ".n3", ".trig", ".nq"}
 UNSUPPORTED = {".ofn", ".omn"}  # OWL functional / Manchester syntax: rdflib cannot read them
+OUTPUT_MARKERS = ("ontoreview-data.js", "collection.json")
 SKIP_DIRS = {".git", ".hg", ".svn", ".venv", "venv", "node_modules", "__pycache__", "site-packages"}
 # options that only make sense for one ontology; ignored (with a warning) for a folder
 PER_ONTOLOGY = ("previous_version", "competency_questions")
@@ -49,6 +50,7 @@ class Entry:
     external: list[dict] = field(default_factory=list)
     files: int = 0
     error: str | None = None
+    issues: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -83,6 +85,9 @@ def find_ontologies(folder: str | Path, exclude: list[Path] | None = None) -> tu
     """
     root = Path(folder).resolve()
     excluded = [e.resolve() for e in (exclude or [])]
+    # earlier OntoReview output (sites carry ontoreview-data.js, folder builds collection.json) holds
+    # copies of the ontologies (ontology.ttl, .owl, …); never document those again
+    excluded += [m.parent.resolve() for marker in OUTPUT_MARKERS for m in root.rglob(marker)]
     found, skipped = [], []
     for p in sorted(root.rglob("*")):
         if not p.is_file():
@@ -154,8 +159,9 @@ def build_collection(folder: str | Path, out: str | Path = "docs", config: Confi
     overrides = _drop_per_ontology(overrides)
     slugs = slugs_for(files, folder)
     entries = []
-    for f in files:
+    for i, f in enumerate(files, 1):
         e = Entry(source=f.relative_to(folder).as_posix(), slug=slugs[f])
+        log.info("[%d/%d] %s", i, len(files), e.source)
         target = out / e.slug
         try:
             cfg = _config_for(f, folder, config)
@@ -184,6 +190,39 @@ def _fill(e: Entry, res) -> None:
     if res.report is not None:
         e.quality = res.report.summary
         e.external = [{"tool": x.tool, "problem": x.error, "summary": x.summary} for x in res.report.external]
+        e.issues = report_issues(res.report)
+
+
+def report_issues(report, limit: int = 500) -> list[dict]:
+    """A quality report as table rows: built-in checks grouped by rule, plus ROBOT / OOPS! items.
+
+    Each row: severity (error | warning | info), check, rule, affected (a term or "N elements").
+    """
+    rows: list[dict] = []
+    by_rule: dict[str, list] = {}
+    for f in report.findings:
+        by_rule.setdefault(f.rule, []).append(f)
+    for rid, items in by_rule.items():
+        first = items[0]
+        subjects = sorted({i.subject_label or i.subject for i in items if i.subject_label or i.subject})
+        affected = subjects[0] if len(subjects) == 1 else (f"{len(subjects)} elements" if subjects else "ontology")
+        rows.append({"severity": first.severity, "check": "OntoReview", "rule": f"{rid} · {first.title}",
+                     "affected": affected, "count": len(items)})
+    for ext in report.external:
+        if ext.error:
+            rows.append({"severity": "warning", "check": ext.tool, "rule": "Could not run",
+                         "affected": ext.error, "count": 1})
+            continue
+        for it in ext.items:
+            name = it.name if it.name and it.name != it.code else ""
+            rule = f"{it.code} · {name}" if name and it.code[:1].upper() == "P" and it.code[1:].isdigit() else (it.code or name)
+            n = len(it.affected)
+            affected = it.affected[0] if n == 1 else (f"{n} elements" if n else (it.note[:80] or "ontology"))
+            rows.append({"severity": it.severity, "check": ext.tool, "rule": rule, "affected": affected,
+                         "count": max(n, 1)})
+    rank = {"error": 0, "warning": 1, "info": 2}
+    rows.sort(key=lambda r: (rank.get(r["severity"], 3), r["check"], r["rule"]))
+    return rows[:limit]
 
 
 def _title(folder: Path, config) -> str:
@@ -208,8 +247,9 @@ def export_collection(folder: str | Path, out: str | Path = "docs-md", config: C
         raise ValueError(f"No ontology files found in {folder}")
     slugs = slugs_for(files, folder)
     entries = []
-    for f in files:
+    for i, f in enumerate(files, 1):
         e = Entry(source=f.relative_to(folder).as_posix(), slug=slugs[f])
+        log.info("[%d/%d] %s", i, len(files), e.source)
         try:
             cfg = resolve_config(f, _config_for(f, folder, config))
             onto = extract(load(cfg), cfg)

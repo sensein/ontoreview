@@ -1,0 +1,1613 @@
+"""``ontoreview-ui``: a local web UI (NiceGUI) to configure and run builds, exports and checks.
+
+    pip install "ontoreview[ui]"
+    ontoreview-ui                     # opens http://127.0.0.1:8765 in your browser
+
+Runs on this machine only (bound to 127.0.0.1 by default); paths are local paths.
+Pages: Build, Run history, Settings, About; a sidebar shows whether ROBOT and OOPS! are available.
+"""
+
+from __future__ import annotations
+
+import argparse
+import logging
+import os
+import queue
+import secrets
+import sys
+import uuid
+import webbrowser
+from dataclasses import asdict
+from pathlib import Path
+
+from . import __version__
+from .ui_core import (
+    MAX_UPLOAD_BYTES,
+    TASKS,
+    Prefs,
+    Settings,
+    browse,
+    clear_history,
+    describe_source,
+    existing_output,
+    forget_run,
+    issues_text,
+    load_history,
+    oops_status,
+    open_in_file_manager,
+    record_run,
+    robot_status,
+    run_name,
+    run_task,
+    system_info,
+    task_kind,
+    upload_source,
+    upload_target,
+    when_text,
+)
+
+ASSETS = Path(__file__).parent / "ui_assets"
+REPO = "https://github.com/CAIRNepal/ontoreview"
+FORMATS = [  # id, name, description, tag
+    ("site", "Website", "Deploy as your ontology's docs site (GitHub Pages, w3id, any web server)", "index.html"),
+    ("single", "Single HTML file", "One portable file to share or attach", ".html"),
+    ("markdown", "Markdown", "Editable text, good for Git repos, MkDocs or Docusaurus", ".md"),
+    ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
+    ("check", "Quality check only", "Run the checks, ROBOT and OOPS! without docs", "report"),
+]
+RECOMMENDED = "site"
+INCLUDES = {
+    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, OOPS!), "
+            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
+    "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
+    "markdown": "Includes: one page per term type; no quality checks or diagram",
+    "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
+    "check": "Includes: built-in checks, ROBOT and OOPS! results as JSON; no documentation",
+}
+OOPS_CHOICES = {"off": "Off", "auto": "Only if ROBOT can't run", "on": "Always"}
+
+# ---------------------------------------------------------------------------- drag and drop
+# The page uploads dropped files to this endpoint. The token is embedded in the page, so other
+# web sites open in the same browser cannot write files through it.
+UPLOAD_TOKEN = secrets.token_urlsafe(24)
+UPLOAD_URL = "/_ontoreview/upload"
+STATIC_URL = "/_ontoreview/static"
+
+
+def register_upload_route(app) -> None:
+    paths = {getattr(r, "path", None) for r in app.router.routes}
+    if not any(str(p or "").startswith(STATIC_URL) for p in paths):
+        app.add_static_files(STATIC_URL, ASSETS)
+    if UPLOAD_URL in paths:
+        return
+    from starlette.responses import JSONResponse
+    from starlette.routing import Route
+
+    async def _upload(request):
+        from urllib.parse import unquote
+
+        if not secrets.compare_digest(request.headers.get("x-upload-token", ""), UPLOAD_TOKEN):
+            return JSONResponse({"error": "forbidden"}, status_code=403)
+        target = upload_target(request.query_params.get("batch", ""),
+                               unquote(request.headers.get("x-path", "")))
+        if target is None:
+            return JSONResponse({"error": "file type or path not accepted"}, status_code=400)
+        if int(request.headers.get("content-length") or 0) > MAX_UPLOAD_BYTES:
+            return JSONResponse({"error": "file too large"}, status_code=413)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        size = 0
+        with open(target, "wb") as fh:
+            async for chunk in request.stream():
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    fh.close()
+                    target.unlink(missing_ok=True)
+                    return JSONResponse({"error": "file too large"}, status_code=413)
+                fh.write(chunk)
+        return JSONResponse({"ok": True, "size": size})
+
+    # a plain Starlette route, ahead of NiceGUI's catch-all routes
+    app.router.routes.insert(0, Route(UPLOAD_URL, _upload, methods=["POST"]))
+
+
+DROP_JS = r"""
+<script>
+(() => {
+  const TOKEN = "%TOKEN%", URL_ = "%URL%";
+  const OK = /\.(ttl|owl|rdf|jsonld|json|nt|n3|trig|nq|ofn|omn|ya?ml|csv|tsv|xlsx|toml|md|css|html)$/i;
+  const zone = () => document.getElementById("ob-drop");
+  const hasFiles = (e) => !!e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files");
+  let depth = 0;
+  window.addEventListener("dragenter", (e) => { if (hasFiles(e)) { depth++; zone()?.classList.add("ob-drag"); } });
+  window.addEventListener("dragleave", () => { depth = Math.max(0, depth - 1); if (!depth) zone()?.classList.remove("ob-drag"); });
+  window.addEventListener("dragover", (e) => { if (hasFiles(e)) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } });
+  const fileOf = (entry) => new Promise((res, rej) => entry.file(res, rej));
+  const readAll = async (dir) => {
+    const reader = dir.createReader(), out = [];
+    for (;;) { const batch = await new Promise((res, rej) => reader.readEntries(res, rej)); if (!batch.length) return out; out.push(...batch); }
+  };
+  async function walk(entry, prefix, out) {
+    if (entry.name.startsWith(".")) return;
+    if (entry.isFile) { out.push([prefix + entry.name, await fileOf(entry)]); return; }
+    for (const child of await readAll(entry)) await walk(child, prefix + entry.name + "/", out);
+  }
+  window.addEventListener("drop", async (e) => {
+    if (!hasFiles(e)) return;
+    e.preventDefault(); depth = 0; zone()?.classList.remove("ob-drag");
+    // collect entries synchronously: the DataTransfer is emptied after the first await
+    const entries = Array.from(e.dataTransfer.items || []).map((i) => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+    const plain = Array.from(e.dataTransfer.files || []);
+    const found = [];
+    if (entries.length) { for (const en of entries) await walk(en, "", found); }
+    else plain.forEach((f) => found.push([f.name, f]));
+    const files = found.filter(([p]) => OK.test(p)), skipped = found.length - files.length;
+    if (!files.length) { emitEvent("ob_drop_done", { batch: null, ok: 0, failed: 0, skipped }); return; }
+    const batch = Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join("");
+    emitEvent("ob_drop_start", { count: files.length });
+    let ok = 0, failed = 0;
+    for (const [path, file] of files) {
+      try {
+        const r = await fetch(URL_ + "?batch=" + batch, { method: "POST", body: file,
+          headers: { "X-Upload-Token": TOKEN, "X-Path": encodeURIComponent(path), "Content-Type": "application/octet-stream" } });
+        r.ok ? ok++ : failed++;
+      } catch (err) { failed++; }
+    }
+    emitEvent("ob_drop_done", { batch, ok, failed, skipped });
+  });
+})();
+</script>
+"""
+
+# ---------------------------------------------------------------------------- look
+LOGO_SVG = """<svg width="{s}" height="{s}" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="#2F4FD8"/>
+<circle cx="10" cy="10" r="3" fill="#fff"/><circle cx="20" cy="15" r="3" fill="#fff"/><circle cx="10" cy="21" r="3" fill="#fff"/>
+<path d="M12.6 11.3 17.4 13.7M12.6 19.7 17.4 16.3" stroke="#fff" stroke-width="1.6"/></svg>"""
+
+NAV = [  # key, path, label, svg path data
+    ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
+    ("history", "/history", "Run history", '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>'),
+    ("settings", "/settings", "Settings", '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/>'
+     '<circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'),
+    ("about", "/about", "About", '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
+    ("help", "/help", "Help", '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/>'
+     '<path d="M12 17h.01"/>'),
+]
+
+# Help page: (anchor, title, screenshot in ui_assets/help/ or "", steps, note, links)
+# a link target is an app path ("/history"), "settings:<tab>" (general | docs | checks | look) or an https URL
+HELP = [
+    ("start", "Getting started", "build.png", [
+        "Install the app once: <code>pip install \"ontoreview[ui]\"</code> (Python 3.11 or newer).",
+        "Start it with <code>ontoreview ui</code>. Your browser opens the Build page; if port 8765 is busy, the "
+        "next free port is used and printed in the terminal.",
+        "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
+        "files or folders onto the page.",
+        "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
+    ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service.", [("Open Build", "/")]),
+    ("results", "Reading the results", "results.png", [
+        "While it runs you see each step: parse, built-in checks, ROBOT, OOPS!, render.",
+        "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
+        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT and OOPS! findings are merged with "
+        "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
+        "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
+    ], "", [("Open Build", "/")]),
+    ("folder", "Documenting a folder of ontologies", "folder.png", [
+        "Choose <b>Folder</b> (or drop a folder). Every ontology inside, including sub-folders, is documented.",
+        "Each one gets its own sub-folder in the output, mirroring your folder, plus an index page that links them.",
+        "One broken file doesn't stop the rest: it is listed with its error in the <b>Ontologies</b> table.",
+    ], "Competency questions and the previous version apply to one ontology; for folders, put them in an "
+       "ontoreview.toml inside that ontology's sub-folder.", [("Open Build", "/")]),
+    ("publish", "Publishing the website", "", [
+        "The output folder (by default <code>docs</code> next to your ontology) is a complete static website: "
+        "copy it to any web server.",
+        "<b>GitHub Pages:</b> commit the folder, then in the repository go to Settings › Pages and serve from the "
+        "<code>docs</code> folder, or run <code>ontoreview init</code> to add a workflow that rebuilds the site "
+        "on every push.",
+        "Set <b>Public URL</b> in Settings › Documentation so links, search engines and llms.txt use the final address.",
+        "For permanent identifiers, the output includes ready-made <code>.htaccess</code> files for w3id.org.",
+    ], "", [("Settings › Documentation (Public URL)", "settings:docs"), ("GitHub Pages documentation", "https://docs.github.com/en/pages"), ("w3id.org permanent identifiers", "https://w3id.org")]),
+    ("config", "Project config (ontoreview.toml)", "config.png", [
+        "<b>Why save it?</b> The file keeps the build settings next to your ontology, so the command line, CI and "
+        "teammates produce exactly the same documentation.",
+        "<b>Settings or ontoreview.toml?</b> Most options (layout, languages, public URL, competency questions, "
+        "ROBOT and OOPS!) can be set in both. <b>Settings</b> are your personal defaults for every build in this "
+        "app, stored on this computer. <b>ontoreview.toml</b> belongs to one project and travels with it. When "
+        "both set an option, ontoreview.toml wins.",
+        "<b>Project config › New from template</b> opens a commented config in the editor; <b>Edit ontoreview.toml</b> "
+        "opens the existing one.",
+        "<b>Check</b> validates the file; <b>Save and use for this build</b> writes it and applies it here.",
+        "<b>Save current settings</b> turns what you chose in Settings and on the Build page into an "
+        "ontoreview.toml, which is the quickest way to share your setup. <b>Open another config…</b> loads any "
+        "ontoreview.toml.",
+    ], "In CI, <code>ontoreview build</code> and <code>ontoreview check</code> find ontoreview.toml automatically.", [("Build › Project config", "/"), ("Settings", "settings:general")]),
+    ("history", "Run history", "history.png", [
+        "Every build and check is listed with its status, issues and time.",
+        "Search by ontology or output path, filter documentation vs. checks, and hide runs whose output was deleted.",
+        "Use the row buttons to open the output, show it in its folder, load its settings to run again, or remove it "
+        "from the list (files are kept).",
+    ], "", [("Open Run history", "/history")]),
+    ("settings", "Settings", "settings.png", [
+        "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
+        "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
+        "questions and the previous version (for the changelog).",
+        "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the OOPS! service, and when a "
+        "check run counts as failed.",
+        "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
+    ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
+       "command line, CI and teammates, use Project config › Save current settings to write an ontoreview.toml; "
+       "its values override these.", [("General", "settings:general"), ("Documentation", "settings:docs"), ("Quality checks", "settings:checks"), ("Appearance", "settings:look")]),
+    ("trouble", "Troubleshooting", "", [
+        "<b>ROBOT · Docker not running:</b> start Docker Desktop, or choose “Local robot command” in Settings › "
+        "Quality checks. The first run downloads the ROBOT image, which can take a minute.",
+        "<b>OOPS! · unreachable:</b> the web service may be down or you are offline; builds still finish, the "
+        "OOPS! section reports the problem. Set OOPS! to Off for private ontologies.",
+        "<b>Port already in use:</b> start with <code>ontoreview ui --port 8800</code>, or just run it again "
+        "without --port to use the next free port.",
+        "<b>Dropped files:</b> browsers don't share real paths, so dropped items are copied to "
+        "<code>~/.config/ontoreview/uploads/</code>. Use File / Folder to work on the originals.",
+        "<b>Reporting a bug:</b> About › System info › Copy for bug report, then open an issue on GitHub.",
+    ], "", [("Settings › Quality checks", "settings:checks"), ("About › System info", "/about"), ("Report an issue", REPO + "/issues/new/choose")]),
+]
+
+
+def _icon(paths: str, size: int = 18) -> str:
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            f'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{paths}</svg>')
+
+
+CSS = """
+:root { --or-bg:#F4F6F8; --or-card:#fff; --or-line:#E2E7EC; --or-line-2:#F2F4F7; --or-ink:#101828; --or-ink-2:#344054;
+  --or-muted:#5B6675; --or-input:#D0D7DE; --or-primary:#2F4FD8; --or-primary-soft:#EEF1FD; --or-side:#0F1724;
+  --or-side-2:#1E293B; --or-side-ink:#C9D1DB; --or-side-muted:#8A97A8; --or-ok-bg:#ECFDF3; --or-ok:#067647;
+  --or-err-bg:#FEF3F2; --or-err:#B42318; --or-warn-bg:#FFFAEB; --or-warn:#93370D; --or-info-bg:#EFF8FF; --or-info:#175CD3;
+  --or-mono: ui-monospace, "SF Mono", Menlo, Consolas, "JetBrains Mono", monospace; }
+body.body--dark { --or-bg:#0B111A; --or-card:#121A26; --or-line:#253041; --or-line-2:#1B2533; --or-ink:#E6EAF0;
+  --or-ink-2:#C9D1DB; --or-muted:#98A2B3; --or-input:#344054; --or-primary-soft:#1C2752; --or-side:#070B12;
+  --or-side-2:#1A2230; --or-ok-bg:#0B2A1C; --or-ok:#6CE9A6; --or-err-bg:#3A1410; --or-err:#FDA29B;
+  --or-warn-bg:#3A2A0A; --or-warn:#FEC84B; --or-info-bg:#0B2547; --or-info:#84CAFF; }
+body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.q-page-container, .nicegui-content { background: var(--or-bg); }
+.nicegui-content { padding: 0 !important; }
+.or-mono { font-family: var(--or-mono); }
+.or-muted { color: var(--or-muted); }
+.or-card { background: var(--or-card) !important; border: 1px solid var(--or-line); border-radius: 12px !important; box-shadow: none !important; }
+.or-pagehead { background: var(--or-card); border-bottom: 1px solid var(--or-line); padding: 18px 32px; width: 100%; }
+.or-pagehead h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -.4px; line-height: 1.3; }
+.or-pagehead p { margin: 4px 0 0; font-size: 13px; color: var(--or-muted); }
+.or-body { padding: 24px 32px 32px; width: 100%; }
+.or-compact .or-body { padding: 14px 18px 20px; } .or-compact .or-sec { padding: 12px 14px !important; }
+.or-sec { padding: 18px 20px; width: 100%; }
+.or-h2 { font-size: 15px; font-weight: 700; margin: 0; }
+.or-step { width: 22px; height: 22px; border-radius: 50%; background: var(--or-primary-soft); color: var(--or-primary);
+  font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.or-hint { font-size: 12.5px; color: var(--or-muted); }
+.or-label { font-weight: 600; font-size: 13.5px; }
+/* sidebar */
+.or-side { background: var(--or-side) !important; color: var(--or-side-ink); }
+.or-side .q-drawer__content, .or-side.q-drawer__content { display: flex; flex-direction: column; padding: 22px 14px; }
+.or-nav { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; color: var(--or-side-ink) !important;
+  font-size: 14px; text-decoration: none !important; min-height: 44px; }
+.or-nav:hover { background: rgba(255,255,255,.05); }
+.or-nav.or-active { background: var(--or-side-2); color: #fff !important; font-weight: 600; }
+.or-env { margin-top: auto; width: 100%; padding: 16px 12px 0; border-top: 1px solid var(--or-side-2); font-size: 12px; display: flex; flex-direction: column; gap: 10px; }
+.or-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+.or-dot.ok { background: #32D583; } .or-dot.warn { background: #FDB022; } .or-dot.missing { background: #F97066; } .or-dot.off { background: #667085; }
+/* badges */
+.or-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.or-badge.ok { background: var(--or-ok-bg); color: var(--or-ok); } .or-badge.err { background: var(--or-err-bg); color: var(--or-err); }
+.or-badge.warn { background: var(--or-warn-bg); color: var(--or-warn); } .or-badge.info { background: var(--or-info-bg); color: var(--or-info); }
+.or-badge.off { background: var(--or-line-2); color: var(--or-muted); }
+/* option cards (format, ROBOT mode, theme) */
+.or-opt { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 14px; border: 1px solid var(--or-line);
+  border-radius: 10px; background: var(--or-card); cursor: pointer; text-align: left; color: var(--or-ink); font: inherit; }
+.or-opt:hover { border-color: var(--or-input); }
+.or-opt.or-sel { border: 1.5px solid var(--or-primary); background: var(--or-primary-soft); }
+.or-opt:focus-visible, .or-nav:focus-visible { outline: 2px solid var(--or-primary); outline-offset: 2px; }
+.or-radio { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--or-input); flex: none; }
+.or-sel .or-radio { border: 5px solid var(--or-primary); }
+.or-tag { font-family: var(--or-mono); font-size: 11.5px; color: var(--or-muted); background: var(--or-line-2); padding: 2px 8px; border-radius: 6px; }
+/* tiles */
+.or-tile { flex: 1 1 130px; border: 1px solid var(--or-line); border-radius: 10px; padding: 12px 14px; }
+.or-tile .k { font-size: 12px; color: var(--or-muted); } .or-tile .v { font-size: 24px; font-weight: 700; margin-top: 2px; }
+.or-tile.err { background: var(--or-err-bg); border-color: transparent; } .or-tile.err .v, .or-tile.err .k { color: var(--or-err); }
+.or-tile.warn { background: var(--or-warn-bg); border-color: transparent; } .or-tile.warn .v, .or-tile.warn .k { color: var(--or-warn); }
+.or-tile .v.small { font-size: 14px; padding-top: 8px; }
+/* segmented filter */
+.or-seg { display: inline-flex; background: var(--or-line-2); border-radius: 8px; padding: 3px; gap: 2px; }
+.or-seg button { min-height: 32px; padding: 0 12px; border: 0; background: transparent; border-radius: 6px; font-size: 12.5px;
+  font-weight: 500; color: var(--or-ink-2); cursor: pointer; }
+.or-seg button[aria-selected="true"] { background: var(--or-card); color: var(--or-ink); font-weight: 600; box-shadow: 0 1px 2px rgba(16,24,40,.08); }
+.or-seg button:focus-visible { outline: 2px solid var(--or-primary); outline-offset: 1px; }
+/* tables */
+.or-table { width: 100%; background: transparent !important; color: var(--or-ink) !important; }
+.or-table thead tr th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--or-muted); font-weight: 600; background: var(--or-line-2); }
+.or-table tbody td { font-size: 13px; border-color: var(--or-line-2) !important; }
+.or-cli { font-family: var(--or-mono); font-size: 12px; white-space: pre-wrap; word-break: break-all; background: var(--or-line-2);
+  border-radius: 8px; padding: 10px 12px; width: 100%; }
+#ob-drop { border: 1.5px dashed var(--or-input); border-radius: 10px; padding: 12px; transition: background-color .15s, border-color .15s; }
+#ob-drop.ob-drag { border-color: var(--or-primary); background: var(--or-primary-soft); }
+.or-chip { display: flex; align-items: center; gap: 12px; width: 100%; }
+.or-chipicon { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
+  display: flex; align-items: center; justify-content: center; flex: none; }
+.or-steps li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13.5px; list-style: none; }
+.or-steps .done { color: var(--or-ok); } .or-steps .todo { color: var(--or-muted); }
+.or-log { height: 15rem; font-size: 12px; font-family: var(--or-mono); }
+.or-hero { background: #0F1724; color: #fff; border-radius: 14px; padding: 32px; }
+.or-feature .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
+  display: flex; align-items: center; justify-content: center; }
+.or-logo-panel { background: #fff; border-radius: 10px; padding: 10px 14px; display: inline-flex; border: 1px solid var(--or-line); }
+.or-notice { padding: 10px 12px; background: var(--or-warn-bg); color: var(--or-warn); border-radius: 8px; font-size: 12.5px; }
+.or-themeprev { display: block; height: 64px; border-radius: 8px; border: 1px solid var(--or-line); width: 100%; }
+@media (prefers-reduced-motion: reduce) { #ob-drop { transition: none; } }
+/* settings rows: the control column never stretches beyond a comfortable width */
+.or-setrow > :not(:first-child) { flex: 0 1 560px !important; max-width: 560px; }
+.or-setrow > .q-checkbox { flex: 0 0 auto !important; }
+.q-tab-panels, .q-tab-panel { background: transparent !important; }
+.or-helplist { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.55; }
+.or-helplist code, .or-hint code { font-family: var(--or-mono); font-size: 12.5px; background: var(--or-line-2); padding: 1px 5px; border-radius: 4px; }
+.or-shot { border: 1px solid var(--or-line); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(16,24,40,.08); }
+@media (max-width: 700px) { .or-pagehead, .or-body { padding-left: 16px; padding-right: 16px; } }
+"""
+
+
+class _QueueHandler(logging.Handler):
+    """Collects log records from worker threads; the page drains the queue on a timer."""
+
+    def __init__(self, q: queue.Queue) -> None:
+        super().__init__(logging.DEBUG)
+        self.q = q
+        self.setFormatter(logging.Formatter("%(levelname)-5s %(message)s"))
+
+    def emit(self, record: logging.LogRecord) -> None:
+        try:
+            self.q.put_nowait((record.levelno, record.getMessage(), self.format(record)))
+        except Exception:  # noqa: BLE001
+            pass
+
+
+def _plan(s: Settings) -> list[tuple[str, str]]:
+    """Steps shown while a task runs: (key, label)."""
+    steps = [("parse", "Parse ontology"), ("checks", "Built-in quality checks")]
+    if s.task in ("site", "single", "check"):
+        if s.robot != "off":
+            steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
+        if s.oops != "off":
+            steps.append(("oops", "OOPS! pitfall scan" + (" (if ROBOT can't run)" if s.oops == "auto" else "")))
+    steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
+                             "myst": "Write MyST files", "check": "Write report"}[s.task]))
+    return steps
+
+
+STEP_OF = [("Parsing ontology", "parse"), ("Parsed ", "checks"), ("Running ROBOT", "robot"),
+           ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
+BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
+
+
+# ---------------------------------------------------------------------------- the app
+def build_page() -> None:  # noqa: C901 - the shell and its four pages share state
+    from nicegui import app, run, ui
+
+    register_upload_route(app)
+    prefs = Prefs.load()
+    s = Settings.load()
+    prefs.apply(s)
+    state: dict = {"last": None, "running": False, "steps": [], "active": None, "done": set(),
+                   "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
+    logs: queue.Queue = queue.Queue()
+    handler = _QueueHandler(logs)
+    lg = logging.getLogger("ontoreview")
+    lg.addHandler(handler)
+    lg.setLevel(logging.INFO)
+    ui.context.client.on_disconnect(lambda: lg.removeHandler(handler))
+
+    ui.colors(primary="#2F4FD8", positive="#067647", negative="#B42318", warning="#B54708")
+    ui.add_css(CSS)
+    ui.add_body_html(DROP_JS.replace("%TOKEN%", UPLOAD_TOKEN).replace("%URL%", UPLOAD_URL))
+    ui.page_title("OntoReview")
+    dark = ui.dark_mode({"light": False, "dark": True, "system": None}[prefs.theme])
+    if prefs.compact:
+        ui.query("body").classes("or-compact")
+
+    # ------------------------------------------------------------------ sidebar
+    nav_links: dict = {}
+    with ui.left_drawer(value=True, fixed=True).classes("or-side").props("width=232 breakpoint=900") as drawer:
+        with ui.row().classes("items-center gap-3 no-wrap").style("padding: 0 10px 26px"):
+            ui.html(LOGO_SVG.format(s=30), sanitize=False)
+            with ui.column().classes("gap-0"):
+                ui.label("OntoReview").style("font-weight:700;font-size:16px;color:#fff;letter-spacing:-.2px")
+                ui.label("Docs & quality review").style("font-size:11px;color:var(--or-side-muted)")
+        with ui.element("nav").props('aria-label="Main"').classes("column gap-1 w-full"):
+            for key, path, label, icon in NAV:
+                with ui.link(target=path).classes("or-nav") as link:
+                    ui.html(_icon(icon), sanitize=False)
+                    ui.label(label)
+                nav_links[key] = link
+        with ui.element("div").classes("or-env"):
+            ui.label("Environment").style("font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--or-side-muted)")
+            env_robot = ui.row().classes("items-center gap-2 no-wrap")
+            env_oops = ui.row().classes("items-center gap-2 no-wrap")
+            ui.label(f"v{__version__}").style("color:var(--or-side-muted)")
+
+    def show_env(target, st: dict) -> None:
+        target.clear()
+        with target:
+            ui.element("span").classes(f"or-dot {st['state']}")
+            ui.label(st["label"]).tooltip(st.get("detail", ""))
+
+    def env_checking() -> None:
+        show_env(env_robot, {"state": "off", "label": "ROBOT · checking…"})
+        show_env(env_oops, {"state": "off", "label": "OOPS! · checking…"})
+
+    env_checking()
+
+    async def refresh_env() -> None:
+        env_checking()
+        rs = await run.io_bound(robot_status, prefs)
+        show_env(env_robot, rs)
+        if os.environ.get("NICEGUI_USER_SIMULATION"):
+            os_ = oops_status(prefs, check=False)
+        else:
+            os_ = await run.io_bound(oops_status, prefs, True)
+        show_env(env_oops, os_)
+        state["env"] = (rs, os_)
+
+    ui.timer(0.1, refresh_env, once=True)
+
+    def set_active(key: str) -> None:
+        for k, link in nav_links.items():
+            if k == key:
+                link.classes(add="or-active")
+                link.props('aria-current="page"')
+            else:
+                link.classes(remove="or-active")
+                link.props(remove="aria-current")
+
+    # ------------------------------------------------------------------ shared helpers
+    def page_head(title: str, subtitle: str):
+        with ui.row().classes("or-pagehead items-center justify-between gap-4") as head:
+            with ui.row().classes("items-center gap-2 no-wrap"):
+                ui.button(icon="menu", on_click=drawer.toggle).props('flat round dense aria-label="Menu"').classes("lt-md")
+                with ui.column().classes("gap-0"):
+                    ui.html(f"<h1>{title}</h1>", sanitize=False)
+                    ui.html(f"<p>{subtitle}</p>", sanitize=False)
+        return head
+
+    def notify(msg: str, kind: str = "info") -> None:
+        ui.notify(msg, type=kind, position="bottom-right")
+
+    def reveal(path: str) -> None:
+        try:
+            open_in_file_manager(path)
+        except Exception as e:  # noqa: BLE001
+            notify(str(e), "warning")
+
+    def link_for(path: str) -> str | None:
+        """Serve a result through this app so it opens in a browser tab."""
+        if not path:
+            return None
+        p = Path(path)
+        root = p.parent
+        last = state.get("last")
+        if last is not None and not isinstance(last, Exception):
+            out = Path(last.output)
+            if out.is_dir():
+                root = out
+        try:
+            rel = p.resolve().relative_to(root.resolve())
+        except ValueError:
+            root, rel = p.parent, Path(p.name)
+        mount = f"/out/{uuid.uuid4().hex[:10]}"
+        app.add_static_files(mount, root)
+        return f"{mount}/{rel.as_posix()}"
+
+    def open_result(path: str | None, anchor: str = "") -> None:
+        if path and Path(path).exists():
+            ui.navigate.to(link_for(path) + anchor, new_tab=True)
+        else:
+            notify("That output no longer exists.", "warning")
+
+    def pick(kind: str, on_pick, folders: bool, start: str = "", title: str = "") -> None:
+        st = {"path": start or s.source or str(Path.cwd())}
+        with ui.dialog() as dlg, ui.card().classes("or-card w-[40rem] max-w-full"):
+            ui.label(title or ("Choose a folder" if folders else "Choose a file")).classes("or-h2")
+            path_label = ui.label().classes("or-mono or-hint")
+            box = ui.column().classes("w-full gap-0 max-h-[50vh] overflow-auto")
+
+            def show(p: str) -> None:
+                lst = browse(p, kind)  # type: ignore[arg-type]
+                st["path"] = lst.path
+                path_label.text = lst.path
+                box.clear()
+                with box:
+                    if lst.parent:
+                        ui.button("..", icon="arrow_upward", on_click=lambda: show(lst.parent)) \
+                            .props("flat align=left no-caps").classes("w-full")
+                    for d in lst.dirs:
+                        ui.button(d, icon="folder", on_click=lambda d=d: show(str(Path(lst.path) / d))) \
+                            .props("flat align=left no-caps").classes("w-full")
+                    if not folders:
+                        for f in lst.files:
+                            ui.button(f, icon="description",
+                                      on_click=lambda f=f: (on_pick(str(Path(lst.path) / f)), dlg.close())) \
+                                .props("flat align=left no-caps").classes("w-full")
+                    if not lst.dirs and (folders or not lst.files):
+                        ui.label("Nothing here.").classes("or-hint q-pa-sm")
+
+            show(st["path"])
+            with ui.row().classes("w-full justify-end"):
+                ui.button("Cancel", on_click=dlg.close).props("flat no-caps")
+                if folders:
+                    ui.button("Use this folder", icon="check",
+                              on_click=lambda: (on_pick(st["path"]), dlg.close())).props("no-caps unelevated")
+        dlg.open()
+
+    def badge(kind: str, text: str):
+        return ui.html(f'<span class="or-badge {kind}">{text}</span>', sanitize=False)
+
+    def segmented(options, selected: str, on_pick, label: str):
+        with ui.element("div").classes("or-seg").props(f'role="tablist" aria-label="{label}"') as seg:
+            for key, text in options:
+                b = ui.element("button").props(f'type="button" role="tab" aria-selected="{str(selected == key).lower()}"')
+                with b:
+                    ui.label(text)
+                b.on("click", lambda key=key: on_pick(key))
+        return seg
+
+    # ------------------------------------------------------------------ Build
+    def build_view() -> None:  # noqa: C901
+        set_active("build")
+        ready: list[bool] = []
+
+        def changed(*_) -> None:  # bindings fire while the page is still being built
+            if ready:
+                refresh()
+        head = page_head("New build", "Pick an ontology, choose what to produce, run.")
+        with head:
+            with ui.row().classes("gap-2"):
+                with ui.dropdown_button("Project config", icon="tune", auto_close=True) \
+                        .props("outline no-caps").tooltip(
+                            "ontoreview.toml stores this setup next to your ontology so the command line, CI "
+                            "and teammates build exactly the same docs"):
+                    for icon, label, hint, action in (
+                            ("edit_note", "Edit ontoreview.toml", "Open the project's config in an editor",
+                             lambda: edit_config()),
+                            ("note_add", "New from template", "Start a commented config for this ontology",
+                             lambda: edit_config(template=True)),
+                            ("save", "Save current settings", "Write what's selected here into ontoreview.toml",
+                             lambda: save_toml()),
+                            ("file_open", "Open another config…", "Load settings from any ontoreview.toml",
+                             lambda: pick("toml", load_toml, False, title="Choose an ontoreview.toml"))):
+                        with ui.item(on_click=action).mark(f"cfg-{icon}"):
+                            with ui.item_section().props("avatar"):
+                                ui.icon(icon)
+                            with ui.item_section():
+                                ui.item_label(label)
+                                ui.item_label(hint).props("caption")
+                run_btn = ui.button(icon="play_arrow", on_click=lambda: start()).props("unelevated no-caps").mark("run")
+
+        with ui.element("div").classes("or-body"):
+            with ui.row().classes("w-full gap-4 items-start no-wrap max-lg:flex-wrap"):
+                # ---------------- configuration column
+                with ui.column().classes("gap-4 w-full lg:w-[44%] lg:max-w-[560px] flex-none"):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.html('<span class="or-step">1</span>', sanitize=False)
+                                ui.label("Source").classes("or-h2")
+                            with ui.element("div").props('id="ob-drop"').classes("w-full"):
+                                source_box = ui.column().classes("w-full gap-2")
+                            with ui.row().classes("gap-2"):
+                                ui.button("File", icon="description", on_click=lambda: pick(
+                                    "ontology", set_source, False, title="Choose an ontology file")) \
+                                    .props("outline no-caps dense").classes("px-3")
+                                ui.button("Folder", icon="folder", on_click=lambda: pick(
+                                    "ontology", set_source, True, title="Choose a folder of ontologies")) \
+                                    .props("outline no-caps dense").classes("px-3")
+                                ui.button("URL", icon="link", on_click=lambda: ask_url()) \
+                                    .props("outline no-caps dense").classes("px-3")
+                            drop_info = ui.label("Drop a .ttl, .owl, .rdf, .jsonld file — or a folder to document "
+                                                 "many at once.").classes("or-hint").props('aria-live="polite"')
+                            source_info = ui.label().classes("or-hint").props('aria-live="polite"')
+
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.html('<span class="or-step">2</span>', sanitize=False)
+                                ui.label("Output").classes("or-h2")
+                            fmt_box = ui.element("div").props('role="radiogroup" aria-label="Output format"') \
+                                .classes("column gap-2 w-full")
+                            ui.label("Save to").classes("or-label q-mt-sm")
+                            with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                                output = ui.input(on_change=changed).bind_value(s, "output").mark("output") \
+                                    .props('outlined dense clearable aria-label="Save to"').classes("grow or-mono")
+                                ui.button("Browse…", on_click=lambda: pick(
+                                    "any", lambda p: output.set_value(p), True, s.output or str(s.output_path().parent),
+                                    title="Choose the output folder")).props("outline no-caps")
+                            output_info = ui.label().classes("or-hint or-mono w-full").style("word-break: break-all") \
+                                .props('aria-live="polite"')
+                            with ui.row().classes("w-full items-center gap-1") as existing_row:
+                                existing_info = ui.label().classes("or-hint")
+                                ui.button("Open", on_click=lambda: open_result(state.get("prior"))) \
+                                    .props("flat dense no-caps size=sm")
+                                ui.button("Show in folder", on_click=lambda: reveal(str(s.output_path()))) \
+                                    .props("flat dense no-caps size=sm")
+                            with ui.row().classes("w-full items-center no-wrap gap-2 q-mt-sm q-pa-sm") \
+                                    .style("background: var(--or-line-2); border-radius: 8px") as checks_row:
+                                ui.icon("fact_check", size="18px").classes("text-primary")
+                                checks_info = ui.label().classes("or-hint grow").style("color: var(--or-ink-2)")
+                                ui.link("Change in Settings", "/settings").classes("or-hint text-primary text-no-wrap")
+
+                # ---------------- results column
+                with ui.column().classes("gap-4 grow min-w-0 w-full"):
+                    results = ui.column().classes("gap-4 w-full")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.expansion("Build log", value=False).classes("w-full").props(
+                                "dense header-class=or-label"):
+                            log_view = ui.log(max_lines=1000).classes("w-full or-log")
+                            for line in state["log"]:
+                                log_view.push(line)
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.expansion("Command line", value=False).classes("w-full").props(
+                                "dense header-class=or-label"):
+                            with ui.column().classes("w-full gap-2 q-pb-sm"):
+                                with ui.row().classes("w-full items-center justify-between"):
+                                    ui.label("The same run from a terminal or CI.").classes("or-hint")
+                                    ui.button("Copy", icon="content_copy", on_click=lambda: (
+                                        ui.clipboard.write(s.cli()), notify("Command copied", "positive"))) \
+                                        .props('flat dense no-caps size=sm aria-label="Copy command"')
+                                cli = ui.label().classes("or-cli")
+
+        # ---------------- behaviour
+        def set_source(p: str) -> None:
+            s.source = p
+            refresh()
+
+        def ask_url() -> None:
+            with ui.dialog() as dlg, ui.card().classes("or-card w-[36rem] max-w-full"):
+                ui.label("Ontology URL or path").classes("or-h2")
+                inp = ui.input(placeholder="https://… or /path/to/ontology.ttl", value=s.source) \
+                    .props("outlined autofocus").classes("w-full or-mono")
+                with ui.row().classes("w-full justify-end"):
+                    ui.button("Cancel", on_click=dlg.close).props("flat no-caps")
+                    ui.button("Use", on_click=lambda: (set_source(inp.value.strip()), dlg.close())).props("unelevated no-caps")
+                inp.on("keydown.enter", lambda: (set_source(inp.value.strip()), dlg.close()))
+            dlg.open()
+
+        def render_source() -> None:
+            source_box.clear()
+            with source_box:
+                if s.source.strip():
+                    p = Path(s.source).expanduser()
+                    is_url = s.source.startswith(("http://", "https://"))
+                    with ui.element("div").classes("or-chip"):
+                        with ui.element("div").classes("or-chipicon"):
+                            ui.icon("link" if is_url else "folder" if s.is_folder else "description", size="20px")
+                        with ui.column().classes("gap-0 grow min-w-0"):
+                            ui.label(s.source if is_url else (p.name or str(p))).classes("or-label ellipsis w-full")
+                            if not is_url:
+                                ui.label(str(p.parent) + "/").classes("or-hint or-mono ellipsis w-full")
+                        ui.button(icon="close", on_click=lambda: set_source("")) \
+                            .props('flat round dense aria-label="Clear source"')
+                else:
+                    src_in = ui.input(placeholder="Type a path or URL and press Enter, or drop files here") \
+                        .props('borderless dense aria-label="Ontology path or URL"').classes("w-full or-mono").mark("source")
+                    src_in.on("keydown.enter", lambda: set_source((src_in.value or "").strip()))
+                    src_in.on("blur", lambda: (src_in.value or "").strip() and set_source(src_in.value.strip()))
+
+        def render_formats() -> None:
+            fmt_box.clear()
+            with fmt_box:
+                for fid, name, desc, tag in FORMATS:
+                    sel = s.task == fid
+                    with ui.element("button").classes("or-opt" + (" or-sel" if sel else "")).props(
+                            f'type="button" role="radio" aria-checked="{str(sel).lower()}"') as b:
+                        ui.element("span").classes("or-radio")
+                        with ui.column().classes("gap-0 grow"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.label(name).classes("or-label")
+                                if fid == RECOMMENDED:
+                                    ui.html('<span class="or-badge ok" style="padding:1px 8px;font-size:11px">Recommended</span>',
+                                            sanitize=False)
+                            ui.label(desc).classes("or-hint")
+                            if sel:
+                                ui.label(INCLUDES[fid]).classes("or-hint q-mt-xs").style("color: var(--or-ink-2)")
+                        ui.label(tag).classes("or-tag")
+                    b.on("click", lambda fid=fid: (setattr(s, "task", fid), refresh()))
+
+        def refresh() -> None:
+            render_source()
+            render_formats()
+            source_info.text = describe_source(s.source) if s.source.strip() else ""
+            output.props(f'placeholder="{s.default_output()}"')
+            output_info.text = f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)")
+            prior = existing_output(s.output_path())
+            state["prior"] = prior["index"] if prior else None
+            existing_row.set_visibility(prior is not None)
+            if prior:
+                what = f"{prior['count']} ontologies" if prior["kind"] == "folder" else "output"
+                existing_info.text = f"Previous {what} here from {when_text(prior['when'])}; building again updates it."
+            checks_row.set_visibility(s.task in ("site", "single", "check"))
+            robot_txt = ("ROBOT off" if s.robot == "off" else
+                         f"ROBOT ({'local' if s.robot_path else 'Docker'})")
+            oops_txt = {"off": "OOPS! off", "auto": "OOPS! only if ROBOT can't run (uploads the ontology)",
+                        "on": "OOPS! always (uploads the ontology)"}[s.oops]
+            checks_info.text = f"Quality checks: built-in · {robot_txt} · {oops_txt}"
+            cli.text = s.cli()
+            run_btn.text = "Running…" if state["running"] else ("Run checks" if s.task == "check" else "Build docs")
+            run_btn.set_enabled(not state["running"])
+            s.save()
+
+        def render_results() -> None:  # noqa: C901
+            results.clear()
+            with results:
+                if state["running"]:
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            name = Path(s.source).name or s.source
+                            done_n, total = len(state["done"]), len(state["steps"])
+                            with ui.row().classes("w-full items-center justify-between"):
+                                ui.label(f"Checking {name}…" if s.task == "check" else f"Building {name}…").classes("or-h2")
+                                ui.label(state["folder_pos"] or f"Step {min(done_n + 1, total)} of {total}").classes("or-hint")
+                            ui.linear_progress(value=done_n / max(total, 1), show_value=False).props("rounded size=6px")
+                            with ui.element("ol").classes("or-steps q-pa-none q-ma-none"):
+                                for key, label in state["steps"]:
+                                    with ui.element("li"):
+                                        if key in state["done"]:
+                                            ui.icon("check_circle", size="18px").classes("done")
+                                            ui.label(label)
+                                        elif key == state["active"]:
+                                            ui.spinner(size="18px")
+                                            ui.label(label).classes("text-weight-medium")
+                                        else:
+                                            ui.icon("radio_button_unchecked", size="18px").classes("todo")
+                                            ui.label(label).classes("todo")
+                    return
+                res = state["last"]
+                if res is None:
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2 items-center text-center q-py-xl"):
+                            ui.icon("auto_stories", size="40px").classes("or-muted")
+                            ui.label("No build yet").classes("or-h2")
+                            ui.label("Choose a source, pick a format and press Build docs. Results, quality "
+                                     "issues and the log appear here.").classes("or-hint")
+                    return
+                if isinstance(res, Exception):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.label("Build failed").classes("or-h2")
+                                badge("err", "Failed")
+                            ui.label(str(res)).classes("or-mono or-hint")
+                    return
+                t = res.totals
+                failed = len(res.rows) - res.ok
+                many = len(res.rows) > 1
+                with ui.card().classes("or-card w-full").props("flat"):
+                    with ui.column().classes("or-sec gap-3"):
+                        with ui.row().classes("w-full items-start justify-between gap-3"):
+                            with ui.column().classes("gap-1 min-w-0"):
+                                with ui.row().classes("items-center gap-2"):
+                                    title = f"{len(res.rows)} ontologies" if many else (res.rows[0].title or res.rows[0].name)
+                                    ui.label(title).classes("or-h2")
+                                    if not res.ok:
+                                        badge("err", "Failed")
+                                    elif failed:
+                                        badge("warn", f"{failed} failed")
+                                    else:
+                                        badge("ok", "Succeeded")
+                                    if many:
+                                        ui.label(f"{res.ok} of {len(res.rows)} succeeded").classes("or-hint")
+                                ui.label(f"{TASKS[res.task]} · {res.seconds:.1f} s · {res.index or res.output}") \
+                                    .classes("or-hint or-mono")
+                            with ui.row().classes("gap-2"):
+                                if res.index and res.task != "check":
+                                    ui.button("Open docs", icon="open_in_new", on_click=lambda: open_result(res.index)) \
+                                        .props("unelevated no-caps")
+                                ui.button("Show in folder", icon="folder_open",
+                                          on_click=lambda: reveal(str(res.output))).props("outline no-caps")
+                        with ui.row().classes("w-full gap-3"):
+                            for k, v, cls in (("Terms documented", t["terms"], ""), ("Errors", t["errors"], "err"),
+                                              ("Warnings", t["warnings"], "warn")):
+                                with ui.element("div").classes(f"or-tile {cls}"):
+                                    ui.label(k).classes("k")
+                                    ui.label(f"{v:,}").classes("v")
+                            ran = sorted({x.split(":")[0] for r in res.rows for x in r.external.split("; ") if x})
+                            with ui.element("div").classes("or-tile"):
+                                ui.label("Checks run").classes("k")
+                                ui.label(" · ".join(ran) or "Built-in only").classes("v small")
+                if many:
+                    ontology_table(res)
+                issues_card(res, many)
+
+        def ontology_table(res) -> None:
+            with ui.card().classes("or-card w-full").props("flat"):
+                with ui.column().classes("or-sec gap-2"):
+                    ui.label("Ontologies").classes("or-h2")
+                    rows = [{"id": i, "name": r.title or r.name, "source": r.name,
+                             "terms": "" if r.problem else r.terms, "errors": "" if r.problem else r.errors,
+                             "warnings": "" if r.problem else r.warnings, "problem": r.problem or "", "path": r.output}
+                            for i, r in enumerate(res.rows)]
+                    tbl = ui.table(rows=rows, row_key="id", columns=[
+                        {"name": "name", "label": "Ontology", "field": "name", "align": "left"},
+                        {"name": "terms", "label": "Terms", "field": "terms"},
+                        {"name": "errors", "label": "Errors", "field": "errors"},
+                        {"name": "warnings", "label": "Warnings", "field": "warnings"},
+                        {"name": "act", "label": "", "field": "path", "align": "right"}]) \
+                        .classes("or-table").props("flat dense wrap-cells")
+                    tbl.add_slot("body-cell-name", r'''<q-td :props="props">
+                        <div class="text-weight-medium">{{ props.row.name }}</div>
+                        <div class="or-hint or-mono">{{ props.row.source }}</div>
+                        <div v-if="props.row.problem" class="text-negative" style="font-size:12px">{{ props.row.problem }}</div></q-td>''')
+                    tbl.add_slot("body-cell-act", r'''<q-td :props="props" class="text-no-wrap">
+                        <q-btn v-if="props.row.path" flat round dense size="sm" icon="open_in_new"
+                          :aria-label="'Open ' + props.row.name" @click="() => $parent.$emit('open', props.row.path)" />
+                        <q-btn v-if="props.row.path" flat round dense size="sm" icon="folder_open"
+                          :aria-label="'Show ' + props.row.name + ' in folder'" @click="() => $parent.$emit('reveal', props.row.path)" />
+                        </q-td>''')
+                    tbl.on("open", lambda e: open_result(e.args))
+                    tbl.on("reveal", lambda e: reveal(e.args))
+
+        def issues_card(res, many: bool) -> None:
+            all_issues = res.issues
+            counts = {k: sum(1 for i in all_issues if i["severity"] == k) for k in ("error", "warning", "info")}
+            with ui.card().classes("or-card w-full").props("flat"):
+                with ui.column().classes("or-sec gap-3"):
+                    with ui.row().classes("w-full items-center justify-between"):
+                        ui.label("Issues").classes("or-h2")
+                        opts = [("all", f"All {len(all_issues)}"), ("error", f"Errors {counts['error']}"),
+                                ("warning", f"Warnings {counts['warning']}")]
+                        if counts["info"]:
+                            opts.append(("info", f"Info {counts['info']}"))
+                        segmented(opts, state["filter"],
+                                  lambda k: (state.__setitem__("filter", k), render_results()), "Filter issues")
+                    shown = [i for i in all_issues if state["filter"] in ("all", i["severity"])]
+                    if not shown:
+                        ui.label("No issues found." if not all_issues else "No issues of this kind.").classes("or-hint q-py-md")
+                    else:
+                        cols = [{"name": "severity", "label": "Severity", "field": "severity", "align": "left"},
+                                {"name": "check", "label": "Check", "field": "check", "align": "left"}]
+                        if many:
+                            cols.append({"name": "ontology", "label": "Ontology", "field": "ontology", "align": "left"})
+                        cols += [{"name": "rule", "label": "Rule", "field": "rule", "align": "left"},
+                                 {"name": "affected", "label": "Affected", "field": "affected", "align": "left"}]
+                        rows = [{**i, "id": n} for n, i in enumerate(shown)]
+                        tbl = ui.table(rows=rows, columns=cols, row_key="id", pagination={"rowsPerPage": 25}) \
+                            .classes("or-table").props("flat dense wrap-cells")
+                        tbl.add_slot("body-cell-severity", r'''<q-td :props="props">
+                            <span :class="'or-badge ' + ({error:'err', warning:'warn', info:'info'}[props.value])">
+                            {{ {error:'Error', warning:'Warning', info:'Info'}[props.value] }}</span></q-td>''')
+                        tbl.add_slot("body-cell-affected",
+                                     r'''<q-td :props="props"><span class="or-mono" style="font-size:12px">{{ props.value }}</span></q-td>''')
+                    with ui.row().classes("w-full items-center justify-between"):
+                        ui.label(f"{len(shown)} of {len(all_issues)} shown").classes("or-hint")
+                        if res.task == "site" and res.index and not many:
+                            ui.button("Open full quality report", on_click=lambda: open_result(res.index, "#quality")) \
+                                .props("flat dense no-caps")
+                        elif res.task == "check":
+                            ui.button("Open report (JSON)", on_click=lambda: open_result(str(res.output))) \
+                                .props("flat dense no-caps")
+
+        def drain() -> None:
+            changed = False
+            while True:
+                try:
+                    level, msg, line = logs.get_nowait()
+                except queue.Empty:
+                    break
+                if level >= logging.INFO or s.verbose:
+                    state["log"].append(line)
+                    log_view.push(line)
+                if not state["running"]:
+                    continue
+                head_ = msg.split("]", 1)[0]
+                if msg.startswith("[") and "/" in head_:
+                    state["folder_pos"] = f"Ontology {head_[1:].replace('/', ' of ')} · {msg.split('] ', 1)[-1]}"
+                    state["done"], state["active"] = set(), None
+                    changed = True
+                keys = [k for k, _ in state["steps"]]
+                for prefix, key in STEP_OF:
+                    if msg.startswith(prefix) and key in keys:
+                        state["done"] |= set(keys[:keys.index(key)])
+                        state["active"] = key
+                        changed = True
+            if changed:
+                render_results()
+
+        ui.timer(0.25, drain)
+
+        async def start() -> None:
+            problems = s.validate()
+            if problems:
+                for p in problems:
+                    notify(p, "warning")
+                return
+            s.save()
+            state.update(running=True, steps=_plan(s), active="parse", done=set(), folder_pos="", filter="all")
+            lg.setLevel(logging.DEBUG if s.verbose else logging.INFO)
+            line = f"$ {s.cli()}"
+            state["log"].append(line)
+            log_view.push(line)
+            refresh()
+            render_results()
+            try:
+                res = await run.io_bound(run_task, s)
+            except Exception as e:  # noqa: BLE001
+                drain()
+                state.update(running=False, last=e)
+                if prefs.keep_history:
+                    record_run(s, None, str(e), limit=prefs.history_limit)
+                notify(f"Failed: {e}", "negative")
+            else:
+                drain()
+                state.update(running=False, last=res)
+                if prefs.keep_history:
+                    record_run(s, res, limit=prefs.history_limit)
+                failed = len(res.rows) - res.ok
+                line = f"DONE  {res.ok} of {len(res.rows)} succeeded · {res.seconds:.1f}s"
+                state["log"].append(line)
+                log_view.push(line)
+                notify(f"{res.ok} of {len(res.rows)} succeeded" + (f", {failed} failed" if failed else ""),
+                       "positive" if not failed else "warning")
+                if (prefs.open_when_done and res.index and res.task != "check" and res.ok
+                        and not os.environ.get("NICEGUI_USER_SIMULATION")):
+                    webbrowser.open(Path(res.index).resolve().as_uri())
+            finally:
+                lg.setLevel(logging.INFO)
+                state["running"] = False
+                refresh()
+                render_results()
+
+        def save_toml() -> None:
+            if not s.source.strip():
+                notify("Choose an ontology file or a folder of ontologies first.", "warning")
+                return
+            target = config_path()
+            if target.exists():
+                with ui.dialog() as d, ui.card().classes("or-card"):
+                    ui.label(f"{target} already exists. Replace it?")
+                    with ui.row().classes("justify-end w-full"):
+                        ui.button("Cancel", on_click=d.close).props("flat no-caps")
+                        ui.button("Replace", color="negative", on_click=lambda: (write(target), d.close())).props("no-caps")
+                d.open()
+            else:
+                write(target)
+
+        def write(target: Path) -> None:
+            target.write_text(s.to_toml(), "utf-8")
+            notify(f"Saved {target}. The command line and CI can now run: ontoreview build", "positive")
+
+        def load_toml(path: str) -> None:
+            try:
+                loaded = Settings.from_toml(path)
+            except Exception as e:  # noqa: BLE001
+                notify(f"Could not read {path}: {e}", "negative")
+                return
+            for k in ("source", "output", "layout", "languages", "base_url", "reason", "load_imports",
+                      "include_individuals", "competency_questions", "previous_version", "robot", "oops"):
+                setattr(s, k, getattr(loaded, k))
+            refresh()
+            notify(f"Loaded {path}", "positive")
+
+        def config_path() -> Path:
+            base = s.source_path if s.is_folder else (s.source_path.parent if s.source_path else Path.cwd())
+            return base / "ontoreview.toml"
+
+        def edit_config(template: bool = False, path: Path | None = None) -> None:
+            from .config import CONFIG_TEMPLATE, validate_config_text
+
+            if not s.source.strip() and path is None:
+                notify("Choose an ontology file or folder first; the config is saved next to it.", "warning")
+                return
+            path = path or config_path()
+            exists = path.exists()
+            if template or not exists:
+                src_rel = (s.source_path.name if s.source_path and not s.is_folder else ".") if s.source_path else s.source
+                text = CONFIG_TEMPLATE.format(source=src_rel)
+            else:
+                text = path.read_text("utf-8")
+            with ui.dialog().props("maximized=false") as dlg, \
+                    ui.card().classes("or-card").style("width: min(900px, 96vw); max-width: 96vw"):
+                with ui.row().classes("w-full items-start justify-between no-wrap"):
+                    with ui.column().classes("gap-0 min-w-0"):
+                        ui.label("ontoreview.toml").classes("or-h2")
+                        ui.label(str(path) + ("" if exists else "  (new file)")).classes("or-hint or-mono ellipsis")
+                    ui.button(icon="close", on_click=dlg.close).props('flat round dense aria-label="Close"')
+                ui.label("This file keeps the build settings with your ontology. `ontoreview build`, "
+                         "`ontoreview check`, CI and this app all read it; paths are relative to the file. "
+                         "Options set here override your Settings (which are personal defaults on this computer).") \
+                    .classes("or-hint")
+                editor = ui.codemirror(text, language="TOML", theme="basicDark" if dark.value else "basicLight",
+                                       line_wrapping=True).classes("w-full").style("height: 52vh; border: 1px solid var(--or-line); border-radius: 8px")
+                status = ui.label().classes("or-hint").props('aria-live="polite"')
+
+                def check() -> bool:
+                    problems = validate_config_text(editor.value, path.parent)
+                    if problems:
+                        status.text = "✗ " + "; ".join(problems[:3])
+                        status.classes(replace="text-negative or-hint")
+                        return False
+                    status.text = "✓ Valid configuration"
+                    status.classes(replace="text-positive or-hint")
+                    return True
+
+                def save(use: bool) -> None:
+                    if not check():
+                        notify("Fix the problems before saving.", "warning")
+                        return
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(editor.value, "utf-8")
+                    notify(f"Saved {path}", "positive")
+                    if use:
+                        load_toml(str(path))
+                    dlg.close()
+
+                with ui.row().classes("w-full items-center justify-between"):
+                    ui.button("Check", icon="rule", on_click=check).props("flat no-caps")
+                    with ui.row().classes("gap-2"):
+                        ui.button("Cancel", on_click=dlg.close).props("outline no-caps")
+                        ui.button("Save", on_click=lambda: save(False)).props("outline no-caps")
+                        ui.button("Save and use for this build", on_click=lambda: save(True)) \
+                            .props("unelevated no-caps").mark("config-save-use")
+            dlg.open()
+            check()
+
+        def on_drop_start(e) -> None:
+            drop_info.text = f"Copying {e.args.get('count', 0)} file(s)…"
+
+        def on_drop_done(e) -> None:
+            a = e.args or {}
+            if not a.get("batch") or not a.get("ok"):
+                msg = ("Nothing usable was dropped: no ontology files found." if not a.get("failed") else
+                       f"Copy failed for {a.get('failed')} file(s).")
+                drop_info.text = msg
+                notify(msg, "warning")
+                return
+            target = upload_source(a["batch"])
+            if not target:
+                notify("The dropped files could not be found.", "negative")
+                return
+            extra = (f", {a['skipped']} other file(s) ignored" if a.get("skipped") else "") + \
+                (f", {a['failed']} failed" if a.get("failed") else "")
+            drop_info.text = f"Copied {a['ok']} file(s){extra} into a local workspace."
+            set_source(target)
+            notify(f"Ready: {Path(target).name}", "positive")
+
+        ui.on("ob_drop_start", on_drop_start)
+        ui.on("ob_drop_done", on_drop_done)
+        ready.append(True)
+        refresh()
+        render_results()
+
+    # ------------------------------------------------------------------ Run history
+    def history_view() -> None:
+        set_active("history")
+        head = page_head("Run history", "Every build and check you've run — reopen, re-run or clean up.")
+        with head:
+            ui.button("Clear history…", on_click=lambda: confirm_clear()).props("outline no-caps color=negative")
+        filt = {"text": "", "kind": "all", "hide": True}
+        with ui.element("div").classes("or-body column gap-4"):
+            with ui.card().classes("or-card w-full").props("flat"):
+                with ui.row().classes("or-sec items-center gap-3"):
+                    search = ui.input(placeholder="Search by ontology or output path",
+                                      on_change=lambda e: (filt.__setitem__("text", e.value or ""), table.refresh())) \
+                        .props('outlined dense clearable aria-label="Search runs"').classes("grow min-w-[16rem]")
+                    search.add_slot("prepend", '<q-icon name="search" />')
+                    seg_box = ui.element("div")
+                    ui.checkbox("Hide runs whose output was deleted", value=True,
+                                on_change=lambda e: (filt.__setitem__("hide", e.value), table.refresh()))
+            with ui.card().classes("or-card w-full").props("flat"):
+                table_box = ui.column().classes("w-full gap-0")
+
+        def render_seg() -> None:
+            seg_box.clear()
+            with seg_box:
+                segmented((("all", "All"), ("docs", "Documentation"), ("check", "Checks")), filt["kind"],
+                          lambda k: (filt.__setitem__("kind", k), render_seg(), table.refresh()), "Task")
+
+        @ui.refreshable
+        def table() -> None:
+            entries = load_history()
+            shown = [e for e in entries
+                     if (filt["kind"] == "all" or task_kind(e.task) == filt["kind"]) and e.matches(filt["text"])
+                     and (e.exists or not filt["hide"] or e.failed)]
+            if not entries:
+                with ui.column().classes("or-sec items-center text-center q-py-xl gap-2"):
+                    ui.icon("history", size="40px").classes("or-muted")
+                    ui.label("No runs yet").classes("or-h2")
+                    ui.label("Builds and checks you start appear here.").classes("or-hint")
+                return
+            rows = [{"id": e.id, "status": "failed" if e.failed else ("ok" if e.exists else "gone"),
+                     "name": run_name(e), "out": e.output, "task": TASKS.get(e.task, e.task),
+                     "issues": issues_text(e), "when": when_text(e.when), "index": e.index or "",
+                     "exists": e.exists} for e in shown]
+            tbl = ui.table(rows=rows, row_key="id", pagination={"rowsPerPage": 20}, columns=[
+                {"name": "status", "label": "Status", "field": "status", "align": "left"},
+                {"name": "name", "label": "Ontology", "field": "name", "align": "left"},
+                {"name": "task", "label": "Task", "field": "task", "align": "left"},
+                {"name": "issues", "label": "Issues", "field": "issues", "align": "left"},
+                {"name": "when", "label": "When", "field": "when", "align": "left"},
+                {"name": "act", "label": "Actions", "field": "id", "align": "right"}]) \
+                .classes("or-table").props("flat wrap-cells")
+            tbl.add_slot("body-cell-status", r'''<q-td :props="props">
+                <span v-if="props.value === 'ok'" class="or-badge ok">Succeeded</span>
+                <span v-else-if="props.value === 'failed'" class="or-badge err">Failed</span>
+                <span v-else class="or-badge off">Output deleted</span></q-td>''')
+            tbl.add_slot("body-cell-name", r'''<q-td :props="props"><div class="text-weight-medium">{{ props.value }}</div>
+                <div class="or-hint or-mono">→ {{ props.row.out }}</div></q-td>''')
+            tbl.add_slot("body-cell-act", r'''<q-td :props="props" class="text-no-wrap">
+                <q-btn flat round dense size="sm" icon="open_in_new" :disable="!props.row.index || !props.row.exists"
+                  aria-label="Open output" @click="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
+                <q-btn flat round dense size="sm" icon="folder_open" :disable="!props.row.exists"
+                  aria-label="Show in folder" @click="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
+                <q-btn flat round dense size="sm" icon="replay"
+                  aria-label="Load settings and re-run" @click="() => $parent.$emit('rerun', props.row)"><q-tooltip>Load settings and re-run</q-tooltip></q-btn>
+                <q-btn flat round dense size="sm" icon="delete_outline" color="negative"
+                  aria-label="Remove from history" @click="() => $parent.$emit('forget', props.row)"><q-tooltip>Remove from history (files are kept)</q-tooltip></q-btn>
+                </q-td>''')
+            by_id = {e.id: e for e in shown}
+            tbl.on("open", lambda e: open_result(e.args.get("index")))
+            tbl.on("reveal", lambda e: reveal(e.args.get("out")))
+            tbl.on("rerun", lambda e: rerun(by_id[e.args["id"]]))
+            tbl.on("forget", lambda e: (forget_run(e.args["id"]), table.refresh()))
+            with ui.row().classes("w-full justify-between q-px-md q-py-sm"):
+                ui.label(f"{len(shown)} of {len(entries)} runs shown").classes("or-hint")
+
+        def rerun(entry) -> None:
+            known = set(vars(Settings()))
+            for k, v in entry.settings.items():
+                if k in known:
+                    setattr(s, k, v)
+            prefs.apply(s)
+            s.save()
+            ui.navigate.to("/")
+            notify("Settings from that run loaded. Press Build docs to run it again.")
+
+        def confirm_clear() -> None:
+            with ui.dialog() as d, ui.card().classes("or-card"):
+                ui.label("Clear the run history?").classes("or-h2")
+                ui.label("Only the list is cleared; generated files stay where they are.").classes("or-hint")
+                with ui.row().classes("justify-end w-full"):
+                    ui.button("Cancel", on_click=d.close).props("flat no-caps")
+                    ui.button("Clear history", color="negative",
+                              on_click=lambda: (clear_history(), table.refresh(), d.close())).props("no-caps")
+            d.open()
+
+        render_seg()
+        with table_box:
+            table()
+
+    # ------------------------------------------------------------------ Settings
+    def settings_view() -> None:  # noqa: C901
+        set_active("settings")
+        work = Prefs(**asdict(prefs))
+        page_head("Settings", "Your defaults for every build on this computer. A project's ontoreview.toml "
+                              "(Build › Project config) overrides them and is shared with the CLI, CI and teammates.")
+        with ui.element("div").classes("w-full").style(
+                "background: var(--or-card); border-bottom: 1px solid var(--or-line); padding: 0 24px"):
+            with ui.tabs().props("no-caps align=left active-color=primary indicator-color=primary") as tabs:
+                t_general = ui.tab("General")
+                t_docs = ui.tab("Documentation")
+                t_checks = ui.tab("Quality checks")
+                t_look = ui.tab("Appearance")
+
+        def row(label: str, hint: str = ""):
+            r = ui.row().classes("w-full items-center gap-4 q-py-md no-wrap max-sm:flex-wrap or-setrow") \
+                .style("border-bottom: 1px solid var(--or-line-2)")
+            with r:
+                with ui.column().classes("gap-0").style("flex: 1 1 320px"):
+                    ui.label(label).classes("or-label")
+                    if hint:
+                        ui.label(hint).classes("or-hint")
+            return r
+
+        with ui.element("div").classes("or-body").style("padding-top: 16px"):
+            start_tab = {"general": t_general, "docs": t_docs, "checks": t_checks, "look": t_look} \
+                .get(state.pop("settings_tab", "general"), t_general)
+            tabs.set_value(start_tab)
+            with ui.tab_panels(tabs, value=start_tab, animated=False).classes("w-full").style("background: transparent"):
+                with ui.tab_panel(t_general).classes("q-pa-none"):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
+                            with row("Default output folder", 'Used when "Save to" is left empty. Empty: next to the ontology.'):
+                                with ui.row().classes("no-wrap gap-2").style("flex: 1 1 320px"):
+                                    dout = ui.input(placeholder="next to the ontology").bind_value(work, "default_output") \
+                                        .props('outlined dense clearable aria-label="Default output folder"').classes("grow or-mono")
+                                    ui.button("Browse…", on_click=lambda: pick("any", lambda p: dout.set_value(p), True,
+                                                                               work.default_output, "Default output folder")) \
+                                        .props("outline no-caps")
+                            with row("Default format", "Pre-selected on the Build screen."):
+                                ui.select({f[0]: f[1] for f in FORMATS}).bind_value(work, "default_task") \
+                                    .props('outlined dense aria-label="Default format"').style("flex: 1 1 320px")
+                            with row("Open docs when a build finishes", "Opens index.html in your browser."):
+                                ui.checkbox().bind_value(work, "open_when_done").props('aria-label="Open docs when a build finishes"')
+                            with row("Keep run history", "Stored locally on this computer."):
+                                ui.checkbox().bind_value(work, "keep_history").props('aria-label="Keep run history"')
+                            with row("Remember the last"):
+                                with ui.row().classes("items-center gap-2").style("flex: 1 1 320px"):
+                                    ui.number(min=1, max=1000, step=10, format="%d").bind_value(
+                                        work, "history_limit", forward=lambda v: int(v or 50)) \
+                                        .props('outlined dense aria-label="Number of runs to remember"').classes("w-28")
+                                    ui.label("runs").classes("or-hint")
+                with ui.tab_panel(t_docs).classes("q-pa-none"):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
+                            with row("Layout", "One long page, or one page per section."):
+                                ui.select({"single": "One page", "multi": "One page per section"}) \
+                                    .bind_value(work, "layout").props('outlined dense aria-label="Layout"')
+                            with row("Languages", "Comma-separated, e.g. en, es. The first is the default; "
+                                                  "each gets its own site."):
+                                ui.input().bind_value(work, "languages").props('outlined dense aria-label="Languages"')
+                            with row("Public URL (base_url)", "Where the docs will be published; used for "
+                                                              "canonical links and llms.txt."):
+                                ui.input(placeholder="https://w3id.org/my-ontology").bind_value(work, "base_url") \
+                                    .props('outlined dense clearable aria-label="Public URL"').classes("or-mono")
+                            with row("Load owl:imports", "Follow imports so imported terms resolve."):
+                                ui.checkbox().bind_value(work, "load_imports").props('aria-label="Load owl:imports"')
+                            with row("Document individuals", "Include named individuals in the reference."):
+                                ui.checkbox().bind_value(work, "include_individuals") \
+                                    .props('aria-label="Document individuals"')
+                            with row("Inferred superclasses", "Run a reasoner (needs owlrl) and show inferred "
+                                                              "superclasses."):
+                                ui.checkbox().bind_value(work, "reason").props('aria-label="Inferred superclasses"')
+                            with row("Competency questions", "YAML, CSV/TSV or Excel file(s), comma-separated. "
+                                                             "Used for single-ontology builds."):
+                                with ui.row().classes("no-wrap gap-2"):
+                                    cqw = ui.input().bind_value(work, "competency_questions") \
+                                        .props('outlined dense clearable aria-label="Competency questions"').classes("grow or-mono")
+                                    ui.button("Browse…", on_click=lambda: pick(
+                                        "cq", lambda p: cqw.set_value(", ".join(x for x in (work.competency_questions, p) if x)),
+                                        False, title="Choose a competency questions file")).props("outline no-caps")
+                            with row("Previous version", "An older release to compare against for the changelog. "
+                                                         "Used for single-ontology builds."):
+                                with ui.row().classes("no-wrap gap-2"):
+                                    pvw = ui.input().bind_value(work, "previous_version") \
+                                        .props('outlined dense clearable aria-label="Previous version"').classes("grow or-mono")
+                                    ui.button("Browse…", on_click=lambda: pick(
+                                        "ontology", lambda p: pvw.set_value(p), False, title="Choose the previous version")) \
+                                        .props("outline no-caps")
+                            with row("Verbose log", "Show debug messages in the build log."):
+                                ui.checkbox().bind_value(work, "verbose").props('aria-label="Verbose log"')
+                with ui.tab_panel(t_checks).classes("q-pa-none").style(
+                        "display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;align-items:start"):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            with ui.row().classes("w-full items-center justify-between"):
+                                ui.label("ROBOT").classes("or-h2")
+                                robot_badge = ui.html("", sanitize=False)
+                            ui.label("Run ROBOT with").classes("or-label")
+                            mode_box = ui.row().classes("w-full gap-3 no-wrap max-sm:flex-wrap") \
+                                .props('role="radiogroup" aria-label="Run ROBOT with"')
+                            img_row = ui.column().classes("w-full gap-1")
+                            with img_row:
+                                ui.label("Docker image").classes("or-label")
+                                with ui.row().classes("w-full no-wrap gap-2"):
+                                    ui.input().bind_value(work, "robot_image") \
+                                        .props('outlined dense aria-label="Docker image"').classes("grow or-mono")
+                                    ui.button("Test", on_click=lambda: test_robot()).props("outline no-caps")
+                            path_row = ui.column().classes("w-full gap-1")
+                            with path_row:
+                                ui.label("robot command").classes("or-label")
+                                with ui.row().classes("w-full no-wrap gap-2"):
+                                    ui.input(placeholder="robot (on PATH)").bind_value(work, "robot_path") \
+                                        .props('outlined dense aria-label="robot command"').classes("grow or-mono")
+                                    ui.button("Test", on_click=lambda: test_robot()).props("outline no-caps")
+                            ui.checkbox("Run ROBOT by default").bind_value(work, "robot_enabled")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            with ui.row().classes("w-full items-center justify-between"):
+                                ui.label("OOPS!").classes("or-h2")
+                                with ui.row().classes("items-center gap-2"):
+                                    oops_badge = ui.html("", sanitize=False)
+                                    ui.button("Check", on_click=lambda: test_oops()).props("flat dense no-caps")
+                            ui.label("Service URL").classes("or-label")
+                            ui.input().bind_value(work, "oops_endpoint") \
+                                .props('outlined dense aria-label="OOPS! service URL"').classes("w-full or-mono")
+                            ui.label("The public OOPS! REST service. Change it only if you run your own OOPS! server.") \
+                                .classes("or-hint")
+                            with ui.row().classes("gap-6 items-end"):
+                                with ui.column().classes("gap-1"):
+                                    ui.label("Timeout").classes("or-label")
+                                    with ui.row().classes("items-center gap-2"):
+                                        ui.number(min=5, max=600, step=5, format="%d").bind_value(
+                                            work, "oops_timeout", forward=lambda v: int(v or 90)) \
+                                            .props('outlined dense aria-label="Timeout in seconds"').classes("w-28")
+                                        ui.label("seconds").classes("or-hint")
+                                with ui.column().classes("gap-1"):
+                                    ui.label("Use OOPS!").classes("or-label")
+                                    ui.select(OOPS_CHOICES).bind_value(work, "oops") \
+                                        .props('outlined dense aria-label="Use OOPS!"').classes("w-56")
+                            ui.label("OOPS! uploads your ontology to an external web service. Turn it off for "
+                                     "unpublished or private ontologies.").classes("or-notice")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2"):
+                            ui.label("Quality check only").classes("or-h2")
+                            ui.label("When a check run counts as failed (the CLI exits with 1; useful in CI).") \
+                                .classes("or-hint")
+                            ui.select({"error": "Any error", "warning": "Any warning or error",
+                                       "info": "Any finding", "never": "Never"}).bind_value(work, "fail_on") \
+                                .props('outlined dense aria-label="Fail on"').classes("w-64")
+                with ui.tab_panel(t_look).classes("q-pa-none").style("max-width: 900px"):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            ui.label("Theme").classes("or-h2")
+                            theme_box = ui.element("div").props('role="radiogroup" aria-label="Theme"') \
+                                .classes("w-full gap-0").style("display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px")
+                            ui.checkbox("Compact layout").bind_value(work, "compact")
+            with ui.row().classes("w-full items-center justify-between q-mt-md"):
+                ui.button("Reset to defaults", on_click=lambda: reset()).props("flat no-caps")
+                with ui.row().classes("gap-2"):
+                    ui.button("Cancel", on_click=lambda: ui.navigate.to("/")).props("outline no-caps")
+                    ui.button("Save changes", on_click=lambda: save()).props("unelevated no-caps").mark("save-settings")
+
+        def render_mode() -> None:
+            mode_box.clear()
+            with mode_box:
+                for key, name, desc in (("docker", "Docker", "No Java install needed"),
+                                        ("local", "Local robot command", "Uses `robot` on your PATH")):
+                    sel = work.robot_mode == key
+                    with ui.element("button").classes("or-opt" + (" or-sel" if sel else "")).props(
+                            f'type="button" role="radio" aria-checked="{str(sel).lower()}"') as b:
+                        ui.element("span").classes("or-radio")
+                        with ui.column().classes("gap-0"):
+                            ui.label(name).classes("or-label")
+                            ui.label(desc).classes("or-hint")
+                    b.on("click", lambda key=key: (setattr(work, "robot_mode", key), render_mode()))
+            img_row.set_visibility(work.robot_mode == "docker")
+            path_row.set_visibility(work.robot_mode == "local")
+
+        def render_theme() -> None:
+            theme_box.clear()
+            prev_bg = {"light": "linear-gradient(90deg,#0F1724 25%,#F4F6F8 25%)",
+                       "dark": "linear-gradient(90deg,#0B111A 25%,#1A2230 25%)",
+                       "system": "linear-gradient(90deg,#0F1724 25%,#F4F6F8 25%,#F4F6F8 62%,#1A2230 62%)"}
+            with theme_box:
+                for key, name in (("light", "Light"), ("dark", "Dark"), ("system", "Match system")):
+                    sel = work.theme == key
+                    with ui.element("button").classes("or-opt column items-stretch" + (" or-sel" if sel else "")).props(
+                            f'type="button" role="radio" aria-checked="{str(sel).lower()}"') as b:
+                        ui.element("span").classes("or-themeprev").style(f"background:{prev_bg[key]}")
+                        with ui.row().classes("w-full justify-between q-mt-sm"):
+                            ui.label(name).classes("or-label")
+                            if sel:
+                                ui.label("✓ Selected").classes("text-primary text-weight-medium")
+                    b.on("click", lambda key=key: (setattr(work, "theme", key), render_theme()))
+
+        def show_badge(target, st: dict) -> None:
+            target.content = f'<span class="or-badge {BADGE_KIND[st["state"]]}">{st["label"].split("· ")[-1].capitalize()}</span>'
+
+        async def test_robot() -> None:
+            robot_badge.content = '<span class="or-badge off">Checking…</span>'
+            st = await run.io_bound(robot_status, work)
+            show_badge(robot_badge, st)
+            notify(f"{st['label']}: {st.get('detail', '')}", "positive" if st["state"] == "ok" else "warning")
+
+        async def test_oops() -> None:
+            oops_badge.content = '<span class="or-badge off">Checking…</span>'
+            show_badge(oops_badge, await run.io_bound(oops_status, work, True))
+
+        def reset() -> None:
+            for k, v in asdict(Prefs()).items():
+                setattr(work, k, v)
+            render_mode()
+            render_theme()
+            notify("Defaults restored. Save changes to keep them.")
+
+        def save() -> None:
+            for k, v in asdict(work).items():
+                setattr(prefs, k, v)
+            prefs.save()
+            prefs.apply(s, new=not s.source.strip())
+            s.save()
+            dark.set_value({"light": False, "dark": True, "system": None}[prefs.theme])
+            if prefs.compact:
+                ui.query("body").classes(add="or-compact")
+            else:
+                ui.query("body").classes(remove="or-compact")
+            notify("Settings saved", "positive")
+            ui.timer(0.05, refresh_env, once=True)
+
+        if state.get("env"):
+            show_badge(robot_badge, state["env"][0])
+            show_badge(oops_badge, state["env"][1])
+        render_mode()
+        render_theme()
+
+    # ------------------------------------------------------------------ About
+    def about_view() -> None:
+        set_active("about")
+        page_head("About", "What this tool does, what it runs on, and where to get help.")
+        with ui.element("div").classes("or-body column gap-4"):
+            with ui.row().classes("or-hero items-center gap-6 w-full"):
+                ui.html(LOGO_SVG.format(s=72), sanitize=False)
+                with ui.column().classes("gap-1").style("flex: 1 1 320px"):
+                    ui.label("OntoReview").style("font-size:28px;font-weight:700;letter-spacing:-.6px")
+                    ui.label("Turn ontology files into documentation and review their quality with ROBOT and "
+                             "OOPS! — from one window or the command line.").style(
+                        "font-size:15px;line-height:1.55;color:#C9D1DB;max-width:560px")
+                    with ui.row().classes("gap-2 q-mt-sm"):
+                        for chip in (f"Version {__version__}", "Apache License 2.0", "CAIR-Nepal"):
+                            ui.label(chip).style("background:#1E293B;padding:4px 10px;border-radius:20px;font-size:12px")
+                with ui.column().classes("gap-2"):
+                    ui.button("View on GitHub", on_click=lambda: ui.navigate.to(REPO, new_tab=True)) \
+                        .props("unelevated no-caps color=white text-color=dark")
+                    ui.button("Report an issue", on_click=lambda: ui.navigate.to(REPO + "/issues/new/choose", new_tab=True)) \
+                        .props("outline no-caps color=white")
+            with ui.element("div").classes("w-full").style(
+                    "display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px"):
+                for icon, title, text in (
+                        ("language", "Documentation", "Website, single HTML file, Markdown or a MyST / Sphinx project — "
+                                                      "for one ontology or a whole folder."),
+                        ("task_alt", "Quality review", "Built-in checks, ROBOT reports and OOPS! pitfall scans, merged "
+                                                       "into one list of errors and warnings."),
+                        ("code", "Reproducible", "Every run here maps to an ontoreview command and can be saved as "
+                                                 "ontoreview.toml for CI."),
+                        ("computer", "Runs locally", "Files stay on your machine. Only the OOPS! scan contacts an "
+                                                     "external service, and you can turn it off.")):
+                    with ui.card().classes("or-card or-feature").props("flat"):
+                        with ui.column().classes("or-sec gap-1").style("padding: 16px 18px"):
+                            with ui.element("div").classes("ic"):
+                                ui.icon(icon, size="20px")
+                            ui.label(title).classes("or-h2")
+                            ui.label(text).classes("or-hint").style("font-size:13px;line-height:1.55")
+            with ui.row().classes("w-full gap-4 items-stretch"):
+                with ui.card().classes("or-card").props("flat").style("flex: 1 1 380px"):
+                    with ui.column().classes("or-sec gap-3"):
+                        with ui.row().classes("w-full items-center justify-between"):
+                            ui.label("System info").classes("or-h2")
+                            copy_btn = ui.button("Copy for bug report", icon="content_copy").props("outline no-caps dense")
+                        info_box = ui.element("div").classes("w-full").style(
+                            "display:grid;grid-template-columns:140px 1fr;row-gap:10px;font-size:13px")
+                        with info_box:
+                            ui.label("Detecting…").classes("or-hint")
+                with ui.card().classes("or-card").props("flat").style("flex: 1 1 300px"):
+                    with ui.column().classes("or-sec gap-2"):
+                        ui.label("Built on").classes("or-h2")
+                        for name, what in (("ROBOT", "OBO tool for ontology reports"), ("OOPS!", "OntOlogy Pitfall Scanner"),
+                                           ("NiceGUI", "Python UI framework"), ("rdflib", "RDF parsing and serialization")):
+                            ui.html(f'<div style="font-size:13px"><b>{name}</b> <span class="or-muted">— {what}</span></div>',
+                                    sanitize=False)
+                        ui.label("Please cite ROBOT and OOPS! when publishing their results.").classes("or-hint q-mt-sm")
+            with ui.element("footer").classes("w-full row items-center justify-between gap-4 q-mt-md q-pt-md").style(
+                    "border-top: 1px solid var(--or-line)"):
+                with ui.row().classes("items-center gap-4"):
+                    with ui.link(target="https://cair-nepal.org", new_tab=True).classes("or-logo-panel") \
+                            .props('aria-label="CAIR-Nepal website"'):
+                        ui.image(f"{STATIC_URL}/cair-nepal-logo.png") \
+                            .props('alt="CAIR-Nepal — Shaping the Future with AI" fit=contain no-spinner') \
+                            .style("width: 220px; height: 54px")
+                    with ui.column().classes("gap-0"):
+                        ui.label("Developed by CAIR-Nepal").classes("or-label")
+                        ui.link("cair-nepal.org", "https://cair-nepal.org", new_tab=True).classes("or-hint")
+                ui.label(f"© CAIR-Nepal · Apache License 2.0 · OntoReview {__version__}").classes("or-hint")
+
+        async def fill() -> None:
+            info = await run.io_bound(system_info)
+            info_box.clear()
+            with info_box:
+                for k, v in info.items():
+                    ui.label(k).classes("or-muted")
+                    ui.label(v).classes("or-mono").style("font-size:12.5px;word-break:break-all")
+            text = "\n".join(f"{k}: {v}" for k, v in info.items())
+            copy_btn.on_click(lambda: (ui.clipboard.write(text), notify("System info copied", "positive")))
+
+        ui.timer(0.05, fill, once=True)
+
+    # ------------------------------------------------------------------ Help
+    def help_view() -> None:
+        set_active("help")
+        page_head("Help", "How to build, read, publish and configure your ontology documentation.")
+        with ui.element("div").classes("or-body"):
+            with ui.row().classes("w-full gap-6 items-start no-wrap max-lg:flex-wrap"):
+                with ui.element("nav").props('aria-label="Help topics"').classes("column gap-1 flex-none lg:sticky") \
+                        .style("top: 16px; width: 230px"):
+                    ui.label("On this page").classes("or-hint text-uppercase q-mb-xs").style("letter-spacing:.6px")
+                    for anchor, title, *_ in HELP:
+                        ui.link(title, f"#{anchor}").classes("or-hint").style("color: var(--or-ink-2)")
+                with ui.column().classes("gap-4 grow min-w-0"):
+                    for n, (anchor, title, shot, steps, note, links) in enumerate(HELP, 1):
+                        with ui.card().classes("or-card w-full").props(f'flat id="{anchor}"'):
+                            with ui.column().classes("or-sec gap-3"):
+                                with ui.row().classes("items-center gap-2"):
+                                    ui.html(f'<span class="or-step">{n}</span>', sanitize=False)
+                                    ui.label(title).classes("or-h2").style("font-size:17px")
+                                with ui.row().classes("w-full gap-6 items-start no-wrap max-xl:flex-wrap"):
+                                    items = "".join(f"<li>{x}</li>" for x in steps)
+                                    with ui.column().classes("gap-2").style("flex: 1 1 380px; min-width: 0"):
+                                        ui.html(f'<ol class="or-helplist">{items}</ol>', sanitize=False)
+                                        if note:
+                                            ui.html(f'<p class="or-hint" style="margin:0">{note}</p>', sanitize=False)
+                                        with ui.row().classes("gap-2 q-mt-xs"):
+                                            for label, target in links:
+                                                external = target.startswith("http")
+                                                ui.button(label, icon="open_in_new" if external else "arrow_forward",
+                                                          on_click=lambda t=target: go(t)) \
+                                                    .props("outline dense no-caps size=sm") \
+                                                    .classes("px-2")
+                                    if shot and (ASSETS / "help" / shot).is_file():
+                                        img = ui.image(f"{STATIC_URL}/help/{shot}") \
+                                            .props(f'alt="Screenshot: {title}" fit=contain no-spinner') \
+                                            .classes("or-shot cursor-pointer").style("flex: 1 1 520px; max-width: 760px")
+                                        img.on("click", lambda shot=shot, title=title: zoom(shot, title))
+
+        def go(target: str) -> None:
+            if target.startswith("http"):
+                ui.navigate.to(target, new_tab=True)
+            elif target.startswith("settings:"):
+                state["settings_tab"] = target.split(":", 1)[1]
+                ui.navigate.to("/settings")
+            else:
+                ui.navigate.to(target)
+
+        def zoom(shot: str, title: str) -> None:
+            with ui.dialog() as d, ui.card().classes("or-card q-pa-sm").style("max-width: 96vw; width: 1400px"):
+                with ui.row().classes("w-full items-center justify-between"):
+                    ui.label(title).classes("or-h2")
+                    ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
+                ui.image(f"{STATIC_URL}/help/{shot}").props(f'alt="Screenshot: {title}" fit=contain').classes("w-full")
+            d.open()
+
+    ui.sub_pages({"/": build_view, "/history": history_view, "/settings": settings_view, "/about": about_view,
+                  "/help": help_view}) \
+        .classes("w-full")
+
+
+DEFAULT_PORT = 8765
+
+
+def port_free(host: str, port: int) -> bool:
+    import socket
+
+    fam = socket.AF_INET6 if ":" in host else socket.AF_INET
+    with socket.socket(fam, socket.SOCK_STREAM) as sock:
+        try:
+            sock.bind((host, port))
+        except OSError:
+            return False
+    return True
+
+
+def choose_port(host: str, wanted: int | None) -> int:
+    """The port to serve on. An explicit port must be free; otherwise the first free port from 8765 up."""
+    if wanted:
+        if not port_free(host, wanted):
+            raise SystemExit(f"Port {wanted} is already in use on {host}. Pick another with --port, "
+                             f"or leave --port out to use the first free port from {DEFAULT_PORT}.")
+        return wanted
+    for port in range(DEFAULT_PORT, DEFAULT_PORT + 50):
+        if port_free(host, port):
+            return port
+    raise SystemExit(f"No free port between {DEFAULT_PORT} and {DEFAULT_PORT + 49}; pass one with --port.")
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(prog="ontoreview-ui", description="OntoReview local web UI.")
+    parser.add_argument("--host", default="127.0.0.1", help="Interface to bind (default: 127.0.0.1, this machine only).")
+    env_port = os.environ.get("ONTOREVIEW_UI_PORT")
+    parser.add_argument("--port", type=int, default=int(env_port) if env_port and env_port.isdigit() else None,
+                        help=f"Port to serve on (env ONTOREVIEW_UI_PORT). Default: the first free port from {DEFAULT_PORT}.")
+    parser.add_argument("--no-browser", action="store_true", help="Do not open a browser window.")
+    parser.add_argument("--native", action="store_true", help="Open in a desktop window (needs pywebview).")
+    args = parser.parse_args(argv)
+    try:
+        from nicegui import app, ui
+    except ImportError:
+        msg = ("ontoreview-ui needs NiceGUI (Python 3.11+). Install it with:\n"
+               '    pip install "ontoreview[ui]"')
+        if sys.version_info < (3, 11):
+            msg += f"\nThis Python is {sys.version.split()[0]}; NiceGUI 4 requires 3.11 or newer."
+        print(msg, file=sys.stderr)
+        raise SystemExit(1) from None
+    if args.host not in ("127.0.0.1", "localhost", "::1"):
+        print("Warning: the UI can read and write files on this machine; binding to "
+              f"{args.host} exposes that to your network.", file=sys.stderr)
+    port = choose_port(args.host, args.port)
+    if not args.port and port != DEFAULT_PORT:
+        print(f"Port {DEFAULT_PORT} is busy; using {port}.", file=sys.stderr)
+    register_upload_route(app)
+    ui.run(build_page, host=args.host, port=port, title="OntoReview", reload=False,
+           show=not args.no_browser, native=args.native, favicon=str(ASSETS / "favicon.svg"),
+           show_welcome_message=True)
+
+
+if __name__ in {"__main__", "__mp_main__"}:
+    main()

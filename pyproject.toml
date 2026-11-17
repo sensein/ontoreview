@@ -33,11 +33,13 @@ dependencies = [
 [project.optional-dependencies]
 reason = ["owlrl>=6.0"]
 excel = ["openpyxl>=3.1"]
-all = ["owlrl>=6.0", "openpyxl>=3.1"]
+ui = ["nicegui>=4.0; python_version >= '3.11'"]
+all = ["owlrl>=6.0", "openpyxl>=3.1", "nicegui>=4.0; python_version >= '3.11'"]
 dev = ["pytest>=8", "ruff>=0.5", "owlrl>=6.0", "openpyxl>=3.1"]
 
 [project.scripts]
 ontoreview = "ontoreview.cli:app"
+ontoreview-ui = "ontoreview.ui:main"
 
 [project.urls]
 Homepage = "https://github.com/tekrajchhetri/ontoreview"

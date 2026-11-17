@@ -1,0 +1,82 @@
+name: Bug report
+description: Something doesn't work as expected (the app, the CLI, a generated page or a quality check).
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem.
+        **Please don't attach private or unpublished ontologies.** A small example that shows the problem is best.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: A clear description of the problem. Screenshots help.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the app (ontoreview ui) and choose …
+        2. Select "Website" and press Build docs
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen?
+      multiple: true
+      options:
+        - The app (ontoreview ui)
+        - Command line (ontoreview build / check / export …)
+        - CI (GitHub Actions or other)
+        - The generated documentation (in a browser)
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Loading / parsing an ontology
+        - Website or single HTML output
+        - Markdown / MyST export
+        - Quality checks (built-in)
+        - ROBOT (Docker or local)
+        - OOPS! web service
+        - Folder of ontologies
+        - Run history / settings
+        - Accessibility
+        - Installation
+        - Other
+  - type: textarea
+    id: system
+    attributes:
+      label: System info
+      description: In the app, go to **About › System info › Copy for bug report** and paste it here. From the CLI, paste the output of `ontoreview --version` and your OS and Python version.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log output
+      description: The app's **Build log** (Build page), or the terminal output with `-v`.
+      render: text
+  - type: textarea
+    id: sample
+    attributes:
+      label: Example ontology or ontoreview.toml
+      description: A minimal file that triggers the problem, if you can share one.
+      render: turtle

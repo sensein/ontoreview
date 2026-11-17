@@ -1,0 +1,29 @@
+name: Suggestion
+description: A smaller idea, such as wording, design, documentation, a default value or a usability improvement.
+title: "[Suggestion]: "
+labels: ["suggestion"]
+body:
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Your suggestion
+      description: What could be better, and how? Screenshots of the screen you mean are very welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of suggestion
+      options:
+        - Wording or help text
+        - Look and layout
+        - Default setting
+        - Documentation / README
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where in OntoReview?
+      placeholder: e.g. Build page › Output, Settings › Quality checks, generated docs › Reference
