@@ -339,7 +339,7 @@ footer {{ margin-top:3rem; padding-top:1rem; border-top:1px solid var(--rule); c
 </table>
 </div>
 {problems}
-<footer>Generated with <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> {version}. <a href="collection.json">collection.json</a></footer>
+<footer>Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> {version}. <a href="collection.json">collection.json</a></footer>
 </main>
 </body>
 </html>

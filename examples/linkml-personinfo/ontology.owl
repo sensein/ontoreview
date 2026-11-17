@@ -10,25 +10,6 @@
    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 >
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/employees">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>employees</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:resource="http://schema.org/Person"/>
-    <owl:inverseOf rdf:resource="https://w3id.org/example/personinfo/employed_by"/>
-    <linkml:multivalued rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:multivalued>
-    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
-    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://schema.org/email">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>primary_email</rdfs:label>
-    <skos:definition>The main email address of a person.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:nodeID="N9bea52beb55240dbba41319eed6f1f4d"/>
-    <linkml:pattern>^\S+@[\S+\.]+\S+</linkml:pattern>
-    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
-  </rdf:Description>
   <rdf:Description rdf:about="https://w3id.org/example/personinfo">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
     <dcterms:title>Person Information Model</dcterms:title>
@@ -46,101 +27,9 @@ Used to test **OntoReview**'s LinkML support.</dcterms:description>
     <ns1:preferredNamespaceUri>https://w3id.org/example/personinfo/</ns1:preferredNamespaceUri>
     <linkml:generation_source>LinkML schema</linkml:generation_source>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N53b0754f6eb14a23a8be54071173f0c1">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/employees"/>
-    <owl:allValuesFrom rdf:resource="http://schema.org/Person"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nb9889c4e6497492bb46d3163397e7a7d">
-    <rdf:first rdf:resource="https://w3id.org/example/personinfo/GenderType#cisgender%20man"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N9ac11eed5d8a4fe988783881468f32f5">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/age_in_years"/>
-    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-    <owl:onDataRange rdf:nodeID="N5a72399e4642460b8fde9286d5297ab2"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Na034ea73a2624e4e8bffde5207eaaef4">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/gender"/>
-    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-    <owl:onClass rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N2823e03822044e24ae6f8e86346292b0">
-    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">999</xsd:maxInclusive>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://schema.org/name">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>name</rdfs:label>
-    <skos:definition>A human-readable name for a thing.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/gender">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>gender</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
-    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nc1ea1f9a269d407fa9dcb499714c0b2d">
-    <rdf:first rdf:nodeID="N2823e03822044e24ae6f8e86346292b0"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N30113d27932d4618870f3fa3088c954c">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/employed_by"/>
-    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-    <owl:onClass rdf:resource="https://w3id.org/example/personinfo/Organization"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/organizations">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>organizations</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:resource="https://w3id.org/example/personinfo/Organization"/>
-    <linkml:multivalued rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:multivalued>
-    <linkml:inlined_as_list rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:inlined_as_list>
-    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Container"/>
-    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Container"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/age_in_years">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>age_in_years</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:nodeID="Nf75888bcad4f42ecb902f924f49a9116"/>
-    <linkml:minimum_value rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</linkml:minimum_value>
-    <linkml:maximum_value rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">999</linkml:maximum_value>
-    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nbb0f8435bbaf40768f28885ea8452a3d">
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
-    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <owl:withRestrictions rdf:nodeID="Nba5feba2097940d29ef03aba4785789b"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/employed_by">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>employed_by</rdfs:label>
-    <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
-    <skos:historyNote>Use employment history instead.</skos:historyNote>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:resource="https://w3id.org/example/personinfo/Organization"/>
-    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N526905cc68474258b32c76902295f058">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://schema.org/birthDate"/>
-    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/Container">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Container</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <linkml:tree_root rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:tree_root>
-    <rdfs:subClassOf rdf:nodeID="N023baa6d341a43eeae883d229acc55f1"/>
-    <rdfs:subClassOf rdf:nodeID="N6856844bfcde4a409b1ba191b338c3ba"/>
+  <rdf:Description rdf:nodeID="N94efb79661874b829301b95ac3efdb36">
+    <rdf:first rdf:nodeID="Ne80d5514b8f04ea88bb00e3a68198116"/>
+    <rdf:rest rdf:nodeID="Necc24176d89e4aa6ade2afe23e2d089a"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://schema.org/Person">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -152,46 +41,72 @@ Used to test **OntoReview**'s LinkML support.</dcterms:description>
     <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
     <rdfs:subClassOf rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
     <rdfs:subClassOf rdf:resource="https://w3id.org/example/personinfo/HasAliases"/>
-    <rdfs:subClassOf rdf:nodeID="N601be45d80e74453b48179900b87fb23"/>
-    <rdfs:subClassOf rdf:nodeID="N526905cc68474258b32c76902295f058"/>
-    <rdfs:subClassOf rdf:nodeID="N9ac11eed5d8a4fe988783881468f32f5"/>
-    <rdfs:subClassOf rdf:nodeID="Na034ea73a2624e4e8bffde5207eaaef4"/>
-    <rdfs:subClassOf rdf:nodeID="N30113d27932d4618870f3fa3088c954c"/>
+    <rdfs:subClassOf rdf:nodeID="Nddb4fdb239be44d28359eaad4b0f527a"/>
+    <rdfs:subClassOf rdf:nodeID="N2df3459332644fe3bb5126454777b9a4"/>
+    <rdfs:subClassOf rdf:nodeID="N8332b9e751484585934f0fa4140b665d"/>
+    <rdfs:subClassOf rdf:nodeID="N05eac45fd31b4c7ca3ee43330f2b1b48"/>
+    <rdfs:subClassOf rdf:nodeID="N9fad8436add94487a5e787c9e448713d"/>
     <linkml:mixins rdf:resource="https://w3id.org/example/personinfo/HasAliases"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N13e6e14498fc47d08ee92438b95407ba">
-    <rdf:first rdf:resource="http://purl.obolibrary.org/obo/GSSO_000384"/>
-    <rdf:rest rdf:nodeID="Nb9889c4e6497492bb46d3163397e7a7d"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/aliases">
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/id">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>aliases</rdfs:label>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <linkml:multivalued rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:multivalued>
-    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/HasAliases"/>
-    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/HasAliases"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label>id</rdfs:label>
+    <skos:definition>A unique identifier for a thing.</skos:definition>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <linkml:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:identifier>
+    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="Ncb4263bf49cd4a89ab3dde172b45a339">
-    <rdf:first rdf:nodeID="Nfe8a7c148bd64b668670c925ffc0edee"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/Organization">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Organization</rdfs:label>
+    <skos:definition>An organization such as a company or university.</skos:definition>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:subClassOf rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
+    <rdfs:subClassOf rdf:nodeID="N37d42b2e118640f9b5ba796aebe34ef5"/>
+    <rdfs:subClassOf rdf:nodeID="Nf5cd9b5454a7403e87574cbef4b7e0da"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne80d5514b8f04ea88bb00e3a68198116">
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
   </rdf:Description>
   <rdf:Description rdf:about="https://w3id.org/example/personinfo/PhoneNumberType">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
     <rdfs:label>PhoneNumberType</rdfs:label>
     <skos:definition>A phone number.</skos:definition>
     <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
-    <owl:equivalentClass rdf:nodeID="Nbb0f8435bbaf40768f28885ea8452a3d"/>
+    <owl:equivalentClass rdf:nodeID="N4a605e946601434299e1812e083bf3ab"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="Nfe8a7c148bd64b668670c925ffc0edee">
-    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">999</xsd:maxInclusive>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://schema.org/birthDate">
+  <rdf:Description rdf:about="http://schema.org/name">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>birth_date</rdfs:label>
+    <rdfs:label>name</rdfs:label>
+    <skos:definition>A human-readable name for a thing.</skos:definition>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9b78d7c3f21940739a54d44561baadc6">
+    <rdf:first rdf:resource="http://purl.obolibrary.org/obo/GSSO_009254"/>
+    <rdf:rest rdf:nodeID="N3a64f87c86f3428d97c1d224c7ed84e2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/founding_date">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>founding_date</rdfs:label>
+    <skos:definition>When the organization was founded.</skos:definition>
     <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
+    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nddb4fdb239be44d28359eaad4b0f527a">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://schema.org/email"/>
+    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    <owl:onDataRange rdf:nodeID="N4cf6676864dc41e387404371e5a56abd"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2ad775c0a4cb495da42b7e975bfffd09">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:oneOf rdf:nodeID="N9b78d7c3f21940739a54d44561baadc6"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://schema.org/description">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
@@ -201,80 +116,93 @@ Used to test **OntoReview**'s LinkML support.</dcterms:description>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N4048c539d57d445d96f2f4dc7429352b">
-    <rdf:first rdf:nodeID="N03dd1e9969754c77922b66a7a2ac7f3f"/>
-    <rdf:rest rdf:nodeID="Ncb4263bf49cd4a89ab3dde172b45a339"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N9bea52beb55240dbba41319eed6f1f4d">
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
-    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <owl:withRestrictions rdf:nodeID="Ncda8a89187904113942b04ee7be6ba71"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/NamedThing">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>NamedThing</rdfs:label>
-    <skos:definition>A generic grouping for any identifiable entity.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
-    <linkml:abstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:abstract>
-    <rdfs:subClassOf rdf:nodeID="N546e5aa15241472fba0067667086ac72"/>
-    <rdfs:subClassOf rdf:nodeID="Naea85f537c464f39bf4333d2df67c05d"/>
-    <rdfs:subClassOf rdf:nodeID="Nd853bff705f841b4ac0446308f4e8533"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/HasAliases">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>HasAliases</rdfs:label>
-    <skos:definition>A mixin applied to any class that can have aliases.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <linkml:mixin rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:mixin>
-    <rdfs:subClassOf rdf:nodeID="N940871c2746545d09d499ab766a59502"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N940871c2746545d09d499ab766a59502">
+  <rdf:Description rdf:nodeID="Nd7c4e8cbfb5d4eb48dd2c28eceb4f41c">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/aliases"/>
     <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N023baa6d341a43eeae883d229acc55f1">
+  <rdf:Description rdf:nodeID="Nd7e635a43d7643c991bb4050fc194210">
+    <rdf:first rdf:nodeID="N3b9589d4c3974686becb4d6b6c5fd347"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/Container">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Container</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <linkml:tree_root rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:tree_root>
+    <rdfs:subClassOf rdf:nodeID="N93189f8ea1484f0fa502537730fbd9e1"/>
+    <rdfs:subClassOf rdf:nodeID="Nb7143e30a6564923964062aabf5d5243"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N93189f8ea1484f0fa502537730fbd9e1">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/persons"/>
     <owl:allValuesFrom rdf:resource="http://schema.org/Person"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N172fb9f232474a32a9b9a5415a4dc253">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <owl:oneOf rdf:nodeID="N5f046f01bb674645b285d9e31652f186"/>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/organizations">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>organizations</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+    <linkml:multivalued rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:multivalued>
+    <linkml:inlined_as_list rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:inlined_as_list>
+    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Container"/>
+    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Container"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.obolibrary.org/obo/GSSO_009253">
+  <rdf:Description rdf:nodeID="N4cf6676864dc41e387404371e5a56abd">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:withRestrictions rdf:nodeID="Nd7e635a43d7643c991bb4050fc194210"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/GenderType#cisgender%20man">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
     <rdf:type rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
-    <rdfs:label>nonbinary woman</rdfs:label>
-    <linkml:permissible_value>nonbinary woman</linkml:permissible_value>
+    <rdfs:label>cisgender man</rdfs:label>
+    <linkml:permissible_value>cisgender man</linkml:permissible_value>
+    <skos:definition>A man whose gender matches the sex assigned at birth.</skos:definition>
   </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/GenderType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <linkml:kind>enum</linkml:kind>
-    <rdfs:label>GenderType</rdfs:label>
-    <skos:definition>Gender of a person.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <owl:equivalentClass rdf:nodeID="N172fb9f232474a32a9b9a5415a4dc253"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/Organization">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Organization</rdfs:label>
-    <skos:definition>An organization such as a company or university.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:subClassOf rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
-    <rdfs:subClassOf rdf:nodeID="N0d5a80185fa84fdbb49da8fc49b2d5ca"/>
-    <rdfs:subClassOf rdf:nodeID="N53b0754f6eb14a23a8be54071173f0c1"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N601be45d80e74453b48179900b87fb23">
+  <rdf:Description rdf:nodeID="N8332b9e751484585934f0fa4140b665d">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://schema.org/email"/>
-    <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
-    <owl:onDataRange rdf:nodeID="N4afc42e61a7943c3a9505801f043e3a4"/>
+    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/age_in_years"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onDataRange rdf:nodeID="N5c0bcc4097904364add9abb9f65e68b8"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="Nf75888bcad4f42ecb902f924f49a9116">
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
-    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-    <owl:withRestrictions rdf:nodeID="N4048c539d57d445d96f2f4dc7429352b"/>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/employed_by">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>employed_by</rdfs:label>
+    <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+    <skos:historyNote>Use employment history instead.</skos:historyNote>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8cc3c505e7a94681ac3e65b1f839245a">
+    <rdf:first rdf:nodeID="N52470f0da1714151ab1b8b312e41c185"/>
+    <rdf:rest rdf:nodeID="N8aeec2eefa6f454d9c27ec84c5392cbd"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2df3459332644fe3bb5126454777b9a4">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://schema.org/birthDate"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://schema.org/email">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>primary_email</rdfs:label>
+    <skos:definition>The main email address of a person.</skos:definition>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:nodeID="N0e6f9edea8b54294892da5de46133b01"/>
+    <linkml:pattern>^\S+@[\S+\.]+\S+</linkml:pattern>
+    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/employees">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>employees</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:resource="http://schema.org/Person"/>
+    <owl:inverseOf rdf:resource="https://w3id.org/example/personinfo/employed_by"/>
+    <linkml:multivalued rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:multivalued>
+    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.obolibrary.org/obo/GSSO_000384">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
@@ -292,97 +220,172 @@ Used to test **OntoReview**'s LinkML support.</dcterms:description>
     <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Container"/>
     <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Container"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N5a72399e4642460b8fde9286d5297ab2">
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
-    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-    <owl:withRestrictions rdf:nodeID="Ne3533beeedd0468d96907d86852d497f"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Ne3533beeedd0468d96907d86852d497f">
-    <rdf:first rdf:nodeID="N7269f51ac3a34685ae00b982e0d3f5b9"/>
-    <rdf:rest rdf:nodeID="Nc1ea1f9a269d407fa9dcb499714c0b2d"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/id">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:label>id</rdfs:label>
-    <skos:definition>A unique identifier for a thing.</skos:definition>
-    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
-    <linkml:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:identifier>
-    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/NamedThing"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Ncda8a89187904113942b04ee7be6ba71">
-    <rdf:first rdf:nodeID="N2129d33769d04e6aa23f1ecd122f15ba"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N4868f87907f84f28a96afda6f9e69745">
-    <rdf:first rdf:nodeID="Nf626598bd9074a73b5c5fc4e73bb61fe"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N5f046f01bb674645b285d9e31652f186">
-    <rdf:first rdf:resource="http://purl.obolibrary.org/obo/GSSO_009254"/>
-    <rdf:rest rdf:nodeID="N81fe0d27e0644a5bb853de3b74755e43"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N0d5a80185fa84fdbb49da8fc49b2d5ca">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/founding_date"/>
-    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N03dd1e9969754c77922b66a7a2ac7f3f">
-    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nba5feba2097940d29ef03aba4785789b">
-    <rdf:first rdf:nodeID="N217029a3f0dd4db2a49d446453724835"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/GenderType#cisgender%20man">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
-    <rdfs:label>cisgender man</rdfs:label>
-    <linkml:permissible_value>cisgender man</linkml:permissible_value>
-    <skos:definition>A man whose gender matches the sex assigned at birth.</skos:definition>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://w3id.org/example/personinfo/founding_date">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>founding_date</rdfs:label>
-    <skos:definition>When the organization was founded.</skos:definition>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/GenderType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <linkml:kind>enum</linkml:kind>
+    <rdfs:label>GenderType</rdfs:label>
+    <skos:definition>Gender of a person.</skos:definition>
     <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
-    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
-    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+    <owl:equivalentClass rdf:nodeID="N2ad775c0a4cb495da42b7e975bfffd09"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N4afc42e61a7943c3a9505801f043e3a4">
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
-    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <owl:withRestrictions rdf:nodeID="N4868f87907f84f28a96afda6f9e69745"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nd853bff705f841b4ac0446308f4e8533">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://schema.org/description"/>
-    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
-    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N546e5aa15241472fba0067667086ac72">
+  <rdf:Description rdf:nodeID="N0d0413c18b1243bfac985be5caffddc6">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/id"/>
     <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
     <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="Naea85f537c464f39bf4333d2df67c05d">
+  <rdf:Description rdf:nodeID="N0e6f9edea8b54294892da5de46133b01">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:withRestrictions rdf:nodeID="Nf0aa6c06a5454d4a86a329a285766579"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N52470f0da1714151ab1b8b312e41c185">
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/gender">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>gender</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
+    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/age_in_years">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>age_in_years</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:nodeID="Nae2bb48d68dc483e958694d153a92e70"/>
+    <linkml:minimum_value rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</linkml:minimum_value>
+    <linkml:maximum_value rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">999</linkml:maximum_value>
+    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfda36b5c27d04bf2a26537b01ecdbdf6">
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">999</xsd:maxInclusive>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8aeec2eefa6f454d9c27ec84c5392cbd">
+    <rdf:first rdf:nodeID="Nfda36b5c27d04bf2a26537b01ecdbdf6"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9fad8436add94487a5e787c9e448713d">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/employed_by"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onClass rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N89e649b4c87a40c18d33f8d0cf471316">
+    <rdf:first rdf:resource="http://purl.obolibrary.org/obo/GSSO_000384"/>
+    <rdf:rest rdf:nodeID="Nf49b0ff334b74862939236eb045fb7ab"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2459b15c1bc44aefa9106c7ad8d72490">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="http://schema.org/name"/>
     <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
     <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N81fe0d27e0644a5bb853de3b74755e43">
-    <rdf:first rdf:resource="http://purl.obolibrary.org/obo/GSSO_009253"/>
-    <rdf:rest rdf:nodeID="N13e6e14498fc47d08ee92438b95407ba"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N6856844bfcde4a409b1ba191b338c3ba">
+  <rdf:Description rdf:nodeID="N05eac45fd31b4c7ca3ee43330f2b1b48">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/organizations"/>
-    <owl:allValuesFrom rdf:resource="https://w3id.org/example/personinfo/Organization"/>
+    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/gender"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onClass rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4a605e946601434299e1812e083bf3ab">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:withRestrictions rdf:nodeID="N58e75e1582f64a3a9f3a9224536c7465"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N58e75e1582f64a3a9f3a9224536c7465">
+    <rdf:first rdf:nodeID="N2f1ee468df644b069c1647b6da861dfe"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Necc24176d89e4aa6ade2afe23e2d089a">
+    <rdf:first rdf:nodeID="N4f4d31dfeb464b4e912aa089741c4b0e"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf49b0ff334b74862939236eb045fb7ab">
+    <rdf:first rdf:resource="https://w3id.org/example/personinfo/GenderType#cisgender%20man"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/NamedThing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>NamedThing</rdfs:label>
+    <skos:definition>A generic grouping for any identifiable entity.</skos:definition>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/core"/>
+    <linkml:abstract rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:abstract>
+    <rdfs:subClassOf rdf:nodeID="N0d0413c18b1243bfac985be5caffddc6"/>
+    <rdfs:subClassOf rdf:nodeID="N2459b15c1bc44aefa9106c7ad8d72490"/>
+    <rdfs:subClassOf rdf:nodeID="Nfde5cd90a0fa4cd5b7a5515118ee1040"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://schema.org/birthDate">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>birth_date</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    <linkml:domain_of rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0f959338628743bea51dd91889017bfa">
+    <xsd:pattern>^\S+@[\S+\.]+\S+</xsd:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2f1ee468df644b069c1647b6da861dfe">
+    <xsd:pattern>^[\d\(\)\-]+$</xsd:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nae2bb48d68dc483e958694d153a92e70">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:withRestrictions rdf:nodeID="N8cc3c505e7a94681ac3e65b1f839245a"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfde5cd90a0fa4cd5b7a5515118ee1040">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://schema.org/description"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/aliases">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>aliases</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <linkml:multivalued rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:multivalued>
+    <linkml:attribute_of rdf:resource="https://w3id.org/example/personinfo/HasAliases"/>
+    <linkml:domain_of rdf:resource="https://w3id.org/example/personinfo/HasAliases"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://w3id.org/example/personinfo/HasAliases">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>HasAliases</rdfs:label>
+    <skos:definition>A mixin applied to any class that can have aliases.</skos:definition>
+    <rdfs:isDefinedBy rdf:resource="https://w3id.org/example/personinfo"/>
+    <linkml:mixin rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</linkml:mixin>
+    <rdfs:subClassOf rdf:nodeID="Nd7c4e8cbfb5d4eb48dd2c28eceb4f41c"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5c0bcc4097904364add9abb9f65e68b8">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:withRestrictions rdf:nodeID="N94efb79661874b829301b95ac3efdb36"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N37d42b2e118640f9b5ba796aebe34ef5">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/founding_date"/>
+    <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf5cd9b5454a7403e87574cbef4b7e0da">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/employees"/>
+    <owl:allValuesFrom rdf:resource="http://schema.org/Person"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4f4d31dfeb464b4e912aa089741c4b0e">
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">999</xsd:maxInclusive>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.obolibrary.org/obo/GSSO_009253">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://w3id.org/example/personinfo/GenderType"/>
+    <rdfs:label>nonbinary woman</rdfs:label>
+    <linkml:permissible_value>nonbinary woman</linkml:permissible_value>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf0aa6c06a5454d4a86a329a285766579">
+    <rdf:first rdf:nodeID="N0f959338628743bea51dd91889017bfa"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3b9589d4c3974686becb4d6b6c5fd347">
+    <xsd:pattern>^\S+@[\S+\.]+\S+</xsd:pattern>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.obolibrary.org/obo/GSSO_009254">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
@@ -390,16 +393,13 @@ Used to test **OntoReview**'s LinkML support.</dcterms:description>
     <rdfs:label>nonbinary man</rdfs:label>
     <linkml:permissible_value>nonbinary man</linkml:permissible_value>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N2129d33769d04e6aa23f1ecd122f15ba">
-    <xsd:pattern>^\S+@[\S+\.]+\S+</xsd:pattern>
+  <rdf:Description rdf:nodeID="N3a64f87c86f3428d97c1d224c7ed84e2">
+    <rdf:first rdf:resource="http://purl.obolibrary.org/obo/GSSO_009253"/>
+    <rdf:rest rdf:nodeID="N89e649b4c87a40c18d33f8d0cf471316"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="N7269f51ac3a34685ae00b982e0d3f5b9">
-    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nf626598bd9074a73b5c5fc4e73bb61fe">
-    <xsd:pattern>^\S+@[\S+\.]+\S+</xsd:pattern>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N217029a3f0dd4db2a49d446453724835">
-    <xsd:pattern>^[\d\(\)\-]+$</xsd:pattern>
+  <rdf:Description rdf:nodeID="Nb7143e30a6564923964062aabf5d5243">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://w3id.org/example/personinfo/organizations"/>
+    <owl:allValuesFrom rdf:resource="https://w3id.org/example/personinfo/Organization"/>
   </rdf:Description>
 </rdf:RDF>

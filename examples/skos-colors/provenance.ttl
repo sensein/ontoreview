@@ -10,7 +10,7 @@
     dcterms:title "Colour thesaurus" .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T03:59:54+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-17T04:10:38+00:00"^^xsd:dateTime ;
     prov:used "colors-skos.ttl" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

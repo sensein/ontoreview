@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="../ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="../ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="../index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="../llms.txt" title="llms.txt"><link rel="stylesheet" href="../assets/ontoreview.css?v=6afbd135">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="llms.txt"><link rel="stylesheet" href="../assets/ontoreview.css?v=6afbd3b9">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,9 +52,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
   },
   {
    "@type": "DefinedTerm",
@@ -65,10 +66,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasIngredient",
-   "name": "has ingredient",
-   "description": "Any ingredient.",
-   "termCode": "pizza:hasIngredient"
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
   },
   {
    "@type": "DefinedTerm",
@@ -85,28 +85,23 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#isToppingOf",
-   "name": "is topping of",
-   "termCode": "pizza:isToppingOf"
+   "@id": "https://example.org/pizza#Calzone",
+   "name": "Calzone",
+   "description": "A folded pizza.",
+   "termCode": "pizza:Calzone"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
+   "@id": "https://example.org/pizza#hasIngredient",
+   "name": "has ingredient",
+   "description": "Any ingredient.",
+   "termCode": "pizza:hasIngredient"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
+   "@id": "https://example.org/pizza#hasBase",
+   "name": "has base",
+   "termCode": "pizza:hasBase"
   },
   {
    "@type": "DefinedTerm",
@@ -117,10 +112,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Calzone",
-   "name": "Calzone",
-   "description": "A folded pizza.",
-   "termCode": "pizza:Calzone"
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   },
   {
    "@type": "DefinedTerm",
@@ -131,9 +125,15 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasBase",
-   "name": "has base",
-   "termCode": "pizza:hasBase"
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
   },
   {
    "@type": "DefinedTerm",
@@ -144,10 +144,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#VegetarianPizza",
-   "name": "Vegetarian pizza",
-   "description": "A pizza with no meat toppings.",
-   "termCode": "pizza:VegetarianPizza"
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
   }
  ]
 }</script></head>
@@ -336,7 +336,7 @@
 <pre class="sparql"><code>SELECT ?t WHERE { ?t rdfs:subClassOf pizza:PizzaTopping }</code></pre>      <details class="cq-results" open>
         <summary>Results</summary>
         <table class="plain"><thead><tr><th>t</th></tr></thead>
-        <tbody><tr><td><code>pizza:CheeseTopping</code></td></tr><tr><td><code>pizza:MeatTopping</code></td></tr></tbody></table>
+        <tbody><tr><td><code>pizza:MeatTopping</code></td></tr><tr><td><code>pizza:CheeseTopping</code></td></tr></tbody></table>
       </details>
     </li>
     <li class="cq cq-error" id="cq-CQ2">
@@ -447,7 +447,7 @@
 <div class="definition"><p>A flat <strong>baked</strong> dish topped with ingredients.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>pizza:Pizza</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Restricciones</th><td><ul class="vlist"><li><span class="expr"><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a> <span class="kw">some</span> <a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li><li><span class="expr"><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a> <span class="kw">max</span> <span class="lit">1</span></span></li></ul></td></tr><tr><th scope="row">Subclases</th><td><a href="#Calzone" class="ref" title="pizza:Calzone">Calzone</a></td></tr><tr><th scope="row">Disjunta con</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Instancias</th><td><a href="#Margherita" class="ref" title="pizza:Margherita">Margherita</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasBase" class="ref" title="pizza:hasBase">has base</a>, <a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Ejemplos</th><td><code class="example">Margherita</code></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ4">CQ4</a></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Pizza</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Restricciones</th><td><ul class="vlist"><li><span class="expr"><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a> <span class="kw">max</span> <span class="lit">1</span></span></li><li><span class="expr"><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a> <span class="kw">some</span> <a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li></ul></td></tr><tr><th scope="row">Subclases</th><td><a href="#Calzone" class="ref" title="pizza:Calzone">Calzone</a></td></tr><tr><th scope="row">Disjunta con</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Instancias</th><td><a href="#Margherita" class="ref" title="pizza:Margherita">Margherita</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasBase" class="ref" title="pizza:hasBase">has base</a>, <a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Ejemplos</th><td><code class="example">Margherita</code></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ4">CQ4</a></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#Pizza">Ver en la figura</a></p></article>
 <article class="term" id="PizzaBase" data-kind="class">
@@ -626,7 +626,7 @@
     <summary><span class="sev">warning</span> Duplicate labels <span class="muted">(1) OB016</span></summary>
     <p class="muted rule-desc">Two or more terms share the same label, which confuses readers and tools.</p>
     <ul class="findings">
-<li>Label “pizza” @en is used by <code>pizza:Pizza</code>, <code>pizza:Name</code>. <a href="#Pizza">§</a></li>    </ul>
+<li>Label “pizza” @en is used by <code>pizza:Name</code>, <code>pizza:Pizza</code>. <a href="#Name">§</a></li>    </ul>
   </details>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Property without domain <span class="muted">(2) OB012</span></summary>
@@ -760,7 +760,7 @@
   </table>
   <p class="small muted">This documentation was generated from the ontology source with ontoreview 0.1.0. <a href="../provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
 </section>    <footer class="colophon">
-      Generado con <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> 0.1.0. Licencia: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+      Generado con <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. Licencia: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
     </footer>
   </main>
 </div>
@@ -775,10 +775,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd135"></script>
+<script src="ontoreview-data.js?v=6afbd3b9"></script>
 <script src="../assets/vendor/minisearch.min.js"></script>
 <script src="../assets/vendor/cytoscape.min.js"></script>
 <script src="../assets/vendor/dagre.min.js"></script>
-<script src="../assets/vendor/cytoscape-dagre.js"></script><script src="../assets/ontoreview.js?v=6afbd135"></script>
+<script src="../assets/vendor/cytoscape-dagre.js"></script><script src="../assets/ontoreview.js?v=6afbd3b9"></script>
 </body>
 </html>

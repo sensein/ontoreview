@@ -752,7 +752,7 @@
    "curie": "dcat:spatialResolutionInMeters",
    "kind": "datatype_property",
    "label": "geografisk opløsning (meter)",
-   "definition": "separazione spaziale minima risolvibile in un set di dati, misurata in metri.",
+   "definition": "minimum spatial separation resolvable in a dataset, measured in meters.",
    "range": [
     "xsd:decimal"
    ]

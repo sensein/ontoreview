@@ -56,7 +56,7 @@ The end of the period.
 
 **IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
 
-separazione spaziale minima risolvibile in un set di dati, misurata in metri.
+minimum spatial separation resolvable in a dataset, measured in meters.
 
 | | |
 |---|---|

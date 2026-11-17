@@ -211,18 +211,12 @@ schema:Person a owl:Class ;
     rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass personinfo:Organization ;
-            owl:onProperty personinfo:employed_by ],
+            owl:onClass personinfo:GenderType ;
+            owl:onProperty personinfo:gender ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onDataRange xsd:date ;
             owl:onProperty schema:birthDate ],
-        [ a owl:Restriction ;
-            owl:onDataRange [ a rdfs:Datatype ;
-                    owl:onDatatype xsd:string ;
-                    owl:withRestrictions ( [ xsd:pattern "^\\S+@[\\S+\\.]+\\S+" ] ) ] ;
-            owl:onProperty schema:email ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onDataRange [ a rdfs:Datatype ;
@@ -231,8 +225,14 @@ schema:Person a owl:Class ;
             owl:onProperty personinfo:age_in_years ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass personinfo:GenderType ;
-            owl:onProperty personinfo:gender ],
+            owl:onClass personinfo:Organization ;
+            owl:onProperty personinfo:employed_by ],
+        [ a owl:Restriction ;
+            owl:onDataRange [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:string ;
+                    owl:withRestrictions ( [ xsd:pattern "^\\S+@[\\S+\\.]+\\S+" ] ) ] ;
+            owl:onProperty schema:email ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
         personinfo:HasAliases,
         personinfo:NamedThing ;
     skos:altLabel "human being" ;

@@ -11,16 +11,30 @@
    xmlns:vann="http://purl.org/vocab/vann/"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 >
-  <rdf:Description rdf:about="https://example.org/pizza#Pizza">
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb5">
+    <owl:intersectionOf rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#hasCalories">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">has calories</rdfs:label>
+    <rdfs:domain rdf:resource="https://example.org/pizza#Food"/>
+    <rdfs:range rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb10"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#Food">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://example.org/pizza#Food"/>
-    <rdfs:subClassOf rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b3"/>
-    <rdfs:subClassOf rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b4"/>
-    <rdfs:label xml:lang="en">Pizza</rdfs:label>
-    <rdfs:label xml:lang="es">Pizza</rdfs:label>
-    <skos:definition xml:lang="en">A flat **baked** dish topped with ingredients.</skos:definition>
-    <skos:example>Margherita</skos:example>
-    <owl:disjointWith rdf:resource="https://example.org/pizza#PizzaTopping"/>
+    <rdfs:label xml:lang="en">Food</rdfs:label>
+    <rdfs:label xml:lang="es">Comida</rdfs:label>
+    <skos:definition xml:lang="en">Anything that can be eaten.</skos:definition>
+    <skos:definition xml:lang="es">Cualquier cosa comestible.</skos:definition>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#MeatTopping">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.org/pizza#PizzaTopping"/>
+    <rdfs:label xml:lang="en">Meat topping</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://orcid.org/0000-0000-0000-0001">
+    <foaf:name>Alice Example</foaf:name>
+    <schema:affiliation rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb2"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://example.org/pizza">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
@@ -30,7 +44,7 @@
     <dcterms:abstract xml:lang="en">Pizzas, bases and toppings.</dcterms:abstract>
     <dcterms:creator rdf:resource="https://orcid.org/0000-0000-0000-0001"/>
     <dcterms:creator>Jane Doe &lt;jane@example.org&gt;</dcterms:creator>
-    <dcterms:contributor rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b1"/>
+    <dcterms:contributor rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb1"/>
     <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
     <dcterms:created>2024-01-01</dcterms:created>
     <dcterms:modified>2026-11-01</dcterms:modified>
@@ -42,7 +56,48 @@
     <schema:keywords>food</schema:keywords>
     <schema:keywords>pizza</schema:keywords>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b3">
+  <rdf:Description rdf:about="https://example.org/pizza#hasTopping">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has topping</rdfs:label>
+    <skos:definition xml:lang="en">Relates a pizza to its toppings.</skos:definition>
+    <rdfs:domain rdf:resource="https://example.org/pizza#Pizza"/>
+    <rdfs:range rdf:resource="https://example.org/pizza#PizzaTopping"/>
+    <owl:inverseOf rdf:resource="https://example.org/pizza#isToppingOf"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#hasIngredient">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:label xml:lang="en">has ingredient</rdfs:label>
+    <skos:definition xml:lang="en">Any ingredient.</skos:definition>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#Pizza">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.org/pizza#Food"/>
+    <rdfs:subClassOf rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb3"/>
+    <rdfs:subClassOf rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb4"/>
+    <rdfs:label xml:lang="en">Pizza</rdfs:label>
+    <rdfs:label xml:lang="es">Pizza</rdfs:label>
+    <skos:definition xml:lang="en">A flat **baked** dish topped with ingredients.</skos:definition>
+    <skos:example>Margherita</skos:example>
+    <owl:disjointWith rdf:resource="https://example.org/pizza#PizzaTopping"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb4">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://example.org/pizza#hasCalories"/>
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb10">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
+    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:withRestrictions rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb12"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#Margherita">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://example.org/pizza#Pizza"/>
+    <rdfs:label xml:lang="en">Margherita</rdfs:label>
+    <hasCalories rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800</hasCalories>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb3">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:onProperty rdf:resource="https://example.org/pizza#hasBase"/>
     <owl:someValuesFrom rdf:resource="https://example.org/pizza#PizzaBase"/>
@@ -60,46 +115,48 @@
     <skos:definition xml:lang="en">Cheese.</skos:definition>
     <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
   </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#Margherita">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="https://example.org/pizza#Pizza"/>
-    <rdfs:label xml:lang="en">Margherita</rdfs:label>
-    <hasCalories rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800</hasCalories>
+  <rdf:Description rdf:about="https://example.org/pizza#VegetarianPizza">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Vegetarian pizza</rdfs:label>
+    <skos:definition xml:lang="en">A pizza with no meat toppings.</skos:definition>
+    <owl:equivalentClass rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#PizzaTopping">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://example.org/pizza#Food"/>
+    <rdfs:label xml:lang="en">Pizza topping</rdfs:label>
+    <skos:definition xml:lang="en">Something placed on a pizza.</skos:definition>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#isToppingOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">is topping of</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb7">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="https://example.org/pizza#hasTopping"/>
+    <owl:someValuesFrom rdf:resource="https://example.org/pizza#MeatTopping"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb8">
+    <rdf:first rdf:resource="https://example.org/pizza#Pizza"/>
+    <rdf:rest rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb9"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb9">
+    <rdf:first rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb6"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/pizza#Name">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Pizza</rdfs:label>
+    <rdfs:range rdf:resource="https://example.org/pizza#PizzaBase"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb1">
+    <foaf:name>Anonymous Helper</foaf:name>
   </rdf:Description>
   <rdf:Description rdf:about="https://example.org/pizza#Calzone">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:subClassOf rdf:resource="https://example.org/pizza#Pizza"/>
     <rdfs:label xml:lang="en">Calzone</rdfs:label>
     <skos:definition xml:lang="en">A folded pizza.</skos:definition>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b2">
-    <schema:name>Example University</schema:name>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#hasCalories">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">has calories</rdfs:label>
-    <rdfs:domain rdf:resource="https://example.org/pizza#Food"/>
-    <rdfs:range rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b10"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#Food">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Food</rdfs:label>
-    <rdfs:label xml:lang="es">Comida</rdfs:label>
-    <skos:definition xml:lang="en">Anything that can be eaten.</skos:definition>
-    <skos:definition xml:lang="es">Cualquier cosa comestible.</skos:definition>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b11">
-    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#hasIngredient">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-    <rdfs:label xml:lang="en">has ingredient</rdfs:label>
-    <skos:definition xml:lang="en">Any ingredient.</skos:definition>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#isToppingOf">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label xml:lang="en">is topping of</rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="https://example.org/pizza#hasBase">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
@@ -109,75 +166,18 @@
     <rdfs:domain rdf:resource="https://example.org/pizza#Pizza"/>
     <rdfs:range rdf:resource="https://example.org/pizza#PizzaBase"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#VegetarianPizza">
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb6">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Vegetarian pizza</rdfs:label>
-    <skos:definition xml:lang="en">A pizza with no meat toppings.</skos:definition>
-    <owl:equivalentClass rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b5"/>
+    <owl:complementOf rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb7"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://orcid.org/0000-0000-0000-0001">
-    <foaf:name>Alice Example</foaf:name>
-    <schema:affiliation rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b2"/>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb2">
+    <schema:name>Example University</schema:name>
   </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#PizzaTopping">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://example.org/pizza#Food"/>
-    <rdfs:label xml:lang="en">Pizza topping</rdfs:label>
-    <skos:definition xml:lang="en">Something placed on a pizza.</skos:definition>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#hasTopping">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label xml:lang="en">has topping</rdfs:label>
-    <skos:definition xml:lang="en">Relates a pizza to its toppings.</skos:definition>
-    <rdfs:domain rdf:resource="https://example.org/pizza#Pizza"/>
-    <rdfs:range rdf:resource="https://example.org/pizza#PizzaTopping"/>
-    <owl:inverseOf rdf:resource="https://example.org/pizza#isToppingOf"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b4">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://example.org/pizza#hasCalories"/>
-    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxCardinality>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b7">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="https://example.org/pizza#hasTopping"/>
-    <owl:someValuesFrom rdf:resource="https://example.org/pizza#MeatTopping"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b5">
-    <owl:intersectionOf rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b8"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b10">
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Datatype"/>
-    <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-    <owl:withRestrictions rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b12"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b9">
-    <rdf:first rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b6"/>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb12">
+    <rdf:first rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb11"/>
     <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#Name">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Pizza</rdfs:label>
-    <rdfs:range rdf:resource="https://example.org/pizza#PizzaBase"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b6">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <owl:complementOf rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b7"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b8">
-    <rdf:first rdf:resource="https://example.org/pizza#Pizza"/>
-    <rdf:rest rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b9"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b12">
-    <rdf:first rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b11"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/pizza#MeatTopping">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="https://example.org/pizza#PizzaTopping"/>
-    <rdfs:label xml:lang="en">Meat topping</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n454174c0d12d4e4bbdaf1e012c172503b1">
-    <foaf:name>Anonymous Helper</foaf:name>
+  <rdf:Description rdf:nodeID="n08d8886fcbb4497190e3fb2aa1f42fcbb11">
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
   </rdf:Description>
 </rdf:RDF>

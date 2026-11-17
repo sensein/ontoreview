@@ -180,9 +180,9 @@ An instance of prov:Delegation provides additional descriptions about the binary
 
 A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.
 
-The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.
-
 An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].
+
+The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.
 
 | | |
 |---|---|
@@ -286,9 +286,9 @@ An instance of prov:Generation provides additional descriptions about the binary
 
 Influence is the capacity of an entity, activity, or agent to have an effect on the character, development, or behavior of another by means of usage, start, end, generation, invalidation, communication, derivation, attribution, association, or delegation.
 
-Because prov:Influence is a broad relation, its most specific subclasses (e.g. prov:Communication, prov:Delegation, prov:End, prov:Revision, etc.) should be used when applicable.
-
 An instance of prov:Influence provides additional descriptions about the binary prov:wasInfluencedBy relation from some influenced Activity, Entity, or Agent to the influencing Activity, Entity, or Agent. For example, :stomach_ache prov:wasInfluencedBy :spoon; prov:qualifiedInfluence [ a prov:Influence; prov:entity :spoon; :foo :bar ] . Because prov:Influence is a broad relation, the more specific relations (Communication, Delegation, End, etc.) should be used when applicable.
+
+Because prov:Influence is a broad relation, its most specific subclasses (e.g. prov:Communication, prov:Delegation, prov:End, prov:Revision, etc.) should be used when applicable.
 
 | | |
 |---|---|
@@ -389,7 +389,7 @@ There exist no prescriptive requirement on the nature of plans, their representa
 |---|---|
 | Superclasses | [Entity](classes.md#entity) |
 | Used in | in range of [hadPlan](object-properties.md#hadplan) |
-| category | qualified; expanded |
+| category | expanded; qualified |
 | component | agents-responsibility |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association |
 | n | http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association |

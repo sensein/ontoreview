@@ -1,267 +1,267 @@
-<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2000/01/rdf-schema#label> "employees" .
-<http://schema.org/email> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-<https://w3id.org/example/personinfo> <http://purl.org/vocab/vann/preferredNamespacePrefix> "personinfo" .
-_:N53b0754f6eb14a23a8be54071173f0c1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:Nb9889c4e6497492bb46d3163397e7a7d <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://w3id.org/example/personinfo/GenderType#cisgender%20man> .
-_:N9ac11eed5d8a4fe988783881468f32f5 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-_:Na034ea73a2624e4e8bffde5207eaaef4 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-_:N2823e03822044e24ae6f8e86346292b0 <http://www.w3.org/2001/XMLSchema#maxInclusive> "999"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<http://schema.org/name> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
-<https://w3id.org/example/personinfo/gender> <http://www.w3.org/2000/01/rdf-schema#label> "gender" .
-_:Nc1ea1f9a269d407fa9dcb499714c0b2d <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:N30113d27932d4618870f3fa3088c954c <http://www.w3.org/2002/07/owl#onClass> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/2000/01/rdf-schema#range> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-_:Nbb0f8435bbaf40768f28885ea8452a3d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
-<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-_:N526905cc68474258b32c76902295f058 <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/birthDate> .
-<https://w3id.org/example/personinfo/Container> <https://w3id.org/linkml/tree_root> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N601be45d80e74453b48179900b87fb23 .
-<http://schema.org/Person> <https://w3id.org/linkml/mixins> <https://w3id.org/example/personinfo/HasAliases> .
-_:N13e6e14498fc47d08ee92438b95407ba <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Nb9889c4e6497492bb46d3163397e7a7d .
-<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
-_:Ncb4263bf49cd4a89ab3dde172b45a339 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2002/07/owl#equivalentClass> _:Nbb0f8435bbaf40768f28885ea8452a3d .
-<https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-<https://w3id.org/example/personinfo/Container> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://w3id.org/example/personinfo/aliases> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/HasAliases> .
-_:Nfe8a7c148bd64b668670c925ffc0edee <http://www.w3.org/2001/XMLSchema#maxInclusive> "999"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/description> "A LinkML model for people, organizations and their relationships.\nUsed to test **OntoReview**'s LinkML support." .
-<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://schema.org/birthDate> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#date> .
-_:N30113d27932d4618870f3fa3088c954c <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<http://schema.org/description> <http://www.w3.org/2004/02/skos/core#definition> "A human-readable description for a thing." .
-<https://w3id.org/example/personinfo/aliases> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/HasAliases> .
-_:N4048c539d57d445d96f2f4dc7429352b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N03dd1e9969754c77922b66a7a2ac7f3f .
-_:N9bea52beb55240dbba41319eed6f1f4d <http://www.w3.org/2002/07/owl#withRestrictions> _:Ncda8a89187904113942b04ee7be6ba71 .
-<https://w3id.org/example/personinfo/NamedThing> <https://w3id.org/linkml/abstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#example> "Ada Lovelace — a famous mathematician" .
-<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N940871c2746545d09d499ab766a59502 .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/example/personinfo/HasAliases> .
-<http://schema.org/description> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
-_:N940871c2746545d09d499ab766a59502 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.w3.org/2001/XMLSchema#string> .
-_:N023baa6d341a43eeae883d229acc55f1 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://schema.org/Person> .
-_:N9ac11eed5d8a4fe988783881468f32f5 <http://www.w3.org/2002/07/owl#onDataRange> _:N5a72399e4642460b8fde9286d5297ab2 .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2004/02/skos/core#definition> "A generic grouping for any identifiable entity." .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N30113d27932d4618870f3fa3088c954c .
-<https://w3id.org/example/personinfo/employed_by> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
-<http://schema.org/email> <https://w3id.org/linkml/pattern> "^\\S+@[\\S+\\.]+\\S+" .
-_:N172fb9f232474a32a9b9a5415a4dc253 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://purl.obolibrary.org/obo/GSSO_009253> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
-<https://w3id.org/example/personinfo/GenderType> <https://w3id.org/linkml/kind> "enum" .
-<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/example/personinfo/NamedThing> .
-_:N601be45d80e74453b48179900b87fb23 <http://www.w3.org/2002/07/owl#onDataRange> _:N4afc42e61a7943c3a9505801f043e3a4 .
+<https://w3id.org/example/personinfo> <https://schema.org/keywords> "organizations" .
+_:N94efb79661874b829301b95ac3efdb36 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:Ne80d5514b8f04ea88bb00e3a68198116 .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N2df3459332644fe3bb5126454777b9a4 .
+<https://w3id.org/example/personinfo/id> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#anyURI> .
+<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:Ne80d5514b8f04ea88bb00e3a68198116 <http://www.w3.org/2001/XMLSchema#minInclusive> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
+<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#label> "Organization" .
+<http://schema.org/name> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/NamedThing> .
+_:N9b78d7c3f21940739a54d44561baadc6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N3a64f87c86f3428d97c1d224c7ed84e2 .
+<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2004/02/skos/core#definition> "When the organization was founded." .
+_:Nddb4fdb239be44d28359eaad4b0f527a <http://www.w3.org/2002/07/owl#onDataRange> _:N4cf6676864dc41e387404371e5a56abd .
+_:N2ad775c0a4cb495da42b7e975bfffd09 <http://www.w3.org/2002/07/owl#oneOf> _:N9b78d7c3f21940739a54d44561baadc6 .
+<http://schema.org/description> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
+<https://w3id.org/example/personinfo/id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
+_:Nd7c4e8cbfb5d4eb48dd2c28eceb4f41c <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/aliases> .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/contributor> "Grace Hopper" .
+<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2004/02/skos/core#definition> "An organization such as a company or university." .
 <https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-_:Nf75888bcad4f42ecb902f924f49a9116 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#integer> .
+_:Nd7e635a43d7643c991bb4050fc194210 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#label> "Container" .
+_:N93189f8ea1484f0fa502537730fbd9e1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/2000/01/rdf-schema#label> "organizations" .
+_:N4cf6676864dc41e387404371e5a56abd <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/2004/02/skos/core#definition> "A man whose gender matches the sex assigned at birth." .
+_:N8332b9e751484585934f0fa4140b665d <http://www.w3.org/2002/07/owl#onDataRange> _:N5c0bcc4097904364add9abb9f65e68b8 .
+<https://w3id.org/example/personinfo> <http://www.w3.org/2002/07/owl#versionInfo> "0.3.0" .
+<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+_:N8cc3c505e7a94681ac3e65b1f839245a <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N8aeec2eefa6f454d9c27ec84c5392cbd .
+<http://schema.org/Person> <https://w3id.org/linkml/mixins> <https://w3id.org/example/personinfo/HasAliases> .
+<http://schema.org/description> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N9fad8436add94487a5e787c9e448713d .
+<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
+<https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Container> .
+<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+_:N2df3459332644fe3bb5126454777b9a4 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:Nddb4fdb239be44d28359eaad4b0f527a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://schema.org/email> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2000/01/rdf-schema#label> "PhoneNumberType" .
+<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2002/07/owl#inverseOf> <https://w3id.org/example/personinfo/employed_by> .
+<http://purl.obolibrary.org/obo/GSSO_000384> <https://w3id.org/linkml/permissible_value> "transgender woman" .
+_:N8332b9e751484585934f0fa4140b665d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<https://w3id.org/example/personinfo/persons> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2002/07/owl#equivalentClass> _:N2ad775c0a4cb495da42b7e975bfffd09 .
+_:N0d0413c18b1243bfac985be5caffddc6 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#anyURI> .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/modified> "2026-10-15" .
+_:N0e6f9edea8b54294892da5de46133b01 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+_:N52470f0da1714151ab1b8b312e41c185 <http://www.w3.org/2001/XMLSchema#minInclusive> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://w3id.org/example/personinfo/gender> <http://www.w3.org/2000/01/rdf-schema#range> <https://w3id.org/example/personinfo/GenderType> .
+_:N9b78d7c3f21940739a54d44561baadc6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GSSO_009254> .
+<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N37d42b2e118640f9b5ba796aebe34ef5 .
+<https://w3id.org/example/personinfo/age_in_years> <https://w3id.org/linkml/minimum_value> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:Nfda36b5c27d04bf2a26537b01ecdbdf6 <http://www.w3.org/2001/XMLSchema#maxInclusive> "999"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:N8aeec2eefa6f454d9c27ec84c5392cbd <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:Nfda36b5c27d04bf2a26537b01ecdbdf6 .
+_:N9fad8436add94487a5e787c9e448713d <http://www.w3.org/2002/07/owl#onClass> <https://w3id.org/example/personinfo/Organization> .
+_:N89e649b4c87a40c18d33f8d0cf471316 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GSSO_000384> .
+_:N93189f8ea1484f0fa502537730fbd9e1 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/persons> .
+<http://schema.org/description> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+_:N2459b15c1bc44aefa9106c7ad8d72490 <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/name> .
+<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2000/01/rdf-schema#range> <http://schema.org/Person> .
+_:N2df3459332644fe3bb5126454777b9a4 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#date> .
+_:N05eac45fd31b4c7ca3ee43330f2b1b48 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:N4a605e946601434299e1812e083bf3ab <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+_:N58e75e1582f64a3a9f3a9224536c7465 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N2f1ee468df644b069c1647b6da861dfe .
 <http://purl.obolibrary.org/obo/GSSO_000384> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
 <https://w3id.org/example/personinfo/employees> <https://w3id.org/linkml/multivalued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://w3id.org/example/personinfo/persons> <http://www.w3.org/2000/01/rdf-schema#label> "persons" .
-_:N5a72399e4642460b8fde9286d5297ab2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
-<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
-<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2004/02/skos/core#definition> "A mixin applied to any class that can have aliases." .
-<https://w3id.org/example/personinfo/persons> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://purl.obolibrary.org/obo/GSSO_009253> <http://www.w3.org/2000/01/rdf-schema#label> "nonbinary woman" .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/license> <https://creativecommons.org/publicdomain/zero/1.0/> .
-<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2004/02/skos/core#definition> "An organization such as a company or university." .
-<https://w3id.org/example/personinfo> <http://www.w3.org/2002/07/owl#versionInfo> "0.3.0" .
-<http://purl.obolibrary.org/obo/GSSO_009253> <https://w3id.org/linkml/permissible_value> "nonbinary woman" .
-_:Ne3533beeedd0468d96907d86852d497f <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N7269f51ac3a34685ae00b982e0d3f5b9 .
-<https://w3id.org/example/personinfo/persons> <http://www.w3.org/2000/01/rdf-schema#range> <http://schema.org/Person> .
-_:Na034ea73a2624e4e8bffde5207eaaef4 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/gender> .
-_:N30113d27932d4618870f3fa3088c954c <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/employed_by> .
-<https://w3id.org/example/personinfo/id> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
+<https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Container> .
+<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2004/02/skos/core#definition> "A phone number." .
+_:Necc24176d89e4aa6ade2afe23e2d089a <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:Nf49b0ff334b74862939236eb045fb7ab <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<https://w3id.org/example/personinfo/gender> <http://www.w3.org/2000/01/rdf-schema#label> "gender" .
+<https://w3id.org/example/personinfo/NamedThing> <https://w3id.org/linkml/abstract> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
 <http://schema.org/birthDate> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-_:N4048c539d57d445d96f2f4dc7429352b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Ncb4263bf49cd4a89ab3dde172b45a339 .
-<http://schema.org/description> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-_:Ncda8a89187904113942b04ee7be6ba71 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N2129d33769d04e6aa23f1ecd122f15ba .
-<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2000/01/rdf-schema#label> "PhoneNumberType" .
-<https://w3id.org/example/personinfo/gender> <http://www.w3.org/2000/01/rdf-schema#range> <https://w3id.org/example/personinfo/GenderType> .
-_:N4868f87907f84f28a96afda6f9e69745 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:N5f046f01bb674645b285d9e31652f186 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N81fe0d27e0644a5bb853de3b74755e43 .
-_:N0d5a80185fa84fdbb49da8fc49b2d5ca <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:Ncda8a89187904113942b04ee7be6ba71 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<https://w3id.org/example/personinfo/Container> <https://w3id.org/linkml/tree_root> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<http://schema.org/email> <http://www.w3.org/2000/01/rdf-schema#label> "primary_email" .
+_:N05eac45fd31b4c7ca3ee43330f2b1b48 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/gender> .
+<http://schema.org/email> <http://www.w3.org/2004/02/skos/core#definition> "The main email address of a person." .
+_:N0e6f9edea8b54294892da5de46133b01 <http://www.w3.org/2002/07/owl#withRestrictions> _:Nf0aa6c06a5454d4a86a329a285766579 .
+<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+_:N0f959338628743bea51dd91889017bfa <http://www.w3.org/2001/XMLSchema#pattern> "^\\S+@[\\S+\\.]+\\S+" .
+<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/2000/01/rdf-schema#label> "cisgender man" .
+_:N2f1ee468df644b069c1647b6da861dfe <http://www.w3.org/2001/XMLSchema#pattern> "^[\\d\\(\\)\\-]+$" .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+_:Nae2bb48d68dc483e958694d153a92e70 <http://www.w3.org/2002/07/owl#withRestrictions> _:N8cc3c505e7a94681ac3e65b1f839245a .
+<http://schema.org/name> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+_:Nfde5cd90a0fa4cd5b7a5515118ee1040 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:N4cf6676864dc41e387404371e5a56abd <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+_:N58e75e1582f64a3a9f3a9224536c7465 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/example/personinfo/HasAliases> .
+<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#definition> "A person (alive, dead, undead, or fictional)." .
+<https://w3id.org/example/personinfo/GenderType> <https://w3id.org/linkml/kind> "enum" .
+<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nd7c4e8cbfb5d4eb48dd2c28eceb4f41c .
+<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <https://w3id.org/linkml/permissible_value> "cisgender man" .
+_:N0d0413c18b1243bfac985be5caffddc6 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/id> .
+<https://w3id.org/example/personinfo/age_in_years> <https://w3id.org/linkml/maximum_value> "999"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:N4a605e946601434299e1812e083bf3ab <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2000/01/rdf-schema#range> <https://w3id.org/example/personinfo/Organization> .
+<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
 <http://schema.org/name> <http://www.w3.org/2000/01/rdf-schema#label> "name" .
-_:Nc1ea1f9a269d407fa9dcb499714c0b2d <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N2823e03822044e24ae6f8e86346292b0 .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/contributor> "Grace Hopper" .
-_:N526905cc68474258b32c76902295f058 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:Na034ea73a2624e4e8bffde5207eaaef4 <http://www.w3.org/2002/07/owl#onClass> <https://w3id.org/example/personinfo/GenderType> .
-<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-_:N03dd1e9969754c77922b66a7a2ac7f3f <http://www.w3.org/2001/XMLSchema#minInclusive> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
-_:Nba5feba2097940d29ef03aba4785789b <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/2000/01/rdf-schema#label> "aliases" .
-<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
-<http://schema.org/birthDate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-_:Nbb0f8435bbaf40768f28885ea8452a3d <http://www.w3.org/2002/07/owl#withRestrictions> _:Nba5feba2097940d29ef03aba4785789b .
-_:Nf75888bcad4f42ecb902f924f49a9116 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<http://schema.org/Person> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
 <https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/2000/01/rdf-schema#label> "age_in_years" .
-<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/created> "2025-02-01" .
-<https://w3id.org/example/personinfo/employees> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Organization> .
-<http://schema.org/name> <http://www.w3.org/2004/02/skos/core#definition> "A human-readable name for a thing." .
-_:N601be45d80e74453b48179900b87fb23 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<https://w3id.org/example/personinfo/id> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#anyURI> .
+_:N2459b15c1bc44aefa9106c7ad8d72490 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/example/personinfo> <http://purl.org/vocab/vann/preferredNamespacePrefix> "personinfo" .
+_:N5c0bcc4097904364add9abb9f65e68b8 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#integer> .
+<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/example/personinfo/NamedThing> .
+<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/example/personinfo/gender> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2004/02/skos/core#historyNote> "Use employment history instead." .
+<https://w3id.org/example/personinfo/aliases> <https://w3id.org/linkml/multivalued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:Nddb4fdb239be44d28359eaad4b0f527a <http://www.w3.org/2002/07/owl#qualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:N5c0bcc4097904364add9abb9f65e68b8 <http://www.w3.org/2002/07/owl#withRestrictions> _:N94efb79661874b829301b95ac3efdb36 .
+<https://w3id.org/example/personinfo> <https://schema.org/keywords> "people" .
+<https://w3id.org/example/personinfo/id> <http://www.w3.org/2004/02/skos/core#definition> "A unique identifier for a thing." .
+_:N37d42b2e118640f9b5ba796aebe34ef5 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:N2df3459332644fe3bb5126454777b9a4 <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/birthDate> .
+_:Nf5cd9b5454a7403e87574cbef4b7e0da <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/employees> .
+_:N4f4d31dfeb464b4e912aa089741c4b0e <http://www.w3.org/2001/XMLSchema#maxInclusive> "999"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<http://purl.obolibrary.org/obo/GSSO_009253> <http://www.w3.org/2000/01/rdf-schema#label> "nonbinary woman" .
 <https://w3id.org/example/personinfo/id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2002/07/owl#equivalentClass> _:N4a605e946601434299e1812e083bf3ab .
+<https://w3id.org/example/personinfo/Container> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#example> "Ada Lovelace — a famous mathematician" .
+_:Nf49b0ff334b74862939236eb045fb7ab <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <https://w3id.org/example/personinfo/GenderType#cisgender%20man> .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N05eac45fd31b4c7ca3ee43330f2b1b48 .
+<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nfde5cd90a0fa4cd5b7a5515118ee1040 .
+<http://schema.org/email> <https://w3id.org/linkml/pattern> "^\\S+@[\\S+\\.]+\\S+" .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
+<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2000/01/rdf-schema#label> "HasAliases" .
+<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2004/02/skos/core#definition> "Gender of a person." .
+<https://w3id.org/example/personinfo/aliases> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/HasAliases> .
+_:N2459b15c1bc44aefa9106c7ad8d72490 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nddb4fdb239be44d28359eaad4b0f527a .
+_:Nf5cd9b5454a7403e87574cbef4b7e0da <http://www.w3.org/2002/07/owl#allValuesFrom> <http://schema.org/Person> .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/description> "A LinkML model for people, organizations and their relationships.\nUsed to test **OntoReview**'s LinkML support." .
+<http://schema.org/email> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
+<https://w3id.org/example/personinfo/employees> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Organization> .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/license> <https://creativecommons.org/publicdomain/zero/1.0/> .
+_:Nd7c4e8cbfb5d4eb48dd2c28eceb4f41c <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Nfde5cd90a0fa4cd5b7a5515118ee1040 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/example/personinfo/aliases> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/HasAliases> .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/created> "2025-02-01" .
+<https://w3id.org/example/personinfo/id> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/NamedThing> .
+<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+_:Nf0aa6c06a5454d4a86a329a285766579 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N0f959338628743bea51dd91889017bfa .
+_:N0d0413c18b1243bfac985be5caffddc6 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<https://w3id.org/example/personinfo/employees> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/example/personinfo/founding_date> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Organization> .
 <https://w3id.org/example/personinfo/employees> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/id> <https://w3id.org/linkml/identifier> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
 <https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/gender> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/title> "Person Information Model" .
-<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N023baa6d341a43eeae883d229acc55f1 .
 <https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/multivalued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2004/02/skos/core#definition> "When the organization was founded." .
-_:N4afc42e61a7943c3a9505801f043e3a4 <http://www.w3.org/2002/07/owl#withRestrictions> _:N4868f87907f84f28a96afda6f9e69745 .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/creator> <https://orcid.org/0000-0000-0000-0002> .
+_:N0e6f9edea8b54294892da5de46133b01 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .
+_:N3b9589d4c3974686becb4d6b6c5fd347 <http://www.w3.org/2001/XMLSchema#pattern> "^\\S+@[\\S+\\.]+\\S+" .
+<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Container> .
+_:N9fad8436add94487a5e787c9e448713d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://purl.obolibrary.org/obo/GSSO_000384> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2004/02/skos/core#definition> "A generic grouping for any identifiable entity." .
+<http://purl.obolibrary.org/obo/GSSO_009253> <https://w3id.org/linkml/permissible_value> "nonbinary woman" .
+<http://schema.org/description> <http://www.w3.org/2000/01/rdf-schema#label> "description" .
+<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2000/01/rdf-schema#label> "founding_date" .
+<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+_:N37d42b2e118640f9b5ba796aebe34ef5 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/founding_date> .
+_:Nf0aa6c06a5454d4a86a329a285766579 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/2000/01/rdf-schema#label> "aliases" .
+_:Nae2bb48d68dc483e958694d153a92e70 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#integer> .
+_:N9fad8436add94487a5e787c9e448713d <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<http://schema.org/birthDate> <http://www.w3.org/2000/01/rdf-schema#label> "birth_date" .
+<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://schema.org/Person> .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N2459b15c1bc44aefa9106c7ad8d72490 .
+<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+_:N2df3459332644fe3bb5126454777b9a4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://schema.org/email> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://purl.obolibrary.org/obo/GSSO_009254> <https://w3id.org/linkml/permissible_value> "nonbinary man" .
+<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/inlined_as_list> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:N37d42b2e118640f9b5ba796aebe34ef5 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#date> .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/example/personinfo/NamedThing> .
+<http://purl.obolibrary.org/obo/GSSO_009254> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
 <https://w3id.org/example/personinfo/id> <http://www.w3.org/2000/01/rdf-schema#label> "id" .
 <http://schema.org/birthDate> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
-<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
-_:Nd853bff705f841b4ac0446308f4e8533 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N9ac11eed5d8a4fe988783881468f32f5 .
-_:N546e5aa15241472fba0067667086ac72 <http://www.w3.org/2002/07/owl#qualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-_:Naea85f537c464f39bf4333d2df67c05d <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/name> .
-<https://w3id.org/example/personinfo/HasAliases> <https://w3id.org/linkml/mixin> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2000/01/rdf-schema#range> <http://schema.org/Person> .
-_:Nd853bff705f841b4ac0446308f4e8533 <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/description> .
-<http://schema.org/name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-_:N81fe0d27e0644a5bb853de3b74755e43 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N13e6e14498fc47d08ee92438b95407ba .
-<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#date> .
-_:N6856844bfcde4a409b1ba191b338c3ba <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/organizations> .
-_:N546e5aa15241472fba0067667086ac72 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/id> .
-<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/example/personinfo/NamedThing> .
-_:N53b0754f6eb14a23a8be54071173f0c1 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/employees> .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#label> "Container" .
-_:Nd853bff705f841b4ac0446308f4e8533 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> .
-<http://schema.org/Person> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#label> "Organization" .
-_:N0d5a80185fa84fdbb49da8fc49b2d5ca <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#date> .
-<http://schema.org/email> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
-_:Naea85f537c464f39bf4333d2df67c05d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#definition> "A person (alive, dead, undead, or fictional)." .
-<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Container> .
-<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N6856844bfcde4a409b1ba191b338c3ba .
-<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/multivalued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:N023baa6d341a43eeae883d229acc55f1 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/persons> .
-_:N9ac11eed5d8a4fe988783881468f32f5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:Na034ea73a2624e4e8bffde5207eaaef4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:N5f046f01bb674645b285d9e31652f186 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GSSO_009254> .
-_:N6856844bfcde4a409b1ba191b338c3ba <http://www.w3.org/2002/07/owl#allValuesFrom> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Container> .
-<https://w3id.org/example/personinfo/gender> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Naea85f537c464f39bf4333d2df67c05d .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#label> "NamedThing" .
-_:Ncb4263bf49cd4a89ab3dde172b45a339 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:Nfe8a7c148bd64b668670c925ffc0edee .
-_:Naea85f537c464f39bf4333d2df67c05d <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#string> .
-_:N940871c2746545d09d499ab766a59502 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/aliases> .
-_:N0d5a80185fa84fdbb49da8fc49b2d5ca <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<http://purl.obolibrary.org/obo/GSSO_009253> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
-<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
-_:N53b0754f6eb14a23a8be54071173f0c1 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://schema.org/Person> .
-<http://schema.org/description> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
-<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2000/01/rdf-schema#range> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Container> .
-_:N023baa6d341a43eeae883d229acc55f1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:N81fe0d27e0644a5bb853de3b74755e43 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GSSO_009253> .
-_:N526905cc68474258b32c76902295f058 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-_:Nf75888bcad4f42ecb902f924f49a9116 <http://www.w3.org/2002/07/owl#withRestrictions> _:N4048c539d57d445d96f2f4dc7429352b .
-<http://purl.obolibrary.org/obo/GSSO_009254> <http://www.w3.org/2000/01/rdf-schema#label> "nonbinary man" .
-_:N2129d33769d04e6aa23f1ecd122f15ba <http://www.w3.org/2001/XMLSchema#pattern> "^\\S+@[\\S+\\.]+\\S+" .
-<http://purl.obolibrary.org/obo/GSSO_000384> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
-<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2002/07/owl#inverseOf> <https://w3id.org/example/personinfo/employed_by> .
-<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Container> .
-<http://schema.org/description> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/NamedThing> .
-_:N601be45d80e74453b48179900b87fb23 <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/email> .
-<http://purl.obolibrary.org/obo/GSSO_009254> <https://w3id.org/linkml/permissible_value> "nonbinary man" .
-_:N6856844bfcde4a409b1ba191b338c3ba <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/modified> "2026-10-15" .
-<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/creator> <https://orcid.org/0000-0000-0000-0002> .
-<https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/inlined_as_list> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty> .
-_:N5a72399e4642460b8fde9286d5297ab2 <http://www.w3.org/2002/07/owl#withRestrictions> _:Ne3533beeedd0468d96907d86852d497f .
-_:N4afc42e61a7943c3a9505801f043e3a4 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .
-<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#altLabel> "human being" .
-<http://schema.org/name> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
-<https://w3id.org/example/personinfo> <https://schema.org/keywords> "people" .
-_:N9bea52beb55240dbba41319eed6f1f4d <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .
-_:Nba5feba2097940d29ef03aba4785789b <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N217029a3f0dd4db2a49d446453724835 .
-_:N30113d27932d4618870f3fa3088c954c <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<https://w3id.org/example/personinfo/age_in_years> <https://w3id.org/linkml/minimum_value> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
-_:N7269f51ac3a34685ae00b982e0d3f5b9 <http://www.w3.org/2001/XMLSchema#minInclusive> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<http://purl.obolibrary.org/obo/GSSO_000384> <http://www.w3.org/2000/01/rdf-schema#label> "transgender woman" .
-_:N601be45d80e74453b48179900b87fb23 <http://www.w3.org/2002/07/owl#qualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2000/01/rdf-schema#label> "employed_by" .
-<http://purl.obolibrary.org/obo/GSSO_009254> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
-<https://w3id.org/example/personinfo> <https://w3id.org/linkml/generation_source> "LinkML schema" .
-<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2000/01/rdf-schema#label> "HasAliases" .
-_:Ne3533beeedd0468d96907d86852d497f <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Nc1ea1f9a269d407fa9dcb499714c0b2d .
-<http://purl.obolibrary.org/obo/GSSO_000384> <https://w3id.org/linkml/permissible_value> "transgender woman" .
-<https://w3id.org/example/personinfo/founding_date> <http://www.w3.org/2000/01/rdf-schema#label> "founding_date" .
-<https://w3id.org/example/personinfo/id> <http://www.w3.org/2004/02/skos/core#definition> "A unique identifier for a thing." .
-<http://schema.org/name> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/NamedThing> .
-_:N0d5a80185fa84fdbb49da8fc49b2d5ca <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/founding_date> .
-_:N4868f87907f84f28a96afda6f9e69745 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:Nf626598bd9074a73b5c5fc4e73bb61fe .
-_:N546e5aa15241472fba0067667086ac72 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-_:Nf626598bd9074a73b5c5fc4e73bb61fe <http://www.w3.org/2001/XMLSchema#pattern> "^\\S+@[\\S+\\.]+\\S+" .
-<http://schema.org/email> <http://www.w3.org/2000/01/rdf-schema#label> "primary_email" .
-<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2002/07/owl#equivalentClass> _:N172fb9f232474a32a9b9a5415a4dc253 .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N526905cc68474258b32c76902295f058 .
-<https://w3id.org/example/personinfo/employees> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-_:Nd853bff705f841b4ac0446308f4e8533 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<https://w3id.org/example/personinfo/aliases> <https://w3id.org/linkml/multivalued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-<https://w3id.org/example/personinfo/founding_date> <https://w3id.org/linkml/attribute_of> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/persons> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-_:N172fb9f232474a32a9b9a5415a4dc253 <http://www.w3.org/2002/07/owl#oneOf> _:N5f046f01bb674645b285d9e31652f186 .
-<https://w3id.org/example/personinfo/id> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/NamedThing> .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nd853bff705f841b4ac0446308f4e8533 .
-<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/2004/02/skos/core#definition> "A man whose gender matches the sex assigned at birth." .
-<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N53b0754f6eb14a23a8be54071173f0c1 .
-<https://w3id.org/example/personinfo/founding_date> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Organization> .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
-_:Nb9889c4e6497492bb46d3163397e7a7d <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
-_:N546e5aa15241472fba0067667086ac72 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#anyURI> .
-<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
-<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/2004/02/skos/core#definition> "A phone number." .
-<http://schema.org/email> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
-<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2004/02/skos/core#historyNote> "Use employment history instead." .
-_:N9ac11eed5d8a4fe988783881468f32f5 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/age_in_years> .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Na034ea73a2624e4e8bffde5207eaaef4 .
-_:N217029a3f0dd4db2a49d446453724835 <http://www.w3.org/2001/XMLSchema#pattern> "^[\\d\\(\\)\\-]+$" .
-_:N5a72399e4642460b8fde9286d5297ab2 <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#integer> .
-<https://w3id.org/example/personinfo> <http://purl.org/vocab/vann/preferredNamespaceUri> "https://w3id.org/example/personinfo/" .
-<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/2000/01/rdf-schema#label> "cisgender man" .
-<http://schema.org/birthDate> <http://www.w3.org/2000/01/rdf-schema#label> "birth_date" .
-<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/inlined_as_list> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
-_:N940871c2746545d09d499ab766a59502 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
-<http://purl.obolibrary.org/obo/GSSO_009254> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
-<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N0d5a80185fa84fdbb49da8fc49b2d5ca .
-<https://w3id.org/example/personinfo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
-<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <https://w3id.org/linkml/permissible_value> "cisgender man" .
-<https://w3id.org/example/personinfo/gender> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
-<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#label> "Person" .
-<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://schema.org/Person> .
-_:N9bea52beb55240dbba41319eed6f1f4d <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
-_:Naea85f537c464f39bf4333d2df67c05d <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
-<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2004/02/skos/core#definition> "Gender of a person." .
-<http://schema.org/email> <http://www.w3.org/2004/02/skos/core#definition> "The main email address of a person." .
-<http://schema.org/email> <http://www.w3.org/2000/01/rdf-schema#range> _:N9bea52beb55240dbba41319eed6f1f4d .
-<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2000/01/rdf-schema#label> "GenderType" .
-_:Nbb0f8435bbaf40768f28885ea8452a3d <http://www.w3.org/2002/07/owl#onDatatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/example/personinfo/age_in_years> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
-_:N526905cc68474258b32c76902295f058 <http://www.w3.org/2002/07/owl#onDataRange> <http://www.w3.org/2001/XMLSchema#date> .
-_:N13e6e14498fc47d08ee92438b95407ba <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GSSO_000384> .
-_:N4afc42e61a7943c3a9505801f043e3a4 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
-<https://w3id.org/example/personinfo/age_in_years> <https://w3id.org/linkml/maximum_value> "999"^^<http://www.w3.org/2001/XMLSchema#integer> .
-<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/2000/01/rdf-schema#label> "organizations" .
-<https://w3id.org/example/personinfo> <https://schema.org/keywords> "organizations" .
-<http://schema.org/description> <http://www.w3.org/2000/01/rdf-schema#label> "description" .
-<https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/2000/01/rdf-schema#range> _:Nf75888bcad4f42ecb902f924f49a9116 .
-<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N546e5aa15241472fba0067667086ac72 .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#label> "Person" .
+<https://w3id.org/example/personinfo/employed_by> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
+<http://schema.org/Person> <http://www.w3.org/2004/02/skos/core#altLabel> "human being" .
+<https://w3id.org/example/personinfo/PhoneNumberType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<https://w3id.org/example/personinfo/GenderType> <http://www.w3.org/2000/01/rdf-schema#label> "GenderType" .
+_:N3a64f87c86f3428d97c1d224c7ed84e2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> <http://purl.obolibrary.org/obo/GSSO_009253> .
+<http://schema.org/birthDate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+_:N8332b9e751484585934f0fa4140b665d <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<http://schema.org/Person> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N8332b9e751484585934f0fa4140b665d .
+<https://w3id.org/example/personinfo/Organization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nf5cd9b5454a7403e87574cbef4b7e0da .
+<http://purl.obolibrary.org/obo/GSSO_009253> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+_:N0d0413c18b1243bfac985be5caffddc6 <http://www.w3.org/2002/07/owl#qualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:N4a605e946601434299e1812e083bf3ab <http://www.w3.org/2002/07/owl#withRestrictions> _:N58e75e1582f64a3a9f3a9224536c7465 .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:Nb7143e30a6564923964062aabf5d5243 .
+_:N8aeec2eefa6f454d9c27ec84c5392cbd <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:N8cc3c505e7a94681ac3e65b1f839245a <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N52470f0da1714151ab1b8b312e41c185 .
+_:N8332b9e751484585934f0fa4140b665d <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/age_in_years> .
+<https://w3id.org/example/personinfo/HasAliases> <http://www.w3.org/2004/02/skos/core#definition> "A mixin applied to any class that can have aliases." .
+<https://w3id.org/example/personinfo/persons> <http://www.w3.org/2000/01/rdf-schema#range> <http://schema.org/Person> .
+<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/2000/01/rdf-schema#range> <https://w3id.org/example/personinfo/Organization> .
+<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/multivalued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:N5c0bcc4097904364add9abb9f65e68b8 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2000/01/rdf-schema#label> "employees" .
+<https://w3id.org/example/personinfo/gender> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/example/personinfo/employees> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<http://schema.org/description> <http://www.w3.org/2004/02/skos/core#definition> "A human-readable description for a thing." .
+<http://schema.org/name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/example/personinfo/organizations> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+_:N37d42b2e118640f9b5ba796aebe34ef5 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Nb7143e30a6564923964062aabf5d5243 <http://www.w3.org/2002/07/owl#allValuesFrom> <https://w3id.org/example/personinfo/Organization> .
+<https://w3id.org/example/personinfo/id> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
+<https://w3id.org/example/personinfo/persons> <http://www.w3.org/2000/01/rdf-schema#label> "persons" .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#label> "NamedThing" .
+_:Necc24176d89e4aa6ade2afe23e2d089a <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N4f4d31dfeb464b4e912aa089741c4b0e .
+<https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+_:N05eac45fd31b4c7ca3ee43330f2b1b48 <http://www.w3.org/2002/07/owl#maxQualifiedCardinality> "1"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+_:Nfde5cd90a0fa4cd5b7a5515118ee1040 <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/description> .
+_:N93189f8ea1484f0fa502537730fbd9e1 <http://www.w3.org/2002/07/owl#allValuesFrom> <http://schema.org/Person> .
+<http://schema.org/name> <http://www.w3.org/2004/02/skos/core#definition> "A human-readable name for a thing." .
+<https://w3id.org/example/personinfo/founding_date> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Organization> .
+_:N89e649b4c87a40c18d33f8d0cf471316 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Nf49b0ff334b74862939236eb045fb7ab .
+_:N2459b15c1bc44aefa9106c7ad8d72490 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<http://purl.obolibrary.org/obo/GSSO_009254> <http://www.w3.org/2000/01/rdf-schema#label> "nonbinary man" .
+<http://schema.org/description> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/NamedThing> .
+_:Nfde5cd90a0fa4cd5b7a5515118ee1040 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<https://w3id.org/example/personinfo/GenderType#cisgender%20man> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/example/personinfo/organizations> <https://w3id.org/linkml/inlined_as_list> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<https://w3id.org/example/personinfo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Ontology> .
+<https://w3id.org/example/personinfo/HasAliases> <https://w3id.org/linkml/mixin> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<https://w3id.org/example/personinfo/NamedThing> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N0d0413c18b1243bfac985be5caffddc6 .
+<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/personinfo> .
+<http://purl.obolibrary.org/obo/GSSO_000384> <http://www.w3.org/2000/01/rdf-schema#label> "transgender woman" .
+_:Nb7143e30a6564923964062aabf5d5243 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+_:Nd7c4e8cbfb5d4eb48dd2c28eceb4f41c <http://www.w3.org/2002/07/owl#allValuesFrom> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/example/personinfo/employed_by> <http://www.w3.org/2000/01/rdf-schema#label> "employed_by" .
+<https://w3id.org/example/personinfo/gender> <https://w3id.org/linkml/domain_of> <http://schema.org/Person> .
+<https://w3id.org/example/personinfo> <http://purl.org/vocab/vann/preferredNamespaceUri> "https://w3id.org/example/personinfo/" .
+_:N05eac45fd31b4c7ca3ee43330f2b1b48 <http://www.w3.org/2002/07/owl#onClass> <https://w3id.org/example/personinfo/GenderType> .
+_:N9fad8436add94487a5e787c9e448713d <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/employed_by> .
+_:Nb7143e30a6564923964062aabf5d5243 <http://www.w3.org/2002/07/owl#onProperty> <https://w3id.org/example/personinfo/organizations> .
+_:N2ad775c0a4cb495da42b7e975bfffd09 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/example/personinfo/id> <https://w3id.org/linkml/identifier> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+_:Nf5cd9b5454a7403e87574cbef4b7e0da <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Restriction> .
+<https://w3id.org/example/personinfo> <https://w3id.org/linkml/generation_source> "LinkML schema" .
+<http://schema.org/name> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <https://w3id.org/example/core> .
+_:N3a64f87c86f3428d97c1d224c7ed84e2 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:N89e649b4c87a40c18d33f8d0cf471316 .
+<http://purl.obolibrary.org/obo/GSSO_009254> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
+_:N4cf6676864dc41e387404371e5a56abd <http://www.w3.org/2002/07/owl#withRestrictions> _:Nd7e635a43d7643c991bb4050fc194210 .
+<http://schema.org/email> <http://www.w3.org/2000/01/rdf-schema#range> _:N0e6f9edea8b54294892da5de46133b01 .
+<https://w3id.org/example/personinfo/aliases> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/example/personinfo> <http://purl.org/dc/terms/title> "Person Information Model" .
+_:Nd7e635a43d7643c991bb4050fc194210 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> _:N3b9589d4c3974686becb4d6b6c5fd347 .
+<https://w3id.org/example/personinfo/Container> <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:N93189f8ea1484f0fa502537730fbd9e1 .
+_:N94efb79661874b829301b95ac3efdb36 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:Necc24176d89e4aa6ade2afe23e2d089a .
+_:Nae2bb48d68dc483e958694d153a92e70 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Datatype> .
+<https://w3id.org/example/personinfo/age_in_years> <http://www.w3.org/2000/01/rdf-schema#range> _:Nae2bb48d68dc483e958694d153a92e70 .
+<http://schema.org/birthDate> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/example/personinfo/persons> <https://w3id.org/linkml/domain_of> <https://w3id.org/example/personinfo/Container> .
+<https://w3id.org/example/personinfo/persons> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://purl.obolibrary.org/obo/GSSO_009253> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/example/personinfo/GenderType> .
+_:Nddb4fdb239be44d28359eaad4b0f527a <http://www.w3.org/2002/07/owl#onProperty> <http://schema.org/email> .

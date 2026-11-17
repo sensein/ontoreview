@@ -179,6 +179,15 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
+      "message": "Label “image” is used by `foaf:Image`, `foaf:img`.",
+      "subject": "http://xmlns.com/foaf/0.1/Image",
+      "subject_label": "Image",
+      "anchor": "Image"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
       "message": "Label “given name” is used by `foaf:givenname`, `foaf:givenName`.",
       "subject": "http://xmlns.com/foaf/0.1/givenname",
       "subject_label": "Given name",
@@ -192,15 +201,6 @@
       "subject": "http://xmlns.com/foaf/0.1/holdsAccount",
       "subject_label": "account",
       "anchor": "holdsAccount"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “image” is used by `foaf:img`, `foaf:Image`.",
-      "subject": "http://xmlns.com/foaf/0.1/img",
-      "subject_label": "image",
-      "anchor": "img"
     },
     {
       "rule": "OB004",
@@ -272,7 +272,7 @@
       "message": "Property “title” has no domain.",
       "subject": "http://xmlns.com/foaf/0.1/title",
       "subject_label": "title",
-      "anchor": "title-2"
+      "anchor": "title"
     },
     {
       "rule": "OB013",
@@ -326,7 +326,7 @@
       "message": "Property “title” has no range.",
       "subject": "http://xmlns.com/foaf/0.1/title",
       "subject_label": "title",
-      "anchor": "title-2"
+      "anchor": "title"
     },
     {
       "rule": "OB019",
@@ -407,7 +407,7 @@
       "message": "`dc:title` is declared here but is outside the namespace.",
       "subject": "http://purl.org/dc/elements/1.1/title",
       "subject_label": "title",
-      "anchor": "title"
+      "anchor": "title-2"
     },
     {
       "rule": "OB027",

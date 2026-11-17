@@ -163,10 +163,10 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “pizza” @en is used by `pizza:Pizza`, `pizza:Name`.",
-      "subject": "https://example.org/pizza#Pizza",
+      "message": "Label “pizza” @en is used by `pizza:Name`, `pizza:Pizza`.",
+      "subject": "https://example.org/pizza#Name",
       "subject_label": "Pizza",
-      "anchor": "Pizza"
+      "anchor": "Name"
     },
     {
       "rule": "OB012",

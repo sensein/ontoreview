@@ -637,7 +637,7 @@ jobs:
         uses: actions/deploy-pages@v4
 """
 
-TOML_TEMPLATE = """# ontoreview configuration: https://github.com/tekrajchhetri/ontoreview
+TOML_TEMPLATE = """# ontoreview configuration: https://github.com/CAIRNepal/ontoreview
 source = "{source}"
 output = "docs"
 layout = "single"          # "single" or "multi"

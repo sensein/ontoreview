@@ -262,91 +262,73 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
+      "message": "Label “catalog” @en is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “catalogo” @it is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “catálogo” @es is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “katalog” @cs is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “katalog” @da is used by `dcat:Catalog`, `dcat:catalog`.",
+      "subject": "http://www.w3.org/ns/dcat#Catalog",
+      "subject_label": "Catalog",
+      "anchor": "Catalog"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “سجل” @ar is used by `dcat:CatalogRecord`, `dcat:record`.",
+      "subject": "http://www.w3.org/ns/dcat#CatalogRecord",
+      "subject_label": "Catalog Record",
+      "anchor": "CatalogRecord"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “カタログ・レコード” @ja is used by `dcat:CatalogRecord`, `dcat:record`.",
+      "subject": "http://www.w3.org/ns/dcat#CatalogRecord",
+      "subject_label": "Catalog Record",
+      "anchor": "CatalogRecord"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
       "message": "Label “datatjeneste” @da is used by `dcat:DataService`, `dcat:service`.",
       "subject": "http://www.w3.org/ns/dcat#DataService",
       "subject_label": "Data service",
       "anchor": "DataService"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “conjunto de datos” @es is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “dataset” @en is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “dataset” @it is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “datasæt” @da is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “datová sada” @cs is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “jeu de données” @fr is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “σύνολο δεδομένων” @el is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “قائمة بيانات” @ar is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “データセット” @ja is used by `dcat:Dataset`, `dcat:dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#Dataset",
-      "subject_label": "Dataset",
-      "anchor": "Dataset"
     },
     {
       "rule": "OB016",
@@ -415,64 +397,82 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “catalog” @en is used by `dcat:catalog`, `dcat:Catalog`.",
-      "subject": "http://www.w3.org/ns/dcat#catalog",
-      "subject_label": "catalog",
-      "anchor": "catalog"
+      "message": "Label “conjunto de datos” @es is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “catalogo” @it is used by `dcat:catalog`, `dcat:Catalog`.",
-      "subject": "http://www.w3.org/ns/dcat#catalog",
-      "subject_label": "catalog",
-      "anchor": "catalog"
+      "message": "Label “dataset” @en is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “catálogo” @es is used by `dcat:catalog`, `dcat:Catalog`.",
-      "subject": "http://www.w3.org/ns/dcat#catalog",
-      "subject_label": "catalog",
-      "anchor": "catalog"
+      "message": "Label “dataset” @it is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “katalog” @cs is used by `dcat:catalog`, `dcat:Catalog`.",
-      "subject": "http://www.w3.org/ns/dcat#catalog",
-      "subject_label": "catalog",
-      "anchor": "catalog"
+      "message": "Label “datasæt” @da is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “katalog” @da is used by `dcat:catalog`, `dcat:Catalog`.",
-      "subject": "http://www.w3.org/ns/dcat#catalog",
-      "subject_label": "catalog",
-      "anchor": "catalog"
+      "message": "Label “datová sada” @cs is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “سجل” @ar is used by `dcat:record`, `dcat:CatalogRecord`.",
-      "subject": "http://www.w3.org/ns/dcat#record",
-      "subject_label": "record",
-      "anchor": "record"
+      "message": "Label “jeu de données” @fr is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “カタログ・レコード” @ja is used by `dcat:record`, `dcat:CatalogRecord`.",
-      "subject": "http://www.w3.org/ns/dcat#record",
-      "subject_label": "record",
-      "anchor": "record"
+      "message": "Label “σύνολο δεδομένων” @el is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “قائمة بيانات” @ar is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “データセット” @ja is used by `dcat:dataset`, `dcat:Dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#dataset",
+      "subject_label": "dataset",
+      "anchor": "dataset"
     },
     {
       "rule": "OB017",

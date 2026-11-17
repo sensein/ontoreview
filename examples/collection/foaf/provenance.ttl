@@ -11,7 +11,7 @@ foaf: a prov:Entity ;
     dcterms:title "Friend of a Friend (FOAF) vocabulary" .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T04:00:10+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-17T04:10:54+00:00"^^xsd:dateTime ;
     prov:used "foaf.rdf" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

@@ -13,7 +13,7 @@ The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.
 | category | qualified |
 | component | entities-activities |
 | sharesDefinitionWith | prov:InstantaneousEvent |
-| unqualifiedForm | prov:generatedAtTime; prov:invalidatedAtTime; prov:endedAtTime; prov:startedAtTime |
+| unqualifiedForm | prov:startedAtTime; prov:generatedAtTime; prov:endedAtTime; prov:invalidatedAtTime |
 
 ### endedAtTime
 
@@ -28,7 +28,7 @@ The time at which an activity ended. See also prov:startedAtTime.
 | category | starting-point |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedEnd o prov:atTime) rdfs:subPropertyOf prov:endedAtTime. |
-| qualifiedForm | prov:End; prov:atTime |
+| qualifiedForm | prov:atTime; prov:End |
 
 ### generatedAtTime
 
@@ -87,5 +87,5 @@ Provides a value that is a direct representation of an entity.
 | category | expanded |
 | component | entities-activities |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-attribute-value |
-| editorialNote | This property serves the same purpose as rdf:value, but has been reintroduced to avoid some of the definitional ambiguity in the RDF specification (specifically, 'may be used in describing structured values').; The editor's definition comes from http://www.w3.org/TR/rdf-primer/#rdfvalue |
+| editorialNote | The editor's definition comes from http://www.w3.org/TR/rdf-primer/#rdfvalue; This property serves the same purpose as rdf:value, but has been reintroduced to avoid some of the definitional ambiguity in the RDF specification (specifically, 'may be used in describing structured values'). |
 

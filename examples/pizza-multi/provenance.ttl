@@ -15,7 +15,7 @@
 <https://orcid.org/0000-0000-0000-0001> a prov:Agent .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T03:59:51+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-17T04:10:36+00:00"^^xsd:dateTime ;
     prov:used "pizza-v2.ttl" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

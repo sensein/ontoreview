@@ -10,7 +10,7 @@
     dcterms:title "SKOS Vocabulary" .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T04:00:14+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-17T04:10:58+00:00"^^xsd:dateTime ;
     prov:used "skos.rdf" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

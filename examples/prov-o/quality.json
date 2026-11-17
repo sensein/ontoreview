@@ -571,6 +571,15 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
+      "message": "Label “agent” is used by `prov:Agent`, `prov:agent`.",
+      "subject": "http://www.w3.org/ns/prov#Agent",
+      "subject_label": "Agent",
+      "anchor": "Agent"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
       "message": "Label “entity” is used by `prov:Entity`, `prov:entity`.",
       "subject": "http://www.w3.org/ns/prov#Entity",
       "subject_label": "Entity",
@@ -584,15 +593,6 @@
       "subject": "http://www.w3.org/ns/prov#activity",
       "subject_label": "activity",
       "anchor": "activity"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “agent” is used by `prov:agent`, `prov:Agent`.",
-      "subject": "http://www.w3.org/ns/prov#agent",
-      "subject_label": "agent",
-      "anchor": "agent"
     },
     {
       "rule": "OB028",

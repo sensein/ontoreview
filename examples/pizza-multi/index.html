@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd137">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3bc">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,9 +52,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
   },
   {
    "@type": "DefinedTerm",
@@ -65,10 +66,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasIngredient",
-   "name": "has ingredient",
-   "description": "Any ingredient.",
-   "termCode": "pizza:hasIngredient"
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
   },
   {
    "@type": "DefinedTerm",
@@ -85,28 +85,23 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#isToppingOf",
-   "name": "is topping of",
-   "termCode": "pizza:isToppingOf"
+   "@id": "https://example.org/pizza#Calzone",
+   "name": "Calzone",
+   "description": "A folded pizza.",
+   "termCode": "pizza:Calzone"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
+   "@id": "https://example.org/pizza#hasIngredient",
+   "name": "has ingredient",
+   "description": "Any ingredient.",
+   "termCode": "pizza:hasIngredient"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
+   "@id": "https://example.org/pizza#hasBase",
+   "name": "has base",
+   "termCode": "pizza:hasBase"
   },
   {
    "@type": "DefinedTerm",
@@ -117,10 +112,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Calzone",
-   "name": "Calzone",
-   "description": "A folded pizza.",
-   "termCode": "pizza:Calzone"
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   },
   {
    "@type": "DefinedTerm",
@@ -131,9 +125,15 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasBase",
-   "name": "has base",
-   "termCode": "pizza:hasBase"
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
   },
   {
    "@type": "DefinedTerm",
@@ -144,10 +144,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#VegetarianPizza",
-   "name": "Vegetarian pizza",
-   "description": "A pizza with no meat toppings.",
-   "termCode": "pizza:VegetarianPizza"
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
   }
  ]
 }</script></head>
@@ -322,7 +322,7 @@
   </table>
   <p class="small muted">This documentation was generated from the ontology source with ontoreview 0.1.0. <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
 </section>    <footer class="colophon">
-      Generated with <a href="https://github.com/tekrajchhetri/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+      Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
     </footer>
   </main>
 </div>
@@ -337,8 +337,8 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd137"></script>
+<script src="ontoreview-data.js?v=6afbd3bc"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6afbd137"></script>
+<script src="assets/ontoreview.js?v=6afbd3bc"></script>
 </body>
 </html>

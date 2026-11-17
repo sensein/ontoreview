@@ -185,33 +185,6 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “appartenenza” @it is used by `org:Membership`, `org:hasMembership`.",
-      "subject": "http://www.w3.org/ns/org#Membership",
-      "subject_label": "Membership",
-      "anchor": "Membership"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “engagement” @fr is used by `org:Membership`, `org:hasMembership`.",
-      "subject": "http://www.w3.org/ns/org#Membership",
-      "subject_label": "Membership",
-      "anchor": "Membership"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “membership” @en is used by `org:Membership`, `org:hasMembership`.",
-      "subject": "http://www.w3.org/ns/org#Membership",
-      "subject_label": "Membership",
-      "anchor": "Membership"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
       "message": "Label “organisation” @fr is used by `org:Organization`, `org:organization`.",
       "subject": "http://www.w3.org/ns/org#Organization",
       "subject_label": "Organization",
@@ -239,46 +212,73 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “impiego” @it is used by `org:Post`, `org:hasPost`.",
-      "subject": "http://www.w3.org/ns/org#Post",
-      "subject_label": "Post",
-      "anchor": "Post"
+      "message": "Label “role” @en is used by `org:Role`, `org:role`.",
+      "subject": "http://www.w3.org/ns/org#Role",
+      "subject_label": "Role",
+      "anchor": "Role"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “post” @en is used by `org:Post`, `org:hasPost`.",
-      "subject": "http://www.w3.org/ns/org#Post",
-      "subject_label": "Post",
-      "anchor": "Post"
+      "message": "Label “ruolo” @it is used by `org:Role`, `org:role`.",
+      "subject": "http://www.w3.org/ns/org#Role",
+      "subject_label": "Role",
+      "anchor": "Role"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “role” @en is used by `org:role`, `org:Role`.",
-      "subject": "http://www.w3.org/ns/org#role",
-      "subject_label": "role",
-      "anchor": "role"
+      "message": "Label “rôle” @fr is used by `org:Role`, `org:role`.",
+      "subject": "http://www.w3.org/ns/org#Role",
+      "subject_label": "Role",
+      "anchor": "Role"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “ruolo” @it is used by `org:role`, `org:Role`.",
-      "subject": "http://www.w3.org/ns/org#role",
-      "subject_label": "role",
-      "anchor": "role"
+      "message": "Label “appartenenza” @it is used by `org:hasMembership`, `org:Membership`.",
+      "subject": "http://www.w3.org/ns/org#hasMembership",
+      "subject_label": "membership",
+      "anchor": "hasMembership"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “rôle” @fr is used by `org:role`, `org:Role`.",
-      "subject": "http://www.w3.org/ns/org#role",
-      "subject_label": "role",
-      "anchor": "role"
+      "message": "Label “engagement” @fr is used by `org:hasMembership`, `org:Membership`.",
+      "subject": "http://www.w3.org/ns/org#hasMembership",
+      "subject_label": "membership",
+      "anchor": "hasMembership"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “membership” @en is used by `org:hasMembership`, `org:Membership`.",
+      "subject": "http://www.w3.org/ns/org#hasMembership",
+      "subject_label": "membership",
+      "anchor": "hasMembership"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “impiego” @it is used by `org:hasPost`, `org:Post`.",
+      "subject": "http://www.w3.org/ns/org#hasPost",
+      "subject_label": "post",
+      "anchor": "hasPost"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “post” @en is used by `org:hasPost`, `org:Post`.",
+      "subject": "http://www.w3.org/ns/org#hasPost",
+      "subject_label": "post",
+      "anchor": "hasPost"
     },
     {
       "rule": "OB017",
