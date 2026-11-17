@@ -83,6 +83,9 @@ async def test_pages_render(isolated, fixtures):
         await user.should_see("Settings saved")
         await user.open("/about")
         await user.should_see("Developed by CAIR-Nepal")
+        await user.open("/help")
+        await user.should_see("Getting started")
+        await user.should_see("Project config (ontoreview.toml)")
         await user.should_see("System info")
     assert ui_core.Prefs.path().is_file()
 
@@ -136,3 +139,20 @@ async def test_sidebar_shows_environment(isolated, monkeypatch):
         await user.open("/")
         await user.should_see("ROBOT · Docker ready", retries=30)
         await user.should_see("OOPS! · not checked")
+
+
+@pytest.mark.anyio
+async def test_config_editor_saves_and_applies(isolated, fixtures):
+    src = isolated / "proj"
+    src.mkdir()
+    shutil.copy(fixtures / "pizza.ttl", src / "pizza.ttl")
+    ui_core.Settings(source=str(src / "pizza.ttl")).save()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("pizza.ttl")
+        user.find(marker="cfg-note_add").click()
+        await user.should_see("Valid configuration")
+        user.find(marker="config-save-use").click()
+        await user.should_see("Loaded")
+    saved = (src / "ontoreview.toml").read_text()
+    assert 'source = "pizza.ttl"' in saved and "[evaluation]" in saved

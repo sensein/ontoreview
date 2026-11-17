@@ -1,0 +1,49 @@
+name: Feature request
+description: Propose a new capability for OntoReview.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the situation and why it's hard today, e.g. "When I document 20 modules I can't …"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like OntoReview to do?
+      description: How it could work in the app, on the command line or in the generated docs. Sketches welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - The app (ontoreview ui)
+        - Generated documentation (website / single HTML)
+        - Markdown / MyST export
+        - Quality checks (built-in, ROBOT, OOPS!)
+        - Folders of ontologies
+        - Command line / CI
+        - Configuration (ontoreview.toml)
+        - Accessibility
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've tried
+      description: Workarounds or other tools (Widoco, LODE, pyLODE, …) and what's missing there.
+  - type: dropdown
+    id: help
+    attributes:
+      label: Would you like to help?
+      options:
+        - "I can test it"
+        - "I can contribute code or docs"
+        - "Not right now"

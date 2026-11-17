@@ -169,6 +169,83 @@ NAV = [  # key, path, label, svg path data
     ("settings", "/settings", "Settings", '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/>'
      '<circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'),
     ("about", "/about", "About", '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
+    ("help", "/help", "Help", '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/>'
+     '<path d="M12 17h.01"/>'),
+]
+
+# Help page: (anchor, title, screenshot file in ui_assets/help/ or "", steps, notes)
+HELP = [
+    ("start", "Getting started", "build.png", [
+        "Install the app once: <code>pip install \"ontoreview[ui]\"</code> (Python 3.11 or newer).",
+        "Start it with <code>ontoreview ui</code>. Your browser opens the Build page; if port 8765 is busy, the "
+        "next free port is used and printed in the terminal.",
+        "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
+        "files or folders onto the page.",
+        "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
+    ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service."),
+    ("results", "Reading the results", "results.png", [
+        "While it runs you see each step: parse, built-in checks, ROBOT, OOPS!, render.",
+        "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
+        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT and OOPS! findings are merged with "
+        "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
+        "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
+    ], ""),
+    ("folder", "Documenting a folder of ontologies", "folder.png", [
+        "Choose <b>Folder</b> (or drop a folder). Every ontology inside, including sub-folders, is documented.",
+        "Each one gets its own sub-folder in the output, mirroring your folder, plus an index page that links them.",
+        "One broken file doesn't stop the rest: it is listed with its error in the <b>Ontologies</b> table.",
+    ], "Competency questions and the previous version apply to one ontology; for folders, put them in an "
+       "ontoreview.toml inside that ontology's sub-folder."),
+    ("publish", "Publishing the website", "", [
+        "The output folder (by default <code>docs</code> next to your ontology) is a complete static website: "
+        "copy it to any web server.",
+        "<b>GitHub Pages:</b> commit the folder, then in the repository go to Settings › Pages and serve from the "
+        "<code>docs</code> folder, or run <code>ontoreview init</code> to add a workflow that rebuilds the site "
+        "on every push.",
+        "Set <b>Public URL</b> in Settings › Documentation so links, search engines and llms.txt use the final address.",
+        "For permanent identifiers, the output includes ready-made <code>.htaccess</code> files for w3id.org.",
+    ], ""),
+    ("config", "Project config (ontoreview.toml)", "config.png", [
+        "<b>Why save it?</b> The file keeps the build settings next to your ontology, so the command line, CI and "
+        "teammates produce exactly the same documentation.",
+        "<b>Settings or ontoreview.toml?</b> Most options (layout, languages, public URL, competency questions, "
+        "ROBOT and OOPS!) can be set in both. <b>Settings</b> are your personal defaults for every build in this "
+        "app, stored on this computer. <b>ontoreview.toml</b> belongs to one project and travels with it. When "
+        "both set an option, ontoreview.toml wins.",
+        "<b>Project config › New from template</b> opens a commented config in the editor; <b>Edit ontoreview.toml</b> "
+        "opens the existing one.",
+        "<b>Check</b> validates the file; <b>Save and use for this build</b> writes it and applies it here.",
+        "<b>Save current settings</b> turns what you chose in Settings and on the Build page into an "
+        "ontoreview.toml, which is the quickest way to share your setup. <b>Open another config…</b> loads any "
+        "ontoreview.toml.",
+    ], "In CI, <code>ontoreview build</code> and <code>ontoreview check</code> find ontoreview.toml automatically."),
+    ("history", "Run history", "history.png", [
+        "Every build and check is listed with its status, issues and time.",
+        "Search by ontology or output path, filter documentation vs. checks, and hide runs whose output was deleted.",
+        "Use the row buttons to open the output, show it in its folder, load its settings to run again, or remove it "
+        "from the list (files are kept).",
+    ], ""),
+    ("settings", "Settings", "settings.png", [
+        "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
+        "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
+        "questions and the previous version (for the changelog).",
+        "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the OOPS! service, and when a "
+        "check run counts as failed.",
+        "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
+    ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
+       "command line, CI and teammates, use Project config › Save current settings to write an ontoreview.toml; "
+       "its values override these."),
+    ("trouble", "Troubleshooting", "", [
+        "<b>ROBOT · Docker not running:</b> start Docker Desktop, or choose “Local robot command” in Settings › "
+        "Quality checks. The first run downloads the ROBOT image, which can take a minute.",
+        "<b>OOPS! · unreachable:</b> the web service may be down or you are offline; builds still finish, the "
+        "OOPS! section reports the problem. Set OOPS! to Off for private ontologies.",
+        "<b>Port already in use:</b> start with <code>ontoreview ui --port 8800</code>, or just run it again "
+        "without --port to use the next free port.",
+        "<b>Dropped files:</b> browsers don't share real paths, so dropped items are copied to "
+        "<code>~/.config/ontoreview/uploads/</code>. Use File / Folder to work on the originals.",
+        "<b>Reporting a bug:</b> About › System info › Copy for bug report, then open an issue on GitHub.",
+    ], ""),
 ]
 
 
@@ -265,6 +342,9 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-setrow > :not(:first-child) { flex: 0 1 560px !important; max-width: 560px; }
 .or-setrow > .q-checkbox { flex: 0 0 auto !important; }
 .q-tab-panels, .q-tab-panel { background: transparent !important; }
+.or-helplist { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.55; }
+.or-helplist code, .or-hint code { font-family: var(--or-mono); font-size: 12.5px; background: var(--or-line-2); padding: 1px 5px; border-radius: 4px; }
+.or-shot { border: 1px solid var(--or-line); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(16,24,40,.08); }
 @media (max-width: 700px) { .or-pagehead, .or-body { padding-left: 16px; padding-right: 16px; } }
 """
 
@@ -483,9 +563,25 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         head = page_head("New build", "Pick an ontology, choose what to produce, run.")
         with head:
             with ui.row().classes("gap-2"):
-                ui.button("Load config", icon="file_open", on_click=lambda: pick(
-                    "toml", load_toml, False, title="Choose an ontoreview.toml")).props("outline no-caps")
-                ui.button("Save as ontoreview.toml", icon="save", on_click=lambda: save_toml()).props("outline no-caps")
+                with ui.dropdown_button("Project config", icon="tune", auto_close=True) \
+                        .props("outline no-caps").tooltip(
+                            "ontoreview.toml stores this setup next to your ontology so the command line, CI "
+                            "and teammates build exactly the same docs"):
+                    for icon, label, hint, action in (
+                            ("edit_note", "Edit ontoreview.toml", "Open the project's config in an editor",
+                             lambda: edit_config()),
+                            ("note_add", "New from template", "Start a commented config for this ontology",
+                             lambda: edit_config(template=True)),
+                            ("save", "Save current settings", "Write what's selected here into ontoreview.toml",
+                             lambda: save_toml()),
+                            ("file_open", "Open another config…", "Load settings from any ontoreview.toml",
+                             lambda: pick("toml", load_toml, False, title="Choose an ontoreview.toml"))):
+                        with ui.item(on_click=action).mark(f"cfg-{icon}"):
+                            with ui.item_section().props("avatar"):
+                                ui.icon(icon)
+                            with ui.item_section():
+                                ui.item_label(label)
+                                ui.item_label(hint).props("caption")
                 run_btn = ui.button(icon="play_arrow", on_click=lambda: start()).props("unelevated no-caps").mark("run")
 
         with ui.element("div").classes("or-body"):
@@ -864,8 +960,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             if not s.source.strip():
                 notify("Choose an ontology file or a folder of ontologies first.", "warning")
                 return
-            base = s.source_path if s.is_folder else (s.source_path.parent if s.source_path else Path.cwd())
-            target = base / "ontoreview.toml"
+            target = config_path()
             if target.exists():
                 with ui.dialog() as d, ui.card().classes("or-card"):
                     ui.label(f"{target} already exists. Replace it?")
@@ -878,7 +973,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
         def write(target: Path) -> None:
             target.write_text(s.to_toml(), "utf-8")
-            notify(f"Saved {target}", "positive")
+            notify(f"Saved {target}. The command line and CI can now run: ontoreview build", "positive")
 
         def load_toml(path: str) -> None:
             try:
@@ -891,6 +986,69 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 setattr(s, k, getattr(loaded, k))
             refresh()
             notify(f"Loaded {path}", "positive")
+
+        def config_path() -> Path:
+            base = s.source_path if s.is_folder else (s.source_path.parent if s.source_path else Path.cwd())
+            return base / "ontoreview.toml"
+
+        def edit_config(template: bool = False, path: Path | None = None) -> None:
+            from .config import CONFIG_TEMPLATE, validate_config_text
+
+            if not s.source.strip() and path is None:
+                notify("Choose an ontology file or folder first; the config is saved next to it.", "warning")
+                return
+            path = path or config_path()
+            exists = path.exists()
+            if template or not exists:
+                src_rel = (s.source_path.name if s.source_path and not s.is_folder else ".") if s.source_path else s.source
+                text = CONFIG_TEMPLATE.format(source=src_rel)
+            else:
+                text = path.read_text("utf-8")
+            with ui.dialog().props("maximized=false") as dlg, \
+                    ui.card().classes("or-card").style("width: min(900px, 96vw); max-width: 96vw"):
+                with ui.row().classes("w-full items-start justify-between no-wrap"):
+                    with ui.column().classes("gap-0 min-w-0"):
+                        ui.label("ontoreview.toml").classes("or-h2")
+                        ui.label(str(path) + ("" if exists else "  (new file)")).classes("or-hint or-mono ellipsis")
+                    ui.button(icon="close", on_click=dlg.close).props('flat round dense aria-label="Close"')
+                ui.label("This file keeps the build settings with your ontology. `ontoreview build`, "
+                         "`ontoreview check`, CI and this app all read it; paths are relative to the file. "
+                         "Options set here override your Settings (which are personal defaults on this computer).") \
+                    .classes("or-hint")
+                editor = ui.codemirror(text, language="TOML", theme="basicDark" if dark.value else "basicLight",
+                                       line_wrapping=True).classes("w-full").style("height: 52vh; border: 1px solid var(--or-line); border-radius: 8px")
+                status = ui.label().classes("or-hint").props('aria-live="polite"')
+
+                def check() -> bool:
+                    problems = validate_config_text(editor.value, path.parent)
+                    if problems:
+                        status.text = "✗ " + "; ".join(problems[:3])
+                        status.classes(replace="text-negative or-hint")
+                        return False
+                    status.text = "✓ Valid configuration"
+                    status.classes(replace="text-positive or-hint")
+                    return True
+
+                def save(use: bool) -> None:
+                    if not check():
+                        notify("Fix the problems before saving.", "warning")
+                        return
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(editor.value, "utf-8")
+                    notify(f"Saved {path}", "positive")
+                    if use:
+                        load_toml(str(path))
+                    dlg.close()
+
+                with ui.row().classes("w-full items-center justify-between"):
+                    ui.button("Check", icon="rule", on_click=check).props("flat no-caps")
+                    with ui.row().classes("gap-2"):
+                        ui.button("Cancel", on_click=dlg.close).props("outline no-caps")
+                        ui.button("Save", on_click=lambda: save(False)).props("outline no-caps")
+                        ui.button("Save and use for this build", on_click=lambda: save(True)) \
+                            .props("unelevated no-caps").mark("config-save-use")
+            dlg.open()
+            check()
 
         def on_drop_start(e) -> None:
             drop_info.text = f"Copying {e.args.get('count', 0)} file(s)…"
@@ -1021,7 +1179,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
     def settings_view() -> None:  # noqa: C901
         set_active("settings")
         work = Prefs(**asdict(prefs))
-        page_head("Settings", "Defaults used for every new build. A project's ontoreview.toml overrides these.")
+        page_head("Settings", "Your defaults for every build on this computer. A project's ontoreview.toml "
+                              "(Build › Project config) overrides them and is shared with the CLI, CI and teammates.")
         with ui.element("div").classes("w-full").style(
                 "background: var(--or-card); border-bottom: 1px solid var(--or-line); padding: 0 24px"):
             with ui.tabs().props("no-caps align=left active-color=primary indicator-color=primary") as tabs:
@@ -1267,7 +1426,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 with ui.column().classes("gap-2"):
                     ui.button("View on GitHub", on_click=lambda: ui.navigate.to(REPO, new_tab=True)) \
                         .props("unelevated no-caps color=white text-color=dark")
-                    ui.button("Report an issue", on_click=lambda: ui.navigate.to(REPO + "/issues", new_tab=True)) \
+                    ui.button("Report an issue", on_click=lambda: ui.navigate.to(REPO + "/issues/new/choose", new_tab=True)) \
                         .props("outline no-caps color=white")
             with ui.element("div").classes("w-full").style(
                     "display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px"):
@@ -1329,7 +1488,46 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
         ui.timer(0.05, fill, once=True)
 
-    ui.sub_pages({"/": build_view, "/history": history_view, "/settings": settings_view, "/about": about_view}) \
+    # ------------------------------------------------------------------ Help
+    def help_view() -> None:
+        set_active("help")
+        page_head("Help", "How to build, read, publish and configure your ontology documentation.")
+        with ui.element("div").classes("or-body"):
+            with ui.row().classes("w-full gap-6 items-start no-wrap max-lg:flex-wrap"):
+                with ui.element("nav").props('aria-label="Help topics"').classes("column gap-1 flex-none lg:sticky") \
+                        .style("top: 16px; width: 230px"):
+                    ui.label("On this page").classes("or-hint text-uppercase q-mb-xs").style("letter-spacing:.6px")
+                    for anchor, title, *_ in HELP:
+                        ui.link(title, f"#{anchor}").classes("or-hint").style("color: var(--or-ink-2)")
+                with ui.column().classes("gap-4 grow min-w-0"):
+                    for n, (anchor, title, shot, steps, note) in enumerate(HELP, 1):
+                        with ui.card().classes("or-card w-full").props(f'flat id="{anchor}"'):
+                            with ui.column().classes("or-sec gap-3"):
+                                with ui.row().classes("items-center gap-2"):
+                                    ui.html(f'<span class="or-step">{n}</span>', sanitize=False)
+                                    ui.label(title).classes("or-h2").style("font-size:17px")
+                                with ui.row().classes("w-full gap-6 items-start no-wrap max-xl:flex-wrap"):
+                                    items = "".join(f"<li>{x}</li>" for x in steps)
+                                    with ui.column().classes("gap-2").style("flex: 1 1 380px; min-width: 0"):
+                                        ui.html(f'<ol class="or-helplist">{items}</ol>', sanitize=False)
+                                        if note:
+                                            ui.html(f'<p class="or-hint" style="margin:0">{note}</p>', sanitize=False)
+                                    if shot and (ASSETS / "help" / shot).is_file():
+                                        img = ui.image(f"{STATIC_URL}/help/{shot}") \
+                                            .props(f'alt="Screenshot: {title}" fit=contain no-spinner') \
+                                            .classes("or-shot cursor-pointer").style("flex: 1 1 520px; max-width: 760px")
+                                        img.on("click", lambda shot=shot, title=title: zoom(shot, title))
+
+        def zoom(shot: str, title: str) -> None:
+            with ui.dialog() as d, ui.card().classes("or-card q-pa-sm").style("max-width: 96vw; width: 1400px"):
+                with ui.row().classes("w-full items-center justify-between"):
+                    ui.label(title).classes("or-h2")
+                    ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
+                ui.image(f"{STATIC_URL}/help/{shot}").props(f'alt="Screenshot: {title}" fit=contain').classes("w-full")
+            d.open()
+
+    ui.sub_pages({"/": build_view, "/history": history_view, "/settings": settings_view, "/about": about_view,
+                  "/help": help_view}) \
         .classes("w-full")
 
 

@@ -239,3 +239,59 @@ def load_config(path: str | Path | None = None, **overrides: Any) -> Config:
     data = _deep_merge(data, overrides)
     data["root"] = str(root)
     return Config.model_validate(data)
+
+
+CONFIG_TEMPLATE = """# OntoReview project configuration — https://github.com/CAIRNepal/ontoreview
+# Keep this file next to your ontology. `ontoreview build`, `ontoreview check`, CI and the app all read it,
+# so everyone gets the same documentation. Paths are relative to this file.
+
+source = "{source}"
+output = "docs"
+layout = "single"           # "single" (one page) or "multi" (one page per section)
+languages = ["en"]          # first one is the default; others are built under /<lang>/
+# base_url = "https://w3id.org/my-ontology"   # where the docs will be published
+# previous_version = "releases/1.0.0.ttl"     # enables the changelog
+# competency_questions = ["cq.yaml"]
+# introduction = "docs/intro.md"
+# custom_css = "docs/custom.css"
+# reason = true             # show inferred superclasses (pip install 'ontoreview[reason]')
+
+serializations = ["ttl", "owl", "jsonld", "nt"]
+
+[sections]
+graph = true
+quality = true
+changelog = true
+
+[checks]
+disable = []                # e.g. ["OB019"]
+
+[evaluation]
+robot = "auto"              # ROBOT via a local robot or Docker: "auto" | "on" | "off"
+oops = "auto"               # OOPS! web service (uploads the ontology): "auto" (only if ROBOT can't run) | "on" | "off"
+
+# Metadata found in the ontology is used automatically; anything here overrides it.
+[metadata]
+# title = "My Ontology"
+# license = "https://creativecommons.org/licenses/by/4.0/"
+
+# [[custom_sections]]
+# title = "Examples"
+# file = "docs/examples.md"
+# position = "after-terms"
+"""
+
+
+def validate_config_text(text: str, root: str | Path | None = None) -> list[str]:
+    """Problems in an ontoreview.toml's text (empty list when it is valid)."""
+    from pydantic import ValidationError
+
+    try:
+        data = tomllib.loads(text)
+    except tomllib.TOMLDecodeError as e:
+        return [f"TOML syntax: {e}"]
+    try:
+        Config.model_validate({**data, "root": str(root or Path.cwd())})
+    except ValidationError as e:
+        return [f"{'.'.join(str(x) for x in err['loc'])}: {err['msg']}" for err in e.errors()]
+    return []

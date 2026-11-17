@@ -32,6 +32,7 @@ log = logging.getLogger(__name__)
 
 RDF_SUFFIXES = {".ttl", ".owl", ".rdf", ".jsonld", ".nt", ".n3", ".trig", ".nq"}
 UNSUPPORTED = {".ofn", ".omn"}  # OWL functional / Manchester syntax: rdflib cannot read them
+OUTPUT_MARKERS = ("ontoreview-data.js", "collection.json")
 SKIP_DIRS = {".git", ".hg", ".svn", ".venv", "venv", "node_modules", "__pycache__", "site-packages"}
 # options that only make sense for one ontology; ignored (with a warning) for a folder
 PER_ONTOLOGY = ("previous_version", "competency_questions")
@@ -84,6 +85,9 @@ def find_ontologies(folder: str | Path, exclude: list[Path] | None = None) -> tu
     """
     root = Path(folder).resolve()
     excluded = [e.resolve() for e in (exclude or [])]
+    # earlier OntoReview output (sites carry ontoreview-data.js, folder builds collection.json) holds
+    # copies of the ontologies (ontology.ttl, .owl, …); never document those again
+    excluded += [m.parent.resolve() for marker in OUTPUT_MARKERS for m in root.rglob(marker)]
     found, skipped = [], []
     for p in sorted(root.rglob("*")):
         if not p.is_file():

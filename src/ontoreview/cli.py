@@ -660,37 +660,7 @@ jobs:
         uses: actions/deploy-pages@v4
 """
 
-TOML_TEMPLATE = """# ontoreview configuration: https://github.com/CAIRNepal/ontoreview
-source = "{source}"
-output = "docs"
-layout = "single"          # "single" or "multi"
-languages = ["en"]          # first one is the default; others are built under /<lang>/
-# base_url = "https://w3id.org/my-ontology"
-# previous_version = "releases/1.0.0.ttl"   # enables the changelog
-# introduction = "docs/intro.md"
-# custom_css = "docs/custom.css"
-# reason = true             # show inferred superclasses (pip install 'ontoreview[reason]')
-
-serializations = ["ttl", "owl", "jsonld", "nt"]
-
-[sections]
-graph = true
-quality = true
-changelog = true
-
-[checks]
-disable = []                # e.g. ["OB019"]
-
-# Metadata found in the ontology is used automatically; anything here overrides it.
-[metadata]
-# title = "My Ontology"
-# license = "https://creativecommons.org/licenses/by/4.0/"
-
-# [[custom_sections]]
-# title = "Examples"
-# file = "docs/examples.md"
-# position = "after-terms"
-"""
+from .config import CONFIG_TEMPLATE as TOML_TEMPLATE  # noqa: E402  (shared with the app)
 
 
 @app.command(rich_help_panel=ADVANCED)

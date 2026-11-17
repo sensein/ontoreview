@@ -159,3 +159,15 @@ def test_upload_target_and_source(tmp_path, monkeypatch, fixtures):
     # several things dropped -> the batch folder
     (ui_core.uploads_dir() / b2 / "other.ttl").write_text("")
     assert ui_core.upload_source(b2) == str(ui_core.uploads_dir() / b2)
+
+
+def test_config_template_is_valid_and_validator_reports_problems(tmp_path):
+    from ontoreview.config import CONFIG_TEMPLATE, load_config, validate_config_text
+
+    text = CONFIG_TEMPLATE.format(source="pizza.ttl")
+    assert validate_config_text(text, tmp_path) == []
+    (tmp_path / "ontoreview.toml").write_text(text)
+    cfg = load_config(tmp_path / "ontoreview.toml")
+    assert cfg.source == "pizza.ttl" and cfg.evaluation.robot == "auto" and cfg.evaluation.oops == "auto"
+    assert validate_config_text('layout = "wide"')[0].startswith("layout:")
+    assert validate_config_text("source = ")[0].startswith("TOML syntax")
