@@ -11,9 +11,11 @@ from ontoreview.ui_core import (
     describe_source,
     existing_output,
     forget_run,
+    issues_text,
     load_history,
     record_run,
     run_task,
+    task_kind,
 )
 
 
@@ -171,3 +173,25 @@ def test_config_template_is_valid_and_validator_reports_problems(tmp_path):
     assert cfg.source == "pizza.ttl" and cfg.evaluation.robot == "auto" and cfg.evaluation.oops == "auto"
     assert validate_config_text('layout = "wide"')[0].startswith("layout:")
     assert validate_config_text("source = ")[0].startswith("TOML syntax")
+
+
+
+def test_compare_versions(fixtures, tmp_path):
+    s = Settings(source=str(fixtures / "pizza-v2.ttl"), previous_version=str(fixtures / "pizza.ttl"),
+                 task="diff", output=str(tmp_path / "changes.md"))
+    assert s.cli().startswith("ontoreview diff ") and "pizza.ttl" in s.cli() and "--format markdown" in s.cli()
+    res = run_task(s)
+    from ontoreview.ui_core import change_counts
+
+    sm = change_counts(res.changes)
+    assert sm == {"added": 1, "removed": 1, "modified": 2}      # modified includes the ontology's version change
+    assert (tmp_path / "changes.md").read_text().startswith("# Changelog")
+    assert (tmp_path / "changes.json").is_file()
+    e = record_run(s, res, path=tmp_path / "h.json")
+    assert issues_text(e) == f"{sm['added']} added · {sm['removed']} removed · {sm['modified']} modified"
+    assert task_kind("diff") == "diff"
+
+
+def test_compare_versions_needs_a_previous_file(fixtures, folder):
+    assert "Choose the previous version" in " ".join(Settings(source=str(fixtures / "pizza.ttl"), task="diff").validate())
+    assert "not a folder" in " ".join(Settings(source=str(folder), task="diff", previous_version=str(fixtures / "pizza.ttl")).validate())

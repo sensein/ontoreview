@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import queue
 import secrets
 import sys
 import uuid
@@ -27,6 +26,7 @@ from .ui_core import (
     Prefs,
     Settings,
     browse,
+    change_counts,
     clear_history,
     describe_source,
     existing_output,
@@ -53,18 +53,22 @@ FORMATS = [  # id, name, description, tag
     ("single", "Single HTML file", "One portable file to share or attach", ".html"),
     ("markdown", "Markdown", "Editable text, good for Git repos, MkDocs or Docusaurus", ".md"),
     ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
-    ("check", "Quality check only", "Run the checks, ROBOT and OOPS! without docs", "report"),
+    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner and OOPS! without docs", "report"),
+    ("diff", "Compare versions", "What changed since a previous release of this ontology", "changes.md"),
 ]
 RECOMMENDED = "site"
 INCLUDES = {
-    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, OOPS!), "
+    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, OOPS!), "
             "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
     "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
-    "check": "Includes: built-in checks, ROBOT and OOPS! results as JSON; no documentation",
+    "check": "Includes: built-in checks, ROBOT, reasoner and OOPS! results as JSON; no documentation",
+    "diff": "Includes: added, removed and modified terms with the exact statements that changed, as Markdown "
+            "and JSON. To put a changelog inside the website instead, set Previous version in Settings › Documentation",
 }
-OOPS_CHOICES = {"off": "Off", "auto": "Only if ROBOT can't run", "on": "Always"}
+OOPS_CHOICES = {"auto": "Alongside ROBOT (default)", "on": "Full catalogue, always", "off": "Off"}
+REASONER_CHOICES = {"hermit": "HermiT (OWL 2 DL)", "elk": "ELK (fast, OWL 2 EL)", "off": "Off"}
 
 # ---------------------------------------------------------------------------- drag and drop
 # The page uploads dropped files to this endpoint. The token is embedded in the page, so other
@@ -115,12 +119,16 @@ DROP_JS = r"""
 (() => {
   const TOKEN = "%TOKEN%", URL_ = "%URL%";
   const OK = /\.(ttl|owl|rdf|jsonld|json|nt|n3|trig|nq|ofn|omn|ya?ml|csv|tsv|xlsx|toml|md|css|html)$/i;
-  const zone = () => document.getElementById("ob-drop");
+  // drop zones: elements with class ob-dropzone and data-zone="<name>"; a drop outside any zone goes to the first
+  const zones = () => Array.from(document.querySelectorAll(".ob-dropzone"));
+  const zoneAt = (el) => (el && el.closest && el.closest(".ob-dropzone")) || zones()[0] || null;
+  let hover = null;
+  const mark = (z) => { zones().forEach((x) => x.classList.toggle("ob-drag", x === z)); hover = z; };
   const hasFiles = (e) => !!e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files");
   let depth = 0;
-  window.addEventListener("dragenter", (e) => { if (hasFiles(e)) { depth++; zone()?.classList.add("ob-drag"); } });
-  window.addEventListener("dragleave", () => { depth = Math.max(0, depth - 1); if (!depth) zone()?.classList.remove("ob-drag"); });
-  window.addEventListener("dragover", (e) => { if (hasFiles(e)) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } });
+  window.addEventListener("dragenter", (e) => { if (hasFiles(e)) { depth++; mark(zoneAt(e.target)); } });
+  window.addEventListener("dragleave", () => { depth = Math.max(0, depth - 1); if (!depth) mark(null); });
+  window.addEventListener("dragover", (e) => { if (hasFiles(e)) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; mark(zoneAt(e.target)); } });
   const fileOf = (entry) => new Promise((res, rej) => entry.file(res, rej));
   const readAll = async (dir) => {
     const reader = dir.createReader(), out = [];
@@ -133,7 +141,10 @@ DROP_JS = r"""
   }
   window.addEventListener("drop", async (e) => {
     if (!hasFiles(e)) return;
-    e.preventDefault(); depth = 0; zone()?.classList.remove("ob-drag");
+    e.preventDefault(); depth = 0;
+    const target = zoneAt(e.target); mark(null);
+    const zone = target ? target.dataset.zone : null;
+    if (!zone) return;
     // collect entries synchronously: the DataTransfer is emptied after the first await
     const entries = Array.from(e.dataTransfer.items || []).map((i) => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
     const plain = Array.from(e.dataTransfer.files || []);
@@ -141,9 +152,9 @@ DROP_JS = r"""
     if (entries.length) { for (const en of entries) await walk(en, "", found); }
     else plain.forEach((f) => found.push([f.name, f]));
     const files = found.filter(([p]) => OK.test(p)), skipped = found.length - files.length;
-    if (!files.length) { emitEvent("ob_drop_done", { batch: null, ok: 0, failed: 0, skipped }); return; }
+    if (!files.length) { emitEvent("ob_drop_done", { zone, batch: null, ok: 0, failed: 0, skipped }); return; }
     const batch = Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join("");
-    emitEvent("ob_drop_start", { count: files.length });
+    emitEvent("ob_drop_start", { zone, count: files.length });
     let ok = 0, failed = 0;
     for (const [path, file] of files) {
       try {
@@ -152,7 +163,7 @@ DROP_JS = r"""
         r.ok ? ok++ : failed++;
       } catch (err) { failed++; }
     }
-    emitEvent("ob_drop_done", { batch, ok, failed, skipped });
+    emitEvent("ob_drop_done", { zone, batch, ok, failed, skipped });
   });
 })();
 </script>
@@ -166,6 +177,7 @@ LOGO_SVG = """<svg width="{s}" height="{s}" viewBox="0 0 30 30" aria-hidden="tru
 NAV = [  # key, path, label, svg path data
     ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
     ("history", "/history", "Run history", '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>'),
+    ("compare", "/compare", "Compare", '<path d="M8 3v18M16 3v18"/><path d="m4 8 4-4 4 4M12 16l4 4 4-4"/>'),
     ("settings", "/settings", "Settings", '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/>'
      '<circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'),
     ("about", "/about", "About", '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
@@ -173,7 +185,7 @@ NAV = [  # key, path, label, svg path data
      '<path d="M12 17h.01"/>'),
 ]
 
-# Help page: (anchor, title, screenshot in ui_assets/help/ or "", steps, note, links)
+# Help page: (anchor, title, screenshot(s) in ui_assets/help/ (a name, a tuple of names, or ""), steps, note, links)
 # a link target is an app path ("/history"), "settings:<tab>" (general | docs | checks | look) or an https URL
 HELP = [
     ("start", "Getting started", "build.png", [
@@ -183,14 +195,55 @@ HELP = [
         "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
         "files or folders onto the page.",
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
-    ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service.", [("Open Build", "/")]),
+    ], "Everything runs on your computer except the OOPS! scan, which sends the ontology to a web service (turn it off in Settings › Quality checks).", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
-        "While it runs you see each step: parse, built-in checks, ROBOT, OOPS!, render.",
+        "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
-        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT and OOPS! findings are merged with "
+        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
+        "<b>Logical consistency</b> errors come from an OWL reasoner (HermiT by default): an inconsistent ontology, "
+        "or classes that can never have members. Use Protégé's explanations to find the axioms responsible.",
         "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
     ], "", [("Open Build", "/")]),
+    ("compare", "Comparing two versions", "compare.png", [
+        "Open <b>Compare</b> in the sidebar. Add the <b>Previous version</b> (A) and the <b>Current version</b> (B): "
+        "drop a file on each box, or use File / URL.",
+        "The comparison runs as soon as both are there; press <b>Compare</b> to run it again after editing a file.",
+        "Shortcut for the ontology you're documenting: on Build, select <b>Compare versions</b> and pick the "
+        "previous release.",
+        "The tiles count added, removed and modified terms; the <b>Changes</b> table lists each one, and for "
+        "modified terms the exact statements that were added (+) or removed (−).",
+        "<b>Open HTML report</b> opens a standalone page you can share, print or attach to a release; "
+        "<b>Download HTML</b> saves a copy. changes.md and changes.json are written next to it.",
+        "<b>Tip:</b> compare against the published release by giving its URL (for example your w3id or GitHub "
+        "release address) as the previous version, so you review exactly what users will see change.",
+        "Use the report for release notes: changes.md is ready to paste into a GitHub release or a CHANGELOG.",
+    ], "To include a changelog section in the published website instead, set Previous version in "
+       "Settings › Documentation and build the Website.",
+     [("Open Compare", "/compare"), ("Settings › Documentation", "settings:docs")]),
+    ("compare-details", "How the comparison works", ("compare-table.png", "compare-report.png"), [
+        "<b>Matching:</b> terms (classes, properties, individuals, SKOS concepts and annotation properties) are "
+        "matched by their IRI. A term whose IRI was renamed shows up as one <b>Removed</b> and one <b>Added</b>; "
+        "keep IRIs stable and change labels instead.",
+        "<b>Added / Removed:</b> the IRI exists only in the current / only in the previous version. In the pizza "
+        "example on the right, <i>Calzone</i> was added and <i>spicy_thing</i> removed.",
+        "<b>Modified:</b> any statement <i>about</i> the term changed: labels, definitions, comments, "
+        "superclasses, restrictions and equivalent classes (shown in Manchester syntax), domains and ranges, "
+        "characteristics, deprecation and so on. Each changed statement is listed with + (now present) or − (gone): "
+        "for <i>Food</i>, the old definition is − and the new one +.",
+        "A change is listed under the term it describes: if <i>Margherita</i> gets a new superclass, it appears "
+        "under Margherita, not under the superclass.",
+        "<b>Ontology metadata</b> (title, version, license, imports, authors…) is compared too and counted as "
+        "Modified; the versions in the heading come from owl:versionInfo or owl:versionIRI.",
+        "<b>Asserted statements only:</b> no reasoner runs, so inferred superclasses don't create changes; "
+        "formatting, statement order and prefixes never do either.",
+        "<b>Formats:</b> the two versions can use different syntaxes (e.g. Turtle against RDF/XML) and either "
+        "can be a URL. LinkML schemas are compared after conversion to OWL.",
+        "<b>Outputs:</b> <code>changes.html</code> (a standalone report), <code>changes.md</code> (Added, "
+        "Removed and Modified sections) and <code>changes.json</code> (the same data for scripts). In CI, "
+        "<code>ontoreview diff OLD NEW --format html|markdown|json -o …</code> produces the same reports.",
+    ], "Compare versions works on one ontology at a time; for a folder, compare each module separately.",
+     [("Open Compare", "/compare"), ("Report an issue", REPO + "/issues/new/choose")]),
     ("folder", "Documenting a folder of ontologies", "folder.png", [
         "Choose <b>Folder</b> (or drop a folder). Every ontology inside, including sub-folders, is documented.",
         "Each one gets its own sub-folder in the output, mirroring your folder, plus an index page that links them.",
@@ -230,7 +283,8 @@ HELP = [
         "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
         "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
         "questions and the previous version (for the changelog).",
-        "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the OOPS! service, and when a "
+        "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the reasoner for the "
+        "logical consistency check (HermiT, ELK or off), the OOPS! service, and when a "
         "check run counts as failed.",
         "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
@@ -312,6 +366,7 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-tile.err { background: var(--or-err-bg); border-color: transparent; } .or-tile.err .v, .or-tile.err .k { color: var(--or-err); }
 .or-tile.warn { background: var(--or-warn-bg); border-color: transparent; } .or-tile.warn .v, .or-tile.warn .k { color: var(--or-warn); }
 .or-tile .v.small { font-size: 14px; padding-top: 8px; }
+.or-tile.ok-tile { background: var(--or-ok-bg); border-color: transparent; } .or-tile.ok-tile .v, .or-tile.ok-tile .k { color: var(--or-ok); }
 /* segmented filter */
 .or-seg { display: inline-flex; background: var(--or-line-2); border-radius: 8px; padding: 3px; gap: 2px; }
 .or-seg button { min-height: 32px; padding: 0 12px; border: 0; background: transparent; border-radius: 6px; font-size: 12.5px;
@@ -324,8 +379,8 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-table tbody td { font-size: 13px; border-color: var(--or-line-2) !important; }
 .or-cli { font-family: var(--or-mono); font-size: 12px; white-space: pre-wrap; word-break: break-all; background: var(--or-line-2);
   border-radius: 8px; padding: 10px 12px; width: 100%; }
-#ob-drop { border: 1.5px dashed var(--or-input); border-radius: 10px; padding: 12px; transition: background-color .15s, border-color .15s; }
-#ob-drop.ob-drag { border-color: var(--or-primary); background: var(--or-primary-soft); }
+.ob-dropzone { border: 1.5px dashed var(--or-input); border-radius: 10px; padding: 12px; transition: background-color .15s, border-color .15s; }
+.ob-dropzone.ob-drag { border-color: var(--or-primary); background: var(--or-primary-soft); }
 .or-chip { display: flex; align-items: center; gap: 12px; width: 100%; }
 .or-chipicon { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
   display: flex; align-items: center; justify-content: center; flex: none; }
@@ -338,7 +393,7 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-logo-panel { background: #fff; border-radius: 10px; padding: 10px 14px; display: inline-flex; border: 1px solid var(--or-line); }
 .or-notice { padding: 10px 12px; background: var(--or-warn-bg); color: var(--or-warn); border-radius: 8px; font-size: 12.5px; }
 .or-themeprev { display: block; height: 64px; border-radius: 8px; border: 1px solid var(--or-line); width: 100%; }
-@media (prefers-reduced-motion: reduce) { #ob-drop { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .ob-dropzone { transition: none; } }
 /* settings rows: the control column never stretches beyond a comfortable width */
 .or-setrow > :not(:first-child) { flex: 0 1 560px !important; max-width: 560px; }
 .or-setrow > .q-checkbox { flex: 0 0 auto !important; }
@@ -350,55 +405,109 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 """
 
 
-class _QueueHandler(logging.Handler):
-    """Collects log records from worker threads; the page drains the queue on a timer."""
+class _Session:
+    """Run state shared by every page and browser tab of this (single-user, local) app.
 
-    def __init__(self, q: queue.Queue) -> None:
+    A build or comparison keeps running in a worker thread when you switch pages, reload or open a
+    new tab; each view polls this state and redraws when what it shows has changed.
+    """
+
+    def __init__(self) -> None:
+        self.reset()
+
+    def reset(self) -> None:
+        self.build: dict = {"last": None, "running": False, "steps": [], "active": None, "done": frozenset(),
+                            "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
+        self.cmp: dict = {"old": "", "new": "", "output": "", "last": None, "running": False, "filter": "all",
+                          "done": None}
+        self.verbose = False
+
+    def progress(self, msg: str) -> None:
+        """Advance the Build progress steps from a log message (called from the worker thread)."""
+        st = self.build
+        if not st["running"]:
+            return
+        head = msg.split("]", 1)[0]
+        if msg.startswith("[") and "/" in head:
+            st["folder_pos"] = f"Ontology {head[1:].replace('/', ' of ')} · {msg.split('] ', 1)[-1]}"
+            st["done"], st["active"] = frozenset(), None
+        keys = [k for k, _ in st["steps"]]
+        for prefix, key in STEP_OF:
+            if msg.startswith(prefix) and key in keys:
+                st["done"] = st["done"] | frozenset(keys[:keys.index(key)])   # replaced, never mutated
+                st["active"] = key
+
+
+SESSION = _Session()
+LOG_LIMIT = 2000
+
+
+class _ProgressHandler(logging.Handler):
+    """Writes ontoreview log records (from worker threads) into :data:`SESSION`."""
+
+    def __init__(self) -> None:
         super().__init__(logging.DEBUG)
-        self.q = q
         self.setFormatter(logging.Formatter("%(levelname)-5s %(message)s"))
 
     def emit(self, record: logging.LogRecord) -> None:
         try:
-            self.q.put_nowait((record.levelno, record.getMessage(), self.format(record)))
+            msg = record.getMessage()
+            if record.levelno >= logging.INFO or SESSION.verbose:
+                log = SESSION.build["log"]
+                log.append(self.format(record))
+                if len(log) > LOG_LIMIT:
+                    del log[: len(log) - LOG_LIMIT]
+            SESSION.progress(msg)
         except Exception:  # noqa: BLE001
             pass
 
 
+_HANDLER = _ProgressHandler()
+
+
+def _install_log_handler() -> logging.Logger:
+    lg = logging.getLogger("ontoreview")
+    if _HANDLER not in lg.handlers:
+        lg.addHandler(_HANDLER)
+    if lg.level == logging.NOTSET or lg.level > logging.INFO:
+        lg.setLevel(logging.INFO)
+    return lg
+
+
 def _plan(s: Settings) -> list[tuple[str, str]]:
     """Steps shown while a task runs: (key, label)."""
+    if s.task == "diff":
+        return [("parse", "Parse both versions"), ("render", "Compare and write the report")]
     steps = [("parse", "Parse ontology"), ("checks", "Built-in quality checks")]
     if s.task in ("site", "single", "check"):
         if s.robot != "off":
             steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
+            if s.reasoner != "off":
+                steps.append(("reasoner", "Logical consistency (" + {"hermit": "HermiT", "elk": "ELK"}[s.reasoner] + ")"))
         if s.oops != "off":
-            steps.append(("oops", "OOPS! pitfall scan" + (" (if ROBOT can't run)" if s.oops == "auto" else "")))
+            steps.append(("oops", "OOPS! pitfall scan"))
     steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
                              "myst": "Write MyST files", "check": "Write report"}[s.task]))
     return steps
 
 
 STEP_OF = [("Parsing ontology", "parse"), ("Parsed ", "checks"), ("Running ROBOT", "robot"),
-           ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
+           ("Checking logical consistency", "reasoner"), ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
 BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
 
 
 # ---------------------------------------------------------------------------- the app
 def build_page() -> None:  # noqa: C901 - the shell and its four pages share state
-    from nicegui import app, run, ui
+    from nicegui import app, background_tasks, run, ui
 
     register_upload_route(app)
     prefs = Prefs.load()
     s = Settings.load()
     prefs.apply(s)
-    state: dict = {"last": None, "running": False, "steps": [], "active": None, "done": set(),
-                   "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
-    logs: queue.Queue = queue.Queue()
-    handler = _QueueHandler(logs)
-    lg = logging.getLogger("ontoreview")
-    lg.addHandler(handler)
-    lg.setLevel(logging.INFO)
-    ui.context.client.on_disconnect(lambda: lg.removeHandler(handler))
+    state = SESSION.build          # shared across pages, reloads and tabs: a run outlives its view
+    cmp = SESSION.cmp
+    lg = _install_log_handler()
+    client = ui.context.client
 
     ui.colors(primary="#2F4FD8", positive="#067647", negative="#B42318", warning="#B54708")
     ui.add_css(CSS)
@@ -410,6 +519,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
     # ------------------------------------------------------------------ sidebar
     nav_links: dict = {}
+    nav_busy: dict = {}
     with ui.left_drawer(value=True, fixed=True).classes("or-side").props("width=232 breakpoint=900") as drawer:
         with ui.row().classes("items-center gap-3 no-wrap").style("padding: 0 10px 26px"):
             ui.html(LOGO_SVG.format(s=30), sanitize=False)
@@ -421,6 +531,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 with ui.link(target=path).classes("or-nav") as link:
                     ui.html(_icon(icon), sanitize=False)
                     ui.label(label)
+                    if key in ("build", "compare"):
+                        nav_busy[key] = ui.spinner(size="14px").classes("q-ml-auto").tooltip("Running")
+                        nav_busy[key].set_visibility(False)
                 nav_links[key] = link
         with ui.element("div").classes("or-env"):
             ui.label("Environment").style("font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--or-side-muted)")
@@ -462,6 +575,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 link.classes(remove="or-active")
                 link.props(remove="aria-current")
 
+    def show_busy() -> None:
+        for key, st in (("build", state), ("compare", cmp)):
+            if key in nav_busy:
+                nav_busy[key].set_visibility(bool(st["running"]))
+
+    ui.timer(0.5, show_busy)
+
     # ------------------------------------------------------------------ shared helpers
     def page_head(title: str, subtitle: str):
         with ui.row().classes("or-pagehead items-center justify-between gap-4") as head:
@@ -473,7 +593,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         return head
 
     def notify(msg: str, kind: str = "info") -> None:
-        ui.notify(msg, type=kind, position="bottom-right")
+        """Toast on this page, even when called from a task whose view has been replaced."""
+        if client.is_deleted:
+            return
+        with client.layout:
+            ui.notify(msg, type=kind, position="bottom-right")
 
     def reveal(path: str) -> None:
         try:
@@ -553,6 +677,104 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 b.on("click", lambda key=key: on_pick(key))
         return seg
 
+    def render_changes(res, store: dict, rerender) -> None:
+        """Comparison result: summary tiles and the filterable Changes table (Build and Compare pages)."""
+        ch = res.changes
+        sm = change_counts(ch)
+        with ui.card().classes("or-card w-full").props("flat"):
+            with ui.column().classes("or-sec gap-3"):
+                with ui.row().classes("w-full items-start justify-between gap-3"):
+                    with ui.column().classes("gap-1 min-w-0"):
+                        with ui.row().classes("items-center gap-2"):
+                            ui.label(f"{ch.get('old_version') or 'previous'} → {ch.get('new_version') or 'current'}") \
+                                .classes("or-h2")
+                            if sm["added"] + sm["removed"] + sm["modified"]:
+                                badge("info", "Changes found")
+                            else:
+                                badge("ok", "No differences")
+                        ui.label(f"Compare versions · {res.seconds:.1f} s · {res.index}  (also .md and .json)") \
+                            .classes("or-hint or-mono")
+                    with ui.row().classes("gap-2"):
+                        ui.button("Open HTML report", icon="open_in_new", on_click=lambda: open_result(res.index)) \
+                            .props("unelevated no-caps")
+                        ui.button("Download HTML", icon="download", on_click=lambda: ui.download.file(res.index)) \
+                            .props("outline no-caps").mark("download-html")
+                        ui.button("Show in folder", icon="folder_open",
+                                  on_click=lambda: reveal(str(res.output))).props("outline no-caps")
+                with ui.row().classes("w-full gap-3"):
+                    for k, key, cls in (("Added", "added", "ok-tile"), ("Removed", "removed", "err"),
+                                        ("Modified", "modified", "warn")):
+                        with ui.element("div").classes(f"or-tile {cls}"):
+                            ui.label(k).classes("k")
+                            ui.label(str(sm[key])).classes("v")
+        rows = []
+        for kind, items in (("added", ch["added"]), ("removed", ch["removed"]),
+                            ("modified", ch["metadata_changes"] + ch["modified"])):
+            for c in items:
+                details = "\n".join([f"+ {p}: {v}" for p, v in c["added"]] + [f"− {p}: {v}" for p, v in c["removed"]])
+                rows.append({"id": len(rows), "change": kind, "term": c["label"], "id_": c.get("curie") or c["iri"],
+                             "kind": c["kind"].replace("_", " "), "details": details})
+        with ui.card().classes("or-card w-full").props("flat"):
+            with ui.column().classes("or-sec gap-3"):
+                with ui.row().classes("w-full items-center justify-between"):
+                    ui.label("Changes").classes("or-h2")
+                    counts = {k: sum(1 for r in rows if r["change"] == k) for k in ("added", "removed", "modified")}
+                    segmented([("all", f"All {len(rows)}"), ("added", f"Added {counts['added']}"),
+                               ("removed", f"Removed {counts['removed']}"), ("modified", f"Modified {counts['modified']}")],
+                              store.get("filter", "all"), lambda k: (store.__setitem__("filter", k), rerender()), "Filter changes")
+                shown = [r for r in rows if store.get("filter", "all") in ("all", r["change"])]
+                if not shown:
+                    ui.label("No differences between the two versions." if not rows else "Nothing of this kind.") \
+                        .classes("or-hint q-py-md")
+                    return
+                tbl = ui.table(rows=shown, row_key="id", pagination={"rowsPerPage": 25}, columns=[
+                    {"name": "change", "label": "Change", "field": "change", "align": "left"},
+                    {"name": "term", "label": "Term", "field": "term", "align": "left"},
+                    {"name": "kind", "label": "Kind", "field": "kind", "align": "left"},
+                    {"name": "details", "label": "Details", "field": "details", "align": "left"}]) \
+                    .classes("or-table").props("flat dense wrap-cells")
+                tbl.add_slot("body-cell-change", r'''<q-td :props="props">
+                    <span :class="'or-badge ' + ({added:'ok', removed:'err', modified:'warn'}[props.value])">
+                    {{ {added:'Added', removed:'Removed', modified:'Modified'}[props.value] }}</span></q-td>''')
+                tbl.add_slot("body-cell-term", r'''<q-td :props="props"><div class="text-weight-medium">{{ props.value }}</div>
+                    <div class="or-hint or-mono">{{ props.row.id_ }}</div></q-td>''')
+                tbl.add_slot("body-cell-details", r'''<q-td :props="props">
+                    <div class="or-mono" style="font-size:12px;white-space:pre-wrap">{{ props.value }}</div></q-td>''')
+
+    # ------------------------------------------------------------------ drag and drop dispatch
+    # One handler per event for the whole app; each page registers what a drop on its zones does.
+    drop_targets: dict = {}
+
+    def _drop(kind: str, e) -> None:
+        a = e.args or {}
+        handler = drop_targets.get(a.get("zone") or "")
+        if handler:
+            handler[0 if kind == "start" else 1](a)
+
+    ui.on("ob_drop_start", lambda e: _drop("start", e))
+    ui.on("ob_drop_done", lambda e: _drop("done", e))
+
+    def dropped_path(a: dict, info, files_only: bool = False) -> str | None:
+        """Resolve a finished drop to a local path, reporting problems in ``info``."""
+        if not a.get("batch") or not a.get("ok"):
+            msg = ("Nothing usable was dropped: no ontology files found." if not a.get("failed") else
+                   f"Copy failed for {a.get('failed')} file(s).")
+            info.text = msg
+            notify(msg, "warning")
+            return None
+        target = upload_source(a["batch"])
+        if not target:
+            notify("The dropped files could not be found.", "negative")
+            return None
+        if files_only and Path(target).is_dir():
+            info.text = "Drop a single ontology file here (a folder can't be compared)."
+            notify(info.text, "warning")
+            return None
+        extra = (f", {a['skipped']} other file(s) ignored" if a.get("skipped") else "") + \
+            (f", {a['failed']} failed" if a.get("failed") else "")
+        info.text = f"Copied {a['ok']} file(s){extra} into a local workspace."
+        return target
+
     # ------------------------------------------------------------------ Build
     def build_view() -> None:  # noqa: C901
         set_active("build")
@@ -594,7 +816,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             with ui.row().classes("items-center gap-2"):
                                 ui.html('<span class="or-step">1</span>', sanitize=False)
                                 ui.label("Source").classes("or-h2")
-                            with ui.element("div").props('id="ob-drop"').classes("w-full"):
+                            with ui.element("div").props('data-zone="source"').classes("ob-dropzone w-full"):
                                 source_box = ui.column().classes("w-full gap-2")
                             with ui.row().classes("gap-2"):
                                 ui.button("File", icon="description", on_click=lambda: pick(
@@ -625,6 +847,16 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                     title="Choose the output folder")).props("outline no-caps")
                             output_info = ui.label().classes("or-hint or-mono w-full").style("word-break: break-all") \
                                 .props('aria-live="polite"')
+                            with ui.column().classes("w-full gap-1 q-mt-sm") as prev_box:
+                                ui.label("Previous version").classes("or-label")
+                                with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                                    prev_in = ui.input(placeholder="releases/1.0.0.ttl or https://…", on_change=changed) \
+                                        .bind_value(s, "previous_version").mark("previous") \
+                                        .props('outlined dense clearable aria-label="Previous version"').classes("grow or-mono")
+                                    ui.button("Browse…", on_click=lambda: pick(
+                                        "ontology", lambda p: prev_in.set_value(p), False,
+                                        title="Choose the previous version")).props("outline no-caps")
+                                ui.label("The older release to compare against: a file or a URL.").classes("or-hint")
                             with ui.row().classes("w-full items-center gap-1") as existing_row:
                                 existing_info = ui.label().classes("or-hint")
                                 ui.button("Open", on_click=lambda: open_result(state.get("prior"))) \
@@ -712,12 +944,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             if sel:
                                 ui.label(INCLUDES[fid]).classes("or-hint q-mt-xs").style("color: var(--or-ink-2)")
                         ui.label(tag).classes("or-tag")
+                    b.mark(f"fmt-{fid}")
                     b.on("click", lambda fid=fid: (setattr(s, "task", fid), refresh()))
 
         def refresh() -> None:
             render_source()
             render_formats()
-            source_info.text = describe_source(s.source) if s.source.strip() else ""
+            describe_later()
             output.props(f'placeholder="{s.default_output()}"')
             output_info.text = f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)")
             prior = existing_output(s.output_path())
@@ -727,15 +960,38 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 what = f"{prior['count']} ontologies" if prior["kind"] == "folder" else "output"
                 existing_info.text = f"Previous {what} here from {when_text(prior['when'])}; building again updates it."
             checks_row.set_visibility(s.task in ("site", "single", "check"))
+            prev_box.set_visibility(s.task == "diff")
             robot_txt = ("ROBOT off" if s.robot == "off" else
                          f"ROBOT ({'local' if s.robot_path else 'Docker'})")
-            oops_txt = {"off": "OOPS! off", "auto": "OOPS! only if ROBOT can't run (uploads the ontology)",
-                        "on": "OOPS! always (uploads the ontology)"}[s.oops]
-            checks_info.text = f"Quality checks: built-in · {robot_txt} · {oops_txt}"
+            oops_txt = {"off": "OOPS! off", "auto": "OOPS! alongside ROBOT (uploads the ontology)",
+                        "on": "OOPS! full catalogue (uploads the ontology)"}[s.oops]
+            reasoner_txt = ("" if s.robot == "off" or s.reasoner == "off" else
+                            f" · {'HermiT' if s.reasoner == 'hermit' else 'ELK'} consistency")
+            checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}"
             cli.text = s.cli()
-            run_btn.text = "Running…" if state["running"] else ("Run checks" if s.task == "check" else "Build docs")
-            run_btn.set_enabled(not state["running"])
+            show_running()
             s.save()
+
+        described = {"for": None}
+
+        def describe_later() -> None:
+            """Folder scans can take a while: describe the source in a worker thread."""
+            src = s.source.strip()
+            if src == described["for"]:
+                return
+            described["for"] = src
+            source_info.text = "Looking…" if src else ""
+            if src:
+                background_tasks.create(describe(src), name="describe-source")
+
+        async def describe(src: str) -> None:
+            text = await run.io_bound(describe_source, src)
+            if described["for"] == src and not source_info.is_deleted:
+                source_info.text = text
+
+        def show_running() -> None:
+            run_btn.text = "Running…" if state["running"] else {"check": "Run checks", "diff": "Compare"}.get(s.task, "Build docs")
+            run_btn.set_enabled(not state["running"])
 
         def render_results() -> None:  # noqa: C901
             results.clear()
@@ -746,7 +1002,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             name = Path(s.source).name or s.source
                             done_n, total = len(state["done"]), len(state["steps"])
                             with ui.row().classes("w-full items-center justify-between"):
-                                ui.label(f"Checking {name}…" if s.task == "check" else f"Building {name}…").classes("or-h2")
+                                ui.label({"check": f"Checking {name}…", "diff": f"Comparing {name}…"}.get(
+                                    s.task, f"Building {name}…")).classes("or-h2")
                                 ui.label(state["folder_pos"] or f"Step {min(done_n + 1, total)} of {total}").classes("or-hint")
                             ui.linear_progress(value=done_n / max(total, 1), show_value=False).props("rounded size=6px")
                             with ui.element("ol").classes("or-steps q-pa-none q-ma-none"):
@@ -778,6 +1035,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 ui.label("Build failed").classes("or-h2")
                                 badge("err", "Failed")
                             ui.label(str(res)).classes("or-mono or-hint")
+                    return
+                if res.task == "diff" and res.changes:
+                    render_changes(res, state, render_results)
                     return
                 t = res.totals
                 failed = len(res.rows) - res.ok
@@ -860,6 +1120,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             opts.append(("info", f"Info {counts['info']}"))
                         segmented(opts, state["filter"],
                                   lambda k: (state.__setitem__("filter", k), render_results()), "Filter issues")
+                    notes = sorted({n for r in res.rows for n in r.notes})
+                    for n in notes:
+                        ui.label(n).classes("or-hint")
                     shown = [i for i in all_issues if state["filter"] in ("all", i["severity"])]
                     if not shown:
                         ui.label("No issues found." if not all_issues else "No issues of this kind.").classes("or-hint q-py-md")
@@ -887,65 +1150,68 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.button("Open report (JSON)", on_click=lambda: open_result(str(res.output))) \
                                 .props("flat dense no-caps")
 
-        def drain() -> None:
-            changed = False
-            while True:
-                try:
-                    level, msg, line = logs.get_nowait()
-                except queue.Empty:
-                    break
-                if level >= logging.INFO or s.verbose:
-                    state["log"].append(line)
-                    log_view.push(line)
-                if not state["running"]:
-                    continue
-                head_ = msg.split("]", 1)[0]
-                if msg.startswith("[") and "/" in head_:
-                    state["folder_pos"] = f"Ontology {head_[1:].replace('/', ' of ')} · {msg.split('] ', 1)[-1]}"
-                    state["done"], state["active"] = set(), None
-                    changed = True
-                keys = [k for k, _ in state["steps"]]
-                for prefix, key in STEP_OF:
-                    if msg.startswith(prefix) and key in keys:
-                        state["done"] |= set(keys[:keys.index(key)])
-                        state["active"] = key
-                        changed = True
-            if changed:
-                render_results()
+        def signature() -> tuple:
+            return (state["running"], state["active"], state["done"], state["folder_pos"], id(state["last"]))
 
-        ui.timer(0.25, drain)
+        seen = {"sig": signature(), "log": len(state["log"])}
+
+        def sync() -> None:
+            """Pick up progress made by the worker thread (also after coming back to this page)."""
+            if results.is_deleted:
+                return
+            lines = state["log"]
+            if seen["log"] > len(lines):
+                seen["log"] = 0
+            for line in lines[seen["log"]:]:
+                log_view.push(line)
+            seen["log"] = len(lines)
+            sig = signature()
+            if sig == seen["sig"]:
+                return
+            finished = seen["sig"][0] and not state["running"]
+            seen["sig"] = sig
+            if finished:
+                refresh()            # e.g. "Previous output here …" now exists
+            else:
+                show_running()
+            render_results()
+
+        ui.timer(0.25, sync)
 
         async def start() -> None:
+            if state["running"]:
+                notify("A build is already running.", "warning")
+                return
             problems = s.validate()
             if problems:
                 for p in problems:
                     notify(p, "warning")
                 return
             s.save()
-            state.update(running=True, steps=_plan(s), active="parse", done=set(), folder_pos="", filter="all")
-            lg.setLevel(logging.DEBUG if s.verbose else logging.INFO)
-            line = f"$ {s.cli()}"
-            state["log"].append(line)
-            log_view.push(line)
-            refresh()
-            render_results()
+            job = Settings(**asdict(s))           # the form may change while the task runs
+            state.update(running=True, steps=_plan(job), active="parse", done=frozenset(), folder_pos="",
+                         filter="all")
+            state["log"].append(f"$ {job.cli()}")
+            background_tasks.create(run_build(job), name="ontoreview-build")
+            sync()
+
+        async def run_build(job: Settings) -> None:
+            """Runs independently of this view: switching pages does not stop or lose it."""
+            SESSION.verbose = job.verbose
+            lg.setLevel(logging.DEBUG if job.verbose else logging.INFO)
             try:
-                res = await run.io_bound(run_task, s)
+                res = await run.io_bound(run_task, job)
             except Exception as e:  # noqa: BLE001
-                drain()
-                state.update(running=False, last=e)
+                state["last"] = e
                 if prefs.keep_history:
-                    record_run(s, None, str(e), limit=prefs.history_limit)
+                    record_run(job, None, str(e), limit=prefs.history_limit)
                 notify(f"Failed: {e}", "negative")
             else:
-                drain()
-                state.update(running=False, last=res)
+                state["last"] = res
                 if prefs.keep_history:
-                    record_run(s, res, limit=prefs.history_limit)
+                    record_run(job, res, limit=prefs.history_limit)
                 failed = len(res.rows) - res.ok
-                line = f"DONE  {res.ok} of {len(res.rows)} succeeded · {res.seconds:.1f}s"
-                state["log"].append(line)
-                log_view.push(line)
+                state["log"].append(f"DONE  {res.ok} of {len(res.rows)} succeeded · {res.seconds:.1f}s")
                 notify(f"{res.ok} of {len(res.rows)} succeeded" + (f", {failed} failed" if failed else ""),
                        "positive" if not failed else "warning")
                 if (prefs.open_when_done and res.index and res.task != "check" and res.ok
@@ -953,10 +1219,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     webbrowser.open(Path(res.index).resolve().as_uri())
             finally:
                 lg.setLevel(logging.INFO)
+                SESSION.verbose = False
                 state["running"] = False
-                refresh()
-                render_results()
-
+    
         def save_toml() -> None:
             if not s.source.strip():
                 notify("Choose an ontology file or a folder of ontologies first.", "warning")
@@ -983,7 +1248,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 notify(f"Could not read {path}: {e}", "negative")
                 return
             for k in ("source", "output", "layout", "languages", "base_url", "reason", "load_imports",
-                      "include_individuals", "competency_questions", "previous_version", "robot", "oops"):
+                      "include_individuals", "competency_questions", "previous_version", "robot", "oops", "reasoner"):
                 setattr(s, k, getattr(loaded, k))
             refresh()
             notify(f"Loaded {path}", "positive")
@@ -1051,29 +1316,15 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             dlg.open()
             check()
 
-        def on_drop_start(e) -> None:
-            drop_info.text = f"Copying {e.args.get('count', 0)} file(s)…"
+        def on_drop_done(a: dict) -> None:
+            target = dropped_path(a, drop_info)
+            if target:
+                set_source(target)
+                notify(f"Ready: {Path(target).name}", "positive")
 
-        def on_drop_done(e) -> None:
-            a = e.args or {}
-            if not a.get("batch") or not a.get("ok"):
-                msg = ("Nothing usable was dropped: no ontology files found." if not a.get("failed") else
-                       f"Copy failed for {a.get('failed')} file(s).")
-                drop_info.text = msg
-                notify(msg, "warning")
-                return
-            target = upload_source(a["batch"])
-            if not target:
-                notify("The dropped files could not be found.", "negative")
-                return
-            extra = (f", {a['skipped']} other file(s) ignored" if a.get("skipped") else "") + \
-                (f", {a['failed']} failed" if a.get("failed") else "")
-            drop_info.text = f"Copied {a['ok']} file(s){extra} into a local workspace."
-            set_source(target)
-            notify(f"Ready: {Path(target).name}", "positive")
-
-        ui.on("ob_drop_start", on_drop_start)
-        ui.on("ob_drop_done", on_drop_done)
+        drop_targets.clear()
+        drop_targets["source"] = (lambda a: setattr(drop_info, "text", f"Copying {a.get('count', 0)} file(s)…"),
+                                  on_drop_done)
         ready.append(True)
         refresh()
         render_results()
@@ -1101,7 +1352,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         def render_seg() -> None:
             seg_box.clear()
             with seg_box:
-                segmented((("all", "All"), ("docs", "Documentation"), ("check", "Checks")), filt["kind"],
+                segmented((("all", "All"), ("docs", "Documentation"), ("check", "Checks"), ("diff", "Comparisons")), filt["kind"],
                           lambda k: (filt.__setitem__("kind", k), render_seg(), table.refresh()), "Task")
 
         @ui.refreshable
@@ -1153,6 +1404,12 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 ui.label(f"{len(shown)} of {len(entries)} runs shown").classes("or-hint")
 
         def rerun(entry) -> None:
+            if entry.task == "diff":
+                cmp.update(old=entry.settings.get("previous_version", ""), new=entry.settings.get("source", ""),
+                           output=entry.settings.get("output", ""), last=None, done=None)
+                ui.navigate.to("/compare")
+                notify("Both versions loaded; comparing again.")
+                return
             known = set(vars(Settings()))
             for k, v in entry.settings.items():
                 if k in known:
@@ -1292,6 +1549,18 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                         .props('outlined dense aria-label="robot command"').classes("grow or-mono")
                                     ui.button("Test", on_click=lambda: test_robot()).props("outline no-caps")
                             ui.checkbox("Run ROBOT by default").bind_value(work, "robot_enabled")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            ui.label("Logical consistency").classes("or-h2")
+                            ui.label("An OWL reasoner checks that the ontology is consistent and that every class "
+                                     "can have members. It runs through ROBOT (above), on this machine.") \
+                                .classes("or-hint")
+                            ui.label("Reasoner").classes("or-label")
+                            ui.select(REASONER_CHOICES).bind_value(work, "reasoner") \
+                                .props('outlined dense aria-label="Reasoner"').classes("w-72").mark("reasoner")
+                            ui.label("HermiT is complete for OWL 2 DL but can be slow on very large ontologies; "
+                                     "ELK is fast but only understands OWL 2 EL, so it can miss problems.") \
+                                .classes("or-hint")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
@@ -1437,7 +1706,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 for icon, title, text in (
                         ("language", "Documentation", "Website, single HTML file, Markdown or a MyST / Sphinx project — "
                                                       "for one ontology or a whole folder."),
-                        ("task_alt", "Quality review", "Built-in checks, ROBOT reports and OOPS! pitfall scans, merged "
+                        ("task_alt", "Quality review", "Built-in checks, ROBOT reports, reasoner consistency and OOPS! pitfall scans, merged "
                                                        "into one list of errors and warnings."),
                         ("code", "Reproducible", "Every run here maps to an ontoreview command and can be saved as "
                                                  "ontoreview.toml for CI."),
@@ -1463,6 +1732,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     with ui.column().classes("or-sec gap-2"):
                         ui.label("Built on").classes("or-h2")
                         for name, what in (("ROBOT", "OBO tool for ontology reports"), ("OOPS!", "OntOlogy Pitfall Scanner"),
+                                           ("HermiT / ELK", "OWL reasoners, run through ROBOT"),
                                            ("NiceGUI", "Python UI framework"), ("rdflib", "RDF parsing and serialization")):
                             ui.html(f'<div style="font-size:13px"><b>{name}</b> <span class="or-muted">— {what}</span></div>',
                                     sanitize=False)
@@ -1491,6 +1761,195 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             copy_btn.on_click(lambda: (ui.clipboard.write(text), notify("System info copied", "positive")))
 
         ui.timer(0.05, fill, once=True)
+
+    # ------------------------------------------------------------------ Compare
+
+    def compare_view() -> None:  # noqa: C901
+        set_active("compare")
+        head = page_head("Compare", "Compare two versions of an ontology. Drop or choose both files; the "
+                                    "comparison runs as soon as both are there.")
+        with head:
+            cmp_btn = ui.button("Compare", icon="compare_arrows", on_click=lambda: run_compare()) \
+                .props("unelevated no-caps").mark("compare-run")
+        infos: dict = {}
+        boxes: dict = {}
+        with ui.element("div").classes("or-body column gap-4"):
+            with ui.row().classes("w-full gap-4 no-wrap max-md:flex-wrap items-stretch"):
+                for side, title, hint in (("old", "Previous version", "The older release, e.g. 1.0"),
+                                          ("new", "Current version", "The version you want to check")):
+                    with ui.card().classes("or-card").props("flat").style("flex: 1 1 0; min-width: 0"):
+                        with ui.column().classes("or-sec gap-3"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.html(f'<span class="or-step">{"A" if side == "old" else "B"}</span>', sanitize=False)
+                                ui.label(title).classes("or-h2")
+                            with ui.element("div").props(f'data-zone="{side}"').classes("ob-dropzone w-full"):
+                                boxes[side] = ui.column().classes("w-full gap-2")
+                            with ui.row().classes("gap-2"):
+                                ui.button("File", icon="description", on_click=lambda side=side, title=title: pick(
+                                    "ontology", lambda p, side=side: set_side(side, p), False,
+                                    cmp[side] or s.source, title=f"Choose the {title.lower()}")) \
+                                    .props("outline no-caps dense").classes("px-3")
+                                ui.button("URL", icon="link", on_click=lambda side=side, title=title: ask(side, title)) \
+                                    .props("outline no-caps dense").classes("px-3")
+                            infos[side] = ui.label(f"{hint}. Drop a file here, or choose one.").classes("or-hint") \
+                                .props('aria-live="polite"')
+            with ui.card().classes("or-card w-full").props("flat"):
+                with ui.column().classes("or-sec gap-2"):
+                    ui.label("Save report to").classes("or-label")
+                    with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                        out_in = ui.input(on_change=lambda: show_out()).bind_value(cmp, "output").mark("compare-output") \
+                            .props('outlined dense clearable aria-label="Save report to"').classes("grow or-mono")
+                        ui.button("Browse…", on_click=lambda: pick("any", lambda p: out_in.set_value(p), True,
+                                                                   cmp["output"], "Where to save the report")) \
+                            .props("outline no-caps")
+                    out_info = ui.label().classes("or-hint or-mono").style("word-break: break-all")
+            results = ui.column().classes("w-full gap-4")
+
+        def settings_for() -> Settings:
+            return Settings(source=cmp["new"], previous_version=cmp["old"], task="diff", output=cmp["output"],
+                            default_root=prefs.default_output)
+
+        def show_out() -> None:
+            st = settings_for()
+            target = st.output_path()
+            stem = target.with_suffix("")
+            out_info.text = (f"Writes {stem}.html, .md and .json" + ("" if cmp["output"].strip() else "  (default)")
+                             if cmp["new"] else "Choose the current version first.")
+
+        def render_side(side: str) -> None:
+            boxes[side].clear()
+            with boxes[side]:
+                val = cmp[side]
+                if val:
+                    is_url = val.startswith(("http://", "https://"))
+                    with ui.element("div").classes("or-chip"):
+                        with ui.element("div").classes("or-chipicon"):
+                            ui.icon("link" if is_url else "description", size="20px")
+                        with ui.column().classes("gap-0 grow min-w-0"):
+                            ui.label(val if is_url else Path(val).name).classes("or-label ellipsis w-full")
+                            if not is_url:
+                                ui.label(str(Path(val).parent) + "/").classes("or-hint or-mono ellipsis w-full")
+                        ui.button(icon="close", on_click=lambda side=side: set_side(side, "")) \
+                            .props(f'flat round dense aria-label="Clear {side} version"')
+                else:
+                    inp = ui.input(placeholder="Type a path or URL and press Enter, or drop a file here") \
+                        .props(f'borderless dense aria-label="{side} version path or URL"') \
+                        .classes("w-full or-mono").mark(f"compare-{side}")
+                    inp.on("keydown.enter", lambda inp=inp, side=side: set_side(side, (inp.value or "").strip()))
+                    inp.on("blur", lambda inp=inp, side=side: (inp.value or "").strip()
+                           and set_side(side, inp.value.strip()))
+
+        def set_side(side: str, value: str) -> None:
+            if value and not value.startswith(("http://", "https://")):
+                pth = Path(value).expanduser()
+                if pth.is_dir():
+                    notify("Choose a single ontology file, not a folder.", "warning")
+                    return
+                if not pth.exists():
+                    notify(f"Not found: {value}", "warning")
+                    return
+            cmp[side] = value
+            render_side(side)
+            show_out()
+            if cmp["old"] and cmp["new"] and (cmp["old"], cmp["new"]) != cmp["done"]:
+                ui.timer(0.05, run_compare, once=True)   # both chosen: compare right away
+
+        def ask(side: str, title: str) -> None:
+            with ui.dialog() as dlg, ui.card().classes("or-card w-[36rem] max-w-full"):
+                ui.label(f"{title}: URL or path").classes("or-h2")
+                inp = ui.input(placeholder="https://… or /path/to/ontology.ttl", value=cmp[side]) \
+                    .props("outlined autofocus").classes("w-full or-mono")
+                with ui.row().classes("w-full justify-end"):
+                    ui.button("Cancel", on_click=dlg.close).props("flat no-caps")
+                    ui.button("Use", on_click=lambda: (set_side(side, inp.value.strip()), dlg.close())).props("unelevated no-caps")
+            dlg.open()
+
+        def render() -> None:
+            results.clear()
+            cmp_btn.set_enabled(not cmp["running"])
+            cmp_btn.text = "Comparing…" if cmp["running"] else "Compare"
+            with results:
+                if cmp["running"]:
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.row().classes("or-sec items-center gap-3"):
+                            ui.spinner(size="22px")
+                            ui.label(f"Comparing {Path(cmp['old']).name} → {Path(cmp['new']).name}…").classes("or-h2")
+                    return
+                res = cmp["last"]
+                if res is None:
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2 items-center text-center q-py-xl"):
+                            ui.icon("compare_arrows", size="40px").classes("or-muted")
+                            ui.label("Nothing compared yet").classes("or-h2")
+                            ui.label("Add the previous and the current version above. Terms are matched by IRI; "
+                                     "you'll see what was added, removed and modified, and get an HTML report.") \
+                                .classes("or-hint")
+                    return
+                if isinstance(res, Exception):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2"):
+                            with ui.row().classes("items-center gap-2"):
+                                ui.label("Comparison failed").classes("or-h2")
+                                badge("err", "Failed")
+                            ui.label(str(res)).classes("or-mono or-hint")
+                    return
+                render_changes(res, cmp, render)
+
+        async def run_compare() -> None:
+            if cmp["running"]:
+                return
+            st = settings_for()
+            problems = [p for p in st.validate() if "previous version" not in p.lower()] if cmp["old"] else []
+            if not cmp["new"] or not cmp["old"]:
+                notify("Add both versions first.", "warning")
+                return
+            if problems:
+                for p_ in problems:
+                    notify(p_, "warning")
+                return
+            cmp.update(running=True, filter="all", done=(cmp["old"], cmp["new"]))
+            background_tasks.create(compare_job(st), name="ontoreview-compare")
+            cmp_sync()
+
+        async def compare_job(st: Settings) -> None:
+            """Runs independently of this view: switching pages does not stop or lose it."""
+            try:
+                res = await run.io_bound(run_task, st)
+            except Exception as e:  # noqa: BLE001
+                cmp["last"] = e
+                if prefs.keep_history:
+                    record_run(st, None, str(e), limit=prefs.history_limit)
+                notify(f"Comparison failed: {e}", "negative")
+            else:
+                cmp["last"] = res
+                if prefs.keep_history:
+                    record_run(st, res, limit=prefs.history_limit)
+                n = sum(change_counts(res.changes).values())
+                notify(f"{n} change{'s' if n != 1 else ''} found" if n else "No differences", "positive")
+            finally:
+                cmp["running"] = False
+    
+        cmp_seen = {"sig": (cmp["running"], id(cmp["last"]))}
+
+        def cmp_sync() -> None:
+            sig = (cmp["running"], id(cmp["last"]))
+            if results.is_deleted or sig == cmp_seen["sig"]:
+                return
+            cmp_seen["sig"] = sig
+            render()
+
+        ui.timer(0.3, cmp_sync)
+
+        drop_targets.clear()
+        for side in ("old", "new"):
+            def done(a: dict, side=side) -> None:
+                target = dropped_path(a, infos[side], files_only=True)
+                if target:
+                    set_side(side, target)
+            drop_targets[side] = (lambda a, side=side: setattr(infos[side], "text", "Copying…"), done)
+            render_side(side)
+        show_out()
+        render()
 
     # ------------------------------------------------------------------ Help
     def help_view() -> None:
@@ -1523,11 +1982,15 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                                           on_click=lambda t=target: go(t)) \
                                                     .props("outline dense no-caps size=sm") \
                                                     .classes("px-2")
-                                    if shot and (ASSETS / "help" / shot).is_file():
-                                        img = ui.image(f"{STATIC_URL}/help/{shot}") \
-                                            .props(f'alt="Screenshot: {title}" fit=contain no-spinner') \
-                                            .classes("or-shot cursor-pointer").style("flex: 1 1 520px; max-width: 760px")
-                                        img.on("click", lambda shot=shot, title=title: zoom(shot, title))
+                                    shots = [x for x in ((shot,) if isinstance(shot, str) else shot)
+                                             if x and (ASSETS / "help" / x).is_file()]
+                                    if shots:
+                                        with ui.column().classes("gap-3").style("flex: 1 1 520px; max-width: 760px"):
+                                            for x in shots:
+                                                img = ui.image(f"{STATIC_URL}/help/{x}") \
+                                                    .props(f'alt="Screenshot: {title}" fit=contain no-spinner') \
+                                                    .classes("or-shot cursor-pointer w-full")
+                                                img.on("click", lambda x=x, title=title: zoom(x, title))
 
         def go(target: str) -> None:
             if target.startswith("http"):
@@ -1546,7 +2009,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 ui.image(f"{STATIC_URL}/help/{shot}").props(f'alt="Screenshot: {title}" fit=contain').classes("w-full")
             d.open()
 
-    ui.sub_pages({"/": build_view, "/history": history_view, "/settings": settings_view, "/about": about_view,
+    ui.sub_pages({"/": build_view, "/history": history_view, "/compare": compare_view, "/settings": settings_view,
+                  "/about": about_view,
                   "/help": help_view}) \
         .classes("w-full")
 
@@ -1559,8 +2023,13 @@ def port_free(host: str, port: int) -> bool:
 
     fam = socket.AF_INET6 if ":" in host else socket.AF_INET
     with socket.socket(fam, socket.SOCK_STREAM) as sock:
+        # the server binds with SO_REUSEADDR, so a port whose old connections are still closing
+        # (TIME_WAIT) is usable; only a port another process is listening on counts as busy
+        if os.name != "nt":
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             sock.bind((host, port))
+            sock.listen(1)
         except OSError:
             return False
     return True

@@ -145,7 +145,7 @@ class Studio:
         info = {
             "id": sid, "main": main.name, "source": str(main), "layout": layout,
             "title": res.ontology.metadata.title, "terms": len(res.ontology.terms),
-            "summary": res.report.summary if res.report else {"error": 0, "warning": 0, "info": 0},
+            "summary": res.report.totals if res.report else {"error": 0, "warning": 0, "info": 0},
         }
         with self.lock:
             self.sessions[sid] = info

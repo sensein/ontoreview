@@ -1,6 +1,6 @@
-from ontoreview.checks import Rule, run_checks
 from ontoreview.config import Config
 from ontoreview.diff import compare_files
+from ontoreview.quality_checks import Rule, run_checks
 
 
 def _ids(report):
@@ -58,3 +58,52 @@ def test_diff(fixtures):
     assert log.metadata_changes
     md = log.to_markdown()
     assert "## Added (1)" in md
+
+
+def test_diff_ignores_prefix_renames(fixtures, tmp_path):
+    """Same triples, different prefix for the ontology's namespace: nothing changed."""
+    from rdflib import Graph, Namespace
+
+    from ontoreview.diff import compare_files
+
+    g = Graph().parse(fixtures / "pizza.ttl")
+    renamed = Graph(bind_namespaces="none")
+    for t in g:
+        renamed.add(t)
+    renamed.bind("pz", Namespace("https://example.org/pizza#"))
+    renamed.bind("owl", "http://www.w3.org/2002/07/owl#")
+    renamed.serialize(tmp_path / "renamed.ttl", format="turtle")
+    log = compare_files(str(fixtures / "pizza.ttl"), str(tmp_path / "renamed.ttl"))
+    assert log.empty, log.to_markdown()
+
+
+def test_diff_html_report(fixtures, tmp_path):
+    from typer.testing import CliRunner
+
+    from ontoreview.cli import app
+    from ontoreview.diff import Changelog, TermChange
+
+    out = tmp_path / "changes.html"
+    r = CliRunner().invoke(app, ["diff", str(fixtures / "pizza.ttl"), str(fixtures / "pizza-v2.ttl"),
+                                 "--format", "html", "-o", str(out)])
+    assert r.exit_code == 0, r.output
+    html = out.read_text()
+    assert html.startswith("<!doctype html>") and '<html lang="en">' in html and "Calzone" in html
+    evil = Changelog("1", "2", added=[TermChange("x", "<script>alert(1)</script>", "class")])
+    assert "<script>alert" not in evil.to_html() and "&lt;script&gt;" in evil.to_html()
+
+
+def test_diff_stdout_is_raw_and_markdown_lists_metadata(fixtures):
+    """Piped output must stay parseable: no line wrapping, no :emoji: codes (rdfs:label: once became 🏷)."""
+    import json as _json
+
+    from typer.testing import CliRunner
+
+    from ontoreview.cli import app
+
+    r = CliRunner().invoke(app, ["diff", str(fixtures / "pizza.ttl"), str(fixtures / "pizza-v2.ttl"), "--format", "json"])
+    data = _json.loads(r.stdout)
+    assert data["summary"]["added"] == 1 and data["metadata_changes"]
+    md = CliRunner().invoke(app, ["diff", str(fixtures / "pizza.ttl"), str(fixtures / "pizza-v2.ttl"),
+                                  "--format", "markdown"]).stdout
+    assert "owl:versionInfo" in md and "🏷" not in md

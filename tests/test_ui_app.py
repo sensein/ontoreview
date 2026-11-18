@@ -19,6 +19,8 @@ from ontoreview.ui import build_page  # noqa: E402
 def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(ui_core, "SETTINGS_FILE", tmp_path / "cfg" / "ui.json")
     monkeypatch.setattr(ui_core, "HISTORY_FILE", tmp_path / "cfg" / "history.json")
+    from ontoreview.ui import SESSION
+    SESSION.reset()                      # run state is process-wide (it outlives page switches)
     return tmp_path
 
 
@@ -86,6 +88,7 @@ async def test_pages_render(isolated, fixtures):
         await user.open("/help")
         await user.should_see("Getting started")
         await user.should_see("Project config (ontoreview.toml)")
+        await user.should_see("How the comparison works")
         await user.should_see("System info")
     assert ui_core.Prefs.path().is_file()
 
@@ -165,3 +168,115 @@ async def test_help_links_navigate(isolated):
         await user.should_see("Open Run history")
         user.find("Open Run history").click()
         await user.should_see("Every build and check you've run")
+
+
+@pytest.mark.anyio
+async def test_compare_versions_from_the_ui(isolated, fixtures):
+    src = isolated / "proj"
+    src.mkdir()
+    shutil.copy(fixtures / "pizza-v2.ttl", src / "pizza.ttl")
+    ui_core.Settings(source=str(src / "pizza.ttl")).save()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        user.find(marker="fmt-diff").click()
+        await user.should_see("Previous version")
+        user.find(marker="previous").type(str(fixtures / "pizza.ttl"))
+        user.find(marker="run").click()
+        for _ in range(100):
+            if (src / "changes.md").exists():
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Changes found")
+        await user.should_see("Open HTML report")
+    assert (src / "changes.json").is_file() and (src / "changes.html").is_file()
+
+
+@pytest.mark.anyio
+async def test_compare_page_runs_automatically(isolated, fixtures):
+    out = isolated / "report" / "pizza-changes.md"
+    async with user_simulation(root=build_page) as user:
+        await user.open("/compare")
+        await user.should_see("Nothing compared yet")
+        user.find(marker="compare-output").type(str(out))
+        user.find(marker="compare-old").type(str(fixtures / "pizza.ttl")).trigger("keydown.enter")
+        await user.should_see("Nothing compared yet")                 # one side only: waits
+        user.find(marker="compare-new").type(str(fixtures / "pizza-v2.ttl")).trigger("keydown.enter")
+        for _ in range(100):                                          # both sides: runs on its own
+            if out.with_suffix(".html").exists():
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Changes found")
+        await user.should_see("Download HTML")
+    html = out.with_suffix(".html").read_text()
+    assert "<table>" in html and "Calzone" in html and out.with_suffix(".json").is_file() and out.is_file()
+    entry = json.loads(ui_core.HISTORY_FILE.read_text())[0]
+    assert entry["task"] == "diff" and "added" in entry["summary"]
+
+
+def _slow_run_task(monkeypatch, delay=1.0):
+    """run_task that is still busy while the test navigates away."""
+    import time
+
+    import ontoreview.ui as ui_mod
+    real = ui_core.run_task
+
+    def slow(settings):
+        time.sleep(delay)
+        return real(settings)
+    monkeypatch.setattr(ui_mod, "run_task", slow)
+
+
+@pytest.mark.anyio
+async def test_build_survives_switching_pages(isolated, fixtures, monkeypatch):
+    _slow_run_task(monkeypatch)
+    src = isolated / "proj"
+    src.mkdir()
+    shutil.copy(fixtures / "pizza.ttl", src / "pizza.ttl")
+    out = isolated / "out"
+    ui_core.Settings(source=str(src / "pizza.ttl"), output=str(out)).save()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("pizza.ttl")
+        user.find(marker="run").click()
+        await user.should_see("Building pizza.ttl")
+        await user.open("/history")                       # leave while it runs
+        await user.should_see("Run history")
+        for _ in range(100):
+            if (out / "index.html").exists() and ui_core.HISTORY_FILE.exists():
+                break
+            await asyncio.sleep(0.1)
+        await user.open("/")                              # come back: the finished result is shown
+        await user.should_see("Terms documented")
+        await user.should_see("Show in folder")
+    assert json.loads(ui_core.HISTORY_FILE.read_text())[0]["ok"] == 1
+
+
+@pytest.mark.anyio
+async def test_compare_survives_switching_pages(isolated, fixtures, monkeypatch):
+    _slow_run_task(monkeypatch)
+    out = isolated / "report" / "changes.md"
+    async with user_simulation(root=build_page) as user:
+        await user.open("/compare")
+        user.find(marker="compare-output").type(str(out))
+        user.find(marker="compare-old").type(str(fixtures / "pizza.ttl")).trigger("keydown.enter")
+        user.find(marker="compare-new").type(str(fixtures / "pizza-v2.ttl")).trigger("keydown.enter")
+        await user.should_see("Comparing")
+        await user.open("/settings")                      # leave while it runs
+        await user.should_see("Default output folder")
+        for _ in range(100):
+            if out.with_suffix(".html").exists():
+                break
+            await asyncio.sleep(0.1)
+        await user.open("/compare")
+        await user.should_see("Changes found")
+
+
+@pytest.mark.anyio
+async def test_sidebar_shows_running_task(isolated, fixtures, monkeypatch):
+    from ontoreview.ui import SESSION
+
+    async with user_simulation(root=build_page) as user:
+        await user.open("/help")
+        SESSION.build["running"] = True
+        await user.should_see(kind=ui.spinner, retries=20)
+        SESSION.build["running"] = False

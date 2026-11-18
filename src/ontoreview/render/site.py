@@ -17,11 +17,11 @@ from markdown_it import MarkdownIt
 from markupsafe import Markup
 
 from .. import __version__
-from ..checks import Report
 from ..config import Config
 from ..diff import Changelog
 from ..model.entities import KIND_BADGES, KIND_SLUGS, Ontology, Ref
 from ..publish import bibtex, citation_text
+from ..report.models import Report
 from .data import graph_data, jsonld, search_index
 from .i18n import LANGUAGE_NAMES, Translator
 

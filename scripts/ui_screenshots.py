@@ -36,11 +36,13 @@ def free_port() -> int:
 def prepare(demo: Path) -> dict[str, Path]:
     (demo / "pizza").mkdir(parents=True)
     shutil.copy(FIX / "pizza-v2.ttl", demo / "pizza" / "pizza.ttl")
+    (demo / "pizza" / "releases").mkdir()
+    shutil.copy(FIX / "pizza.ttl", demo / "pizza" / "releases" / "pizza-1.0.ttl")
     shutil.copytree(FIX / "real", demo / "w3c-ontologies")
     cfg = demo / "config"
     cfg.mkdir()
     (cfg / "prefs.json").write_text(json.dumps({"open_when_done": False, "oops": "off"}))
-    return {"pizza": demo / "pizza" / "pizza.ttl", "folder": demo / "w3c-ontologies", "settings": cfg / "ui.json"}
+    return {"pizza": demo / "pizza" / "pizza.ttl", "previous": demo / "pizza" / "releases" / "pizza-1.0.ttl", "folder": demo / "w3c-ontologies", "settings": cfg / "ui.json"}
 
 
 def wait_text(page: Page, text: str, timeout: float = 180_000) -> None:
@@ -101,7 +103,26 @@ def main() -> None:
             page.get_by_text("Ontologies", exact=True).first.scroll_into_view_if_needed()
             shoot(page, "folder.png")
 
+            page.goto(url + "/compare")
+            wait_text(page, "Nothing compared yet")
+            for side, path in (("old", paths["previous"]), ("new", paths["pizza"])):
+                box = page.get_by_label(f"{side} version path or URL")
+                box.fill(str(path))
+                box.press("Enter")
+            wait_text(page, "Changes found")
+            shoot(page, "compare.png")
+            page.get_by_text("Changes", exact=True).first.scroll_into_view_if_needed()
+            page.mouse.wheel(0, 260)
+            shoot(page, "compare-table.png")
+            report = browser.new_page(viewport={"width": 1100, "height": 760}, color_scheme="light")
+            report.goto((paths["pizza"].parent / "changes.html").as_uri())
+            shoot(report, "compare-report.png")
+            report.close()
+
+            page.goto(url + "/")
+            wait_text(page, "New build")
             set_source(page, paths["pizza"])
+
             page.evaluate("window.scrollTo(0, 0)")
             page.get_by_role("button", name="Project config").click()
             page.get_by_text("New from template").click()

@@ -91,11 +91,14 @@ ontologies/                 docs/
 - `--single-file` writes one self-contained `index.html` per sub-folder.
 - `source = "ontologies/"` in `ontoreview.toml` works too.
 
-## External evaluators: OOPS! and ROBOT
+## External evaluators: ROBOT, reasoner and OOPS!
+
+For the full list of quality checks, their order and how to configure them, see [quality_check.md](quality_check.md).
 
 - **ROBOT** (`robot report`) runs by default, on your machine, in Docker using the official `obolibrary/robot` image. You don't need Java or `robot.jar`. The first build pulls the image. A `robot` executable on your PATH, or one set with `evaluation.robot_path`, is used instead of Docker when present. Use `evaluation.robot_image` (or `ROBOT_DOCKER_IMAGE`) to pin a version tag, such as `obolibrary/robot:<version>`.
-- **OOPS!** is the fallback. When ROBOT can't run (Docker isn't installed or running, or ROBOT fails), OntoReview calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html) instead. **This sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to never upload it, or `"on"` (`--oops`) to run OOPS! alongside ROBOT.
-- To skip external evaluators entirely, set `evaluation.robot = "off"`; OOPS! then runs only if `oops = "on"`.
+- **Logical consistency** runs an OWL reasoner (HermiT by default, or ELK) through the same ROBOT set-up (`robot reason`). It reports an inconsistent ontology and unsatisfiable classes as errors. Set `evaluation.reasoner = "elk"` for speed on large ontologies, or `"off"` (`--reasoner off`) to skip it.
+- **OOPS!** runs alongside ROBOT, because it checks modelling (unconnected elements, missing domains, ranges, inverses and disjointness, naming) where ROBOT checks annotations. When the ROBOT report ran, OOPS! leaves out the three pitfalls ROBOT already covers (P08, P32, P41) and says so in the review. Without ROBOT it runs the full catalogue. It calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html), so **it sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to keep it local, or `"on"` (`--oops`) for the full catalogue every time. See [quality_check.md](quality_check.md).
+- To skip external evaluators entirely, set both `evaluation.robot = "off"` and `evaluation.oops = "off"`. With ROBOT off, OOPS! runs its full catalogue unless it is off too.
 
 Both tools' results go in the quality report next to OntoReview's own checks, with affected elements linked to their term entries.
 
@@ -119,12 +122,13 @@ ontoreview ui                     # or: ontoreview-ui; opens http://127.0.0.1:87
 ```
 
 - **Build:** choose a file, a folder or a URL (or drag files and folders onto the page), pick the output (**Website** is recommended for publishing docs), and press **Build docs**. You'll see progress step by step, then the term count, errors and warnings, and a filterable list of issues from the built-in checks, ROBOT and OOPS!. **Open docs** and **Show in folder** take you to the result. The equivalent `ontoreview` command is under **Command line**, ready for CI.
+- **Compare:** drop or choose a previous and a current version of an ontology (files or URLs). The comparison runs as soon as both are there. It shows added, removed and modified terms with the exact statements that changed, and writes a standalone HTML report (open it or download it) plus `changes.md` and `changes.json`. This is the same as `ontoreview diff OLD NEW --format html|markdown|json`. On Build, **Compare versions** is a shortcut for the ontology you're documenting. To put a changelog inside the website instead, set **Previous version** in Settings › Documentation.
 - **Run history:** every run, searchable and filterable. Each can be opened, shown in its folder, re-run with the same settings or removed from the list.
 - **Settings:** defaults for every build. *General* covers the output folder, default format and history. *Documentation* covers layout, languages, public URL, imports, reasoning, competency questions and previous version. *Quality checks* covers ROBOT (Docker or a local `robot`), the OOPS! service and when a check fails. *Appearance* covers the theme and compact layout. A project's `ontoreview.toml` overrides these.
 - **Project config:** the **Project config** menu on Build creates `ontoreview.toml` from a commented template, or opens the existing file in an editor that checks it before saving. It can also save what you selected, or load another config. The file keeps your settings with the ontology, so the command line, CI and teammates build the same docs.
 - **About:** version, system info for bug reports, and links. **Help:** step-by-step instructions with screenshots (regenerate them with `uv run --extra ui --with playwright python scripts/ui_screenshots.py`).
 - Found a bug or have an idea? Use **About › Report an issue**, which offers bug report, feature request and suggestion forms.
-- The sidebar shows whether ROBOT (Docker) and the OOPS! service are available. **OOPS! uploads your ontology to oops.linkeddata.es.** By default it only runs when ROBOT can't, and you can turn it off in Settings.
+- The sidebar shows whether ROBOT (Docker) and the OOPS! service are available. **OOPS! uploads your ontology to oops.linkeddata.es.** It runs alongside ROBOT by default; turn it off in Settings for private ontologies.
 - Settings, preferences and history are stored in `~/.config/ontoreview/` (set `ONTOREVIEW_UI_SETTINGS` to move them). Dropped files are copied to `~/.config/ontoreview/uploads/`.
 - The app listens on `127.0.0.1` only. It uses the first free port from 8765, or `--port N` (or `ONTOREVIEW_UI_PORT`). `--no-browser` skips opening a tab. `--host` exposes it to your network, and anyone who can reach it could read and write files on your machine.
 
@@ -158,7 +162,8 @@ section_order = ["introduction", "competency-questions", "reference", "graph"]
 
 [evaluation]
 robot = "auto"                # ROBOT via local robot or Docker; "on" | "off"
-oops = "auto"                 # OOPS! web service only when ROBOT can't run; "on" | "off"
+oops = "auto"                 # OOPS! alongside ROBOT (skips what ROBOT covers); "on" = full catalogue | "off"
+reasoner = "hermit"           # logical consistency via ROBOT; "elk" | "off"
 robot_image = "obolibrary/robot"
 ```
 
@@ -184,12 +189,18 @@ OntoReview converts the schema to OWL internally and documents it in OntoReview'
 ## Commands
 
 ```bash
+ontoreview ui [--port N] [--no-browser]       # the app (recommended); same as ontoreview-ui
+
+# Advanced / CI. SOURCE is a file, a URL or a folder of ontologies
 ontoreview build [SOURCE] [-o docs] [--layout multi] [--lang en,es] [--previous v1.ttl] [--reason]
-ontoreview serve [SOURCE]                     # rebuilds on change, live reload
-ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html]
-ontoreview diff OLD NEW [--format console|markdown|json]
+                 [--base-url URL] [--cq cq.yaml] [--single-file] [--robot auto|on|off] [--reasoner hermit|elk|off]
+                 [--oops/--no-oops] [--open]
+ontoreview serve [SOURCE] [--port 8000]       # rebuilds on change, live reload
+ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html] [-o report] [--reasoner hermit|elk|off]
+ontoreview diff OLD NEW [--format console|markdown|json|html] [-o changes.html]
 ontoreview export [SOURCE] --format markdown|myst -o docs-md
 ontoreview init [SOURCE] [--from-widoco config.properties]   # ontoreview.toml + GitHub Pages workflow
+ontoreview cq-template competency-questions.xlsx             # or .yaml / .csv / .tsv
 ```
 
 Python API:

@@ -5,7 +5,7 @@ A plugin is any object (module, class instance, ...) exposing some of these opti
     def sections(ontology, config) -> list[dict]
         # each dict: {"id", "title", "markdown" | "html", "position": "before-terms"|"after-terms"}
     def term_blocks(term, ontology) -> list[str]     # extra HTML appended to a term card
-    def rules() -> list[ontoreview.checks.Rule]         # extra quality checks
+    def rules() -> list[ontoreview.quality_checks.Rule]         # extra quality checks
     def template_dirs() -> list[str | Path]          # Jinja template overrides
     def postprocess(output_dir, ontology, config)    # run after the site is written
 

@@ -10,12 +10,10 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
-from .checks import Finding, Report, Rule, run_checks
 from .config import Config, load_config
 from .cq import CQSet, attach_backlinks, load_many
 from .cq import evaluate as evaluate_cqs
 from .diff import Changelog, compare
-from .evaluate import run_evaluations
 from .loader import LoadedOntology, load_ontology
 from .model.entities import Ontology
 from .model.extract import extract
@@ -28,6 +26,8 @@ from .publish import (
     w3id_htaccess,
     write_serializations,
 )
+from .quality_checks import Finding, Report, Rule, run_checks
+from .quality_checks.evaluators import run_evaluations
 from .render.site import SiteRenderer, copy_assets, language_links
 
 log = logging.getLogger(__name__)
