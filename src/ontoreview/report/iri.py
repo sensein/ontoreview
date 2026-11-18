@@ -17,7 +17,8 @@ def _plural(n: int, one: str, many: str | None = None) -> str:
 
 
 def iri_report(*, all_iris: int, invalid, headers, version_iris, resolution, offline, results, local_namespaces,
-               run_id, db, seconds, error=None, resolve_enabled=True, mismatches=None, max_age_days=30):
+               run_id, db, seconds, error=None, resolve_enabled=True, mismatches=None, max_age_days=30,
+               settings=None, checked_at=None):
     metrics, items = [], []
 
     def metric(title, value, status, about, metric_id):
@@ -167,6 +168,8 @@ def iri_report(*, all_iris: int, invalid, headers, version_iris, resolution, off
 
     rep = new_report("iri", sort_items(items))
     rep.metrics = metrics
+    rep.provenance = iri_provenance(results, run_id=run_id, db=db, settings=settings, checked_at=checked_at,
+                                    local_namespaces=local_namespaces)
     run = f"Run #{run_id} recorded in {db}." if run_id else ""
     shown = ", ".join(local_namespaces[:3]) + (f" and {len(local_namespaces) - 3} more" if len(local_namespaces) > 3 else "")
     ns = f"Own namespaces (not checked as external): {shown or 'none detected'}."
@@ -174,4 +177,94 @@ def iri_report(*, all_iris: int, invalid, headers, version_iris, resolution, off
     return rep
 
 
-__all__ = ["iri_report"]
+def _release_key(rel: dict) -> tuple:
+    # documents of one vocabulary (e.g. per-term CIDOC CRM files) are one release when versions agree
+    return (rel.get("source"), rel.get("ontology_iri") or rel.get("ontology") or rel.get("namespace"),
+            rel.get("version_iri"), rel.get("version"))
+
+
+def iri_provenance(results, *, run_id=None, db=None, settings=None, checked_at=None, local_namespaces=None) -> dict:
+    """A self-contained record of the IRI check, written into the documentation output.
+
+    It names the exact release (version IRI or version, and the SHA-256, URL and retrieval time of
+    every snapshot document) each external term was verified against, so the published docs keep
+    their provenance even after the local cache expires or is refreshed. Terms verified from records
+    that carry no release information are listed as such, never dropped.
+    """
+    releases: dict[tuple, dict] = {}
+    unrecorded: dict[str, int] = {}
+    terms = []
+    for r in results:
+        rel = r.get("release") or {}
+        if rel:
+            e = releases.setdefault(_release_key(rel), {
+                "title": rel.get("title"), "source": rel.get("source"),
+                "ontology_iri": rel.get("ontology_iri") or rel.get("namespace"), "ontology": rel.get("ontology"),
+                "version_iri": rel.get("version_iri"), "version": rel.get("version"),
+                "retrieved": rel.get("fetched_at") or rel.get("loaded") or rel.get("released"),
+                "terms": 0, "documents": {}})
+            e["terms"] += 1
+            e["title"] = e["title"] or rel.get("title")
+            if rel.get("sha256"):
+                e["documents"][rel.get("document") or rel.get("source_url")] = {
+                    "source_url": rel.get("source_url"), "sha256": rel["sha256"], "retrieved": rel.get("fetched_at")}
+        elif r.get("status") in ("valid", "deprecated", "type_not_declared"):
+            src = r.get("snapshot") or r.get("provider") or "unknown"
+            unrecorded[src] = unrecorded.get(src, 0) + 1
+        terms.append({k: r.get(k) for k in ("iri", "roles", "status", "snapshot", "stale", "age_days", "detail")
+                      if r.get(k) is not None} | ({"release": rel} if rel else {})
+                     | ({"attempts": r["attempts"]} if r.get("attempts") else {}))
+    out = []
+    for e in releases.values():
+        docs = list(e.pop("documents").values())
+        if len(docs) == 1:
+            e.update(sha256=docs[0]["sha256"], source_url=docs[0]["source_url"])
+        elif docs:
+            e.update(documents=docs, sha256=None, source_url=None)
+        out.append(e)
+    for src, n in unrecorded.items():
+        out.append({"title": None, "source": src, "ontology_iri": None, "version_iri": None, "version": None,
+                    "retrieved": None, "terms": n, "release_recorded": False,
+                    "note": "verified from a cached record that predates release tracking; refresh to record it"})
+    return {"checked_at": checked_at, "run_id": run_id, "database": db, "settings": settings or {},
+            "own_namespaces": local_namespaces or [],
+            "releases": sorted(out, key=lambda x: (x.get("release_recorded") is False, -x["terms"],
+                                                   str(x.get("title") or x.get("ontology_iri")))),
+            "terms": terms}
+
+
+def add_iri_provenance(g, provenance: dict, activity) -> None:
+    """PROV-O: the build activity used each vocabulary release the IRI check verified terms against."""
+    import hashlib
+
+    from rdflib import Literal, URIRef
+    from rdflib.namespace import DCTERMS, PROV, RDF, RDFS, XSD
+
+    for rel in provenance.get("releases", []):
+        if rel.get("release_recorded") is False:
+            continue
+        ident = rel.get("version_iri") or (f"urn:sha256:{rel['sha256']}" if rel.get("sha256") else None)
+        if not ident:
+            basis = f"{rel.get('source')}|{rel.get('ontology') or rel.get('ontology_iri')}|{rel.get('version')}"
+            ident = "urn:ontoreview:release:" + hashlib.sha256(basis.encode()).hexdigest()[:16]
+        node = URIRef(ident)
+        g.add((activity, PROV.used, node))
+        g.add((node, RDF.type, PROV.Entity))
+        if rel.get("ontology_iri") and str(rel["ontology_iri"]).startswith(("http://", "https://")):
+            g.add((node, DCTERMS.isVersionOf, URIRef(rel["ontology_iri"])))
+        if rel.get("version"):
+            g.add((node, DCTERMS.hasVersion, Literal(rel["version"])))
+        if rel.get("title"):
+            g.add((node, DCTERMS.title, Literal(rel["title"])))
+        for doc in rel.get("documents") or [rel]:
+            if doc.get("sha256"):
+                g.add((node, DCTERMS.identifier, Literal(f"sha256:{doc['sha256']}")))
+            if doc.get("source_url"):
+                g.add((node, DCTERMS.source, URIRef(doc["source_url"])))
+        if rel.get("retrieved"):
+            g.add((node, DCTERMS.date, Literal(rel["retrieved"], datatype=XSD.string)))
+        g.add((node, RDFS.comment, Literal(f"Release used to verify {rel['terms']} external term(s) "
+                                           f"(via {rel.get('source')}).")))
+
+
+__all__ = ["add_iri_provenance", "iri_provenance", "iri_report"]

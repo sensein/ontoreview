@@ -690,12 +690,13 @@ app.add_typer(terms_app, name="terms", rich_help_panel=ADVANCED)
 
 @terms_app.command("list")
 def terms_list() -> None:
-    """List stored vocabularies (bundled and cached)."""
+    """List stored ontologies, vocabularies and schemas (bundled and cached)."""
     from .quality_checks import iri
 
-    table = Table("vocabulary", "terms", "stored", "source")
-    for d in iri.list_documents():
-        table.add_row(_rich_escape(d["key"]), f"{d['terms']:,}", d["where"], _rich_escape(d["source_url"]))
+    table = Table("ontology / vocabulary / schema", "terms", "stored", "retrieved", "iri")
+    for g in iri.list_groups():
+        table.add_row(_rich_escape(g["title"]), f"{g['terms']:,}", g["where"], g["fetched_at"][:10],
+                      _rich_escape(g["group"]) + (f" [dim]({len(g['documents'])} documents)[/]" if len(g["documents"]) > 1 else ""))
     console.print(table)
     console.print(f"[dim]writable database: {iri.default_cache_path()}[/]")
 
@@ -707,11 +708,11 @@ def terms_search(query: str = typer.Argument(..., help="Part of an IRI or label.
     from .quality_checks import iri
 
     rows = iri.search_terms(query, limit=limit)
-    table = Table("label", "iri", "type", "vocabulary")
+    table = Table("label", "iri", "type", "ontology / vocabulary")
     for r in rows:
         table.add_row(_rich_escape(", ".join(r["labels"][:1])), _rich_escape(r["iri"]),
                       ", ".join(t.rsplit("#", 1)[-1].rsplit("/", 1)[-1] for t in r["types"][:2]),
-                      _rich_escape(r["document"]) + (" [yellow](deprecated)[/]" if r["deprecated"] else ""))
+                      _rich_escape(r["vocabulary"]) + (" [yellow](deprecated)[/]" if r["deprecated"] else ""))
     console.print(table)
     console.print(f"[dim]{len(rows)} term(s)[/]")
 

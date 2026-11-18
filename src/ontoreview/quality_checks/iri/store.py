@@ -61,6 +61,21 @@ def default_cache_path() -> Path:
     return root / "ontoreview" / "iri.sqlite3"
 
 
+TITLE_PREDICATES = [URIRef("http://purl.org/dc/terms/title"), URIRef("http://purl.org/dc/elements/1.1/title"),
+                    RDFS.label, SKOS.prefLabel]
+
+
+def ontology_title(graph, headers) -> str | None:
+    """The ontology's own name: dcterms:title, dc:title, rdfs:label or skos:prefLabel (English first)."""
+    for h in headers:
+        for p in TITLE_PREDICATES:
+            values = list(graph.objects(URIRef(h), p))
+            if values:
+                values.sort(key=lambda v: (getattr(v, "language", None) not in (None, "en", "en-US", "en-GB"), str(v)))
+                return " ".join(str(values[0]).split())
+    return None
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -130,8 +145,10 @@ class TermStore:
         return result
 
     def save(self, key, graph, source_url, payload) -> int:
+        headers = sorted(str(s) for s in graph.subjects(RDF.type, OWL.Ontology) if isinstance(s, URIRef))
         metadata = {
-            "ontology_iris": sorted(str(s) for s in graph.subjects(RDF.type, OWL.Ontology) if isinstance(s, URIRef)),
+            "title": ontology_title(graph, headers),
+            "ontology_iris": headers,
             "version_iris": sorted(str(o) for o in graph.objects(None, OWL.versionIRI)),
             "imports_not_loaded": sorted(str(o) for o in graph.objects(None, OWL.imports)),
             "licenses": sorted({str(o) for p in ("http://purl.org/dc/terms/license", "http://creativecommons.org/ns#license")

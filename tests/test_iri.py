@@ -349,3 +349,54 @@ def test_refresh_document_and_cli(tmp_path):
     out = CliRunner().invoke(app, ["terms", "refresh", "https://vocab.test/"])
     assert out.exit_code == 0 and "5 terms (changed)" in out.output
     assert CliRunner().invoke(app, ["terms", "refresh", "https://nope.test/"]).exit_code == 1
+
+
+def test_groups_per_term_documents_and_names(tmp_path):
+    cache = TermStore(default_cache_path())
+    try:
+        for name in ("E21_Person", "E22_Object"):
+            g = Graph().parse(data=f"""@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                <http://crm.test/crm/{name}> a rdfs:Class ; rdfs:label "{name}" .""", format="turtle")
+            cache.save(f"http://crm.test/crm/{name}", g, f"http://crm.test/rdfs/{name}.rdf", b"x")
+    finally:
+        cache.close()
+    _seed(tmp_path)
+    groups = {g["group"]: g for g in iri.list_groups() if g["where"] == "cache"}
+    crm = groups["http://crm.test/crm/"]
+    assert len(crm["documents"]) == 2 and crm["terms"] == 2 and crm["title"] == "crm (crm.test)"
+    bundled = {g["title"] for g in iri.list_groups() if g["where"] == "bundled"}
+    assert "PROV-O" in bundled and not any(t.startswith("http") for t in bundled)
+    hits = iri.search_terms("", document=crm["keys"])
+    assert len(hits) == 2 and {h["vocabulary"] for h in hits} == {"crm (crm.test)"}
+
+
+def test_title_is_stored_for_new_documents(tmp_path):
+    f = tmp_path / "v.ttl"
+    f.write_text(VOCAB.replace('<https://vocab.test/> a owl:Ontology .',
+                               '<https://vocab.test/> a owl:Ontology ; <http://purl.org/dc/terms/title> "Vocab"@de, '
+                               '"Test Vocabulary"@en .'))
+    iri.add_document(path=f)
+    [g] = [g for g in iri.list_groups() if g["group"] == "https://vocab.test/"]
+    assert g["title"] == "Test Vocabulary"
+
+
+def test_build_freezes_iri_provenance_in_the_docs(tmp_path):
+    import ontoreview
+
+    src = tmp_path / "o.ttl"
+    src.write_text(PROV_ALIAS)
+    out = tmp_path / "site"
+    ontoreview.build(src, out=out, evaluation={"iri_network": False, "robot": "off", "oops": "off", "ontocheck": "off"})
+    rec = json.loads((out / "iri-checks.json").read_text())
+    [rel] = [r for r in rec["releases"] if r["version_iri"] == "http://www.w3.org/ns/prov-o-20130430"]
+    assert rel["terms"] == 3 and len(rel["sha256"]) == 64 and rel["source"] == "bundle"
+    assert {t["iri"] for t in rec["terms"]} >= {"http://www.w3.org/ns/prov#Entity"} and rec["checked_at"]
+    prov = Graph().parse(out / "provenance.ttl")
+    from rdflib import URIRef
+    from rdflib.namespace import PROV
+    assert (URIRef("urn:ontoreview:build"), PROV.used, URIRef(rel["version_iri"])) in prov
+    html = (out / "index.html").read_text()
+    assert "Verified against" in html and "prov-o-20130430" in html
+    before = (out / "iri-checks.json").read_text()
+    iri.remove_document("http://www.w3.org/ns/prov-o#")      # cache changes later: the built docs do not
+    assert (out / "iri-checks.json").read_text() == before

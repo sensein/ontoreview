@@ -181,13 +181,21 @@ If the ontology `owl:imports` a specific release of a vocabulary (for example `â
 - When online, expired entries are fetched again from their catalog URL, original URL or original file.
 - If that fails, or offline, the entry is still used but flagged as stale, with its age.
 - Expired OLS or BioPortal results are looked up again.
-- Refresh by hand with the **Refresh** button on the Term database page, or with `ontoreview terms refresh KEY` (or `--stale`). Terms that no source confirms are *unverified*, never *invalid*: coverage is incomplete. To keep runs bounded:
+- Refresh by hand with the **Refresh** button on the Term database page, or with `ontoreview terms refresh KEY` (or `--stale`).
+
+**Provenance in the published docs.** Each build writes a frozen record of its IRI check into the documentation output, so the docs keep stating what they were checked against even after the local cache expires or is refreshed:
+
+- `iri-checks.json`: when the check ran, its settings, the ontology's own namespaces, and every external term with its status, source, lookup trail and release. It also lists each release used, with its name, ontology IRI, version IRI or version, source, retrieval time, the SHA-256 and URL of every snapshot document, and the number of terms verified against it. Terms verified from records that predate release tracking are listed as "release not recorded", never dropped.
+- `provenance.ttl`: `urn:ontoreview:build prov:used` each release, with `dcterms:isVersionOf`, `dcterms:hasVersion`, `dcterms:identifier "sha256:â€¦"`, `dcterms:source` and `dcterms:date`.
+- The quality report's IRI section: a "Verified against" table.
+
+The bundled snapshot is never modified: refreshed copies go to the writable cache. Terms that no source confirms are *unverified*, never *invalid*: coverage is incomplete. To keep runs bounded:
 
 - there is a time budget for network lookups (`iri_budget`, 120 s)
 - an unreachable host isn't contacted again in the same run
 - after three misses in one namespace, its remaining terms aren't looked up
 
-**Run tracking and the database.** Every run is recorded in the writable SQLite database: the settings, a summary, and each term's status, source and lookup attempts. The default location is `~/Library/Caches/ontoreview/iri.sqlite3` on macOS, `$XDG_CACHE_HOME/ontoreview/iri.sqlite3` on Linux and `%LOCALAPPDATA%\ontoreview\iri.sqlite3` on Windows. Override it with `$ONTOREVIEW_IRI_DB` or `evaluation.iri_db`. The app's **Term database** page lets you:
+**Run tracking and the database.** Every run is recorded in the writable SQLite database: the settings, a summary, and each term's status, source and lookup attempts. The default location is `~/Library/Caches/ontoreview/iri.sqlite3` on macOS, `$XDG_CACHE_HOME/ontoreview/iri.sqlite3` on Linux and `%LOCALAPPDATA%\ontoreview\iri.sqlite3` on Windows. Override it with `$ONTOREVIEW_IRI_DB` or `evaluation.iri_db`. The app's **Term database** page lists stored ontologies, vocabularies and schemas by name, grouping documents of one vocabulary (for example CIDOC CRM, whose server answers per term). It lets you:
 
 - search terms by IRI or label
 - browse the bundled and cached vocabularies

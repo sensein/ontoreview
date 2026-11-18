@@ -79,6 +79,10 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
     """Run all IRI checks as configured in ``[evaluation]`` (``ev``) and record the run."""
     log.info("Checking IRIs")
     t0 = time.perf_counter()
+    from datetime import datetime, timezone
+
+    checked_at = datetime.now(timezone.utc).isoformat()
+    run_settings: dict = {}
     offline = not ev.iri_network
     timeout, max_mb = float(ev.iri_timeout), float(ev.iri_max_mb)
     headers = ontology_headers(graph)
@@ -108,9 +112,10 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
         with as_file(data_file("top_terms.sqlite3")) as bundle_path:
             bundle, cache = TermStore(bundle_path, readonly=True), TermStore(db)
             try:
-                settings = {"offline": offline, "refresh": ev.iri_refresh, "repositories": ev.iri_repositories,
-                            "resolve": ev.iri_resolve, "local_namespaces": locals_, "budget": ev.iri_budget}
-                run_id = cache.start_run(source, ontology_iri, settings)
+                run_settings = {"offline": offline, "refresh": ev.iri_refresh, "repositories": ev.iri_repositories,
+                                "resolve": ev.iri_resolve, "local_namespaces": locals_, "budget": ev.iri_budget,
+                                "cache_days": ev.iri_cache_days}
+                run_id = cache.start_run(source, ontology_iri, run_settings)
                 validator = Validator(bundle, cache, catalog, offline=offline, refresh=ev.iri_refresh and not offline,
                                       timeout=timeout, max_mb=max_mb,
                                       providers=None if ev.iri_repositories else [], budget=ev.iri_budget,
@@ -118,6 +123,7 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
                 for iri, roles in sorted(refs.items()):
                     results.append(validator.validate(iri, roles))
                 mismatches = release_mismatches(graph, results)
+                _name_releases(results, db)
                 summary = _summary(results, invalid, len(all_iris))
                 cache.finish_run(run_id, results, summary)
             finally:
@@ -130,7 +136,24 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
         all_iris=len(all_iris), invalid=invalid, headers=headers, version_iris=version_iris,
         resolution=resolution, offline=offline, results=results, local_namespaces=locals_,
         run_id=run_id, db=str(db), seconds=time.perf_counter() - t0, error=error,
-        resolve_enabled=bool(ev.iri_resolve), mismatches=mismatches, max_age_days=ev.iri_cache_days)
+        resolve_enabled=bool(ev.iri_resolve), mismatches=mismatches, max_age_days=ev.iri_cache_days,
+        settings=run_settings, checked_at=checked_at)
+
+
+def _name_releases(results: list[dict], db) -> None:
+    """Give each release the readable name the Term database page shows (same naming everywhere)."""
+    if not any((r.get("release") or {}).get("document") and not r["release"].get("title") for r in results):
+        return
+    try:
+        names = {(("bundle" if g["where"] == "bundled" else "cache"), k): g["title"]
+                 for g in list_groups(db) for k in g["keys"]}
+    except Exception:  # noqa: BLE001 - naming is cosmetic
+        return
+    for r in results:
+        rel = r.get("release") or {}
+        if rel.get("document") and not rel.get("title"):
+            where = "bundle" if rel.get("source") == "bundle" else "cache"
+            rel["title"] = names.get((where, rel["document"]))
 
 
 def _stem(iri: str) -> str:
@@ -192,8 +215,37 @@ def open_stores(db: str | Path | None = None):
         return TermStore(bundle_path, readonly=True), TermStore(Path(db) if db else default_cache_path())
 
 
+def _readable(iri: str) -> str:
+    """A short readable name from an IRI: its last meaningful path segment, plus the host."""
+    from urllib.parse import urlsplit
+
+    parts = urlsplit(iri)
+    segs = [x for x in re.split(r"[/#]", parts.path) if x]
+    name = segs[-1] if segs else parts.netloc
+    for ext in (".owl", ".ttl", ".rdf", ".nt", ".jsonld", ".xml"):
+        name = name[: -len(ext)] if name.endswith(ext) else name
+    return f"{name} ({parts.netloc})" if parts.netloc and name != parts.netloc else (name or iri)
+
+
+def _catalog_entry(iris: list[str], catalog: list[dict]) -> dict | None:
+    for e in catalog:
+        if e["ontology_iri"] in iris:
+            return e
+    hits = [e for e in catalog for i in iris if i.startswith(e["term_namespace"])]
+    return max(hits, key=lambda e: len(e["term_namespace"])) if hits else None
+
+
+def _group_key(key: str, meta: dict, entry: dict | None) -> str:
+    if meta.get("ontology_iris"):
+        return meta["ontology_iris"][0]
+    if entry:
+        return entry["ontology_iri"]
+    return _ns(key) or key
+
+
 def list_documents(db: str | Path | None = None) -> list[dict]:
-    """Every stored vocabulary snapshot: where it is (bundled / cached), its source and term count."""
+    """Every stored snapshot (one per downloaded/added document) with a readable title and group."""
+    catalog = load_catalog()
     bundle, cache = open_stores(db)
     try:
         out = []
@@ -202,10 +254,22 @@ def list_documents(db: str | Path | None = None) -> list[dict]:
                     "SELECT d.key, d.source_url, d.fetched_at, d.sha256, d.metadata, count(t.iri) AS terms "
                     "FROM documents d LEFT JOIN terms t ON t.document_key = d.key GROUP BY d.key ORDER BY d.key"):
                 meta = json.loads(r["metadata"] or "{}")
+                onto = meta.get("ontology_iris", [])
+                entry = _catalog_entry([r["key"], *onto], catalog)
+                title = meta.get("title") or (entry["name"] if entry and entry["ontology_iri"] in [r["key"], *onto]
+                                              else None)
+                if not title and onto:
+                    row = store.db.execute("SELECT labels FROM terms WHERE document_key=? AND iri=?",
+                                           (r["key"], onto[0])).fetchone()
+                    labels = json.loads(row["labels"]) if row else []
+                    title = labels[0] if labels else None
+                if not title and entry:
+                    title = entry["name"]
                 out.append({"key": r["key"], "where": where, "source_url": r["source_url"],
                             "fetched_at": r["fetched_at"], "sha256": r["sha256"], "terms": r["terms"],
-                            "age_days": age_days(r["fetched_at"]),
-                            "ontology_iris": meta.get("ontology_iris", []), "version_iris": meta.get("version_iris", []),
+                            "age_days": age_days(r["fetched_at"]), "title": title,
+                            "group": _group_key(r["key"], meta, entry), "catalog_id": entry["id"] if entry else None,
+                            "ontology_iris": onto, "version_iris": meta.get("version_iris", []),
                             "licenses": meta.get("licenses", [])})
         return out
     finally:
@@ -213,19 +277,56 @@ def list_documents(db: str | Path | None = None) -> list[dict]:
         cache.close()
 
 
-def search_terms(query: str, db: str | Path | None = None, limit: int = 200, document: str | None = None) -> list[dict]:
-    """Terms whose IRI or label contains ``query`` (case-insensitive), in bundled and cached snapshots."""
+def list_groups(db: str | Path | None = None) -> list[dict]:
+    """Stored ontologies / vocabularies / schemas: documents grouped by ontology IRI or namespace.
+
+    Servers that answer per term (e.g. CIDOC CRM) produce one document per term; they are shown as
+    one entry here.
+    """
+    groups: dict[tuple[str, str], dict] = {}
+    for d in list_documents(db):
+        g = groups.setdefault((d["where"], d["group"]), {
+            "group": d["group"], "where": d["where"], "title": None, "documents": [], "terms": 0,
+            "version_iris": set(), "licenses": set(), "sources": set(), "catalog_id": d["catalog_id"]})
+        g["documents"].append(d)
+        g["terms"] += d["terms"]
+        g["version_iris"] |= set(d["version_iris"])
+        g["licenses"] |= set(d["licenses"])
+        g["sources"].add(d["source_url"])
+        if d["title"] and (not g["title"] or d["key"] == d["group"]):
+            g["title"] = d["title"]
+    out = []
+    for g in groups.values():
+        ages = [d["age_days"] for d in g["documents"] if d["age_days"] is not None]
+        g.update(title=g["title"] or _readable(g["group"]), keys=[d["key"] for d in g["documents"]],
+                 age_days=max(ages) if ages else None,
+                 fetched_at=max(d["fetched_at"] for d in g["documents"]),
+                 version_iris=sorted(g["version_iris"]), licenses=sorted(g["licenses"]), sources=sorted(g["sources"]))
+        out.append(g)
+    return sorted(out, key=lambda g: (g["where"], g["title"].lower()))
+
+
+def search_terms(query: str, db: str | Path | None = None, limit: int = 200,
+                 document: str | list[str] | None = None) -> list[dict]:
+    """Terms whose IRI or label contains ``query`` (case-insensitive), in bundled and cached snapshots.
+
+    ``document`` limits the search to one stored document key or a list of keys (a group).
+    """
     q = f"%{query.strip().lower()}%"
+    keys = [document] if isinstance(document, str) else list(document or [])
+    titles = {(d["where"], d["key"]): d for d in list_documents(db)}
+    groups = {(g["where"], k): g["title"] for g in list_groups(db) for k in g["keys"]}
     bundle, cache = open_stores(db)
     try:
         out = []
         for store, where in ((cache, "cache"), (bundle, "bundled")):
             sql = ("SELECT document_key, iri, types, labels, deprecated FROM terms "
-                   "WHERE (lower(iri) LIKE ? OR lower(labels) LIKE ?)" + (" AND document_key = ?" if document else "")
-                   + " ORDER BY iri LIMIT ?")
-            args = (q, q, document, limit) if document else (q, q, limit)
-            for r in store.db.execute(sql, args):
+                   "WHERE (lower(iri) LIKE ? OR lower(labels) LIKE ?)"
+                   + (f" AND document_key IN ({','.join('?' * len(keys))})" if keys else "") + " ORDER BY iri LIMIT ?")
+            for r in store.db.execute(sql, (q, q, *keys, limit)):
+                doc = titles.get((where, r["document_key"]), {})
                 out.append({"iri": r["iri"], "document": r["document_key"], "where": where,
+                            "vocabulary": groups.get((where, r["document_key"])) or doc.get("title") or r["document_key"],
                             "types": json.loads(r["types"]), "labels": json.loads(r["labels"]),
                             "deprecated": bool(r["deprecated"])})
         return out[:limit]
@@ -310,6 +411,6 @@ def recent_runs(db: str | Path | None = None, limit: int = 50) -> list[dict]:
         cache.close()
 
 
-__all__ = ["add_document", "check_iris", "list_documents", "load_catalog", "recent_runs", "refresh_document",
+__all__ = ["add_document", "check_iris", "list_documents", "list_groups", "load_catalog", "recent_runs", "refresh_document",
            "release_mismatches", "remove_document",
            "run_iri_checks", "search_terms"]

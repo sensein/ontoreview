@@ -50,6 +50,7 @@ class ExternalReport:
     note: str = ""  # shown when there are no findings, e.g. "Consistent; ... (HermiT)."
     scope: str = ""  # what was (not) checked, e.g. which OOPS! pitfalls were left to ROBOT
     metrics: list[dict] = field(default_factory=list)  # scorecard rows (OntoCheck): group, title, value, status
+    provenance: dict = field(default_factory=dict)    # frozen record of what was checked against (IRI checks)
 
     @property
     def summary(self) -> dict[str, int]:

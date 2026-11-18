@@ -233,9 +233,13 @@ class Validator:
         meta = json.loads(document["metadata"])
         result.update(snapshot=origin, source_url=document["source_url"], fetched_at=document["fetched_at"],
                       sha256=document["sha256"], ontology_metadata=meta,
-                      release={"source": origin, "ontology_iri": (meta.get("ontology_iris") or [None])[0],
-                               "version_iri": (meta.get("version_iris") or [None])[0], "sha256": document["sha256"],
-                               "fetched_at": document["fetched_at"], "source_url": document["source_url"]})
+                      release={"source": origin,
+                               "ontology_iri": (meta.get("ontology_iris") or [None])[0]
+                               or (entry["ontology_iri"] if entry else None),
+                               "namespace": _namespace(key), "title": meta.get("title") or (entry or {}).get("name"),
+                               "document": key, "version_iri": (meta.get("version_iris") or [None])[0],
+                               "sha256": document["sha256"], "fetched_at": document["fetched_at"],
+                               "source_url": document["source_url"]})
         if age is not None:
             result.update(stale=True, age_days=round(age, 1))
         if term is None:

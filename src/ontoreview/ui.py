@@ -261,7 +261,7 @@ HELP = [
         "returns RDF, and whether reused classes and properties (e.g. prov:Entity) exist in their vocabulary.",
         "Terms are looked up in a SQLite database first: 10 W3C vocabularies ship with OntoReview, and everything "
         "found online (OLS, BioPortal, direct downloads) is saved, so the next run is fast and works offline.",
-        "<b>Term database</b> shows it: <b>Search</b> by IRI or label, <b>Vocabularies</b> lists what is stored, "
+        "<b>Term database</b> shows it: <b>Search</b> by IRI or label, <b>Ontologies, vocabularies &amp; schemas</b> lists what is stored by name (click one for its IRI, release, source and checksums), "
         "<b>Add ontology</b> indexes a vocabulary from a URL or a file (or drop files), and <b>Runs</b> lists every "
         "IRI check with each term's result and where it was found.",
         "Terms nobody could confirm are <i>unverified</i>, not wrong. Add their vocabulary on the Term database page "
@@ -2036,12 +2036,12 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         set_active("terms")
         page_head("Term database", "The SQLite database the IRI checks use: bundled W3C vocabularies, everything "
                                    "looked up or downloaded since, and every IRI-check run.")
-        st = {"tab": "search", "query": "", "document": None}
+        st = {"tab": "search", "query": "", "document": None, "document_title": ""}
         with ui.element("div").classes("or-body column gap-4"):
             stats = ui.label().classes("or-hint or-mono").style("word-break: break-all")
             with ui.tabs().classes("or-tabs").props("align=left no-caps inline-label") as tabs:
                 t_search = ui.tab("search", "Search", icon="search")
-                t_docs = ui.tab("docs", "Vocabularies", icon="library_books")
+                t_docs = ui.tab("docs", "Ontologies, vocabularies & schemas", icon="library_books")
                 t_add = ui.tab("add", "Add ontology", icon="add_circle_outline")
                 t_runs = ui.tab("runs", "Runs", icon="history")
             with ui.tab_panels(tabs, value=t_search).classes("w-full").style("background: transparent"):
@@ -2084,11 +2084,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 with ui.tab_panel(t_runs).classes("q-pa-none"):
                     runs_box = ui.column().classes("w-full gap-3")
 
-        def show_stats(docs) -> None:
-            b = [d for d in docs if d["where"] == "bundled"]
-            c = [d for d in docs if d["where"] == "cache"]
-            stats.text = (f"Bundled: {len(b)} vocabularies, {sum(d['terms'] for d in b):,} terms · "
-                          f"Cache: {len(c)} vocabularies, {sum(d['terms'] for d in c):,} terms · "
+        def show_stats(groups) -> None:
+            b = [g for g in groups if g["where"] == "bundled"]
+            c = [g for g in groups if g["where"] == "cache"]
+            stats.text = (f"Bundled: {len(b)} ontologies/vocabularies, {sum(g['terms'] for g in b):,} terms · "
+                          f"Cache: {len(c)} ontologies/vocabularies, {sum(g['terms'] for g in c):,} terms · "
                           f"{iri_db.default_cache_path()}")
 
         async def search() -> None:
@@ -2099,8 +2099,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             if st["document"]:
                 with doc_filter:
                     ui.label("In").classes("or-hint")
-                    ui.chip(st["document"], removable=True).props("dense outline").on(
-                        "remove", lambda: (st.update(document=None), background_tasks.create(search())))
+                    ui.chip(st["document_title"] or "selected", removable=True).props("dense outline").on(
+                        "remove", lambda: (st.update(document=None, document_title=""), background_tasks.create(search())))
             if not query and not st["document"]:
                 with results_box:
                     ui.label("Type part of an IRI or label. Prefix aliases don't matter: terms are stored by full "
@@ -2115,75 +2115,133 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 if rows:
                     short = lambda t: t.rsplit("#", 1)[-1].rsplit("/", 1)[-1]  # noqa: E731
                     data = [{"id": n, "iri": r["iri"], "label": ", ".join(r["labels"][:2]),
-                             "types": ", ".join(short(t) for t in r["types"][:3]), "document": r["document"],
+                             "types": ", ".join(short(t) for t in r["types"][:3]), "document": r["vocabulary"],
                              "where": r["where"], "deprecated": "deprecated" if r["deprecated"] else ""}
                             for n, r in enumerate(rows)]
                     cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
-                            (("label", "Label"), ("iri", "IRI"), ("types", "Type"), ("document", "Vocabulary"),
+                            (("label", "Label"), ("iri", "IRI"), ("types", "Type"), ("document", "Ontology / vocabulary"),
                              ("where", "Stored"), ("deprecated", ""))]
                     ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 25}) \
                         .classes("or-table").props("flat dense wrap-cells").mark("term-results")
 
         async def show_docs() -> None:
+            from urllib.parse import urlsplit
+
             from .config import Config
 
             max_age = Config().evaluation.iri_cache_days
-            docs = await run.io_bound(iri_db.list_documents)
+            groups = await run.io_bound(iri_db.list_groups)
             if docs_box.is_deleted:
                 return
-            show_stats(docs)
+            show_stats(groups)
             docs_box.clear()
             with docs_box:
-                for where, title, hint in (("cache", "Added and downloaded", "Your writable database: vocabularies "
-                                            "added here, downloaded during IRI checks, or found in OLS/BioPortal."),
+                for where, title, hint in (("cache", "Added and downloaded", "Your writable database: ontologies, "
+                                            "vocabularies and schemas added here, downloaded during IRI checks, or "
+                                            "found in OLS/BioPortal. Click one for details."),
                                            ("bundled", "Bundled with OntoReview", "Read-only W3C vocabulary snapshots "
-                                            "(see data/iri/THIRD_PARTY_NOTICES.txt).")):
-                    group = [d for d in docs if d["where"] == where]
+                                            "(see data/iri/THIRD_PARTY_NOTICES.txt). Click one for details.")):
+                    section = [g for g in groups if g["where"] == where]
                     with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2 w-full"):
-                        ui.label(f"{title} ({len(group)})").classes("or-h2")
+                        ui.label(f"{title} ({len(section)})").classes("or-h2")
                         ui.label(hint).classes("or-hint")
-                        if not group:
+                        if not section:
                             ui.label("Nothing here yet. Add an ontology, or run a build: external terms are cached "
                                      "automatically.").classes("or-hint q-py-sm")
-                        for d in group:
-                            with ui.row().classes("w-full items-center gap-3 no-wrap q-py-xs").style(
-                                    "border-top: 1px solid var(--or-line-2)"):
+                        for g in section:
+                            age = g.get("age_days")
+                            old = age is not None and age > max_age > 0
+                            hosts = sorted({urlsplit(u).netloc or Path(urlsplit(u).path).name for u in g["sources"]})
+                            n_docs = len(g["documents"])
+                            with ui.row().classes("w-full items-center gap-3 no-wrap q-py-sm cursor-pointer").style(
+                                    "border-top: 1px solid var(--or-line-2)").on(
+                                    "click", lambda g=g: group_details(g, max_age)).mark("term-vocab"):
                                 with ui.column().classes("gap-0 grow min-w-0"):
-                                    ui.label(d["key"]).classes("or-label or-mono ellipsis w-full")
-                                    age = d.get("age_days")
-                                    old = age is not None and age > max_age > 0
-                                    ui.label(f"{d['terms']:,} terms · {d['source_url']} · {d['fetched_at'][:10]}"
-                                             + (f" ({age:.0f} days ago)" if age is not None else "")
-                                             + (f" · {', '.join(d['licenses'][:1])}" if d["licenses"] else "")) \
+                                    ui.label(g["title"]).classes("text-weight-medium ellipsis w-full").style(
+                                        "font-size: 15px")
+                                    ui.label(f"{g['terms']:,} terms"
+                                             + (f" · {n_docs} documents" if n_docs > 1 else "")
+                                             + (f" · {', '.join(hosts[:2])}" if hosts else "")
+                                             + f" · retrieved {g['fetched_at'][:10]}"
+                                             + (f" ({age:.0f} days ago)" if age is not None else "")) \
                                         .classes("or-hint ellipsis w-full").style(
                                             "color: var(--or-warn, #B54708)" if old else "")
-                                    if old:
-                                        ui.label(f"Older than {max_age:g} days: refreshed automatically on the next "
-                                                 "online IRI check, or now with Refresh.").classes("or-hint")
-                                ui.button("Browse", on_click=lambda d=d: (st.update(document=d["key"]),
-                                                                          tabs.set_value("search"),
-                                                                          background_tasks.create(search()))) \
-                                    .props("flat dense no-caps")
-                                if d["source_url"].startswith(("http://", "https://", "file://")):
-                                    ui.button("Refresh", on_click=lambda d=d: refresh_doc(d["key"])) \
-                                        .props("flat dense no-caps").tooltip("Fetch this vocabulary again")
-                                if where == "cache":
-                                    ui.button(icon="delete_outline", on_click=lambda d=d: remove(d["key"])) \
-                                        .props(f'flat round dense aria-label="Remove {d["key"]}"').tooltip("Remove")
+                                    ui.label(g["group"]).classes("or-hint or-mono ellipsis w-full").style("font-size: 11px")
+                                ui.button("Browse", on_click=lambda g=g: browse_group(g)) \
+                                    .props("flat dense no-caps").on("click.stop", lambda: None)
+                                ui.icon("chevron_right", size="20px").classes("or-muted")
 
-        async def refresh_doc(key: str) -> None:
-            notify(f"Refreshing {key}…")
-            try:
-                res = await run.io_bound(iri_db.refresh_document, key)
-            except Exception as e:  # noqa: BLE001
-                notify(f"Could not refresh {key}: {str(e)[:160]}", "negative")
-                return
-            notify(f"{key}: {res['terms']:,} terms" + (" (changed)" if res["changed"] else " (unchanged)"), "positive")
+        def browse_group(g: dict) -> None:
+            st.update(document=g["keys"], document_title=g["title"])
+            tabs.set_value("search")
+            background_tasks.create(search())
+
+        def group_details(g: dict, max_age: float) -> None:
+            age = g.get("age_days")
+            with docs_box, ui.dialog() as dlg, ui.card().classes("or-card w-[52rem] max-w-full"):
+                ui.label(g["title"]).classes("or-h2")
+                ui.label("Bundled with OntoReview (read-only)" if g["where"] == "bundled"
+                         else "In your writable database").classes("or-hint")
+
+                def field(name: str, value: str, mono: bool = False) -> None:
+                    if not value:
+                        return
+                    with ui.row().classes("w-full no-wrap gap-4 items-start"):
+                        ui.label(name).classes("or-label").style("min-width: 150px")
+                        ui.label(value).classes("grow" + (" or-mono" if mono else "")).style("word-break: break-all")
+
+                field("IRI", g["group"], True)
+                field("Terms", f"{g['terms']:,}")
+                field("Version IRI", ", ".join(g["version_iris"]), True)
+                field("License", ", ".join(g["licenses"]))
+                field("Source", "\n".join(g["sources"][:3]) + (f"\n… {len(g['sources']) - 3} more"
+                                                                 if len(g["sources"]) > 3 else ""), True)
+                field("Retrieved", f"{g['fetched_at'][:19].replace('T', ' ')} UTC"
+                      + (f" ({age:.0f} days ago)" if age is not None else ""))
+                if age is not None and age > max_age > 0:
+                    ui.label(f"Older than {max_age:g} days: refreshed automatically on the next online IRI check, "
+                             "or now with Refresh. Builds keep the release they were checked against in their own "
+                             "provenance.").classes("or-hint").style("color: var(--or-warn, #B54708)")
+                if len(g["documents"]) > 1:
+                    ui.label(f"{len(g['documents'])} documents (the server answers per term)").classes("or-label q-mt-sm")
+                    data = [{"id": n, "key": d["key"], "terms": d["terms"], "sha": d["sha256"][:12],
+                             "fetched": d["fetched_at"][:10]} for n, d in enumerate(g["documents"])]
+                    cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
+                            (("key", "Document"), ("terms", "Terms"), ("fetched", "Retrieved"), ("sha", "SHA-256"))]
+                    ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 8}) \
+                        .classes("or-table").props("flat dense wrap-cells")
+                else:
+                    field("SHA-256", g["documents"][0]["sha256"], True)
+                with ui.row().classes("w-full justify-end gap-2 q-mt-md"):
+                    ui.button("Browse terms", on_click=lambda: (dlg.close(), browse_group(g))).props("flat no-caps")
+                    if any(u.startswith(("http://", "https://", "file://")) for u in g["sources"]):
+                        ui.button("Refresh", icon="refresh",
+                                  on_click=lambda: (dlg.close(), background_tasks.create(refresh_group(g)))) \
+                            .props("outline no-caps")
+                    if g["where"] == "cache":
+                        ui.button("Remove", icon="delete_outline",
+                                  on_click=lambda: (dlg.close(), background_tasks.create(remove_group(g)))) \
+                            .props("outline no-caps color=negative")
+                    ui.button("Close", on_click=dlg.close).props("unelevated no-caps")
+            dlg.open()
+
+        async def refresh_group(g: dict) -> None:
+            notify(f"Refreshing {g['title']}…")
+            done, errors = 0, []
+            for key in g["keys"]:
+                try:
+                    await run.io_bound(iri_db.refresh_document, key)
+                    done += 1
+                except Exception as e:  # noqa: BLE001
+                    errors.append(str(e)[:120])
+            notify(f"{g['title']}: refreshed {done} of {len(g['keys'])}" + (f" ({errors[0]})" if errors else ""),
+                   "positive" if not errors else "warning")
             await show_docs()
 
-        async def remove(key: str) -> None:
-            await run.io_bound(iri_db.remove_document, key)
-            notify(f"Removed {key}", "positive")
+        async def remove_group(g: dict) -> None:
+            for key in g["keys"]:
+                await run.io_bound(iri_db.remove_document, key)
+            notify(f"Removed {g['title']}", "positive")
             await show_docs()
 
         async def add(url: str | None = None, path: str | None = None) -> None:
