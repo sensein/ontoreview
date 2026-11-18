@@ -17,9 +17,10 @@ Markdown and MyST exports, and **Compare versions**, don't run quality checks.
 2. **Built-in rules** OB001 → OB028, in ID order, then any rules added by plugins.
 3. **ROBOT report**, using a local `robot` command or the `obolibrary/robot` Docker image.
 4. **Logical consistency**, an OWL reasoner (HermiT by default, or ELK) run with `robot reason` through the same local `robot` or Docker image. It needs ROBOT, so it is skipped when ROBOT is off or unavailable.
-5. **OntoCheck metrics**, run in-process with the [OntoCheck](https://ontocheck.readthedocs.io) library: a scorecard of labeling, structural, accessibility and naming-convention metrics (see below). Only the SPARQL-endpoint and RDF-dump checks use the network, to contact URLs the ontology declares.
-6. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
-7. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
+5. **IRI checks**: IRI syntax, the ontology header and version IRI, whether the ontology IRI resolves to RDF describing this ontology, and whether reused external classes and properties exist in their vocabulary (see below). Terms are looked up in SQLite first; network lookups only send external term IRIs, never your ontology.
+6. **OntoCheck metrics**, run in-process with the [OntoCheck](https://ontocheck.readthedocs.io) library: a scorecard of labeling, structural, accessibility and naming-convention metrics (see below). Only the SPARQL-endpoint and RDF-dump checks use the network, to contact URLs the ontology declares.
+7. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
+8. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
 
 Counts are per affected element: a ROBOT rule that flags two terms counts as two findings, like the built-in rules, which report one finding per term. Overall totals (the `ontoreview check` summary line, the app's tiles and the JSON `totals`) include every checker. The JSON `summary` field and the docs' "OntoReview checks" line count the built-in rules only.
 
@@ -95,6 +96,44 @@ Questions without a query are listed as "not tested" and are not reported as fin
 
 When there are no problems, the section says "Consistent; all classes satisfiable (HermiT)". HermiT is complete for OWL 2 DL but can be slow on very large ontologies. ELK is much faster but only understands OWL 2 EL, so it can miss problems that depend on other constructs. The reasoner stops after `evaluation.reasoner_timeout` seconds (default 600). For an explanation of a problem, open the ontology in Protégé and use its explanation feature.
 
+**IRI checks** produce a small scorecard plus findings:
+
+| Metric | What it checks | Finding when it fails |
+|---|---|---|
+| IRI syntax | every IRI in the ontology: spaces, forbidden characters, bad percent escapes, missing scheme or host | `invalid_iri`, error |
+| Ontology header | exactly one named `owl:Ontology` | `no_ontology_header` / `multiple_ontology_headers`, warning |
+| Version IRI | an `owl:versionIRI` distinct from the ontology IRI | `version_iri_equals_ontology_iri`, info |
+| Ontology IRI resolves | the ontology IRI returns RDF (content negotiation) whose header is that IRI | `ontology_iri_not_resolvable`, info (normal for unpublished ontologies) |
+| External terms | reused classes and properties exist in their vocabulary, with the expected type, and are not deprecated | `deprecated_external_term` and `external_term_wrong_type`, warning; `unverified_external_term`, info |
+| Lookup sources | where each external term was verified | — |
+
+External terms are found in class and property positions: predicates, `rdf:type` objects, subclass, equivalent and disjoint classes, domains and ranges, restrictions, and property relationships. Not checked as external:
+
+- RDF, RDFS, OWL and XSD built-ins
+- the ontology's own namespaces: its detected namespace, `evaluation.iri_local_namespaces`, namespaces of its IRI, and namespaces where it declares terms on the same host, unless the vocabulary is in the catalog
+
+Lookup order:
+
+1. **Local SQLite:** the read-only bundle (10 W3C vocabularies, 739 terms: PROV-O, SOSA, SSN, OWL-Time, SKOS, ORG, DCAT, DQV, ODRL, RDF Data Cube), then your writable cache.
+2. **OLS**, then **BioPortal** (needs `BIOPORTAL_API_KEY`). Exact IRI matches only.
+3. **Direct RDF download.** Catalogued vocabularies use the catalog's download URL; other terms are dereferenced.
+
+Successful lookups and downloads are saved, so later runs are offline and fast. Terms that no source confirms are *unverified*, never *invalid*: coverage is incomplete. To keep runs bounded:
+
+- there is a time budget for network lookups (`iri_budget`, 120 s)
+- an unreachable host isn't contacted again in the same run
+- after three misses in one namespace, its remaining terms aren't looked up
+
+**Run tracking and the database.** Every run is recorded in the writable SQLite database: the settings, a summary, and each term's status, source and lookup attempts. The default location is `~/Library/Caches/ontoreview/iri.sqlite3` on macOS, `$XDG_CACHE_HOME/ontoreview/iri.sqlite3` on Linux and `%LOCALAPPDATA%\ontoreview\iri.sqlite3` on Windows. Override it with `$ONTOREVIEW_IRI_DB` or `evaluation.iri_db`. The app's **Term database** page lets you:
+
+- search terms by IRI or label
+- browse the bundled and cached vocabularies
+- add an ontology by URL or file (or drag and drop)
+- remove cached vocabularies
+- open each run's results
+
+On the command line: `ontoreview terms list | search <text> | add <url-or-file> | runs`.
+
 **OntoCheck** (<https://ontocheck.readthedocs.io>, SDLE Research Center, CWRU, CC BY 4.0) reports 17 metrics, shown as a table in the review and in the app's "OntoCheck metrics" card:
 
 | Category | Metric | What it measures |
@@ -156,9 +195,15 @@ reasoner_timeout = 600
 ontocheck = "on"          # OntoCheck metrics: "on" | "off"
 ontocheck_network = true  # contact SPARQL endpoints / dump URLs declared in the ontology
 ontocheck_search = ""     # term for the searchClass metric
+iri_checks = "on"         # IRI checks: "on" | "off"
+iri_network = true        # false = bundled + cached SQLite only
+iri_repositories = true   # ask OLS / BioPortal
+iri_resolve = true        # check that the ontology IRI resolves
+iri_local_namespaces = [] # extra namespaces owned by this ontology
+iri_budget = 120          # seconds of network lookups per run
 ```
 
-In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), **OntoCheck**, the OOPS! service and when a check run fails.
+In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), **IRI checks**, **OntoCheck**, the OOPS! service and when a check run fails.
 
 On the command line:
 
@@ -168,6 +213,8 @@ ontoreview check my-ontology.ttl --format json -o quality.json
 ontoreview check ontologies/                               # every ontology in a folder
 ontoreview check my-ontology.ttl --reasoner elk            # faster consistency check (or off)
 ontoreview check my-ontology.ttl --no-ontocheck            # skip the OntoCheck metrics
+ontoreview check my-ontology.ttl --offline                 # IRI checks from SQLite only
+ontoreview terms add https://www.w3.org/ns/dcat3.ttl       # add a vocabulary to the term database
 ```
 
 `--fail-on` accepts `error`, `warning`, `info` or `never`.
@@ -191,8 +238,9 @@ Checks and reports are kept apart. `ontoreview/quality_checks/` only evaluates t
 | `robot.py` | finds ROBOT (local or Docker) and runs `robot report` |
 | `logical_consistency.py` | runs the reasoner (`robot reason`) |
 | `ontocheck.py` | runs the OntoCheck metrics |
+| `iri/` | IRI checks: `http.py` (syntax, retrieval, parsing), `store.py` (SQLite + run tracking), `providers.py` (OLS, BioPortal), `validate.py` (lookup chain) |
 | `oops.py` | sends the ontology to the OOPS! web service |
-| `evaluators.py` | runs ROBOT, the reasoner, OntoCheck and OOPS! in order |
+| `evaluators.py` | runs ROBOT, the reasoner, IRI checks, OntoCheck and OOPS! in order |
 
 **`report/`: report generation**
 
@@ -202,6 +250,7 @@ Checks and reports are kept apart. `ontoreview/quality_checks/` only evaluates t
 | `robot.py` | ROBOT report TSV → findings |
 | `reasoner.py` | `robot reason` output → consistency findings |
 | `ontocheck.py` | OntoCheck results → metrics table and findings |
+| `iri.py` | IRI check results → metrics and findings |
 | `oops.py` | OOPS! RDF/XML response → pitfall findings |
 | `issues.py` | rows for the app's Issues table |
 | `console.py` | `ontoreview check` terminal output |

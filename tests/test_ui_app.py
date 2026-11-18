@@ -45,8 +45,13 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
             if (out / "index.html").exists() and ui_core.HISTORY_FILE.exists():
                 break
             await asyncio.sleep(0.1)
-        await user.should_see("2 of 2 succeeded")
-        await user.should_see("Show in folder")
+        from ontoreview.ui import SESSION
+        for _ in range(100):                          # the toast can appear a tick before the results card
+            if not SESSION.build["running"]:
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("2 of 2 succeeded", retries=20)
+        await user.should_see("Show in folder", retries=20)
         await user.should_see("Terms documented")
         await user.should_see("Issues")
         await user.should_see(ui.table)

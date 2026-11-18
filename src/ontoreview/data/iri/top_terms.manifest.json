@@ -1,0 +1,202 @@
+[
+  {
+    "id": "prov",
+    "name": "PROV-O",
+    "domain": "Provenance",
+    "ontology_iri": "http://www.w3.org/ns/prov-o#",
+    "term_namespace": "http://www.w3.org/ns/prov#",
+    "download_url": "https://www.w3.org/ns/prov-o.ttl",
+    "source_url": "https://www.w3.org/TR/prov-o/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:57.321352+00:00",
+    "typed_subject_count": 103,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/prov-o#",
+      "source_url": "https://www.w3.org/ns/prov-o.ttl",
+      "fetched_at": "2026-11-18T01:08:30.540459+00:00",
+      "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/ns/prov#\", \"http://www.w3.org/ns/prov-o#\"], \"version_iris\": [\"http://www.w3.org/ns/prov-o-20130430\"], \"imports_not_loaded\": [], \"licenses\": [], \"rights\": []}"
+    }
+  },
+  {
+    "id": "sosa",
+    "name": "Sensor, Observation, Sample, and Actuator",
+    "domain": "Sensors and IoT",
+    "ontology_iri": "http://www.w3.org/ns/sosa/",
+    "term_namespace": "http://www.w3.org/ns/sosa/",
+    "download_url": "https://www.w3.org/ns/sosa/sosa.ttl",
+    "source_url": "https://www.w3.org/TR/vocab-ssn/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:57.586320+00:00",
+    "typed_subject_count": 54,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/sosa/",
+      "source_url": "https://www.w3.org/ns/sosa/sosa.ttl",
+      "fetched_at": "2026-11-18T01:08:30.672748+00:00",
+      "sha256": "c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/ns/sosa/\"], \"version_iris\": [], \"imports_not_loaded\": [], \"licenses\": [\"http://www.opengeospatial.org/ogc/Software\", \"http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document\"], \"rights\": [\"Copyright 2017 W3C/OGC.\"]}"
+    }
+  },
+  {
+    "id": "ssn",
+    "name": "Semantic Sensor Network",
+    "domain": "Sensors and IoT",
+    "ontology_iri": "http://www.w3.org/ns/ssn/",
+    "term_namespace": "http://www.w3.org/ns/ssn/",
+    "download_url": "https://www.w3.org/ns/ssn/ssn.ttl",
+    "source_url": "https://www.w3.org/TR/vocab-ssn/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:57.841749+00:00",
+    "typed_subject_count": 40,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/ssn/",
+      "source_url": "https://www.w3.org/ns/ssn/ssn.ttl",
+      "fetched_at": "2026-11-18T01:08:30.815475+00:00",
+      "sha256": "184d86189191146e314cc52b1bceb96fca11e70aacbc160d71588102a5153eb9",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/ns/ssn/\"], \"version_iris\": [], \"imports_not_loaded\": [\"http://www.w3.org/ns/sosa/\"], \"licenses\": [\"http://www.opengeospatial.org/ogc/Software\", \"http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document\"], \"rights\": [\"Copyright 2017 W3C/OGC.\"]}"
+    }
+  },
+  {
+    "id": "time",
+    "name": "OWL-Time",
+    "domain": "Time",
+    "ontology_iri": "http://www.w3.org/2006/time",
+    "term_namespace": "http://www.w3.org/2006/time#",
+    "download_url": "https://www.w3.org/2006/time.ttl",
+    "source_url": "https://www.w3.org/TR/owl-time/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:58:00.378465+00:00",
+    "typed_subject_count": 96,
+    "snapshot": {
+      "key": "http://www.w3.org/2006/time",
+      "source_url": "https://www.w3.org/2006/time.ttl",
+      "fetched_at": "2026-11-18T01:08:30.968608+00:00",
+      "sha256": "251bd6970b0d7a5efa97ff681afe81a297df85deab3d860fa4f8eeba72d8f16c",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/2006/time\"], \"version_iris\": [\"http://www.w3.org/2006/time#2016\"], \"imports_not_loaded\": [], \"licenses\": [\"https://creativecommons.org/licenses/by/4.0/\"], \"rights\": [\"Copyright \\u00a9 2006-2017 W3C, OGC. W3C and OGC liability, trademark and document use rules apply.\"]}"
+    }
+  },
+  {
+    "id": "skos",
+    "name": "Simple Knowledge Organization System",
+    "domain": "Knowledge organization",
+    "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+    "term_namespace": "http://www.w3.org/2004/02/skos/core#",
+    "download_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf",
+    "source_url": "https://www.w3.org/TR/skos-reference/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:56.408631+00:00",
+    "typed_subject_count": 33,
+    "snapshot": {
+      "key": "http://www.w3.org/2004/02/skos/core",
+      "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf",
+      "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+      "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/2004/02/skos/core\"], \"version_iris\": [], \"imports_not_loaded\": [], \"licenses\": [], \"rights\": []}"
+    }
+  },
+  {
+    "id": "org",
+    "name": "Organization Ontology",
+    "domain": "Organizations",
+    "ontology_iri": "http://www.w3.org/ns/org#",
+    "term_namespace": "http://www.w3.org/ns/org#",
+    "download_url": "https://www.w3.org/ns/org.ttl",
+    "source_url": "https://www.w3.org/TR/vocab-org/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:56.742602+00:00",
+    "typed_subject_count": 46,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/org#",
+      "source_url": "https://www.w3.org/ns/org.ttl",
+      "fetched_at": "2026-11-18T01:08:31.280728+00:00",
+      "sha256": "3e01f89a17475a88f8b1606ca0fae04800d34dbbf93adc6db12dc30929848729",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/ns/org#\"], \"version_iris\": [], \"imports_not_loaded\": [], \"licenses\": [\"http://www.opendatacommons.org/licenses/pddl/1.0/\"], \"rights\": []}"
+    }
+  },
+  {
+    "id": "dcat",
+    "name": "Data Catalog Vocabulary",
+    "domain": "Data catalogs",
+    "ontology_iri": "http://www.w3.org/ns/dcat",
+    "term_namespace": "http://www.w3.org/ns/dcat#",
+    "download_url": "https://www.w3.org/ns/dcat.ttl",
+    "source_url": "https://www.w3.org/TR/vocab-dcat-3/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:54.925876+00:00",
+    "typed_subject_count": 49,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/dcat",
+      "source_url": "https://www.w3.org/ns/dcat3.ttl",
+      "fetched_at": "2026-11-18T01:08:31.555419+00:00",
+      "sha256": "d1624d3bbf364f6fc1d43b9a188bbb9e67639b1a7d46a5cb7ea3f5d47d02b62f",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/ns/dcat\"], \"version_iris\": [\"http://www.w3.org/ns/dcat3\"], \"imports_not_loaded\": [\"http://purl.org/dc/terms/\", \"http://www.w3.org/2004/02/skos/core\", \"http://www.w3.org/ns/prov-o#\"], \"licenses\": [\"https://creativecommons.org/licenses/by/4.0/\"], \"rights\": []}"
+    }
+  },
+  {
+    "id": "dqv",
+    "name": "Data Quality Vocabulary",
+    "domain": "Data quality",
+    "ontology_iri": "http://www.w3.org/ns/dqv#",
+    "term_namespace": "http://www.w3.org/ns/dqv#",
+    "download_url": "https://www.w3.org/ns/dqv.ttl",
+    "source_url": "https://www.w3.org/TR/vocab-dqv/",
+    "iri_evidence": "Vocabulary identifier; retrieved RDF has no named owl:Ontology header",
+    "identifier_kind": "vocabulary_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:55.278441+00:00",
+    "typed_subject_count": 22,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/dqv#",
+      "source_url": "https://www.w3.org/ns/dqv.ttl",
+      "fetched_at": "2026-11-18T01:08:31.715911+00:00",
+      "sha256": "cc333223d13c663e027456ea43b15a63c1a25505bc752599953f380420573863",
+      "metadata": "{\"ontology_iris\": [], \"version_iris\": [], \"imports_not_loaded\": [], \"licenses\": [], \"rights\": []}"
+    }
+  },
+  {
+    "id": "odrl",
+    "name": "Open Digital Rights Language",
+    "domain": "Permissions and policies",
+    "ontology_iri": "http://www.w3.org/ns/odrl/2/",
+    "term_namespace": "http://www.w3.org/ns/odrl/2/",
+    "download_url": "https://www.w3.org/ns/odrl/2/ODRL22.ttl",
+    "source_url": "https://www.w3.org/TR/odrl-vocab/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:57.012329+00:00",
+    "typed_subject_count": 259,
+    "snapshot": {
+      "key": "http://www.w3.org/ns/odrl/2/",
+      "source_url": "https://www.w3.org/ns/odrl/2/ODRL22.ttl",
+      "fetched_at": "2026-11-18T01:08:31.893066+00:00",
+      "sha256": "7895765e80d86d1d0349d945a28b8a2479f03169572345080a5b3e561ef31457",
+      "metadata": "{\"ontology_iris\": [\"http://www.w3.org/ns/odrl/2/\"], \"version_iris\": [], \"imports_not_loaded\": [], \"licenses\": [\"https://www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#Copyright/\"], \"rights\": []}"
+    }
+  },
+  {
+    "id": "qb",
+    "name": "RDF Data Cube Vocabulary",
+    "domain": "Statistics",
+    "ontology_iri": "http://purl.org/linked-data/cube",
+    "term_namespace": "http://purl.org/linked-data/cube#",
+    "download_url": "https://www.w3.org/2011/gld/cube.ttl",
+    "source_url": "https://www.w3.org/TR/vocab-data-cube/",
+    "iri_evidence": "Verified against retrieved owl:Ontology header",
+    "identifier_kind": "ontology_iri",
+    "header_checked_at_utc": "2026-11-18T00:57:58.090857+00:00",
+    "typed_subject_count": 37,
+    "snapshot": {
+      "key": "http://purl.org/linked-data/cube",
+      "source_url": "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl",
+      "fetched_at": "2026-11-18T01:08:32.846053+00:00",
+      "sha256": "f2d67d3811762fa7796008d225c9b1f891e8a9af8fdeeb3736188fe1bcdb7235",
+      "metadata": "{\"ontology_iris\": [\"http://purl.org/linked-data/cube\"], \"version_iris\": [], \"imports_not_loaded\": [], \"licenses\": [\"http://www.opendatacommons.org/licenses/pddl/1.0/\"], \"rights\": []}"
+    }
+  }
+]

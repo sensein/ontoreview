@@ -62,6 +62,10 @@ class Settings:
     ontocheck: bool = True
     ontocheck_network: bool = True
     ontocheck_search: str = ""
+    iri_checks: bool = True
+    iri_network: bool = True
+    iri_repositories: bool = True
+    iri_resolve: bool = True
     default_root: str = ""          # Settings > default output folder
     verbose: bool = False
 
@@ -136,6 +140,11 @@ class Settings:
             ev["ontocheck_network"] = False
         if self.ontocheck_search.strip():
             ev["ontocheck_search"] = self.ontocheck_search.strip()
+        if not self.iri_checks:
+            ev["iri_checks"] = "off"
+        for k in ("iri_network", "iri_repositories", "iri_resolve"):
+            if not getattr(self, k):
+                ev[k] = False
         from .quality_checks.oops import OOPS_ENDPOINT
 
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
@@ -201,6 +210,10 @@ class Settings:
                 args += ["--reasoner", self.reasoner]
             if not self.ontocheck:
                 args.append("--no-ontocheck")
+            if not self.iri_checks:
+                args.append("--no-iri")
+            elif not self.iri_network:
+                args.append("--offline")
         if self.task == "check" and self.fail_on != "error":
             args += ["--fail-on", self.fail_on]
         return " ".join(args)
@@ -224,7 +237,9 @@ class Settings:
         if cqs:
             lines.append(f"competency_questions = [{', '.join(s(x) for x in cqs)}]")
         lines += ["", "[evaluation]", f"robot = {s(self.robot)}", f"oops = {s(self.oops)}", f"reasoner = {s(self.reasoner)}",
-                  f"ontocheck = {s('on' if self.ontocheck else 'off')}", ""]
+                  f"ontocheck = {s('on' if self.ontocheck else 'off')}",
+                  f"iri_checks = {s('on' if self.iri_checks else 'off')}",
+                  f"iri_network = {'true' if self.iri_network else 'false'}", ""]
         return "\n".join(lines)
 
     @classmethod
@@ -252,6 +267,8 @@ class Settings:
             robot=ev.get("robot", "auto"), oops=oops, reasoner=ev.get("reasoner", "hermit"),
             ontocheck=ev.get("ontocheck", "on") not in ("off", False),
             ontocheck_network=bool(ev.get("ontocheck_network", True)), ontocheck_search=ev.get("ontocheck_search") or "",
+            iri_checks=ev.get("iri_checks", "on") not in ("off", False), iri_network=bool(ev.get("iri_network", True)),
+            iri_repositories=bool(ev.get("iri_repositories", True)), iri_resolve=bool(ev.get("iri_resolve", True)),
         )
 
     # -------------------------------------------------------------- persistence
@@ -762,6 +779,10 @@ class Prefs:
     ontocheck: bool = True
     ontocheck_network: bool = True
     ontocheck_search: str = ""
+    iri_checks: bool = True
+    iri_network: bool = True
+    iri_repositories: bool = True
+    iri_resolve: bool = True
     theme: Literal["light", "dark", "system"] = "system"
     compact: bool = False
     # documentation options (Settings > Documentation)
@@ -808,6 +829,8 @@ class Prefs:
         s.oops, s.oops_endpoint, s.oops_timeout = self.oops, self.oops_endpoint, self.oops_timeout
         s.reasoner = self.reasoner
         s.ontocheck, s.ontocheck_network, s.ontocheck_search = self.ontocheck, self.ontocheck_network, self.ontocheck_search
+        for k in ("iri_checks", "iri_network", "iri_repositories", "iri_resolve"):
+            setattr(s, k, getattr(self, k))
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",
                   "competency_questions", "previous_version", "fail_on"):
             setattr(s, k, getattr(self, k))

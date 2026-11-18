@@ -75,6 +75,7 @@ TOOLS: dict[str, Tool] = {
     "robot": Tool("ROBOT", "http://robot.obolibrary.org/report"),
     "reasoner": Tool("Logical consistency", "http://robot.obolibrary.org/reason"),
     "ontocheck": Tool("OntoCheck", "https://ontocheck.readthedocs.io"),
+    "iri": Tool("IRI checks", "https://www.w3.org/TR/cooluris/"),
     "oops": Tool("OOPS!", "https://oops.linkeddata.es"),
 }
 REASONERS = {"hermit": "HermiT", "elk": "ELK"}

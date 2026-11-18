@@ -17,6 +17,7 @@ import sys
 import uuid
 import webbrowser
 from dataclasses import asdict
+from datetime import datetime
 from pathlib import Path
 
 from . import __version__
@@ -53,17 +54,18 @@ FORMATS = [  # id, name, description, tag
     ("single", "Single HTML file", "One portable file to share or attach", ".html"),
     ("markdown", "Markdown", "Editable text, good for Git repos, MkDocs or Docusaurus", ".md"),
     ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
-    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner, OntoCheck and OOPS! without docs", "report"),
+    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner, IRI checks, OntoCheck and OOPS! without docs", "report"),
     ("diff", "Compare versions", "What changed since a previous release of this ontology", "changes.md"),
 ]
 RECOMMENDED = "site"
 INCLUDES = {
-    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, OntoCheck metrics, OOPS!), "
+    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, "
+            "OOPS!), "
             "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
     "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
-    "check": "Includes: built-in checks, ROBOT, reasoner, OntoCheck and OOPS! results as JSON; no documentation",
+    "check": "Includes: built-in checks, ROBOT, reasoner, IRI, OntoCheck and OOPS! results as JSON; no documentation",
     "diff": "Includes: added, removed and modified terms with the exact statements that changed, as Markdown "
             "and JSON. To put a changelog inside the website instead, set Previous version in Settings › Documentation",
 }
@@ -178,6 +180,8 @@ NAV = [  # key, path, label, svg path data
     ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
     ("history", "/history", "Run history", '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>'),
     ("compare", "/compare", "Compare", '<path d="M8 3v18M16 3v18"/><path d="m4 8 4-4 4 4M12 16l4 4 4-4"/>'),
+    ("terms", "/terms", "Term database", '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/>'
+     '<path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>'),
     ("settings", "/settings", "Settings", '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/>'
      '<circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'),
     ("about", "/about", "About", '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'),
@@ -252,6 +256,19 @@ HELP = [
         "One broken file doesn't stop the rest: it is listed with its error in the <b>Ontologies</b> table.",
     ], "Competency questions and the previous version apply to one ontology; for folders, put them in an "
        "ontoreview.toml inside that ontology's sub-folder.", [("Open Build", "/")]),
+    ("terms", "Term database and IRI checks", "", [
+        "Every build checks IRIs: malformed IRIs, the ontology header and version IRI, whether the ontology IRI "
+        "returns RDF, and whether reused classes and properties (e.g. prov:Entity) exist in their vocabulary.",
+        "Terms are looked up in a SQLite database first: 10 W3C vocabularies ship with OntoReview, and everything "
+        "found online (OLS, BioPortal, direct downloads) is saved, so the next run is fast and works offline.",
+        "<b>Term database</b> shows it: <b>Search</b> by IRI or label, <b>Vocabularies</b> lists what is stored, "
+        "<b>Add ontology</b> indexes a vocabulary from a URL or a file (or drop files), and <b>Runs</b> lists every "
+        "IRI check with each term's result and where it was found.",
+        "Terms nobody could confirm are <i>unverified</i>, not wrong. Add their vocabulary on the Term database page "
+        "to verify them next time.",
+    ], "Only external term IRIs are sent to OLS or BioPortal, never your ontology. Turn network lookups off in "
+       "Settings › Quality checks to use the SQLite database only.",
+     [("Open Term database", "/terms"), ("IRI settings", "settings:checks")]),
     ("publish", "Publishing the website", "", [
         "The output folder (by default <code>docs</code> next to your ontology) is a complete static website: "
         "copy it to any web server.",
@@ -487,6 +504,8 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
             steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
             if s.reasoner != "off":
                 steps.append(("reasoner", "Logical consistency (" + {"hermit": "HermiT", "elk": "ELK"}[s.reasoner] + ")"))
+        if s.iri_checks:
+            steps.append(("iri", "IRI checks" + ("" if s.iri_network else " (offline)")))
         if s.ontocheck:
             steps.append(("ontocheck", "OntoCheck metrics"))
         if s.oops != "off":
@@ -497,7 +516,7 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
 
 
 STEP_OF = [("Parsing ontology", "parse"), ("Parsed ", "checks"), ("Running ROBOT", "robot"),
-           ("Checking logical consistency", "reasoner"), ("Running OntoCheck", "ontocheck"),
+           ("Checking logical consistency", "reasoner"), ("Checking IRIs", "iri"), ("Running OntoCheck", "ontocheck"),
            ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
 BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
 
@@ -1118,7 +1137,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         def metrics_card(metrics: list[dict]) -> None:
             dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
             with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
-                ui.label("OntoCheck metrics").classes("or-h2").mark("ontocheck-metrics")
+                ui.label("Quality metrics").classes("or-h2").mark("ontocheck-metrics")
                 with ui.element("div").classes("w-full").style(
                         "display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 28px"):
                     for group in dict.fromkeys(m["group"] for m in metrics):
@@ -1588,6 +1607,22 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 .classes("or-hint")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
+                            ui.label("IRI checks").classes("or-h2")
+                            ui.label("IRI syntax, the ontology header and version IRI, whether the ontology IRI "
+                                     "resolves, and whether reused classes and properties exist in their vocabulary. "
+                                     "Terms are looked up in SQLite first (bundled W3C vocabularies and your cache), "
+                                     "then OLS, BioPortal and a direct download.").classes("or-hint")
+                            ui.checkbox("Run IRI checks").bind_value(work, "iri_checks").mark("iri-checks")
+                            ui.checkbox("Allow network lookups").bind_value(work, "iri_network")
+                            ui.label("Off: only the bundled and cached SQLite database is used; unknown terms are "
+                                     "reported as unverified. Only external term IRIs are sent, never your ontology.") \
+                                .classes("or-hint")
+                            ui.checkbox("Ask OLS and BioPortal").bind_value(work, "iri_repositories")
+                            ui.label("BioPortal needs the BIOPORTAL_API_KEY environment variable.").classes("or-hint")
+                            ui.checkbox("Check that the ontology IRI resolves").bind_value(work, "iri_resolve")
+                            ui.link("Open the term database", "/terms").classes("or-hint text-primary")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
                             ui.label("OntoCheck").classes("or-h2")
                             ui.label("Quality metrics for labeling, structure, accessibility and naming conventions, "
                                      "shown as a scorecard in the review. Runs on this machine.").classes("or-hint")
@@ -1992,6 +2027,240 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         show_out()
         render()
 
+    # ------------------------------------------------------------------ Term database
+    def terms_view() -> None:  # noqa: C901
+        from .quality_checks import iri as iri_db
+
+        set_active("terms")
+        page_head("Term database", "The SQLite database the IRI checks use: bundled W3C vocabularies, everything "
+                                   "looked up or downloaded since, and every IRI-check run.")
+        st = {"tab": "search", "query": "", "document": None}
+        with ui.element("div").classes("or-body column gap-4"):
+            stats = ui.label().classes("or-hint or-mono").style("word-break: break-all")
+            with ui.tabs().classes("or-tabs").props("align=left no-caps inline-label") as tabs:
+                t_search = ui.tab("search", "Search", icon="search")
+                t_docs = ui.tab("docs", "Vocabularies", icon="library_books")
+                t_add = ui.tab("add", "Add ontology", icon="add_circle_outline")
+                t_runs = ui.tab("runs", "Runs", icon="history")
+            with ui.tab_panels(tabs, value=t_search).classes("w-full").style("background: transparent"):
+                with ui.tab_panel(t_search).classes("q-pa-none"):
+                    with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
+                        with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                            q_in = ui.input(placeholder="Search IRIs and labels, e.g. Entity or prov#Agent") \
+                                .props('outlined dense clearable autofocus aria-label="Search terms"') \
+                                .classes("grow").mark("term-search")
+                            ui.button("Search", icon="search", on_click=lambda: search()).props("unelevated no-caps")
+                        doc_filter = ui.row().classes("items-center gap-2")
+                        results_box = ui.column().classes("w-full gap-2")
+                    q_in.on("keydown.enter", lambda: search())
+                with ui.tab_panel(t_docs).classes("q-pa-none"):
+                    docs_box = ui.column().classes("w-full gap-3")
+                with ui.tab_panel(t_add).classes("q-pa-none"):
+                    with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
+                        ui.label("From a URL").classes("or-h2")
+                        ui.label("An ontology IRI or download URL. RDF is requested with content negotiation "
+                                 "(Turtle, RDF/XML, N-Triples); HTML pages are rejected.").classes("or-hint")
+                        with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                            url_in = ui.input(placeholder="https://www.w3.org/ns/dcat3.ttl") \
+                                .props('outlined dense clearable aria-label="Ontology URL"').classes("grow or-mono") \
+                                .mark("term-add-url")
+                            ui.button("Add", icon="cloud_download", on_click=lambda: add(url=url_in.value)) \
+                                .props("unelevated no-caps").mark("term-add-url-go")
+                    with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
+                        ui.label("From a file").classes("or-h2")
+                        with ui.element("div").props('data-zone="termdb"').classes("ob-dropzone w-full"):
+                            with ui.column().classes("w-full items-center gap-1 q-py-lg"):
+                                ui.icon("upload_file", size="32px").classes("or-muted")
+                                ui.label("Drop ontology files here (.ttl, .owl, .rdf, .nt, .jsonld)").classes("or-label")
+                                ui.button("Choose file…", icon="description", on_click=lambda: pick(
+                                    "ontology", lambda p_: add(path=p_), False, title="Add an ontology to the database")) \
+                                    .props("outline no-caps dense").classes("q-mt-sm")
+                        add_info = ui.label().classes("or-hint").props('aria-live="polite"')
+                        ui.label("Each document is indexed by its owl:Ontology IRI (or its URL / file name): typed "
+                                 "classes, properties and individuals with their labels and deprecation flags. "
+                                 "Adding the same document again replaces it.").classes("or-hint")
+                with ui.tab_panel(t_runs).classes("q-pa-none"):
+                    runs_box = ui.column().classes("w-full gap-3")
+
+        def show_stats(docs) -> None:
+            b = [d for d in docs if d["where"] == "bundled"]
+            c = [d for d in docs if d["where"] == "cache"]
+            stats.text = (f"Bundled: {len(b)} vocabularies, {sum(d['terms'] for d in b):,} terms · "
+                          f"Cache: {len(c)} vocabularies, {sum(d['terms'] for d in c):,} terms · "
+                          f"{iri_db.default_cache_path()}")
+
+        async def search() -> None:
+            query = (q_in.value or "").strip()
+            st["query"] = query
+            results_box.clear()
+            doc_filter.clear()
+            if st["document"]:
+                with doc_filter:
+                    ui.label("In").classes("or-hint")
+                    ui.chip(st["document"], removable=True).props("dense outline").on(
+                        "remove", lambda: (st.update(document=None), background_tasks.create(search())))
+            if not query and not st["document"]:
+                with results_box:
+                    ui.label("Type part of an IRI or label. Prefix aliases don't matter: terms are stored by full "
+                             "IRI, so prov:Entity and ap:Entity are the same term.").classes("or-hint q-py-sm")
+                return
+            rows = await run.io_bound(iri_db.search_terms, query, None, 300, st["document"])
+            if results_box.is_deleted:
+                return
+            with results_box:
+                ui.label(f"{len(rows)} term{'s' if len(rows) != 1 else ''}" + (" (first 300)" if len(rows) >= 300 else "")) \
+                    .classes("or-hint")
+                if rows:
+                    short = lambda t: t.rsplit("#", 1)[-1].rsplit("/", 1)[-1]  # noqa: E731
+                    data = [{"id": n, "iri": r["iri"], "label": ", ".join(r["labels"][:2]),
+                             "types": ", ".join(short(t) for t in r["types"][:3]), "document": r["document"],
+                             "where": r["where"], "deprecated": "deprecated" if r["deprecated"] else ""}
+                            for n, r in enumerate(rows)]
+                    cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
+                            (("label", "Label"), ("iri", "IRI"), ("types", "Type"), ("document", "Vocabulary"),
+                             ("where", "Stored"), ("deprecated", ""))]
+                    ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 25}) \
+                        .classes("or-table").props("flat dense wrap-cells").mark("term-results")
+
+        async def show_docs() -> None:
+            docs = await run.io_bound(iri_db.list_documents)
+            if docs_box.is_deleted:
+                return
+            show_stats(docs)
+            docs_box.clear()
+            with docs_box:
+                for where, title, hint in (("cache", "Added and downloaded", "Your writable database: vocabularies "
+                                            "added here, downloaded during IRI checks, or found in OLS/BioPortal."),
+                                           ("bundled", "Bundled with OntoReview", "Read-only W3C vocabulary snapshots "
+                                            "(see data/iri/THIRD_PARTY_NOTICES.txt).")):
+                    group = [d for d in docs if d["where"] == where]
+                    with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2 w-full"):
+                        ui.label(f"{title} ({len(group)})").classes("or-h2")
+                        ui.label(hint).classes("or-hint")
+                        if not group:
+                            ui.label("Nothing here yet. Add an ontology, or run a build: external terms are cached "
+                                     "automatically.").classes("or-hint q-py-sm")
+                        for d in group:
+                            with ui.row().classes("w-full items-center gap-3 no-wrap q-py-xs").style(
+                                    "border-top: 1px solid var(--or-line-2)"):
+                                with ui.column().classes("gap-0 grow min-w-0"):
+                                    ui.label(d["key"]).classes("or-label or-mono ellipsis w-full")
+                                    ui.label(f"{d['terms']:,} terms · {d['source_url']} · {d['fetched_at'][:10]}"
+                                             + (f" · {', '.join(d['licenses'][:1])}" if d["licenses"] else "")) \
+                                        .classes("or-hint ellipsis w-full")
+                                ui.button("Browse", on_click=lambda d=d: (st.update(document=d["key"]),
+                                                                          tabs.set_value("search"),
+                                                                          background_tasks.create(search()))) \
+                                    .props("flat dense no-caps")
+                                if where == "cache":
+                                    ui.button(icon="delete_outline", on_click=lambda d=d: remove(d["key"])) \
+                                        .props(f'flat round dense aria-label="Remove {d["key"]}"').tooltip("Remove")
+
+        async def remove(key: str) -> None:
+            await run.io_bound(iri_db.remove_document, key)
+            notify(f"Removed {key}", "positive")
+            await show_docs()
+
+        async def add(url: str | None = None, path: str | None = None) -> None:
+            url = (url or "").strip() or None
+            if not url and not path:
+                notify("Enter a URL or choose a file.", "warning")
+                return
+            add_info.text = f"Adding {url or Path(path).name}…"
+            try:
+                res = await run.io_bound(lambda: iri_db.add_document(url=url, path=path))
+            except Exception as e:  # noqa: BLE001
+                add_info.text = f"Could not add it: {e}"
+                notify(f"Could not add: {str(e)[:160]}", "negative")
+                return
+            add_info.text = f"Added {res['key']}: {res['terms']:,} terms from {res['source_url']}"
+            notify(f"Added {res['terms']:,} terms", "positive")
+            if url:
+                url_in.set_value("")
+            await show_docs()
+
+        async def show_runs() -> None:
+            runs = await run.io_bound(iri_db.recent_runs, None, 100)
+            if runs_box.is_deleted:
+                return
+            runs_box.clear()
+            with runs_box, ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2 w-full"):
+                ui.label(f"IRI-check runs ({len(runs)})").classes("or-h2")
+                ui.label("Every build or check with IRI checks on is recorded: settings, a summary, and each external "
+                         "term's status, source and lookup attempts. The latest 500 runs are kept.").classes("or-hint")
+                if not runs:
+                    ui.label("No runs yet.").classes("or-hint q-py-sm")
+                    return
+                data = []
+                for r in runs:
+                    sm = r.get("summary") or {}
+                    stt = sm.get("statuses", {})
+                    try:
+                        when = when_text(datetime.fromisoformat(r["started_at"]).timestamp())
+                    except (TypeError, ValueError):
+                        when = r.get("started_at") or ""
+                    data.append({"id": r["id"], "when": when,
+                                 "ontology": Path(r.get("source") or "").name or (r.get("ontology_iri") or ""),
+                                 "terms": sm.get("external_terms", ""),
+                                 "result": ", ".join(f"{v} {k.replace('_', ' ')}" for k, v in sorted(stt.items())) or
+                                           ("unfinished" if not r.get("finished_at") else "no external terms"),
+                                 "offline": "offline" if (r.get("settings") or {}).get("offline") else ""})
+                cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
+                        (("id", "#"), ("when", "When"), ("ontology", "Ontology"), ("terms", "External terms"),
+                         ("result", "Result"), ("offline", ""))]
+                tbl = ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 20}) \
+                    .classes("or-table").props("flat dense wrap-cells").mark("term-runs")
+                tbl.on("rowClick", lambda e: background_tasks.create(run_details(e.args[1]["id"])))
+                ui.label("Click a run to see each term.").classes("or-hint")
+
+        async def run_details(run_id: int) -> None:
+            def load():
+                from .quality_checks.iri.store import TermStore
+                c = TermStore(iri_db.default_cache_path())
+                try:
+                    return c.run_results(run_id)
+                finally:
+                    c.close()
+            rows = await run.io_bound(load)
+            if runs_box.is_deleted:
+                return
+            with runs_box, ui.dialog() as dlg, ui.card().classes("or-card w-[64rem] max-w-full"):
+                ui.label(f"Run #{run_id}: {len(rows)} external terms").classes("or-h2")
+                data = [{"id": n, "iri": r["iri"], "status": r["status"].replace("_", " "),
+                         "source": r.get("source") or "", "detail": (r.get("detail") or "")[:160],
+                         "tried": " → ".join(a.get("provider", "") + ":" + str(a.get("status", "")) for a in r["attempts"])}
+                        for n, r in enumerate(rows)]
+                cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
+                        (("iri", "IRI"), ("status", "Status"), ("source", "Source"), ("tried", "Lookups"),
+                         ("detail", "Detail"))]
+                ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 15}) \
+                    .classes("or-table").props("flat dense wrap-cells")
+                with ui.row().classes("w-full justify-end"):
+                    ui.button("Close", on_click=dlg.close).props("flat no-caps")
+            dlg.open()
+
+        def on_tab(e) -> None:
+            st["tab"] = e.value
+            if e.value == "docs":
+                background_tasks.create(show_docs())
+            elif e.value == "runs":
+                background_tasks.create(show_runs())
+        tabs.on_value_change(on_tab)
+
+        drop_targets.clear()
+
+        def dropped(a: dict) -> None:
+            target = dropped_path(a, add_info, files_only=False)
+            if not target:
+                return
+            files_ = [target] if Path(target).is_file() else sorted(
+                str(f) for f in Path(target).rglob("*") if f.suffix.lower() in (".ttl", ".owl", ".rdf", ".nt", ".jsonld", ".xml"))
+            for f in files_:
+                background_tasks.create(add(path=f))
+        drop_targets["termdb"] = (lambda a: setattr(add_info, "text", "Copying…"), dropped)
+        background_tasks.create(search())
+        background_tasks.create(show_docs())
+
     # ------------------------------------------------------------------ Help
     def help_view() -> None:
         set_active("help")
@@ -2050,7 +2319,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 ui.image(f"{STATIC_URL}/help/{shot}").props(f'alt="Screenshot: {title}" fit=contain').classes("w-full")
             d.open()
 
-    ui.sub_pages({"/": build_view, "/history": history_view, "/compare": compare_view, "/settings": settings_view,
+    ui.sub_pages({"/": build_view, "/history": history_view, "/compare": compare_view, "/terms": terms_view,
+                  "/settings": settings_view,
                   "/about": about_view,
                   "/help": help_view}) \
         .classes("w-full")
