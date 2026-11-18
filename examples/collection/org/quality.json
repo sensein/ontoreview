@@ -4,6 +4,11 @@
     "warning": 17,
     "info": 5
   },
+  "totals": {
+    "error": 49,
+    "warning": 81,
+    "info": 122
+  },
   "external": [
     {
       "tool": "ROBOT",
@@ -164,10 +169,440 @@
         }
       ],
       "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
       "summary": {
-        "error": 3,
-        "warning": 2,
-        "info": 1
+        "error": 49,
+        "warning": 47,
+        "info": 3
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "checkLabel",
+          "name": "Classes without rdfs:label",
+          "severity": "info",
+          "description": "OntoCheck checkLabel: these named classes have no rdfs:label.",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "http://www.w3.org/2004/02/skos/core#Concept",
+            "http://www.w3.org/ns/prov#Activity",
+            "http://xmlns.com/foaf/0.1/Agent",
+            "http://xmlns.com/foaf/0.1/Organization"
+          ],
+          "note": ""
+        },
+        {
+          "code": "definitionCheck",
+          "name": "Classes without skos:definition",
+          "severity": "info",
+          "description": "OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "http://www.w3.org/2004/02/skos/core#Concept",
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#FormalOrganization",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#OrganizationalUnit",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#Site",
+            "http://www.w3.org/ns/prov#Activity",
+            "http://xmlns.com/foaf/0.1/Agent",
+            "http://xmlns.com/foaf/0.1/Organization"
+          ],
+          "note": ""
+        },
+        {
+          "code": "duplicateLabels",
+          "name": "Shared labels",
+          "severity": "info",
+          "description": "OntoCheck duplicateLabels (case-insensitive rdfs:label).",
+          "affected": [
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#FormalOrganization",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#OrganizationalUnit",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#Site",
+            "http://www.w3.org/ns/org#basedAt",
+            "http://www.w3.org/ns/org#changedBy",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#hasMember",
+            "http://www.w3.org/ns/org#hasMembership",
+            "http://www.w3.org/ns/org#hasPost",
+            "http://www.w3.org/ns/org#hasPrimarySite",
+            "http://www.w3.org/ns/org#hasRegisteredSite",
+            "http://www.w3.org/ns/org#hasSite",
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#heldBy",
+            "http://www.w3.org/ns/org#holds",
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#location",
+            "http://www.w3.org/ns/org#member",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#memberOf",
+            "http://www.w3.org/ns/org#organization",
+            "http://www.w3.org/ns/org#originalOrganization",
+            "http://www.w3.org/ns/org#postIn",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#resultedFrom",
+            "http://www.w3.org/ns/org#resultingOrganization",
+            "http://www.w3.org/ns/org#role",
+            "http://www.w3.org/ns/org#siteAddress",
+            "http://www.w3.org/ns/org#siteOf",
+            "http://www.w3.org/ns/org#subOrganizationOf",
+            "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf"
+          ],
+          "note": "“change event”: 4 entities; “formal organization”: 4 entities; “membership”: 8 entities; “organization”: 8 entities; “endeavour”: 4 entities; “organizationalunit”: 4 entities; “post”: 8 entities; “role”: 8 entities; “site”: 4 entities; “based at”: 4 entities; “classification”: 4 entities; “registere"
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "http://www.w3.org/ns/org#basedAt",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#location",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#organization",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#role",
+            "http://www.w3.org/ns/org#siteAddress"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "0 without rdfs:domain, 4 without rdfs:range.",
+          "affected": [
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#siteAddress"
+          ],
+          "note": ""
+        },
+        {
+          "code": "spellCheck",
+          "name": "Possible misspellings",
+          "severity": "info",
+          "description": "OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.",
+          "affected": [
+            "http://www.w3.org/ns/org#",
+            "http://www.w3.org/ns/org#ChangeEvent",
+            "http://www.w3.org/ns/org#Head",
+            "http://www.w3.org/ns/org#Membership",
+            "http://www.w3.org/ns/org#Organization",
+            "http://www.w3.org/ns/org#OrganizationalCollaboration",
+            "http://www.w3.org/ns/org#Post",
+            "http://www.w3.org/ns/org#Role",
+            "http://www.w3.org/ns/org#changedBy",
+            "http://www.w3.org/ns/org#classification",
+            "http://www.w3.org/ns/org#hasMember",
+            "http://www.w3.org/ns/org#hasMembership",
+            "http://www.w3.org/ns/org#hasSite",
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#member",
+            "http://www.w3.org/ns/org#memberOf",
+            "http://www.w3.org/ns/org#originalOrganization",
+            "http://www.w3.org/ns/org#purpose",
+            "http://www.w3.org/ns/org#resultedFrom",
+            "http://www.w3.org/ns/org#resultingOrganization",
+            "http://www.w3.org/ns/org#roleProperty",
+            "http://www.w3.org/ns/org#siteAddress",
+            "http://www.w3.org/ns/org#siteOf",
+            "http://www.w3.org/ns/org#subOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf"
+          ],
+          "note": "Endeavour → endeavor, Org → or, affilliation → affiliation, alt → all, ary → are, datatype, datatypes, dct → act, encodings → encoding, esp → es, foaf → foam, hasmember → dismember, http → help, identier → identify, indended → intended, metalevel, officio → office, org → or, pref → prep, rdf → ref, skos → skis, specializable, vcard → card, www → wow"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "9 of 14 classes (64%)",
+          "status": "warn"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "0 of 14 classes (0%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "0 of 14 classes (0%)",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "0 classes, 10 properties",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "2 groups",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "0 without domain, 4 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "11 of 14 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 7 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Found",
+          "status": "ok"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "6.2% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "14 of 14 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "57 possible misspellings in 1794 words (3.2%)",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "38 labels shared",
+          "status": "warn"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 103
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "http://www.w3.org/ns/org#identifier",
+            "http://www.w3.org/ns/org#memberDuring",
+            "http://www.w3.org/ns/org#remuneration",
+            "http://www.w3.org/ns/org#siteAddress"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P34",
+          "name": "Untyped class",
+          "severity": "warning",
+          "description": "An ontology element is used as a class without having been explicitly declared as such using the primitives owl:Class or rdfs:Class. This pitfall is related with the common problems listed in [8].",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "http://www.w3.org/2004/02/skos/core#Concept",
+            "http://www.w3.org/ns/prov#Activity",
+            "http://xmlns.com/foaf/0.1/Agent",
+            "http://xmlns.com/foaf/0.1/Organization",
+            "http://xmlns.com/foaf/0.1/Person"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P35",
+          "name": "Untyped property",
+          "severity": "warning",
+          "description": "An ontology element is used as a property without having been explicitly declared as such using the primitives rdf:Property, owl:ObjectProperty or owl:DatatypeProperty. This pitfall is related with the common problems listed in [8].",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#notation",
+            "http://www.w3.org/ns/prov#used",
+            "http://www.w3.org/ns/prov#wasGeneratedBy",
+            "http://xmlns.com/foaf/0.1/member"
+          ],
+          "note": ""
+        },
+        {
+          "code": "Warning",
+          "name": "WARNING: the following classes do not have rdf:type owl:Class or equivalent.",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://purl.org/goodrelations/v1#BusinessEntity",
+            "http://www.w3.org/ns/prov#Activity",
+            "http://xmlns.com/foaf/0.1/Organization"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P20",
+          "name": "Misusing ontology annotations",
+          "severity": "info",
+          "description": "The contents of some annotation properties are swapped or misused. This pitfall might affect annotation properties related to natural language information (for example, annotations for naming such as rdfs:label or for providing descriptions such as rdfs:comment). Other types of annotation could also be affected as temporal, versioning information, among others.",
+          "affected": [
+            "http://www.w3.org/ns/org#hasPost",
+            "http://www.w3.org/ns/org#hasRegisteredSite",
+            "http://www.w3.org/ns/org#hasUnit",
+            "http://www.w3.org/ns/org#headOf",
+            "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+            "http://www.w3.org/ns/org#unitOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "SUGGESTION: symmetric or transitive object properties.",
+          "name": "SUGGESTION: symmetric or transitive object properties.",
+          "severity": "info",
+          "description": "The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?",
+          "affected": [
+            "http://www.w3.org/ns/org#hasSubOrganization",
+            "http://www.w3.org/ns/org#linkedTo",
+            "http://www.w3.org/ns/org#reportsTo",
+            "http://www.w3.org/ns/org#subOrganizationOf"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 17,
+        "info": 11
       }
     }
   ],
@@ -185,55 +620,19 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “organisation” @fr is used by `org:Organization`, `org:organization`.",
-      "subject": "http://www.w3.org/ns/org#Organization",
-      "subject_label": "Organization",
-      "anchor": "Organization"
+      "message": "Label “impiego” @it is used by `org:Post`, `org:hasPost`.",
+      "subject": "http://www.w3.org/ns/org#Post",
+      "subject_label": "Post",
+      "anchor": "Post"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “organization” @en is used by `org:Organization`, `org:organization`.",
-      "subject": "http://www.w3.org/ns/org#Organization",
-      "subject_label": "Organization",
-      "anchor": "Organization"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “organizzazione” @it is used by `org:Organization`, `org:organization`.",
-      "subject": "http://www.w3.org/ns/org#Organization",
-      "subject_label": "Organization",
-      "anchor": "Organization"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “role” @en is used by `org:Role`, `org:role`.",
-      "subject": "http://www.w3.org/ns/org#Role",
-      "subject_label": "Role",
-      "anchor": "Role"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “ruolo” @it is used by `org:Role`, `org:role`.",
-      "subject": "http://www.w3.org/ns/org#Role",
-      "subject_label": "Role",
-      "anchor": "Role"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “rôle” @fr is used by `org:Role`, `org:role`.",
-      "subject": "http://www.w3.org/ns/org#Role",
-      "subject_label": "Role",
-      "anchor": "Role"
+      "message": "Label “post” @en is used by `org:Post`, `org:hasPost`.",
+      "subject": "http://www.w3.org/ns/org#Post",
+      "subject_label": "Post",
+      "anchor": "Post"
     },
     {
       "rule": "OB016",
@@ -266,19 +665,55 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “impiego” @it is used by `org:hasPost`, `org:Post`.",
-      "subject": "http://www.w3.org/ns/org#hasPost",
-      "subject_label": "post",
-      "anchor": "hasPost"
+      "message": "Label “organisation” @fr is used by `org:organization`, `org:Organization`.",
+      "subject": "http://www.w3.org/ns/org#organization",
+      "subject_label": "organization",
+      "anchor": "organization"
     },
     {
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “post” @en is used by `org:hasPost`, `org:Post`.",
-      "subject": "http://www.w3.org/ns/org#hasPost",
-      "subject_label": "post",
-      "anchor": "hasPost"
+      "message": "Label “organization” @en is used by `org:organization`, `org:Organization`.",
+      "subject": "http://www.w3.org/ns/org#organization",
+      "subject_label": "organization",
+      "anchor": "organization"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “organizzazione” @it is used by `org:organization`, `org:Organization`.",
+      "subject": "http://www.w3.org/ns/org#organization",
+      "subject_label": "organization",
+      "anchor": "organization"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “role” @en is used by `org:role`, `org:Role`.",
+      "subject": "http://www.w3.org/ns/org#role",
+      "subject_label": "role",
+      "anchor": "role"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “ruolo” @it is used by `org:role`, `org:Role`.",
+      "subject": "http://www.w3.org/ns/org#role",
+      "subject_label": "role",
+      "anchor": "role"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “rôle” @fr is used by `org:role`, `org:Role`.",
+      "subject": "http://www.w3.org/ns/org#role",
+      "subject_label": "role",
+      "anchor": "role"
     },
     {
       "rule": "OB017",

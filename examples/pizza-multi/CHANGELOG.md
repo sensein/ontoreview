@@ -8,8 +8,11 @@
 
 - **spicy_thing** (`pizza:spicy_thing`, class)
 
-## Modified (1)
+## Modified (2)
 
+- **Ontology metadata** (`https://example.org/pizza`, ontology)
+  - ➕ owl:versionInfo: "1.3.0"
+  - ➖ owl:versionInfo: "1.2.0"
 - **Food** (`pizza:Food`, class)
   - ➕ skos:definition: "Anything that can be eaten."@en
   - ➖ skos:definition: "Anything edible."@en

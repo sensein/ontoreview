@@ -4,6 +4,11 @@
     "warning": 6,
     "info": 5
   },
+  "totals": {
+    "error": 7,
+    "warning": 24,
+    "info": 19
+  },
   "external": [
     {
       "tool": "ROBOT",
@@ -97,10 +102,268 @@
         }
       ],
       "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
       "summary": {
-        "error": 4,
-        "warning": 2,
-        "info": 1
+        "error": 6,
+        "warning": 15,
+        "info": 2
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "definitionCheck",
+          "name": "Classes without skos:definition",
+          "severity": "info",
+          "description": "OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).",
+          "affected": [
+            "https://example.org/pizza#MeatTopping"
+          ],
+          "note": ""
+        },
+        {
+          "code": "duplicateLabels",
+          "name": "Shared labels",
+          "severity": "info",
+          "description": "OntoCheck duplicateLabels (case-insensitive rdfs:label).",
+          "affected": [
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#Pizza"
+          ],
+          "note": "“pizza”: 3 entities; “food”: 2 entities"
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "https://example.org/pizza#Calzone",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasCalories"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "3 without rdfs:domain, 2 without rdfs:range.",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "8 of 8 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "0 of 8 classes (0%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "7 of 8 classes (88%)",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "1 class, 2 properties",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "2 groups",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "3 without domain, 2 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "6 of 8 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 2 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Found",
+          "status": "ok"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "0.0% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "8 of 8 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "0 possible misspellings in 61 words (0.0%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "2 labels shared",
+          "status": "warn"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 10
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P22",
+          "name": "Using different naming conventions in the ontology",
+          "severity": "info",
+          "description": "The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &quot;-&quot; or &quot;_&quot;) . Some notions about naming conventions are provided in [2].",
+          "affected": [],
+          "note": "There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 3,
+        "info": 2
       }
     }
   ],

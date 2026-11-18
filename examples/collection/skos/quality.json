@@ -4,6 +4,11 @@
     "warning": 1,
     "info": 5
   },
+  "totals": {
+    "error": 1,
+    "warning": 47,
+    "info": 39
+  },
   "external": [
     {
       "tool": "ROBOT",
@@ -74,10 +79,298 @@
         }
       ],
       "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
       "summary": {
         "error": 1,
+        "warning": 32,
+        "info": 3
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "humanLicense",
+          "name": "No human-readable license",
+          "severity": "warning",
+          "description": "No license or copyright text was found in the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#member",
+            "http://www.w3.org/2004/02/skos/core#memberList",
+            "http://www.w3.org/2004/02/skos/core#notation"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "13 without rdfs:domain, 12 without rdfs:range.",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#broadMatch",
+            "http://www.w3.org/2004/02/skos/core#broader",
+            "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+            "http://www.w3.org/2004/02/skos/core#closeMatch",
+            "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "http://www.w3.org/2004/02/skos/core#inScheme",
+            "http://www.w3.org/2004/02/skos/core#mappingRelation",
+            "http://www.w3.org/2004/02/skos/core#narrowMatch",
+            "http://www.w3.org/2004/02/skos/core#narrower",
+            "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+            "http://www.w3.org/2004/02/skos/core#notation",
+            "http://www.w3.org/2004/02/skos/core#related",
+            "http://www.w3.org/2004/02/skos/core#relatedMatch"
+          ],
+          "note": ""
+        },
+        {
+          "code": "spellCheck",
+          "name": "Possible misspellings",
+          "severity": "info",
+          "description": "OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#altLabel",
+            "http://www.w3.org/2004/02/skos/core#broadMatch",
+            "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+            "http://www.w3.org/2004/02/skos/core#closeMatch",
+            "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+            "http://www.w3.org/2004/02/skos/core#mappingRelation",
+            "http://www.w3.org/2004/02/skos/core#memberList",
+            "http://www.w3.org/2004/02/skos/core#narrowMatch",
+            "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+            "http://www.w3.org/2004/02/skos/core#prefLabel",
+            "http://www.w3.org/2004/02/skos/core#related",
+            "http://www.w3.org/2004/02/skos/core#relatedMatch"
+          ],
+          "note": "alt → all, pref → prep, skos → skis, superproperty"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "4 of 4 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "0 of 4 classes (0%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "4 of 4 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "0 classes, 3 properties",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "1 group",
+          "status": "ok"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "13 without domain, 12 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "4 of 4 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 3 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Not found",
+          "status": "warn"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "3.0% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "4 of 4 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "Skipped: needs the original Turtle (.ttl) file; it reads the file text",
+          "status": "skipped"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "46 possible misspellings in 778 words (5.9%)",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "summary": {
+        "error": 0,
         "warning": 1,
-        "info": 1
+        "info": 29
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#broadMatch",
+            "http://www.w3.org/2004/02/skos/core#broader",
+            "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+            "http://www.w3.org/2004/02/skos/core#closeMatch",
+            "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "http://www.w3.org/2004/02/skos/core#inScheme",
+            "http://www.w3.org/2004/02/skos/core#mappingRelation",
+            "http://www.w3.org/2004/02/skos/core#narrowMatch",
+            "http://www.w3.org/2004/02/skos/core#narrower",
+            "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+            "http://www.w3.org/2004/02/skos/core#notation",
+            "http://www.w3.org/2004/02/skos/core#related",
+            "http://www.w3.org/2004/02/skos/core#relatedMatch"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "SUGGESTION: symmetric or transitive object properties.",
+          "name": "SUGGESTION: symmetric or transitive object properties.",
+          "severity": "info",
+          "description": "The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#semanticRelation"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 13,
+        "info": 2
       }
     }
   ],

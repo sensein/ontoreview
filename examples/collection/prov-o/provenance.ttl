@@ -10,7 +10,7 @@
     dcterms:title "W3C PROVenance Interchange Ontology (PROV-O)" .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T04:10:56+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-18T02:58:03+00:00"^^xsd:dateTime ;
     prov:used "prov-o.ttl" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

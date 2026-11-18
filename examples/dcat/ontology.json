@@ -59,8 +59,8 @@
     "A record in a data catalog, describing the registration of a single dataset or data service."
    ],
    "restrictions": [
-    "foaf:primaryTopic only dcat:Resource",
-    "foaf:primaryTopic exactly 1"
+    "foaf:primaryTopic exactly 1",
+    "foaf:primaryTopic only dcat:Resource"
    ]
   },
   {
@@ -752,7 +752,7 @@
    "curie": "dcat:spatialResolutionInMeters",
    "kind": "datatype_property",
    "label": "geografisk opløsning (meter)",
-   "definition": "minimum spatial separation resolvable in a dataset, measured in meters.",
+   "definition": "mindste geografiske afstand som kan resolveres i et datasæt, målt i meter.",
    "range": [
     "xsd:decimal"
    ]

@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3cf">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd1434">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -65,69 +65,6 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#memberDuring",
-   "name": "member During",
-   "description": "Optional property to indicate the interval for which the membership is/was valid.",
-   "termCode": "org:memberDuring"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasRegisteredSite",
-   "name": "registered Site",
-   "description": "Indicates the legally registered site for the organization, in many legal jurisdictions there is a requirement that FormalOrganizations such as Companies or Charities have such a primary designed site. ",
-   "termCode": "org:hasRegisteredSite"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasMembership",
-   "name": "membership",
-   "description": "Indicates a membership relationship that the Agent plays. Inverse of `org:member`.",
-   "termCode": "org:hasMembership"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#originalOrganization",
-   "name": "original organization",
-   "description": "Indicates one or more organizations that existed before the change event. Depending on the event they may or may not have continued to exist after the event. Inverse of `org:changedBy`.",
-   "termCode": "org:originalOrganization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#OrganizationalUnit",
-   "name": "OrganizationalUnit",
-   "description": "An Organization such as a University Support Unit which is part of some larger FormalOrganization and only has full recognition within the context of that FormalOrganization, it is not a Legal Entity in its own right. Units can be large and complex containing other Units and even FormalOrganizations. Alternative names: _OU_ _Unit_ _Department_",
-   "termCode": "org:OrganizationalUnit"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#siteOf",
-   "name": "site Of",
-   "description": "Indicates an Organization which has some presence at the given site. This is the inverse of `org:hasSite`.",
-   "termCode": "org:siteOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Organization",
-   "name": "Organization",
-   "description": "Represents a collection of people organized together into a community or other social, commercial or political structure. The group has some common purpose or reason for existence which goes beyond the set of people belonging to it and can act as an Agent. Organizations are often decomposable into hierarchical structures.  It is recommended that SKOS lexical labels should be used to label the Organization. In particular `skos:prefLabel` for the primary (possibly legally recognized name), `skos:a",
-   "termCode": "org:Organization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#location",
-   "name": "location",
-   "description": "Gives a location description for a person within the organization, for example a _Mail Stop_ for internal posting purposes.",
-   "termCode": "org:location"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#changedBy",
-   "name": "changed by",
-   "description": "Indicates a change event which resulted in a change to this organization. Depending on the event the organization may or may not have continued to exist after the event. Inverse of `org:originalOrganization`.",
-   "termCode": "org:changedBy"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/ns/org#postIn",
    "name": "post in",
    "description": "Indicates the Organization in which the Post exists.",
@@ -135,17 +72,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Membership",
-   "name": "Membership",
-   "description": "Indicates the nature of an Agent's membership of an organization. Represents an n-ary relation between an Agent, an Organization and a Role. It is possible to directly indicate membership, independent of the specific Role, through use of the `org:memberOf` property.",
-   "termCode": "org:Membership"
+   "@id": "http://www.w3.org/ns/org#roleProperty",
+   "name": "role (property)",
+   "description": "This is a metalevel property which is used to annotate an `org:Role` instance with a sub-property of `org:memberOf` that can be used to directly indicate the role for easy of query. The intended semantics is a Membership relation involving the Role implies the existence of a direct property relationship through an inference rule of the form:  `{ [] org:member ?p; org:organization ?o; org:role [org:roleProperty ?r] } -> {?p ?r ?o}`.",
+   "termCode": "org:roleProperty"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#headOf",
-   "name": "head of",
-   "description": "Indicates that a person is the leader or formal head of the Organization. This will normally mean that they are the root of the `org:reportsTo` (acyclic) graph, though an organization may have more than one head.",
-   "termCode": "org:headOf"
+   "@id": "http://www.w3.org/ns/org#Post",
+   "name": "Post",
+   "description": "A Post represents some position within an organization that exists independently of the person or persons filling it. Posts may be used to represent situations where a person is a member of an organization ex officio (for example the Secretary of State for Scotland is part of UK Cabinet by virtue of being Secretary of State for Scotland, not as an individual person). A post can be held by multiple people and hence can be treated as a organization in its own right.",
+   "termCode": "org:Post"
   },
   {
    "@type": "DefinedTerm",
@@ -156,31 +93,66 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasPost",
-   "name": "post",
-   "description": "Indicates a Post which exists within the Organization.",
-   "termCode": "org:hasPost"
+   "@id": "http://www.w3.org/ns/org#ChangeEvent",
+   "name": "Change Event",
+   "description": "Represents an event which resulted in a major change to an organization such as a merger or complete restructuring. It is intended for situations where the resulting organization is sufficient distinct from the original organizations that it has a distinct identity and distinct URI. Extension vocabularies should define sub-classes of this to denote particular categories of event. The instant or interval at which the event occurred should be given by `prov:startAtTime` and `prov:endedAtTime`, a d",
+   "termCode": "org:ChangeEvent"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
-   "name": "transitive sub-organization",
-   "description": "The transitive closure of subOrganizationOf, giving a representation of all organizations that contain this one. Note that technically this is a super property of the transitive closure so it could contain additional assertions but such usage is discouraged.",
-   "termCode": "org:transitiveSubOrganizationOf"
+   "@id": "http://www.w3.org/ns/org#identifier",
+   "name": "identifier",
+   "description": "Gives an identifier, such as a company registration number, that can be used to used to uniquely identify the organization. Many different national and international identier schemes are available. The org ontology is neutral to which schemes are used. The particular identifier scheme should be indicated by the datatype of the identifier value.  Using datatypes to distinguish the notation scheme used is consistent with recommended best practice for `skos:notation` of which this property is a spe",
+   "termCode": "org:identifier"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasMember",
-   "name": "has member",
-   "description": "Indicates a person who is a member of the subject Organization. Inverse of `org:memberOf`, see that property for further clarification. Provided for compatibility with `foaf:member`.",
-   "termCode": "org:hasMember"
+   "@id": "http://www.w3.org/ns/org#OrganizationalUnit",
+   "name": "OrganizationalUnit",
+   "description": "An Organization such as a University Support Unit which is part of some larger FormalOrganization and only has full recognition within the context of that FormalOrganization, it is not a Legal Entity in its own right. Units can be large and complex containing other Units and even FormalOrganizations. Alternative names: _OU_ _Unit_ _Department_",
+   "termCode": "org:OrganizationalUnit"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Post",
-   "name": "Post",
-   "description": "A Post represents some position within an organization that exists independently of the person or persons filling it. Posts may be used to represent situations where a person is a member of an organization ex officio (for example the Secretary of State for Scotland is part of UK Cabinet by virtue of being Secretary of State for Scotland, not as an individual person). A post can be held by multiple people and hence can be treated as a organization in its own right.",
-   "termCode": "org:Post"
+   "@id": "http://www.w3.org/ns/org#Site",
+   "name": "Site",
+   "description": "An office or other premise at which the organization is located. Many organizations are spread across multiple sites and many sites will host multiple locations. In most cases a Site will be a physical location. However, we don't exclude the possibility of non-physical sites such as a virtual office with an associated post box and phone reception service. Extensions may provide subclasses to denote particular types of site.",
+   "termCode": "org:Site"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#reportsTo",
+   "name": "reports to",
+   "description": "Indicates a reporting relationship as might be depicted on an organizational chart. The precise semantics of the reporting relationship will vary by organization but is intended to encompass both direct supervisory relationships (e.g. carrying objective and salary setting authority) and more general reporting or accountability relationships (e.g. so called _dotted line_ reporting).",
+   "termCode": "org:reportsTo"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasUnit",
+   "name": "has Unit",
+   "description": "Indicates a unit which is part of this Organization, e.g. a Department within a larger FormalOrganization. Inverse of `org:unitOf`.",
+   "termCode": "org:hasUnit"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#role",
+   "name": "role",
+   "description": "Indicates the Role that the Agent plays in a Membership relationship with an Organization.",
+   "termCode": "org:role"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#FormalOrganization",
+   "name": "Formal Organization",
+   "description": "An Organization which is recognized in the world at large, in particular in legal jurisdictions, with associated rights and responsibilities. Examples include a Corporation, Charity, Government or Church. Note that this is a super class of `gr:BusinessEntity` and it is recommended to use the GoodRelations vocabulary to denote Business classifications such as DUNS or NAICS.",
+   "termCode": "org:FormalOrganization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasRegisteredSite",
+   "name": "registered Site",
+   "description": "Indicates the legally registered site for the organization, in many legal jurisdictions there is a requirement that FormalOrganizations such as Companies or Charities have such a primary designed site. ",
+   "termCode": "org:hasRegisteredSite"
   },
   {
    "@type": "DefinedTerm",
@@ -198,122 +170,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#basedAt",
-   "name": "based At",
-   "description": "Indicates the site at which a person is based. We do not restrict the possibility that a person is based at multiple sites.",
-   "termCode": "org:basedAt"
+   "@id": "http://www.w3.org/ns/org#member",
+   "name": "member",
+   "description": "Indicates the Person (or other Agent including Organization) involved in the Membership relationship. Inverse of `org:hasMembership`",
+   "termCode": "org:member"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#siteAddress",
-   "name": "site Address",
-   "description": "Indicates an address for the site in a suitable encoding. Use of vCard (using the http://www.w3.org/TR/vcard-rdf/ vocabulary) is encouraged but the range is left open to allow other encodings to be used. The address may include email, telephone, and geo-location information and is not restricted to a physical address. ",
-   "termCode": "org:siteAddress"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#OrganizationalCollaboration",
-   "name": "Endeavour",
-   "description": "A collaboration between two or more Organizations such as a project. It meets the criteria for being an Organization in that it has an identity and defining purpose independent of its particular members but is neither a formally recognized legal entity nor a sub-unit within some larger organization. Might typically have a shorter lifetime than the Organizations within it, but not necessarily. All members are `org:Organization`s rather than individuals and those Organizations can play particular ",
-   "termCode": "org:OrganizationalCollaboration"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#holds",
-   "name": "holds",
-   "description": "Indicates a Post held by some Agent.",
-   "termCode": "org:holds"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Role",
-   "name": "Role",
-   "description": "Denotes a role that a Person or other Agent can take in an organization. Instances of this class describe the abstract role; to denote a specific instance of a person playing that role in a specific organization use an instance of `org:Membership`. It is common for roles to be arranged in some taxonomic structure and we use SKOS to represent that. The normal SKOS lexical properties should be used when labelling the Role. Additional descriptive properties for the Role, such as a Salary band, may ",
-   "termCode": "org:Role"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#purpose",
-   "name": "purpose",
-   "description": "Indicates the purpose of this Organization. There can be many purposes at different levels of abstraction but the nature of an organization is to have a reason for existence and this property is a means to document that reason. An Organization may have multiple purposes. It is recommended that the purpose be denoted by a controlled term or code list, ideally a `skos:Concept`. However, the range is left open to allow for other types of descriptive schemes. It is expected that specializations or a",
-   "termCode": "org:purpose"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#resultingOrganization",
-   "name": "resulted in",
-   "description": "Indicates an organization which was created or changed as a result of the event. Inverse of `org:resultedFrom`.",
-   "termCode": "org:resultingOrganization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#roleProperty",
-   "name": "role (property)",
-   "description": "This is a metalevel property which is used to annotate an `org:Role` instance with a sub-property of `org:memberOf` that can be used to directly indicate the role for easy of query. The intended semantics is a Membership relation involving the Role implies the existence of a direct property relationship through an inference rule of the form:  `{ [] org:member ?p; org:organization ?o; org:role [org:roleProperty ?r] } -> {?p ?r ?o}`.",
-   "termCode": "org:roleProperty"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#remuneration",
-   "name": "remuneration",
-   "description": "Indicates a salary or other reward associated with the role. Typically this will be denoted using an existing representation scheme such as `gr:PriceSpecification` but the range is left open to allow applications to specialize it (e.g. to remunerationInGBP).",
-   "termCode": "org:remuneration"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#identifier",
-   "name": "identifier",
-   "description": "Gives an identifier, such as a company registration number, that can be used to used to uniquely identify the organization. Many different national and international identier schemes are available. The org ontology is neutral to which schemes are used. The particular identifier scheme should be indicated by the datatype of the identifier value.  Using datatypes to distinguish the notation scheme used is consistent with recommended best practice for `skos:notation` of which this property is a spe",
-   "termCode": "org:identifier"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Site",
-   "name": "Site",
-   "description": "An office or other premise at which the organization is located. Many organizations are spread across multiple sites and many sites will host multiple locations. In most cases a Site will be a physical location. However, we don't exclude the possibility of non-physical sites such as a virtual office with an associated post box and phone reception service. Extensions may provide subclasses to denote particular types of site.",
-   "termCode": "org:Site"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#organization",
-   "name": "organization",
-   "description": "Indicates Organization in which the Agent is a member.",
-   "termCode": "org:organization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#classification",
-   "name": "classification",
-   "description": "Indicates a classification for this Organization within some classification scheme. Extension vocabularies may wish to specialize this property to have a range corresponding to a specific `skos:ConceptScheme`. This property is under discussion and may be revised or removed - in many cases organizations are best categorized by defining a sub-class hierarchy in an extension vocabulary.",
-   "termCode": "org:classification"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#linkedTo",
-   "name": "linked to",
-   "description": "Indicates an arbitrary relationship between two organizations. Specializations of this can be used to, for example, denote funding or supply chain relationships.",
-   "termCode": "org:linkedTo"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#role",
-   "name": "role",
-   "description": "Indicates the Role that the Agent plays in a Membership relationship with an Organization.",
-   "termCode": "org:role"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasSubOrganization",
-   "name": "has SubOrganization",
-   "description": "Represents hierarchical containment of Organizations or Organizational Units; indicates an organization which is a sub-part or child of this organization.  Inverse of `org:subOrganizationOf`.",
-   "termCode": "org:hasSubOrganization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#FormalOrganization",
-   "name": "Formal Organization",
-   "description": "An Organization which is recognized in the world at large, in particular in legal jurisdictions, with associated rights and responsibilities. Examples include a Corporation, Charity, Government or Church. Note that this is a super class of `gr:BusinessEntity` and it is recommended to use the GoodRelations vocabulary to denote Business classifications such as DUNS or NAICS.",
-   "termCode": "org:FormalOrganization"
+   "@id": "http://www.w3.org/ns/org#siteOf",
+   "name": "site Of",
+   "description": "Indicates an Organization which has some presence at the given site. This is the inverse of `org:hasSite`.",
+   "termCode": "org:siteOf"
   },
   {
    "@type": "DefinedTerm",
@@ -324,6 +191,90 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#changedBy",
+   "name": "changed by",
+   "description": "Indicates a change event which resulted in a change to this organization. Depending on the event the organization may or may not have continued to exist after the event. Inverse of `org:originalOrganization`.",
+   "termCode": "org:changedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#basedAt",
+   "name": "based At",
+   "description": "Indicates the site at which a person is based. We do not restrict the possibility that a person is based at multiple sites.",
+   "termCode": "org:basedAt"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#classification",
+   "name": "classification",
+   "description": "Indicates a classification for this Organization within some classification scheme. Extension vocabularies may wish to specialize this property to have a range corresponding to a specific `skos:ConceptScheme`. This property is under discussion and may be revised or removed - in many cases organizations are best categorized by defining a sub-class hierarchy in an extension vocabulary.",
+   "termCode": "org:classification"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#holds",
+   "name": "holds",
+   "description": "Indicates a Post held by some Agent.",
+   "termCode": "org:holds"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#headOf",
+   "name": "head of",
+   "description": "Indicates that a person is the leader or formal head of the Organization. This will normally mean that they are the root of the `org:reportsTo` (acyclic) graph, though an organization may have more than one head.",
+   "termCode": "org:headOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasMembership",
+   "name": "membership",
+   "description": "Indicates a membership relationship that the Agent plays. Inverse of `org:member`.",
+   "termCode": "org:hasMembership"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#siteAddress",
+   "name": "site Address",
+   "description": "Indicates an address for the site in a suitable encoding. Use of vCard (using the http://www.w3.org/TR/vcard-rdf/ vocabulary) is encouraged but the range is left open to allow other encodings to be used. The address may include email, telephone, and geo-location information and is not restricted to a physical address. ",
+   "termCode": "org:siteAddress"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#originalOrganization",
+   "name": "original organization",
+   "description": "Indicates one or more organizations that existed before the change event. Depending on the event they may or may not have continued to exist after the event. Inverse of `org:changedBy`.",
+   "termCode": "org:originalOrganization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#resultingOrganization",
+   "name": "resulted in",
+   "description": "Indicates an organization which was created or changed as a result of the event. Inverse of `org:resultedFrom`.",
+   "termCode": "org:resultingOrganization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#location",
+   "name": "location",
+   "description": "Gives a location description for a person within the organization, for example a _Mail Stop_ for internal posting purposes.",
+   "termCode": "org:location"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#linkedTo",
+   "name": "linked to",
+   "description": "Indicates an arbitrary relationship between two organizations. Specializations of this can be used to, for example, denote funding or supply chain relationships.",
+   "termCode": "org:linkedTo"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#purpose",
+   "name": "purpose",
+   "description": "Indicates the purpose of this Organization. There can be many purposes at different levels of abstraction but the nature of an organization is to have a reason for existence and this property is a means to document that reason. An Organization may have multiple purposes. It is recommended that the purpose be denoted by a controlled term or code list, ideally a `skos:Concept`. However, the range is left open to allow for other types of descriptive schemes. It is expected that specializations or a",
+   "termCode": "org:purpose"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/ns/org#Head",
    "name": "head",
    "description": "A role corresponding to the `org:headOf` property",
@@ -331,31 +282,59 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#memberOf",
-   "name": "member of",
-   "description": "Indicates that a person is a member of the Organization with no indication of the nature of that membership or the role played. Note that the choice of property name is not meant to limit the property to only formal membership arrangements, it is also indended to cover related concepts such as affilliation or other involvement in the organization. Extensions can specialize this relationship to indicate particular roles within the organization or more nuanced relationships to the organization. Ha",
-   "termCode": "org:memberOf"
+   "@id": "http://www.w3.org/ns/org#OrganizationalCollaboration",
+   "name": "Endeavour",
+   "description": "A collaboration between two or more Organizations such as a project. It meets the criteria for being an Organization in that it has an identity and defining purpose independent of its particular members but is neither a formally recognized legal entity nor a sub-unit within some larger organization. Might typically have a shorter lifetime than the Organizations within it, but not necessarily. All members are `org:Organization`s rather than individuals and those Organizations can play particular ",
+   "termCode": "org:OrganizationalCollaboration"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#ChangeEvent",
-   "name": "Change Event",
-   "description": "Represents an event which resulted in a major change to an organization such as a merger or complete restructuring. It is intended for situations where the resulting organization is sufficient distinct from the original organizations that it has a distinct identity and distinct URI. Extension vocabularies should define sub-classes of this to denote particular categories of event. The instant or interval at which the event occurred should be given by `prov:startAtTime` and `prov:endedAtTime`, a d",
-   "termCode": "org:ChangeEvent"
+   "@id": "http://www.w3.org/ns/org#remuneration",
+   "name": "remuneration",
+   "description": "Indicates a salary or other reward associated with the role. Typically this will be denoted using an existing representation scheme such as `gr:PriceSpecification` but the range is left open to allow applications to specialize it (e.g. to remunerationInGBP).",
+   "termCode": "org:remuneration"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasUnit",
-   "name": "has Unit",
-   "description": "Indicates a unit which is part of this Organization, e.g. a Department within a larger FormalOrganization. Inverse of `org:unitOf`.",
-   "termCode": "org:hasUnit"
+   "@id": "http://www.w3.org/ns/org#organization",
+   "name": "organization",
+   "description": "Indicates Organization in which the Agent is a member.",
+   "termCode": "org:organization"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#reportsTo",
-   "name": "reports to",
-   "description": "Indicates a reporting relationship as might be depicted on an organizational chart. The precise semantics of the reporting relationship will vary by organization but is intended to encompass both direct supervisory relationships (e.g. carrying objective and salary setting authority) and more general reporting or accountability relationships (e.g. so called _dotted line_ reporting).",
-   "termCode": "org:reportsTo"
+   "@id": "http://www.w3.org/ns/org#Role",
+   "name": "Role",
+   "description": "Denotes a role that a Person or other Agent can take in an organization. Instances of this class describe the abstract role; to denote a specific instance of a person playing that role in a specific organization use an instance of `org:Membership`. It is common for roles to be arranged in some taxonomic structure and we use SKOS to represent that. The normal SKOS lexical properties should be used when labelling the Role. Additional descriptive properties for the Role, such as a Salary band, may ",
+   "termCode": "org:Role"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+   "name": "transitive sub-organization",
+   "description": "The transitive closure of subOrganizationOf, giving a representation of all organizations that contain this one. Note that technically this is a super property of the transitive closure so it could contain additional assertions but such usage is discouraged.",
+   "termCode": "org:transitiveSubOrganizationOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasMember",
+   "name": "has member",
+   "description": "Indicates a person who is a member of the subject Organization. Inverse of `org:memberOf`, see that property for further clarification. Provided for compatibility with `foaf:member`.",
+   "termCode": "org:hasMember"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#Organization",
+   "name": "Organization",
+   "description": "Represents a collection of people organized together into a community or other social, commercial or political structure. The group has some common purpose or reason for existence which goes beyond the set of people belonging to it and can act as an Agent. Organizations are often decomposable into hierarchical structures.  It is recommended that SKOS lexical labels should be used to label the Organization. In particular `skos:prefLabel` for the primary (possibly legally recognized name), `skos:a",
+   "termCode": "org:Organization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasSubOrganization",
+   "name": "has SubOrganization",
+   "description": "Represents hierarchical containment of Organizations or Organizational Units; indicates an organization which is a sub-part or child of this organization.  Inverse of `org:subOrganizationOf`.",
+   "termCode": "org:hasSubOrganization"
   },
   {
    "@type": "DefinedTerm",
@@ -366,10 +345,24 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#member",
-   "name": "member",
-   "description": "Indicates the Person (or other Agent including Organization) involved in the Membership relationship. Inverse of `org:hasMembership`",
-   "termCode": "org:member"
+   "@id": "http://www.w3.org/ns/org#Membership",
+   "name": "Membership",
+   "description": "Indicates the nature of an Agent's membership of an organization. Represents an n-ary relation between an Agent, an Organization and a Role. It is possible to directly indicate membership, independent of the specific Role, through use of the `org:memberOf` property.",
+   "termCode": "org:Membership"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#memberOf",
+   "name": "member of",
+   "description": "Indicates that a person is a member of the Organization with no indication of the nature of that membership or the role played. Note that the choice of property name is not meant to limit the property to only formal membership arrangements, it is also indended to cover related concepts such as affilliation or other involvement in the organization. Extensions can specialize this relationship to indicate particular roles within the organization or more nuanced relationships to the organization. Ha",
+   "termCode": "org:memberOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasPost",
+   "name": "post",
+   "description": "Indicates a Post which exists within the Organization.",
+   "termCode": "org:hasPost"
   },
   {
    "@type": "DefinedTerm",
@@ -377,6 +370,13 @@
    "name": "primary Site",
    "description": "Indicates a primary site for the Organization, this is the default means by which an Organization can be contacted and is not necessarily the formal headquarters.",
    "termCode": "org:hasPrimarySite"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#memberDuring",
+   "name": "member During",
+   "description": "Optional property to indicate the interval for which the membership is/was valid.",
+   "termCode": "org:memberDuring"
   }
  ]
 }</script></head>
@@ -1104,7 +1104,7 @@
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 17 warnings and 5 suggestions. ROBOT: 3 errors, 2 warnings, 1 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 17 warnings and 5 suggestions. ROBOT: 49 errors, 47 warnings, 3 suggestions. Logical consistency: 0 errors, 0 warnings, 0 suggestions. OntoCheck: 0 errors, 0 warnings, 103 suggestions. OOPS!: 0 errors, 17 warnings, 11 suggestions.</p>
 
 <h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No creators <span class="muted">(1) OB005</span></summary>
@@ -1116,7 +1116,7 @@
     <summary><span class="sev">warning</span> Duplicate labels <span class="muted">(11) OB016</span></summary>
     <p class="muted rule-desc">Two or more terms share the same label, which confuses readers and tools.</p>
     <ul class="findings">
-<li>Label “organisation” @fr is used by <code>org:Organization</code>, <code>org:organization</code>. <a href="#Organization">§</a></li><li>Label “organization” @en is used by <code>org:Organization</code>, <code>org:organization</code>. <a href="#Organization">§</a></li><li>Label “organizzazione” @it is used by <code>org:Organization</code>, <code>org:organization</code>. <a href="#Organization">§</a></li><li>Label “role” @en is used by <code>org:Role</code>, <code>org:role</code>. <a href="#Role">§</a></li><li>Label “ruolo” @it is used by <code>org:Role</code>, <code>org:role</code>. <a href="#Role">§</a></li><li>Label “rôle” @fr is used by <code>org:Role</code>, <code>org:role</code>. <a href="#Role">§</a></li><li>Label “appartenenza” @it is used by <code>org:hasMembership</code>, <code>org:Membership</code>. <a href="#hasMembership">§</a></li><li>Label “engagement” @fr is used by <code>org:hasMembership</code>, <code>org:Membership</code>. <a href="#hasMembership">§</a></li><li>Label “membership” @en is used by <code>org:hasMembership</code>, <code>org:Membership</code>. <a href="#hasMembership">§</a></li><li>Label “impiego” @it is used by <code>org:hasPost</code>, <code>org:Post</code>. <a href="#hasPost">§</a></li><li>Label “post” @en is used by <code>org:hasPost</code>, <code>org:Post</code>. <a href="#hasPost">§</a></li>    </ul>
+<li>Label “impiego” @it is used by <code>org:Post</code>, <code>org:hasPost</code>. <a href="#Post">§</a></li><li>Label “post” @en is used by <code>org:Post</code>, <code>org:hasPost</code>. <a href="#Post">§</a></li><li>Label “appartenenza” @it is used by <code>org:hasMembership</code>, <code>org:Membership</code>. <a href="#hasMembership">§</a></li><li>Label “engagement” @fr is used by <code>org:hasMembership</code>, <code>org:Membership</code>. <a href="#hasMembership">§</a></li><li>Label “membership” @en is used by <code>org:hasMembership</code>, <code>org:Membership</code>. <a href="#hasMembership">§</a></li><li>Label “organisation” @fr is used by <code>org:organization</code>, <code>org:Organization</code>. <a href="#organization">§</a></li><li>Label “organization” @en is used by <code>org:organization</code>, <code>org:Organization</code>. <a href="#organization">§</a></li><li>Label “organizzazione” @it is used by <code>org:organization</code>, <code>org:Organization</code>. <a href="#organization">§</a></li><li>Label “role” @en is used by <code>org:role</code>, <code>org:Role</code>. <a href="#role">§</a></li><li>Label “ruolo” @it is used by <code>org:role</code>, <code>org:Role</code>. <a href="#role">§</a></li><li>Label “rôle” @fr is used by <code>org:role</code>, <code>org:Role</code>. <a href="#role">§</a></li>    </ul>
   </details>
   <details class="finding sev-warning">
     <summary><span class="sev">warning</span> Multiple labels in one language <span class="muted">(5) OB017</span></summary>
@@ -1167,6 +1167,96 @@
     <summary><span class="sev">info</span> Missing superclass <span class="muted">(3) missing_superclass</span></summary>
     <ul class="findings">
 <li><a href="#Membership">Membership</a> <code class="muted">org:Membership</code></li><li><a href="#Post">Post</a> <code class="muted">org:Post</code></li><li><a href="#Site">Site</a> <code class="muted">org:Site</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-warn"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 9 of 14 classes (64%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 14 classes (0%)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-warn"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 14 classes (0%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-warn"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 0 classes, 10 properties<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-info"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 2 groups<span class="sr-only"> (info)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-warn"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 0 without domain, 4 without range<span class="sr-only"> (warn)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 11 of 14 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 7 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-ok"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Found<span class="sr-only"> (ok)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 6.2% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 14 of 14 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-ok"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-info"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 57 possible misspellings in 1794 words (3.2%)<span class="sr-only"> (info)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-warn"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> 38 labels shared<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without rdfs:label <span class="muted">(5) checkLabel</span></summary>
+<p class="muted rule-desc">OntoCheck checkLabel: these named classes have no rdfs:label.</p>    <ul class="findings">
+<li><code>http://purl.org/goodrelations/v1#BusinessEntity</code></li><li><code>http://www.w3.org/2004/02/skos/core#Concept</code></li><li><code>http://www.w3.org/ns/prov#Activity</code></li><li><code>http://xmlns.com/foaf/0.1/Agent</code></li><li><code>http://xmlns.com/foaf/0.1/Organization</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without skos:definition <span class="muted">(14) definitionCheck</span></summary>
+<p class="muted rule-desc">OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).</p>    <ul class="findings">
+<li><code>http://purl.org/goodrelations/v1#BusinessEntity</code></li><li><code>http://www.w3.org/2004/02/skos/core#Concept</code></li><li><a href="#ChangeEvent">Change Event</a> <code class="muted">org:ChangeEvent</code></li><li><a href="#FormalOrganization">Formal Organization</a> <code class="muted">org:FormalOrganization</code></li><li><a href="#Membership">Membership</a> <code class="muted">org:Membership</code></li><li><a href="#Organization">Organization</a> <code class="muted">org:Organization</code></li><li><a href="#OrganizationalCollaboration">Endeavour</a> <code class="muted">org:OrganizationalCollaboration</code></li><li><a href="#OrganizationalUnit">OrganizationalUnit</a> <code class="muted">org:OrganizationalUnit</code></li><li><a href="#Post">Post</a> <code class="muted">org:Post</code></li><li><a href="#Role">Role</a> <code class="muted">org:Role</code></li><li><a href="#Site">Site</a> <code class="muted">org:Site</code></li><li><code>http://www.w3.org/ns/prov#Activity</code></li><li><code>http://xmlns.com/foaf/0.1/Agent</code></li><li><code>http://xmlns.com/foaf/0.1/Organization</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Shared labels <span class="muted">(42) duplicateLabels</span></summary>
+<p class="muted rule-desc">OntoCheck duplicateLabels (case-insensitive rdfs:label).</p><p class="rule-desc">“change event”: 4 entities; “formal organization”: 4 entities; “membership”: 8 entities; “organization”: 8 entities; “endeavour”: 4 entities; “organizationalunit”: 4 entities; “post”: 8 entities; “role”: 8 entities; “site”: 4 entities; “based at”: 4 entities; “classification”: 4 entities; “registere</p>    <ul class="findings">
+<li><a href="#ChangeEvent">Change Event</a> <code class="muted">org:ChangeEvent</code></li><li><a href="#FormalOrganization">Formal Organization</a> <code class="muted">org:FormalOrganization</code></li><li><a href="#Membership">Membership</a> <code class="muted">org:Membership</code></li><li><a href="#Organization">Organization</a> <code class="muted">org:Organization</code></li><li><a href="#OrganizationalCollaboration">Endeavour</a> <code class="muted">org:OrganizationalCollaboration</code></li><li><a href="#OrganizationalUnit">OrganizationalUnit</a> <code class="muted">org:OrganizationalUnit</code></li><li><a href="#Post">Post</a> <code class="muted">org:Post</code></li><li><a href="#Role">Role</a> <code class="muted">org:Role</code></li><li><a href="#Site">Site</a> <code class="muted">org:Site</code></li><li><a href="#basedAt">based At</a> <code class="muted">org:basedAt</code></li><li><a href="#changedBy">changed by</a> <code class="muted">org:changedBy</code></li><li><a href="#classification">classification</a> <code class="muted">org:classification</code></li><li><a href="#hasMember">has member</a> <code class="muted">org:hasMember</code></li><li><a href="#hasMembership">membership</a> <code class="muted">org:hasMembership</code></li><li><a href="#hasPost">post</a> <code class="muted">org:hasPost</code></li><li><a href="#hasPrimarySite">primary Site</a> <code class="muted">org:hasPrimarySite</code></li><li><a href="#hasRegisteredSite">registered Site</a> <code class="muted">org:hasRegisteredSite</code></li><li><a href="#hasSite">has site</a> <code class="muted">org:hasSite</code></li><li><a href="#hasSubOrganization">has SubOrganization</a> <code class="muted">org:hasSubOrganization</code></li><li><a href="#hasUnit">has Unit</a> <code class="muted">org:hasUnit</code></li><li><a href="#headOf">head of</a> <code class="muted">org:headOf</code></li><li><a href="#heldBy">held by</a> <code class="muted">org:heldBy</code></li><li><a href="#holds">holds</a> <code class="muted">org:holds</code></li><li><a href="#identifier">identifier</a> <code class="muted">org:identifier</code></li><li><a href="#linkedTo">linked to</a> <code class="muted">org:linkedTo</code></li><li><a href="#location">location</a> <code class="muted">org:location</code></li><li><a href="#member">member</a> <code class="muted">org:member</code></li><li><a href="#memberDuring">member During</a> <code class="muted">org:memberDuring</code></li><li><a href="#memberOf">member of</a> <code class="muted">org:memberOf</code></li><li><a href="#organization">organization</a> <code class="muted">org:organization</code></li><li><a href="#originalOrganization">original organization</a> <code class="muted">org:originalOrganization</code></li><li><a href="#postIn">post in</a> <code class="muted">org:postIn</code></li><li><a href="#remuneration">remuneration</a> <code class="muted">org:remuneration</code></li><li><a href="#reportsTo">reports to</a> <code class="muted">org:reportsTo</code></li><li><a href="#resultedFrom">resulted from</a> <code class="muted">org:resultedFrom</code></li><li><a href="#resultingOrganization">resulted in</a> <code class="muted">org:resultingOrganization</code></li><li><a href="#role">role</a> <code class="muted">org:role</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li><li><a href="#siteOf">site Of</a> <code class="muted">org:siteOf</code></li><li><a href="#subOrganizationOf">subOrganization of</a> <code class="muted">org:subOrganizationOf</code></li><li><a href="#transitiveSubOrganizationOf">transitive sub-organization</a> <code class="muted">org:transitiveSubOrganizationOf</code></li><li><a href="#unitOf">unit Of</a> <code class="muted">org:unitOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Isolated classes and properties <span class="muted">(10) isolatedElements</span></summary>
+<p class="muted rule-desc">OntoCheck isolatedElements: not related to any other class or property.</p>    <ul class="findings">
+<li><a href="#basedAt">based At</a> <code class="muted">org:basedAt</code></li><li><a href="#classification">classification</a> <code class="muted">org:classification</code></li><li><a href="#linkedTo">linked to</a> <code class="muted">org:linkedTo</code></li><li><a href="#location">location</a> <code class="muted">org:location</code></li><li><a href="#memberDuring">member During</a> <code class="muted">org:memberDuring</code></li><li><a href="#organization">organization</a> <code class="muted">org:organization</code></li><li><a href="#remuneration">remuneration</a> <code class="muted">org:remuneration</code></li><li><a href="#reportsTo">reports to</a> <code class="muted">org:reportsTo</code></li><li><a href="#role">role</a> <code class="muted">org:role</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Properties without domain or range <span class="muted">(4) missingDomainRange</span></summary>
+<p class="muted rule-desc">0 without rdfs:domain, 4 without rdfs:range.</p>    <ul class="findings">
+<li><a href="#identifier">identifier</a> <code class="muted">org:identifier</code></li><li><a href="#memberDuring">member During</a> <code class="muted">org:memberDuring</code></li><li><a href="#remuneration">remuneration</a> <code class="muted">org:remuneration</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Possible misspellings <span class="muted">(28) spellCheck</span></summary>
+<p class="muted rule-desc">OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.</p><p class="rule-desc">Endeavour → endeavor, Org → or, affilliation → affiliation, alt → all, ary → are, datatype, datatypes, dct → act, encodings → encoding, esp → es, foaf → foam, hasmember → dismember, http → help, identier → identify, indended → intended, metalevel, officio → office, org → or, pref → prep, rdf → ref, skos → skis, specializable, vcard → card, www → wow</p>    <ul class="findings">
+<li><code>http://www.w3.org/ns/org#</code></li><li><a href="#ChangeEvent">Change Event</a> <code class="muted">org:ChangeEvent</code></li><li><a href="#Head">head</a> <code class="muted">org:Head</code></li><li><a href="#Membership">Membership</a> <code class="muted">org:Membership</code></li><li><a href="#Organization">Organization</a> <code class="muted">org:Organization</code></li><li><a href="#OrganizationalCollaboration">Endeavour</a> <code class="muted">org:OrganizationalCollaboration</code></li><li><a href="#Post">Post</a> <code class="muted">org:Post</code></li><li><a href="#Role">Role</a> <code class="muted">org:Role</code></li><li><a href="#changedBy">changed by</a> <code class="muted">org:changedBy</code></li><li><a href="#classification">classification</a> <code class="muted">org:classification</code></li><li><a href="#hasMember">has member</a> <code class="muted">org:hasMember</code></li><li><a href="#hasMembership">membership</a> <code class="muted">org:hasMembership</code></li><li><a href="#hasSite">has site</a> <code class="muted">org:hasSite</code></li><li><a href="#hasSubOrganization">has SubOrganization</a> <code class="muted">org:hasSubOrganization</code></li><li><a href="#hasUnit">has Unit</a> <code class="muted">org:hasUnit</code></li><li><a href="#headOf">head of</a> <code class="muted">org:headOf</code></li><li><a href="#identifier">identifier</a> <code class="muted">org:identifier</code></li><li><a href="#member">member</a> <code class="muted">org:member</code></li><li><a href="#memberOf">member of</a> <code class="muted">org:memberOf</code></li><li><a href="#originalOrganization">original organization</a> <code class="muted">org:originalOrganization</code></li><li><a href="#purpose">purpose</a> <code class="muted">org:purpose</code></li><li><a href="#resultedFrom">resulted from</a> <code class="muted">org:resultedFrom</code></li><li><a href="#resultingOrganization">resulted in</a> <code class="muted">org:resultingOrganization</code></li><li><a href="#roleProperty">role (property)</a> <code class="muted">org:roleProperty</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li><li><a href="#siteOf">site Of</a> <code class="muted">org:siteOf</code></li><li><a href="#subOrganizationOf">subOrganization of</a> <code class="muted">org:subOrganizationOf</code></li><li><a href="#unitOf">unit Of</a> <code class="muted">org:unitOf</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+<p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(4) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="#identifier">identifier</a> <code class="muted">org:identifier</code></li><li><a href="#memberDuring">member During</a> <code class="muted">org:memberDuring</code></li><li><a href="#remuneration">remuneration</a> <code class="muted">org:remuneration</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Untyped class <span class="muted">(6) P34</span></summary>
+<p class="muted rule-desc">An ontology element is used as a class without having been explicitly declared as such using the primitives owl:Class or rdfs:Class. This pitfall is related with the common problems listed in [8].</p>    <ul class="findings">
+<li><code>http://purl.org/goodrelations/v1#BusinessEntity</code></li><li><code>http://www.w3.org/2004/02/skos/core#Concept</code></li><li><code>http://www.w3.org/ns/prov#Activity</code></li><li><code>http://xmlns.com/foaf/0.1/Agent</code></li><li><code>http://xmlns.com/foaf/0.1/Organization</code></li><li><code>http://xmlns.com/foaf/0.1/Person</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Untyped property <span class="muted">(4) P35</span></summary>
+<p class="muted rule-desc">An ontology element is used as a property without having been explicitly declared as such using the primitives rdf:Property, owl:ObjectProperty or owl:DatatypeProperty. This pitfall is related with the common problems listed in [8].</p>    <ul class="findings">
+<li><code>http://www.w3.org/2004/02/skos/core#notation</code></li><li><code>http://www.w3.org/ns/prov#used</code></li><li><code>http://www.w3.org/ns/prov#wasGeneratedBy</code></li><li><code>http://xmlns.com/foaf/0.1/member</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> WARNING: the following classes do not have rdf:type owl:Class or equivalent. <span class="muted">(3) Warning</span></summary>
+    <ul class="findings">
+<li><code>http://purl.org/goodrelations/v1#BusinessEntity</code></li><li><code>http://www.w3.org/ns/prov#Activity</code></li><li><code>http://xmlns.com/foaf/0.1/Organization</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Misusing ontology annotations <span class="muted">(6) P20</span></summary>
+<p class="muted rule-desc">The contents of some annotation properties are swapped or misused. This pitfall might affect annotation properties related to natural language information (for example, annotations for naming such as rdfs:label or for providing descriptions such as rdfs:comment). Other types of annotation could also be affected as temporal, versioning information, among others.</p>    <ul class="findings">
+<li><a href="#hasPost">post</a> <code class="muted">org:hasPost</code></li><li><a href="#hasRegisteredSite">registered Site</a> <code class="muted">org:hasRegisteredSite</code></li><li><a href="#hasUnit">has Unit</a> <code class="muted">org:hasUnit</code></li><li><a href="#headOf">head of</a> <code class="muted">org:headOf</code></li><li><a href="#transitiveSubOrganizationOf">transitive sub-organization</a> <code class="muted">org:transitiveSubOrganizationOf</code></li><li><a href="#unitOf">unit Of</a> <code class="muted">org:unitOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> SUGGESTION: symmetric or transitive object properties. <span class="muted">(4) SUGGESTION: symmetric or transitive object properties.</span></summary>
+<p class="muted rule-desc">The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?</p>    <ul class="findings">
+<li><a href="#hasSubOrganization">has SubOrganization</a> <code class="muted">org:hasSubOrganization</code></li><li><a href="#linkedTo">linked to</a> <code class="muted">org:linkedTo</code></li><li><a href="#reportsTo">reports to</a> <code class="muted">org:reportsTo</code></li><li><a href="#subOrganizationOf">subOrganization of</a> <code class="muted">org:subOrganizationOf</code></li>    </ul>
   </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">5</span> Download</h2>
@@ -1236,10 +1326,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd3cf"></script>
+<script src="ontoreview-data.js?v=6afd1434"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd3cf"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afd1434"></script>
 </body>
 </html>

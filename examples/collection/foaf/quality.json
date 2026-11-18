@@ -4,6 +4,11 @@
     "warning": 5,
     "info": 27
   },
+  "totals": {
+    "error": 6,
+    "warning": 110,
+    "info": 131
+  },
   "external": [
     {
       "tool": "ROBOT",
@@ -149,10 +154,461 @@
         }
       ],
       "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
       "summary": {
-        "error": 2,
-        "warning": 2,
-        "info": 1
+        "error": 5,
+        "warning": 82,
+        "info": 6
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "humanLicense",
+          "name": "No human-readable license",
+          "severity": "warning",
+          "description": "No license or copyright text was found in the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "checkLabel",
+          "name": "Classes without rdfs:label",
+          "severity": "info",
+          "description": "OntoCheck checkLabel: these named classes have no rdfs:label.",
+          "affected": [
+            "http://www.w3.org/2000/01/rdf-schema#Class"
+          ],
+          "note": ""
+        },
+        {
+          "code": "definitionCheck",
+          "name": "Classes without skos:definition",
+          "severity": "info",
+          "description": "OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).",
+          "affected": [
+            "http://www.w3.org/2000/01/rdf-schema#Class",
+            "http://www.w3.org/2002/07/owl#Thing",
+            "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+            "http://xmlns.com/foaf/0.1/Agent",
+            "http://xmlns.com/foaf/0.1/Document",
+            "http://xmlns.com/foaf/0.1/Group",
+            "http://xmlns.com/foaf/0.1/Image",
+            "http://xmlns.com/foaf/0.1/LabelProperty",
+            "http://xmlns.com/foaf/0.1/OnlineAccount",
+            "http://xmlns.com/foaf/0.1/OnlineChatAccount",
+            "http://xmlns.com/foaf/0.1/OnlineEcommerceAccount",
+            "http://xmlns.com/foaf/0.1/OnlineGamingAccount",
+            "http://xmlns.com/foaf/0.1/Organization",
+            "http://xmlns.com/foaf/0.1/Person",
+            "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
+            "http://xmlns.com/foaf/0.1/Project"
+          ],
+          "note": ""
+        },
+        {
+          "code": "duplicateLabels",
+          "name": "Shared labels",
+          "severity": "info",
+          "description": "OntoCheck duplicateLabels (case-insensitive rdfs:label).",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/Image",
+            "http://xmlns.com/foaf/0.1/account",
+            "http://xmlns.com/foaf/0.1/givenName",
+            "http://xmlns.com/foaf/0.1/givenname",
+            "http://xmlns.com/foaf/0.1/holdsAccount",
+            "http://xmlns.com/foaf/0.1/img"
+          ],
+          "note": "“image”: 2 entities; “account”: 2 entities; “given name”: 2 entities"
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "http://www.w3.org/2000/01/rdf-schema#Class",
+            "http://xmlns.com/foaf/0.1/LabelProperty",
+            "http://xmlns.com/foaf/0.1/account",
+            "http://xmlns.com/foaf/0.1/accountName",
+            "http://xmlns.com/foaf/0.1/accountServiceHomepage",
+            "http://xmlns.com/foaf/0.1/age",
+            "http://xmlns.com/foaf/0.1/based_near",
+            "http://xmlns.com/foaf/0.1/birthday",
+            "http://xmlns.com/foaf/0.1/currentProject",
+            "http://xmlns.com/foaf/0.1/dnaChecksum",
+            "http://xmlns.com/foaf/0.1/familyName",
+            "http://xmlns.com/foaf/0.1/family_name",
+            "http://xmlns.com/foaf/0.1/firstName",
+            "http://xmlns.com/foaf/0.1/focus",
+            "http://xmlns.com/foaf/0.1/fundedBy",
+            "http://xmlns.com/foaf/0.1/geekcode",
+            "http://xmlns.com/foaf/0.1/gender",
+            "http://xmlns.com/foaf/0.1/givenName",
+            "http://xmlns.com/foaf/0.1/givenname",
+            "http://xmlns.com/foaf/0.1/holdsAccount",
+            "http://xmlns.com/foaf/0.1/interest",
+            "http://xmlns.com/foaf/0.1/jabberID",
+            "http://xmlns.com/foaf/0.1/knows",
+            "http://xmlns.com/foaf/0.1/lastName",
+            "http://xmlns.com/foaf/0.1/logo",
+            "http://xmlns.com/foaf/0.1/mbox",
+            "http://xmlns.com/foaf/0.1/mbox_sha1sum",
+            "http://xmlns.com/foaf/0.1/member",
+            "http://xmlns.com/foaf/0.1/myersBriggs",
+            "http://xmlns.com/foaf/0.1/pastProject",
+            "http://xmlns.com/foaf/0.1/phone",
+            "http://xmlns.com/foaf/0.1/plan",
+            "http://xmlns.com/foaf/0.1/publications",
+            "http://xmlns.com/foaf/0.1/schoolHomepage",
+            "http://xmlns.com/foaf/0.1/sha1",
+            "http://xmlns.com/foaf/0.1/status",
+            "http://xmlns.com/foaf/0.1/surname",
+            "http://xmlns.com/foaf/0.1/theme",
+            "http://xmlns.com/foaf/0.1/thumbnail",
+            "http://xmlns.com/foaf/0.1/title",
+            "http://xmlns.com/foaf/0.1/topic_interest",
+            "http://xmlns.com/foaf/0.1/workInfoHomepage",
+            "http://xmlns.com/foaf/0.1/workplaceHomepage"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "6 without rdfs:domain, 6 without rdfs:range.",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/dnaChecksum",
+            "http://xmlns.com/foaf/0.1/givenName",
+            "http://xmlns.com/foaf/0.1/givenname",
+            "http://xmlns.com/foaf/0.1/nick",
+            "http://xmlns.com/foaf/0.1/phone",
+            "http://xmlns.com/foaf/0.1/sha1",
+            "http://xmlns.com/foaf/0.1/title"
+          ],
+          "note": ""
+        },
+        {
+          "code": "spellCheck",
+          "name": "Possible misspellings",
+          "severity": "info",
+          "description": "OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/LabelProperty",
+            "http://xmlns.com/foaf/0.1/Project",
+            "http://xmlns.com/foaf/0.1/birthday",
+            "http://xmlns.com/foaf/0.1/dnaChecksum",
+            "http://xmlns.com/foaf/0.1/geekcode",
+            "http://xmlns.com/foaf/0.1/img",
+            "http://xmlns.com/foaf/0.1/mbox",
+            "http://xmlns.com/foaf/0.1/mbox_sha1sum",
+            "http://xmlns.com/foaf/0.1/nick",
+            "http://xmlns.com/foaf/0.1/openid",
+            "http://xmlns.com/foaf/0.1/phone",
+            "http://xmlns.com/foaf/0.1/sha1",
+            "http://xmlns.com/foaf/0.1/tipjar",
+            "http://xmlns.com/foaf/0.1/title",
+            "http://xmlns.com/foaf/0.1/weblog"
+          ],
+          "note": "characterising → characterizing, checksum → checks, dd → do, endeavour → endeavor, etc → et, foaf → foam, geekcode, html → him, http → help, ie → i, mbox → box, mm → my, openid → opened, org → or, sha → she, tel → tell, texual → sexual, tipjar → tipper, weblog → blog, www → wow"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "15 of 16 classes (94%)",
+          "status": "warn"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "0 of 16 classes (0%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "0 of 16 classes (0%)",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "2 classes, 41 properties",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "4 groups",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "6 without domain, 6 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "11 of 16 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 7 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Not found",
+          "status": "warn"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "5.8% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "16 of 16 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "Skipped: needs the original Turtle (.ttl) file; it reads the file text",
+          "status": "skipped"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "35 possible misspellings in 697 words (5.0%)",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "3 labels shared",
+          "status": "warn"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "summary": {
+        "error": 0,
+        "warning": 1,
+        "info": 88
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P31",
+          "name": "Defining wrong equivalent classes",
+          "severity": "error",
+          "description": "Two classes are defined as equivalent, using owl:equivalentClass, when they are not necessarily equivalent.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/dnaChecksum",
+            "http://xmlns.com/foaf/0.1/givenName",
+            "http://xmlns.com/foaf/0.1/givenname",
+            "http://xmlns.com/foaf/0.1/nick",
+            "http://xmlns.com/foaf/0.1/phone",
+            "http://xmlns.com/foaf/0.1/sha1",
+            "http://xmlns.com/foaf/0.1/title"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P12",
+          "name": "Equivalent properties not explicitly declared",
+          "severity": "warning",
+          "description": "The ontology lacks information about equivalent properties (owl:equivalentProperty) in the cases of duplicated relationships and/or attributes.",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/familyName",
+            "http://xmlns.com/foaf/0.1/family_name",
+            "http://xmlns.com/foaf/0.1/givenName",
+            "http://xmlns.com/foaf/0.1/givenname"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P34",
+          "name": "Untyped class",
+          "severity": "warning",
+          "description": "An ontology element is used as a class without having been explicitly declared as such using the primitives owl:Class or rdfs:Class. This pitfall is related with the common problems listed in [8].",
+          "affected": [
+            "http://purl.org/dc/terms/Agent",
+            "http://schema.org/CreativeWork",
+            "http://schema.org/ImageObject",
+            "http://schema.org/Person",
+            "http://www.w3.org/2000/10/swap/pim/contact#Person"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P35",
+          "name": "Untyped property",
+          "severity": "warning",
+          "description": "An ontology element is used as a property without having been explicitly declared as such using the primitives rdf:Property, owl:ObjectProperty or owl:DatatypeProperty. This pitfall is related with the common problems listed in [8].",
+          "affected": [
+            "http://purl.org/dc/terms/creator"
+          ],
+          "note": ""
+        },
+        {
+          "code": "Warning",
+          "name": "WARNING: the following classes do not have rdf:type owl:Class or equivalent.",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://purl.org/dc/terms/Agent",
+            "http://schema.org/CreativeWork",
+            "http://schema.org/ImageObject",
+            "http://schema.org/Person",
+            "http://www.w3.org/2000/10/swap/pim/contact#Person"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P04",
+          "name": "Creating unconnected ontology elements",
+          "severity": "info",
+          "description": "Ontology elements (classes, object properties and datatype properties) are created isolated, with no relation to the rest of the ontology.",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/LabelProperty",
+            "http://xmlns.com/foaf/0.1/Project"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P22",
+          "name": "Using different naming conventions in the ontology",
+          "severity": "info",
+          "description": "The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &quot;-&quot; or &quot;_&quot;) . Some notions about naming conventions are provided in [2].",
+          "affected": [],
+          "note": "There are elements following different naming conventions as for example: http://xmlns.com/foaf/0.1/topic_interest http://xmlns.com/foaf/0.1/workplaceHomepage"
+        },
+        {
+          "code": "SUGGESTION: symmetric or transitive object properties.",
+          "name": "SUGGESTION: symmetric or transitive object properties.",
+          "severity": "info",
+          "description": "The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?",
+          "affected": [
+            "http://xmlns.com/foaf/0.1/based_near",
+            "http://xmlns.com/foaf/0.1/fundedBy",
+            "http://xmlns.com/foaf/0.1/knows",
+            "http://xmlns.com/foaf/0.1/logo",
+            "http://xmlns.com/foaf/0.1/theme",
+            "http://xmlns.com/foaf/0.1/thumbnail"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "summary": {
+        "error": 1,
+        "warning": 22,
+        "info": 10
       }
     }
   ],
@@ -188,10 +644,10 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “given name” is used by `foaf:givenname`, `foaf:givenName`.",
-      "subject": "http://xmlns.com/foaf/0.1/givenname",
+      "message": "Label “given name” is used by `foaf:givenName`, `foaf:givenname`.",
+      "subject": "http://xmlns.com/foaf/0.1/givenName",
       "subject_label": "Given name",
-      "anchor": "givenname"
+      "anchor": "givenName"
     },
     {
       "rule": "OB016",

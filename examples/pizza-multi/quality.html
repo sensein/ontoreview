@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="quality.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3bc">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd13d8">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 </head>
@@ -102,7 +102,7 @@
   <main class="main" id="main" tabindex="-1">
 <section class="section" id="quality">
   <h2><span class="secno">6</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 1 errors, 6 warnings and 5 suggestions. ROBOT: 4 errors, 2 warnings, 1 suggestions.</p>
+  <p class="prose">ontoreview checks: 1 errors, 6 warnings and 5 suggestions. ROBOT: 6 errors, 15 warnings, 2 suggestions. Logical consistency: 0 errors, 0 warnings, 0 suggestions. OntoCheck: 0 errors, 0 warnings, 10 suggestions. OOPS!: 0 errors, 3 warnings, 2 suggestions.</p>
 
 <h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Wrong kind of range <span class="muted">(1) OB024</span></summary>
@@ -183,6 +183,64 @@
     <ul class="findings">
 <li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li>    </ul>
   </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-ok"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 8 of 8 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 8 classes (0%)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-warn"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 7 of 8 classes (88%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-warn"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 1 class, 2 properties<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-info"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 2 groups<span class="sr-only"> (info)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-warn"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 3 without domain, 2 without range<span class="sr-only"> (warn)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 6 of 8 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 2 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-ok"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Found<span class="sr-only"> (ok)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 0.0% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 8 of 8 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-ok"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-ok"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 possible misspellings in 61 words (0.0%)<span class="sr-only"> (ok)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-warn"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> 2 labels shared<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without skos:definition <span class="muted">(1) definitionCheck</span></summary>
+<p class="muted rule-desc">OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).</p>    <ul class="findings">
+<li><a href="classes.html#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Shared labels <span class="muted">(3) duplicateLabels</span></summary>
+<p class="muted rule-desc">OntoCheck duplicateLabels (case-insensitive rdfs:label).</p><p class="rule-desc">“pizza”: 3 entities; “food”: 2 entities</p>    <ul class="findings">
+<li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Isolated classes and properties <span class="muted">(3) isolatedElements</span></summary>
+<p class="muted rule-desc">OntoCheck isolatedElements: not related to any other class or property.</p>    <ul class="findings">
+<li><a href="classes.html#Calzone">Calzone</a> <code class="muted">pizza:Calzone</code></li><li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="datatype-properties.html#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Properties without domain or range <span class="muted">(3) missingDomainRange</span></summary>
+<p class="muted rule-desc">3 without rdfs:domain, 2 without rdfs:range.</p>    <ul class="findings">
+<li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+<p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(3) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Using different naming conventions in the ontology <span class="muted">P22</span></summary>
+<p class="muted rule-desc">The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &amp;quot;-&amp;quot; or &amp;quot;_&amp;quot;) . Some notions about naming conventions are provided in [2].</p><p class="rule-desc">There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name</p>  </details>
 </section>    <footer class="colophon">
       Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
     </footer>
@@ -199,8 +257,8 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd3bc"></script>
+<script src="ontoreview-data.js?v=6afd13d8"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6afbd3bc"></script>
+<script src="assets/ontoreview.js?v=6afd13d8"></script>
 </body>
 </html>

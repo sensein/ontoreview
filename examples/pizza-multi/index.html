@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3bc">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd13d8">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,36 +52,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#VegetarianPizza",
-   "name": "Vegetarian pizza",
-   "description": "A pizza with no meat toppings.",
-   "termCode": "pizza:VegetarianPizza"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Food",
-   "name": "Food",
-   "description": "Anything that can be eaten.",
-   "termCode": "pizza:Food"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#MeatTopping",
-   "name": "Meat topping",
-   "termCode": "pizza:MeatTopping"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Pizza",
-   "name": "Pizza",
-   "description": "A flat **baked** dish topped with ingredients.",
-   "termCode": "pizza:Pizza"
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
   },
   {
    "@type": "DefinedTerm",
@@ -92,16 +66,36 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasIngredient",
-   "name": "has ingredient",
-   "description": "Any ingredient.",
-   "termCode": "pizza:hasIngredient"
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasBase",
-   "name": "has base",
-   "termCode": "pizza:hasBase"
+   "@id": "https://example.org/pizza#Food",
+   "name": "Food",
+   "description": "Anything that can be eaten.",
+   "termCode": "pizza:Food"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Pizza",
+   "name": "Pizza",
+   "description": "A flat **baked** dish topped with ingredients.",
+   "termCode": "pizza:Pizza"
   },
   {
    "@type": "DefinedTerm",
@@ -112,28 +106,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#CheeseTopping",
-   "name": "Cheese topping",
-   "description": "Cheese.",
-   "termCode": "pizza:CheeseTopping"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://example.org/pizza#isToppingOf",
    "name": "is topping of",
    "termCode": "pizza:isToppingOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
   },
   {
    "@type": "DefinedTerm",
@@ -144,10 +119,35 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
+   "@id": "https://example.org/pizza#CheeseTopping",
+   "name": "Cheese topping",
+   "description": "Cheese.",
+   "termCode": "pizza:CheeseTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasBase",
+   "name": "has base",
+   "termCode": "pizza:hasBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasIngredient",
+   "name": "has ingredient",
+   "description": "Any ingredient.",
+   "termCode": "pizza:hasIngredient"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#MeatTopping",
+   "name": "Meat topping",
+   "termCode": "pizza:MeatTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   }
  ]
 }</script></head>
@@ -337,8 +337,8 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd3bc"></script>
+<script src="ontoreview-data.js?v=6afd13d8"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6afbd3bc"></script>
+<script src="assets/ontoreview.js?v=6afd13d8"></script>
 </body>
 </html>

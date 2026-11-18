@@ -43,7 +43,7 @@ A flat **baked** dish topped with ingredients.
 | | |
 |---|---|
 | Superclasses | [Food](classes.md#food) |
-| Restrictions | [has calories](datatype-properties.md#hascalories) *max* `1`; [has base](object-properties.md#hasbase) *some* [Pizza base](classes.md#pizzabase) |
+| Restrictions | [has base](object-properties.md#hasbase) *some* [Pizza base](classes.md#pizzabase); [has calories](datatype-properties.md#hascalories) *max* `1` |
 | Disjoint with | [Pizza topping](classes.md#pizzatopping) |
 | Instances | [Margherita](individuals.md#margherita) |
 | Used in | in domain of [has base](object-properties.md#hasbase); in domain of [has topping](object-properties.md#hastopping); used in axioms of [Vegetarian pizza](classes.md#vegetarianpizza) |

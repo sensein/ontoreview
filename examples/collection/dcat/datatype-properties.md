@@ -56,7 +56,7 @@ The end of the period.
 
 **IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
 
-minimum spatial separation resolvable in a dataset, measured in meters.
+mindste geografiske afstand som kan resolveres i et datasæt, målt i meter.
 
 | | |
 |---|---|

@@ -10,23 +10,182 @@
       "version": "3",
       "terms": 48,
       "quality": {
-        "error": 6,
-        "warning": 25,
-        "info": 10
+        "error": 67,
+        "warning": 79,
+        "info": 139
       },
       "external": [
         {
           "tool": "ROBOT",
           "problem": null,
           "summary": {
-            "error": 4,
-            "warning": 1,
-            "info": 1
-          }
+            "error": 61,
+            "warning": 54,
+            "info": 16
+          },
+          "scope": ""
+        },
+        {
+          "tool": "Logical consistency",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OntoCheck",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 113
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OOPS!",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
       "files": 12,
-      "error": null
+      "error": null,
+      "issues": [
+        {
+          "severity": "error",
+          "check": "OntoReview",
+          "rule": "OB015 · Undeclared term",
+          "affected": "ontology",
+          "count": 6
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "duplicate_label",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "label_whitespace",
+          "affected": "http://www.w3.org/ns/dcat#keyword",
+          "count": 1
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_label",
+          "affected": "9 elements",
+          "count": 9
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "multiple_labels",
+          "affected": "47 elements",
+          "count": 47
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB016 · Duplicate labels",
+          "affected": "5 elements",
+          "count": 24
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB017 · Multiple labels in one language",
+          "affected": "hadRole",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "missing_definition",
+          "affected": "54 elements",
+          "count": 54
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "checkLabel",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "definitionCheck",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "duplicateLabels",
+          "affected": "46 elements",
+          "count": 46
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "isolatedElements",
+          "affected": "21 elements",
+          "count": 21
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "missingDomainRange",
+          "affected": "18 elements",
+          "count": 18
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "spellCheck",
+          "affected": "24 elements",
+          "count": 24
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB012 · Property without domain",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB013 · Property without range",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB027 · Term outside the ontology namespace",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "ROBOT",
+          "rule": "missing_superclass",
+          "affected": "16 elements",
+          "count": 16
+        }
+      ]
     },
     {
       "source": "foaf.rdf",
@@ -36,23 +195,273 @@
       "version": "",
       "terms": 82,
       "quality": {
-        "error": 0,
-        "warning": 5,
-        "info": 27
+        "error": 6,
+        "warning": 110,
+        "info": 131
       },
       "external": [
         {
           "tool": "ROBOT",
           "problem": null,
           "summary": {
-            "error": 2,
-            "warning": 2,
-            "info": 1
-          }
+            "error": 5,
+            "warning": 82,
+            "info": 6
+          },
+          "scope": ""
+        },
+        {
+          "tool": "Logical consistency",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OntoCheck",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 1,
+            "info": 88
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OOPS!",
+          "problem": null,
+          "summary": {
+            "error": 1,
+            "warning": 22,
+            "info": 10
+          },
+          "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
       "files": 13,
-      "error": null
+      "error": null,
+      "issues": [
+        {
+          "severity": "error",
+          "check": "OOPS!",
+          "rule": "P31 · Defining wrong equivalent classes",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "duplicate_label",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_ontology_license",
+          "affected": "http://xmlns.com/foaf/0.1/",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P11 · Missing domain or range in properties",
+          "affected": "7 elements",
+          "count": 7
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P12 · Equivalent properties not explicitly declared",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P34 · Untyped class",
+          "affected": "5 elements",
+          "count": 5
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P35 · Untyped property",
+          "affected": "http://purl.org/dc/terms/creator",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "Warning",
+          "affected": "5 elements",
+          "count": 5
+        },
+        {
+          "severity": "warning",
+          "check": "OntoCheck",
+          "rule": "humanLicense",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB003 · No license declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB005 · No creators",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB016 · Duplicate labels",
+          "affected": "3 elements",
+          "count": 3
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "equivalent_pair",
+          "affected": "5 elements",
+          "count": 5
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "missing_definition",
+          "affected": "77 elements",
+          "count": 77
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P04 · Creating unconnected ontology elements",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P13 · Inverse relationships not explicitly declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P22 · Using different naming conventions in the ontology",
+          "affected": "There are elements following different naming conventions as for example: http:/",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "SUGGESTION: symmetric or transitive object properties.",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "checkLabel",
+          "affected": "http://www.w3.org/2000/01/rdf-schema#Class",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "definitionCheck",
+          "affected": "16 elements",
+          "count": 16
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "duplicateLabels",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "isolatedElements",
+          "affected": "43 elements",
+          "count": 43
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "missingDomainRange",
+          "affected": "7 elements",
+          "count": 7
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "spellCheck",
+          "affected": "15 elements",
+          "count": 15
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB004 · No version information",
+          "affected": "ontology",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB012 · Property without domain",
+          "affected": "5 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB013 · Property without range",
+          "affected": "5 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB019 · Inconsistent naming convention",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB023 · Orphan class",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB027 · Term outside the ontology namespace",
+          "affected": "7 elements",
+          "count": 7
+        },
+        {
+          "severity": "info",
+          "check": "ROBOT",
+          "rule": "missing_superclass",
+          "affected": "6 elements",
+          "count": 6
+        }
+      ]
     },
     {
       "source": "org.ttl",
@@ -62,23 +471,224 @@
       "version": "0.8",
       "terms": 45,
       "quality": {
-        "error": 0,
-        "warning": 17,
-        "info": 5
+        "error": 49,
+        "warning": 81,
+        "info": 122
       },
       "external": [
         {
           "tool": "ROBOT",
           "problem": null,
           "summary": {
-            "error": 3,
-            "warning": 2,
-            "info": 1
-          }
+            "error": 49,
+            "warning": 47,
+            "info": 3
+          },
+          "scope": ""
+        },
+        {
+          "tool": "Logical consistency",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OntoCheck",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 103
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OOPS!",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 17,
+            "info": 11
+          },
+          "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
       "files": 15,
-      "error": null
+      "error": null,
+      "issues": [
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_label",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_ontology_description",
+          "affected": "http://www.w3.org/ns/org#",
+          "count": 1
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "multiple_labels",
+          "affected": "46 elements",
+          "count": 46
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P11 · Missing domain or range in properties",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P34 · Untyped class",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P35 · Untyped property",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "Warning",
+          "affected": "3 elements",
+          "count": 3
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB005 · No creators",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB016 · Duplicate labels",
+          "affected": "4 elements",
+          "count": 11
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB017 · Multiple labels in one language",
+          "affected": "5 elements",
+          "count": 5
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "equivalent_pair",
+          "affected": "http://www.w3.org/ns/org#Organization",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "missing_definition",
+          "affected": "46 elements",
+          "count": 46
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P13 · Inverse relationships not explicitly declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P20 · Misusing ontology annotations",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "SUGGESTION: symmetric or transitive object properties.",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "checkLabel",
+          "affected": "5 elements",
+          "count": 5
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "definitionCheck",
+          "affected": "14 elements",
+          "count": 14
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "duplicateLabels",
+          "affected": "42 elements",
+          "count": 42
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "isolatedElements",
+          "affected": "10 elements",
+          "count": 10
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "missingDomainRange",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "spellCheck",
+          "affected": "28 elements",
+          "count": 28
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB004 · No version information",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB013 · Property without range",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "info",
+          "check": "ROBOT",
+          "rule": "missing_superclass",
+          "affected": "3 elements",
+          "count": 3
+        }
+      ]
     },
     {
       "source": "prov-o.ttl",
@@ -88,23 +698,238 @@
       "version": "Recommendation version 2013-04-30",
       "terms": 95,
       "quality": {
-        "error": 0,
-        "warning": 35,
-        "info": 80
+        "error": 20,
+        "warning": 137,
+        "info": 189
       },
       "external": [
         {
           "tool": "ROBOT",
           "problem": null,
           "summary": {
-            "error": 4,
+            "error": 18,
+            "warning": 99,
+            "info": 7
+          },
+          "scope": ""
+        },
+        {
+          "tool": "Logical consistency",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OntoCheck",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 1,
+            "info": 92
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OOPS!",
+          "problem": null,
+          "summary": {
+            "error": 2,
             "warning": 2,
-            "info": 1
-          }
+            "info": 10
+          },
+          "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
       "files": 13,
-      "error": null
+      "error": null,
+      "issues": [
+        {
+          "severity": "error",
+          "check": "OOPS!",
+          "rule": "P19 · Defining multiple domains or ranges in properties",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_label",
+          "affected": "15 elements",
+          "count": 15
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_ontology_description",
+          "affected": "http://www.w3.org/ns/prov#",
+          "count": 1
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_ontology_license",
+          "affected": "http://www.w3.org/ns/prov#",
+          "count": 1
+        },
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_ontology_title",
+          "affected": "http://www.w3.org/ns/prov#",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P11 · Missing domain or range in properties",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "warning",
+          "check": "OntoCheck",
+          "rule": "humanLicense",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB003 · No license declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB005 · No creators",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB010 · Term without a label",
+          "affected": "15 elements",
+          "count": 15
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB011 · Term without a definition",
+          "affected": "13 elements",
+          "count": 13
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB016 · Duplicate labels",
+          "affected": "3 elements",
+          "count": 3
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB028 · Multiple domains or ranges",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "annotation_whitespace",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "missing_definition",
+          "affected": "93 elements",
+          "count": 93
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P13 · Inverse relationships not explicitly declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "SUGGESTION: symmetric or transitive object properties.",
+          "affected": "9 elements",
+          "count": 9
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "checkLabel",
+          "affected": "http://www.w3.org/2002/07/owl#Thing",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "definitionCheck",
+          "affected": "31 elements",
+          "count": 31
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "duplicateLabels",
+          "affected": "6 elements",
+          "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "isolatedElements",
+          "affected": "12 elements",
+          "count": 12
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "missingDomainRange",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "spellCheck",
+          "affected": "40 elements",
+          "count": 40
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB013 · Property without range",
+          "affected": "value",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB026 · Missing language tags",
+          "affected": "79 elements",
+          "count": 79
+        },
+        {
+          "severity": "info",
+          "check": "ROBOT",
+          "rule": "missing_superclass",
+          "affected": "7 elements",
+          "count": 7
+        }
+      ]
     },
     {
       "source": "skos.rdf",
@@ -114,9 +939,9 @@
       "version": "",
       "terms": 32,
       "quality": {
-        "error": 0,
-        "warning": 1,
-        "info": 5
+        "error": 1,
+        "warning": 47,
+        "info": 39
       },
       "external": [
         {
@@ -124,13 +949,144 @@
           "problem": null,
           "summary": {
             "error": 1,
+            "warning": 32,
+            "info": 3
+          },
+          "scope": ""
+        },
+        {
+          "tool": "Logical consistency",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OntoCheck",
+          "problem": null,
+          "summary": {
+            "error": 0,
             "warning": 1,
-            "info": 1
-          }
+            "info": 29
+          },
+          "scope": ""
+        },
+        {
+          "tool": "OOPS!",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 13,
+            "info": 2
+          },
+          "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
       "files": 13,
-      "error": null
+      "error": null,
+      "issues": [
+        {
+          "severity": "error",
+          "check": "ROBOT",
+          "rule": "missing_ontology_license",
+          "affected": "http://www.w3.org/2004/02/skos/core",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OOPS!",
+          "rule": "P11 · Missing domain or range in properties",
+          "affected": "13 elements",
+          "count": 13
+        },
+        {
+          "severity": "warning",
+          "check": "OntoCheck",
+          "rule": "humanLicense",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "OntoReview",
+          "rule": "OB003 · No license declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "ROBOT",
+          "rule": "missing_definition",
+          "affected": "32 elements",
+          "count": 32
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "P13 · Inverse relationships not explicitly declared",
+          "affected": "ontology",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OOPS!",
+          "rule": "SUGGESTION: symmetric or transitive object properties.",
+          "affected": "http://www.w3.org/2004/02/skos/core#semanticRelation",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "isolatedElements",
+          "affected": "3 elements",
+          "count": 3
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "missingDomainRange",
+          "affected": "13 elements",
+          "count": 13
+        },
+        {
+          "severity": "info",
+          "check": "OntoCheck",
+          "rule": "spellCheck",
+          "affected": "13 elements",
+          "count": 13
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB004 · No version information",
+          "affected": "ontology",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB012 · Property without domain",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "info",
+          "check": "OntoReview",
+          "rule": "OB013 · Property without range",
+          "affected": "notation",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "ROBOT",
+          "rule": "missing_superclass",
+          "affected": "3 elements",
+          "count": 3
+        }
+      ]
     }
   ],
   "skipped": []

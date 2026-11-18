@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3c0">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd13e5">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -24,31 +24,24 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Invalidation",
-   "name": "Invalidation",
-   "description": "Invalidation is the start of the destruction, cessation, or expiry of an existing entity by an activity. The entity is no longer available for use (or further invalidation) after invalidation. Any generation or usage of an entity precedes its invalidation.",
-   "termCode": "prov:Invalidation"
+   "@id": "http://www.w3.org/ns/prov#Person",
+   "name": "Person",
+   "description": "Person agents are people.",
+   "termCode": "prov:Person"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Plan",
-   "name": "Plan",
-   "description": "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals.",
-   "termCode": "prov:Plan"
+   "@id": "http://www.w3.org/ns/prov#editorialNote",
+   "name": "editorialNote",
+   "description": "A note by the OWL development team about how this term expresses the PROV-DM concept, or how it should be used in context of semantic web or linked data.",
+   "termCode": "prov:editorialNote"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#hadUsage",
-   "name": "hadUsage",
-   "description": "The _optional_ Usage involved in an Entity's Derivation.",
-   "termCode": "prov:hadUsage"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedAssociation",
-   "name": "qualifiedAssociation",
-   "description": "If this Activity prov:wasAssociatedWith Agent :ag, then it can qualify the Association using prov:qualifiedAssociation [ a prov:Association;  prov:agent :ag; :foo :bar ].",
-   "termCode": "prov:qualifiedAssociation"
+   "@id": "http://www.w3.org/ns/prov#component",
+   "name": "component",
+   "description": "Classify prov-o terms into six components according to prov-dm, including 'agents-responsibility', 'alternate', 'annotations', 'collections', 'derivations', and 'entities-activities'. This classification is used so that readers of prov-o specification can find its correspondence with the prov-dm specification.",
+   "termCode": "prov:component"
   },
   {
    "@type": "DefinedTerm",
@@ -59,23 +52,86 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasDerivedFrom",
-   "name": "wasDerivedFrom",
-   "description": "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.",
-   "termCode": "prov:wasDerivedFrom"
+   "@id": "http://www.w3.org/ns/prov#wasAttributedTo",
+   "name": "wasAttributedTo",
+   "description": "Attribution is the ascribing of an entity to an agent.",
+   "termCode": "prov:wasAttributedTo"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#invalidated",
-   "name": "invalidated",
-   "termCode": "prov:invalidated"
+   "@id": "http://www.w3.org/ns/prov#generatedAtTime",
+   "name": "generatedAtTime",
+   "description": "The time at which an entity was completely created and is available for use.",
+   "termCode": "prov:generatedAtTime"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#inverse",
-   "name": "inverse",
-   "description": "PROV-O does not define all property inverses. The directionalities defined in PROV-O should be given preference over those not defined. However, if users wish to name the inverse of a PROV-O property, the local name given by prov:inverse should be used.",
-   "termCode": "prov:inverse"
+   "@id": "http://www.w3.org/ns/prov#activity",
+   "name": "activity",
+   "termCode": "prov:activity"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedRevision",
+   "name": "qualifiedRevision",
+   "description": "If this Entity prov:wasRevisionOf Entity :e, then it can qualify how it was revised using prov:qualifiedRevision [ a prov:Revision;  prov:entity :e; :foo :bar ].",
+   "termCode": "prov:qualifiedRevision"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedUsage",
+   "name": "qualifiedUsage",
+   "description": "If this Activity prov:used Entity :e, then it can qualify how it used it using prov:qualifiedUsage [ a prov:Usage; prov:entity :e; :foo :bar ].",
+   "termCode": "prov:qualifiedUsage"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#hadRole",
+   "name": "hadRole",
+   "description": "The _optional_ Role that an Entity assumed in the context of an Activity. For example, :baking prov:used :spoon; prov:qualified [ a prov:Usage; prov:entity :spoon; prov:hadRole roles:mixing_implement ].",
+   "termCode": "prov:hadRole"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#startedAtTime",
+   "name": "startedAtTime",
+   "description": "The time at which an activity started. See also prov:endedAtTime.",
+   "termCode": "prov:startedAtTime"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#atLocation",
+   "name": "atLocation",
+   "description": "The Location of any resource.",
+   "termCode": "prov:atLocation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#ActivityInfluence",
+   "name": "ActivityInfluence",
+   "description": "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.",
+   "termCode": "prov:ActivityInfluence"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Entity",
+   "name": "Entity",
+   "description": "An entity is a physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary. ",
+   "termCode": "prov:Entity"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Role",
+   "name": "Role",
+   "description": "A role is the function of an entity or agent with respect to an activity, in the context of a usage, generation, invalidation, association, start, and end.",
+   "termCode": "prov:Role"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#used",
+   "name": "used",
+   "description": "A prov:Entity that was used by this prov:Activity. For example, :baking prov:used :spoon, :egg, :oven .",
+   "termCode": "prov:used"
   },
   {
    "@type": "DefinedTerm",
@@ -86,10 +142,303 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Person",
-   "name": "Person",
-   "description": "Person agents are people.",
-   "termCode": "prov:Person"
+   "@id": "http://www.w3.org/ns/prov#qualifiedCommunication",
+   "name": "qualifiedCommunication",
+   "description": "If this Activity prov:wasInformedBy Activity :a, then it can qualify how it was influenced using prov:qualifiedCommunication [ a prov:Communication;  prov:activity :a; :foo :bar ].",
+   "termCode": "prov:qualifiedCommunication"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#hadUsage",
+   "name": "hadUsage",
+   "description": "The _optional_ Usage involved in an Entity's Derivation.",
+   "termCode": "prov:hadUsage"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Plan",
+   "name": "Plan",
+   "description": "A plan is an entity that represents a set of actions or steps intended by one or more agents to achieve some goals.",
+   "termCode": "prov:Plan"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#value",
+   "name": "value",
+   "description": "Provides a value that is a direct representation of an entity.",
+   "termCode": "prov:value"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#influenced",
+   "name": "influenced",
+   "termCode": "prov:influenced"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#definition",
+   "name": "definition",
+   "description": "A definition quoted from PROV-DM or PROV-CONSTRAINTS that describes the concept expressed with this OWL term.",
+   "termCode": "prov:definition"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedQuotation",
+   "name": "qualifiedQuotation",
+   "description": "If this Entity prov:wasQuotedFrom Entity :e, then it can qualify how using prov:qualifiedQuotation [ a prov:Quotation;  prov:entity :e; :foo :bar ].",
+   "termCode": "prov:qualifiedQuotation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#hadGeneration",
+   "name": "hadGeneration",
+   "description": "The _optional_ Generation involved in an Entity's Derivation.",
+   "termCode": "prov:hadGeneration"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Quotation",
+   "name": "Quotation",
+   "description": "A quotation is the repeat of (some or all of) an entity, such as text or image, by someone who may or may not be its original author. Quotation is a particular case of derivation.",
+   "termCode": "prov:Quotation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasGeneratedBy",
+   "name": "wasGeneratedBy",
+   "termCode": "prov:wasGeneratedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#actedOnBehalfOf",
+   "name": "actedOnBehalfOf",
+   "description": "An object property to express the accountability of an agent towards another agent. The subordinate agent acted on behalf of the responsible agent in an actual activity. ",
+   "termCode": "prov:actedOnBehalfOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#influencer",
+   "name": "influencer",
+   "description": "Subproperties of prov:influencer are used to cite the object of an unqualified PROV-O triple whose predicate is a subproperty of prov:wasInfluencedBy (e.g. prov:used, prov:wasGeneratedBy). prov:influencer is used much like rdf:object is used.",
+   "termCode": "prov:influencer"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasStartedBy",
+   "name": "wasStartedBy",
+   "description": "Start is when an activity is deemed to have started. A start may refer to an entity, known as trigger, that initiated the activity.",
+   "termCode": "prov:wasStartedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedPrimarySource",
+   "name": "qualifiedPrimarySource",
+   "description": "If this Entity prov:hadPrimarySource Entity :e, then it can qualify how using prov:qualifiedPrimarySource [ a prov:PrimarySource; prov:entity :e; :foo :bar ].",
+   "termCode": "prov:qualifiedPrimarySource"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedForm",
+   "name": "qualifiedForm",
+   "description": "This annotation property links a subproperty of prov:wasInfluencedBy with the subclass of prov:Influence and the qualifying property that are used to qualify it. \n\nExample annotation:\n\n    prov:wasGeneratedBy prov:qualifiedForm prov:qualifiedGeneration, prov:Generation .\n\nThen this unqualified assertion:\n\n    :entity1 prov:wasGeneratedBy :activity1 .\n\ncan be qualified by adding:\n\n   :entity1 prov:qualifiedGeneration :entity1Gen .\n   :entity1Gen \n       a prov:Generation, prov:Influence;\n       p",
+   "termCode": "prov:qualifiedForm"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#invalidatedAtTime",
+   "name": "invalidatedAtTime",
+   "description": "The time at which an entity was invalidated (i.e., no longer usable).",
+   "termCode": "prov:invalidatedAtTime"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Collection",
+   "name": "Collection",
+   "description": "A collection is an entity that provides a structure to some constituents, which are themselves entities. These constituents are said to be member of the collections.",
+   "termCode": "prov:Collection"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Agent",
+   "name": "Agent",
+   "description": "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity. ",
+   "termCode": "prov:Agent"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#sharesDefinitionWith",
+   "name": "sharesDefinitionWith",
+   "termCode": "prov:sharesDefinitionWith"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#unqualifiedForm",
+   "name": "unqualifiedForm",
+   "description": "Classes and properties used to qualify relationships are annotated with prov:unqualifiedForm to indicate the property used to assert an unqualified provenance relation.",
+   "termCode": "prov:unqualifiedForm"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Start",
+   "name": "Start",
+   "description": "Start is when an activity is deemed to have been started by an entity, known as trigger. The activity did not exist before its start. Any usage, generation, or invalidation involving an activity follows the activity's start. A start may refer to a trigger entity that set off the activity, or to an activity, known as starter, that generated the trigger.",
+   "termCode": "prov:Start"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#hadActivity",
+   "name": "hadActivity",
+   "description": "The _optional_ Activity of an Influence, which used, generated, invalidated, or was the responsibility of some Entity. This property is _not_ used by ActivityInfluence (use prov:activity instead).",
+   "termCode": "prov:hadActivity"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Bundle",
+   "name": "Bundle",
+   "description": "A bundle is a named set of provenance descriptions, and is itself an Entity, so allowing provenance of provenance to be expressed.",
+   "termCode": "prov:Bundle"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#alternateOf",
+   "name": "alternateOf",
+   "description": "Two alternate entities present aspects of the same thing. These aspects may be the same or different, and the alternate entities may or may not overlap in time.",
+   "termCode": "prov:alternateOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedDelegation",
+   "name": "qualifiedDelegation",
+   "description": "If this Agent prov:actedOnBehalfOf Agent :ag, then it can qualify how with prov:qualifiedResponsibility [ a prov:Responsibility;  prov:agent :ag; :foo :bar ].",
+   "termCode": "prov:qualifiedDelegation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Attribution",
+   "name": "Attribution",
+   "description": "Attribution is the ascribing of an entity to an agent.\n\nWhen an entity e is attributed to agent ag, entity e was generated by some unspecified activity that in turn was associated to agent ag. Thus, this relation is useful when the activity is not known, or irrelevant.",
+   "termCode": "prov:Attribution"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasInfluencedBy",
+   "name": "wasInfluencedBy",
+   "description": "Because prov:wasInfluencedBy is a broad relation, its more specific subproperties (e.g. prov:wasInformedBy, prov:actedOnBehalfOf, prov:wasEndedBy, etc.) should be used when applicable.",
+   "termCode": "prov:wasInfluencedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedAssociation",
+   "name": "qualifiedAssociation",
+   "description": "If this Activity prov:wasAssociatedWith Agent :ag, then it can qualify the Association using prov:qualifiedAssociation [ a prov:Association;  prov:agent :ag; :foo :bar ].",
+   "termCode": "prov:qualifiedAssociation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Communication",
+   "name": "Communication",
+   "description": "Communication is the exchange of an entity by two activities, one activity using the entity generated by the other.",
+   "termCode": "prov:Communication"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasInvalidatedBy",
+   "name": "wasInvalidatedBy",
+   "termCode": "prov:wasInvalidatedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#PrimarySource",
+   "name": "PrimarySource",
+   "description": "A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.\n\nBecause of the directness of primary sources, they 'speak for themselves' in ways that cannot be captured through the filter of secondary sources. As such, it is important for secondary sources to reference those primary sources from which they were derived, so that their reliability can be investigated.\n\n",
+   "termCode": "prov:PrimarySource"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#invalidated",
+   "name": "invalidated",
+   "termCode": "prov:invalidated"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#generated",
+   "name": "generated",
+   "termCode": "prov:generated"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedDerivation",
+   "name": "qualifiedDerivation",
+   "description": "If this Entity prov:wasDerivedFrom Entity :e, then it can qualify how it was derived using prov:qualifiedDerivation [ a prov:Derivation;  prov:entity :e; :foo :bar ].",
+   "termCode": "prov:qualifiedDerivation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedStart",
+   "name": "qualifiedStart",
+   "description": "If this Activity prov:wasStartedBy Entity :e1, then it can qualify how it was started using prov:qualifiedStart [ a prov:Start;  prov:entity :e1; :foo :bar ].",
+   "termCode": "prov:qualifiedStart"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#entity",
+   "name": "entity",
+   "termCode": "prov:entity"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Association",
+   "name": "Association",
+   "description": "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity.",
+   "termCode": "prov:Association"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Invalidation",
+   "name": "Invalidation",
+   "description": "Invalidation is the start of the destruction, cessation, or expiry of an existing entity by an activity. The entity is no longer available for use (or further invalidation) after invalidation. Any generation or usage of an entity precedes its invalidation.",
+   "termCode": "prov:Invalidation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Influence",
+   "name": "Influence",
+   "description": "Influence is the capacity of an entity, activity, or agent to have an effect on the character, development, or behavior of another by means of usage, start, end, generation, invalidation, communication, derivation, attribution, association, or delegation.",
+   "termCode": "prov:Influence"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Generation",
+   "name": "Generation",
+   "description": "Generation is the completion of production of a new entity by an activity. This entity did not exist before generation and becomes available for usage after this generation.",
+   "termCode": "prov:Generation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedGeneration",
+   "name": "qualifiedGeneration",
+   "description": "If this Activity prov:generated Entity :e, then it can qualify how it performed the Generation using prov:qualifiedGeneration [ a prov:Generation;  prov:entity :e; :foo :bar ].",
+   "termCode": "prov:qualifiedGeneration"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#inverse",
+   "name": "inverse",
+   "description": "PROV-O does not define all property inverses. The directionalities defined in PROV-O should be given preference over those not defined. However, if users wish to name the inverse of a PROV-O property, the local name given by prov:inverse should be used.",
+   "termCode": "prov:inverse"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedEnd",
+   "name": "qualifiedEnd",
+   "description": "If this Activity prov:wasEndedBy Entity :e1, then it can qualify how it was ended using prov:qualifiedEnd [ a prov:End;  prov:entity :e1; :foo :bar ].",
+   "termCode": "prov:qualifiedEnd"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#todo",
+   "name": "todo",
+   "termCode": "prov:todo"
   },
   {
    "@type": "DefinedTerm",
@@ -97,6 +446,111 @@
    "name": "End",
    "description": "End is when an activity is deemed to have been ended by an entity, known as trigger. The activity no longer exists after its end. Any usage, generation, or invalidation involving an activity precedes the activity's end. An end may refer to a trigger entity that terminated the activity, or to an activity, known as ender that generated the trigger.",
    "termCode": "prov:End"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#order",
+   "name": "order",
+   "description": "The position that this OWL term should be listed within documentation. The scope of the documentation (e.g., among all terms, among terms within a prov:category, among properties applying to a particular class, etc.) is unspecified.",
+   "termCode": "prov:order"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedInfluence",
+   "name": "qualifiedInfluence",
+   "description": "Because prov:qualifiedInfluence is a broad relation, the more specific relations (qualifiedCommunication, qualifiedDelegation, qualifiedEnd, etc.) should be used when applicable.",
+   "termCode": "prov:qualifiedInfluence"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasDerivedFrom",
+   "name": "wasDerivedFrom",
+   "description": "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.",
+   "termCode": "prov:wasDerivedFrom"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Derivation",
+   "name": "Derivation",
+   "description": "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.",
+   "termCode": "prov:Derivation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#dm",
+   "name": "dm",
+   "description": "A reference to the principal section of the PROV-DM document that describes this concept.",
+   "termCode": "prov:dm"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Activity",
+   "name": "Activity",
+   "description": "An activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities.",
+   "termCode": "prov:Activity"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#atTime",
+   "name": "atTime",
+   "description": "The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.",
+   "termCode": "prov:atTime"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#specializationOf",
+   "name": "specializationOf",
+   "description": "An entity that is a specialization of another shares all aspects of the latter, and additionally presents more specific aspects of the same thing as the latter. In particular, the lifetime of the entity being specialized contains that of any specialization. Examples of aspects include a time period, an abstraction, and a context associated with the entity.",
+   "termCode": "prov:specializationOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasRevisionOf",
+   "name": "wasRevisionOf",
+   "description": "A revision is a derivation that revises an entity into a revised version.",
+   "termCode": "prov:wasRevisionOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Revision",
+   "name": "Revision",
+   "description": "A revision is a derivation for which the resulting entity is a revised version of some original. The implication here is that the resulting entity contains substantial content from the original. Revision is a particular case of derivation.",
+   "termCode": "prov:Revision"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#editorsDefinition",
+   "name": "editorsDefinition",
+   "description": "When the prov-o term does not have a definition drawn from prov-dm, and the prov-o editor provides one.",
+   "termCode": "prov:editorsDefinition"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#EntityInfluence",
+   "name": "EntityInfluence",
+   "description": "EntityInfluence provides additional descriptions of an Entity's binary influence upon any other kind of resource. Instances of EntityInfluence use the prov:entity property to cite the influencing Entity.",
+   "termCode": "prov:EntityInfluence"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#AgentInfluence",
+   "name": "AgentInfluence",
+   "description": "It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.",
+   "termCode": "prov:AgentInfluence"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasAssociatedWith",
+   "name": "wasAssociatedWith",
+   "description": "An prov:Agent that had some (unspecified) responsibility for the occurrence of this prov:Activity.",
+   "termCode": "prov:wasAssociatedWith"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#SoftwareAgent",
+   "name": "SoftwareAgent",
+   "description": "A software agent is running software.",
+   "termCode": "prov:SoftwareAgent"
   },
   {
    "@type": "DefinedTerm",
@@ -114,530 +568,9 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedForm",
-   "name": "qualifiedForm",
-   "description": "This annotation property links a subproperty of prov:wasInfluencedBy with the subclass of prov:Influence and the qualifying property that are used to qualify it. \n\nExample annotation:\n\n    prov:wasGeneratedBy prov:qualifiedForm prov:qualifiedGeneration, prov:Generation .\n\nThen this unqualified assertion:\n\n    :entity1 prov:wasGeneratedBy :activity1 .\n\ncan be qualified by adding:\n\n   :entity1 prov:qualifiedGeneration :entity1Gen .\n   :entity1Gen \n       a prov:Generation, prov:Influence;\n       p",
-   "termCode": "prov:qualifiedForm"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasAttributedTo",
-   "name": "wasAttributedTo",
-   "description": "Attribution is the ascribing of an entity to an agent.",
-   "termCode": "prov:wasAttributedTo"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#startedAtTime",
-   "name": "startedAtTime",
-   "description": "The time at which an activity started. See also prov:endedAtTime.",
-   "termCode": "prov:startedAtTime"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedGeneration",
-   "name": "qualifiedGeneration",
-   "description": "If this Activity prov:generated Entity :e, then it can qualify how it performed the Generation using prov:qualifiedGeneration [ a prov:Generation;  prov:entity :e; :foo :bar ].",
-   "termCode": "prov:qualifiedGeneration"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#influencer",
-   "name": "influencer",
-   "description": "Subproperties of prov:influencer are used to cite the object of an unqualified PROV-O triple whose predicate is a subproperty of prov:wasInfluencedBy (e.g. prov:used, prov:wasGeneratedBy). prov:influencer is used much like rdf:object is used.",
-   "termCode": "prov:influencer"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#sharesDefinitionWith",
-   "name": "sharesDefinitionWith",
-   "termCode": "prov:sharesDefinitionWith"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#AgentInfluence",
-   "name": "AgentInfluence",
-   "description": "It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.",
-   "termCode": "prov:AgentInfluence"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#hadRole",
-   "name": "hadRole",
-   "description": "The _optional_ Role that an Entity assumed in the context of an Activity. For example, :baking prov:used :spoon; prov:qualified [ a prov:Usage; prov:entity :spoon; prov:hadRole roles:mixing_implement ].",
-   "termCode": "prov:hadRole"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#SoftwareAgent",
-   "name": "SoftwareAgent",
-   "description": "A software agent is running software.",
-   "termCode": "prov:SoftwareAgent"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#hadPlan",
-   "name": "hadPlan",
-   "description": "The _optional_ Plan adopted by an Agent in Association with some Activity. Plan specifications are out of the scope of this specification.",
-   "termCode": "prov:hadPlan"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasAssociatedWith",
-   "name": "wasAssociatedWith",
-   "description": "An prov:Agent that had some (unspecified) responsibility for the occurrence of this prov:Activity.",
-   "termCode": "prov:wasAssociatedWith"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#definition",
-   "name": "definition",
-   "description": "A definition quoted from PROV-DM or PROV-CONSTRAINTS that describes the concept expressed with this OWL term.",
-   "termCode": "prov:definition"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedDerivation",
-   "name": "qualifiedDerivation",
-   "description": "If this Entity prov:wasDerivedFrom Entity :e, then it can qualify how it was derived using prov:qualifiedDerivation [ a prov:Derivation;  prov:entity :e; :foo :bar ].",
-   "termCode": "prov:qualifiedDerivation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#unqualifiedForm",
-   "name": "unqualifiedForm",
-   "description": "Classes and properties used to qualify relationships are annotated with prov:unqualifiedForm to indicate the property used to assert an unqualified provenance relation.",
-   "termCode": "prov:unqualifiedForm"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#order",
-   "name": "order",
-   "description": "The position that this OWL term should be listed within documentation. The scope of the documentation (e.g., among all terms, among terms within a prov:category, among properties applying to a particular class, etc.) is unspecified.",
-   "termCode": "prov:order"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasStartedBy",
-   "name": "wasStartedBy",
-   "description": "Start is when an activity is deemed to have started. A start may refer to an entity, known as trigger, that initiated the activity.",
-   "termCode": "prov:wasStartedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#generated",
-   "name": "generated",
-   "termCode": "prov:generated"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedUsage",
-   "name": "qualifiedUsage",
-   "description": "If this Activity prov:used Entity :e, then it can qualify how it used it using prov:qualifiedUsage [ a prov:Usage; prov:entity :e; :foo :bar ].",
-   "termCode": "prov:qualifiedUsage"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#PrimarySource",
-   "name": "PrimarySource",
-   "description": "A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.\n\nBecause of the directness of primary sources, they 'speak for themselves' in ways that cannot be captured through the filter of secondary sources. As such, it is important for secondary sources to reference those primary sources from which they were derived, so that their reliability can be investigated.\n\n",
-   "termCode": "prov:PrimarySource"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Attribution",
-   "name": "Attribution",
-   "description": "Attribution is the ascribing of an entity to an agent.\n\nWhen an entity e is attributed to agent ag, entity e was generated by some unspecified activity that in turn was associated to agent ag. Thus, this relation is useful when the activity is not known, or irrelevant.",
-   "termCode": "prov:Attribution"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#influenced",
-   "name": "influenced",
-   "termCode": "prov:influenced"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedStart",
-   "name": "qualifiedStart",
-   "description": "If this Activity prov:wasStartedBy Entity :e1, then it can qualify how it was started using prov:qualifiedStart [ a prov:Start;  prov:entity :e1; :foo :bar ].",
-   "termCode": "prov:qualifiedStart"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedQuotation",
-   "name": "qualifiedQuotation",
-   "description": "If this Entity prov:wasQuotedFrom Entity :e, then it can qualify how using prov:qualifiedQuotation [ a prov:Quotation;  prov:entity :e; :foo :bar ].",
-   "termCode": "prov:qualifiedQuotation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasQuotedFrom",
-   "name": "wasQuotedFrom",
-   "description": "An entity is derived from an original entity by copying, or 'quoting', some or all of it.",
-   "termCode": "prov:wasQuotedFrom"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#dm",
-   "name": "dm",
-   "description": "A reference to the principal section of the PROV-DM document that describes this concept.",
-   "termCode": "prov:dm"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#actedOnBehalfOf",
-   "name": "actedOnBehalfOf",
-   "description": "An object property to express the accountability of an agent towards another agent. The subordinate agent acted on behalf of the responsible agent in an actual activity. ",
-   "termCode": "prov:actedOnBehalfOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Communication",
-   "name": "Communication",
-   "description": "Communication is the exchange of an entity by two activities, one activity using the entity generated by the other.",
-   "termCode": "prov:Communication"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Quotation",
-   "name": "Quotation",
-   "description": "A quotation is the repeat of (some or all of) an entity, such as text or image, by someone who may or may not be its original author. Quotation is a particular case of derivation.",
-   "termCode": "prov:Quotation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#endedAtTime",
-   "name": "endedAtTime",
-   "description": "The time at which an activity ended. See also prov:startedAtTime.",
-   "termCode": "prov:endedAtTime"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Entity",
-   "name": "Entity",
-   "description": "An entity is a physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary. ",
-   "termCode": "prov:Entity"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Influence",
-   "name": "Influence",
-   "description": "Influence is the capacity of an entity, activity, or agent to have an effect on the character, development, or behavior of another by means of usage, start, end, generation, invalidation, communication, derivation, attribution, association, or delegation.",
-   "termCode": "prov:Influence"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasInvalidatedBy",
-   "name": "wasInvalidatedBy",
-   "termCode": "prov:wasInvalidatedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasGeneratedBy",
-   "name": "wasGeneratedBy",
-   "termCode": "prov:wasGeneratedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedRevision",
-   "name": "qualifiedRevision",
-   "description": "If this Entity prov:wasRevisionOf Entity :e, then it can qualify how it was revised using prov:qualifiedRevision [ a prov:Revision;  prov:entity :e; :foo :bar ].",
-   "termCode": "prov:qualifiedRevision"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Delegation",
-   "name": "Delegation",
-   "description": "Delegation is the assignment of authority and responsibility to an agent (by itself or by another agent) to carry out a specific activity as a delegate or representative, while the agent it acts on behalf of retains some responsibility for the outcome of the delegated work.\n\nFor example, a student acted on behalf of his supervisor, who acted on behalf of the department chair, who acted on behalf of the university; all those agents are responsible in some way for the activity that took place but ",
-   "termCode": "prov:Delegation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Association",
-   "name": "Association",
-   "description": "An activity association is an assignment of responsibility to an agent for an activity, indicating that the agent had a role in the activity. It further allows for a plan to be specified, which is the plan intended by the agent to achieve some goals in the context of this activity.",
-   "termCode": "prov:Association"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Agent",
-   "name": "Agent",
-   "description": "An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity. ",
-   "termCode": "prov:Agent"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#todo",
-   "name": "todo",
-   "termCode": "prov:todo"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#agent",
-   "name": "agent",
-   "termCode": "prov:agent"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Collection",
-   "name": "Collection",
-   "description": "A collection is an entity that provides a structure to some constituents, which are themselves entities. These constituents are said to be member of the collections.",
-   "termCode": "prov:Collection"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Generation",
-   "name": "Generation",
-   "description": "Generation is the completion of production of a new entity by an activity. This entity did not exist before generation and becomes available for usage after this generation.",
-   "termCode": "prov:Generation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#invalidatedAtTime",
-   "name": "invalidatedAtTime",
-   "description": "The time at which an entity was invalidated (i.e., no longer usable).",
-   "termCode": "prov:invalidatedAtTime"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasRevisionOf",
-   "name": "wasRevisionOf",
-   "description": "A revision is a derivation that revises an entity into a revised version.",
-   "termCode": "prov:wasRevisionOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#editorsDefinition",
-   "name": "editorsDefinition",
-   "description": "When the prov-o term does not have a definition drawn from prov-dm, and the prov-o editor provides one.",
-   "termCode": "prov:editorsDefinition"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Role",
-   "name": "Role",
-   "description": "A role is the function of an entity or agent with respect to an activity, in the context of a usage, generation, invalidation, association, start, and end.",
-   "termCode": "prov:Role"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedInfluence",
-   "name": "qualifiedInfluence",
-   "description": "Because prov:qualifiedInfluence is a broad relation, the more specific relations (qualifiedCommunication, qualifiedDelegation, qualifiedEnd, etc.) should be used when applicable.",
-   "termCode": "prov:qualifiedInfluence"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#activity",
-   "name": "activity",
-   "termCode": "prov:activity"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Derivation",
-   "name": "Derivation",
-   "description": "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.",
-   "termCode": "prov:Derivation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#generatedAtTime",
-   "name": "generatedAtTime",
-   "description": "The time at which an entity was completely created and is available for use.",
-   "termCode": "prov:generatedAtTime"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#hadGeneration",
-   "name": "hadGeneration",
-   "description": "The _optional_ Generation involved in an Entity's Derivation.",
-   "termCode": "prov:hadGeneration"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#used",
-   "name": "used",
-   "description": "A prov:Entity that was used by this prov:Activity. For example, :baking prov:used :spoon, :egg, :oven .",
-   "termCode": "prov:used"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#hadMember",
-   "name": "hadMember",
-   "termCode": "prov:hadMember"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasInformedBy",
-   "name": "wasInformedBy",
-   "description": "An activity a2 is dependent on or informed by another activity a1, by way of some unspecified entity that is generated by a1 and used by a2.",
-   "termCode": "prov:wasInformedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#hadActivity",
-   "name": "hadActivity",
-   "description": "The _optional_ Activity of an Influence, which used, generated, invalidated, or was the responsibility of some Entity. This property is _not_ used by ActivityInfluence (use prov:activity instead).",
-   "termCode": "prov:hadActivity"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/ns/prov#hadPrimarySource",
    "name": "hadPrimarySource",
    "termCode": "prov:hadPrimarySource"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#atTime",
-   "name": "atTime",
-   "description": "The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.",
-   "termCode": "prov:atTime"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Bundle",
-   "name": "Bundle",
-   "description": "A bundle is a named set of provenance descriptions, and is itself an Entity, so allowing provenance of provenance to be expressed.",
-   "termCode": "prov:Bundle"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#specializationOf",
-   "name": "specializationOf",
-   "description": "An entity that is a specialization of another shares all aspects of the latter, and additionally presents more specific aspects of the same thing as the latter. In particular, the lifetime of the entity being specialized contains that of any specialization. Examples of aspects include a time period, an abstraction, and a context associated with the entity.",
-   "termCode": "prov:specializationOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Location",
-   "name": "Location",
-   "description": "A location can be an identifiable geographic place (ISO 19112), but it can also be a non-geographic place such as a directory, row, or column. As such, there are numerous ways in which location can be expressed, such as by a coordinate, address, landmark, and so forth.",
-   "termCode": "prov:Location"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#value",
-   "name": "value",
-   "description": "Provides a value that is a direct representation of an entity.",
-   "termCode": "prov:value"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#InstantaneousEvent",
-   "name": "InstantaneousEvent",
-   "description": "The PROV data model is implicitly based on a notion of instantaneous events (or just events), that mark transitions in the world. Events include generation, usage, or invalidation of entities, as well as starting or ending of activities. This notion of event is not first-class in the data model, but it is useful for explaining its other concepts and its semantics.",
-   "termCode": "prov:InstantaneousEvent"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#EntityInfluence",
-   "name": "EntityInfluence",
-   "description": "EntityInfluence provides additional descriptions of an Entity's binary influence upon any other kind of resource. Instances of EntityInfluence use the prov:entity property to cite the influencing Entity.",
-   "termCode": "prov:EntityInfluence"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedInvalidation",
-   "name": "qualifiedInvalidation",
-   "description": "If this Entity prov:wasInvalidatedBy Activity :a, then it can qualify how it was invalidated using prov:qualifiedInvalidation [ a prov:Invalidation;  prov:activity :a; :foo :bar ].",
-   "termCode": "prov:qualifiedInvalidation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#editorialNote",
-   "name": "editorialNote",
-   "description": "A note by the OWL development team about how this term expresses the PROV-DM concept, or how it should be used in context of semantic web or linked data.",
-   "termCode": "prov:editorialNote"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#entity",
-   "name": "entity",
-   "termCode": "prov:entity"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#component",
-   "name": "component",
-   "description": "Classify prov-o terms into six components according to prov-dm, including 'agents-responsibility', 'alternate', 'annotations', 'collections', 'derivations', and 'entities-activities'. This classification is used so that readers of prov-o specification can find its correspondence with the prov-dm specification.",
-   "termCode": "prov:component"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedPrimarySource",
-   "name": "qualifiedPrimarySource",
-   "description": "If this Entity prov:hadPrimarySource Entity :e, then it can qualify how using prov:qualifiedPrimarySource [ a prov:PrimarySource; prov:entity :e; :foo :bar ].",
-   "termCode": "prov:qualifiedPrimarySource"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#atLocation",
-   "name": "atLocation",
-   "description": "The Location of any resource.",
-   "termCode": "prov:atLocation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Revision",
-   "name": "Revision",
-   "description": "A revision is a derivation for which the resulting entity is a revised version of some original. The implication here is that the resulting entity contains substantial content from the original. Revision is a particular case of derivation.",
-   "termCode": "prov:Revision"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedDelegation",
-   "name": "qualifiedDelegation",
-   "description": "If this Agent prov:actedOnBehalfOf Agent :ag, then it can qualify how with prov:qualifiedResponsibility [ a prov:Responsibility;  prov:agent :ag; :foo :bar ].",
-   "termCode": "prov:qualifiedDelegation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#category",
-   "name": "category",
-   "description": "Classify prov-o terms into three categories, including 'starting-point', 'qualifed', and 'extended'. This classification is used by the prov-o html document to gently introduce prov-o terms to its users. ",
-   "termCode": "prov:category"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedCommunication",
-   "name": "qualifiedCommunication",
-   "description": "If this Activity prov:wasInformedBy Activity :a, then it can qualify how it was influenced using prov:qualifiedCommunication [ a prov:Communication;  prov:activity :a; :foo :bar ].",
-   "termCode": "prov:qualifiedCommunication"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Organization",
-   "name": "Organization",
-   "description": "An organization is a social or legal institution such as a company, society, etc.",
-   "termCode": "prov:Organization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#aq",
-   "name": "aq",
-   "termCode": "prov:aq"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Activity",
-   "name": "Activity",
-   "description": "An activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities.",
-   "termCode": "prov:Activity"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#qualifiedEnd",
-   "name": "qualifiedEnd",
-   "description": "If this Activity prov:wasEndedBy Entity :e1, then it can qualify how it was ended using prov:qualifiedEnd [ a prov:End;  prov:entity :e1; :foo :bar ].",
-   "termCode": "prov:qualifiedEnd"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#Start",
-   "name": "Start",
-   "description": "Start is when an activity is deemed to have been started by an entity, known as trigger. The activity did not exist before its start. Any usage, generation, or invalidation involving an activity follows the activity's start. A start may refer to a trigger entity that set off the activity, or to an activity, known as starter, that generated the trigger.",
-   "termCode": "prov:Start"
   },
   {
    "@type": "DefinedTerm",
@@ -648,6 +581,13 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasInformedBy",
+   "name": "wasInformedBy",
+   "description": "An activity a2 is dependent on or informed by another activity a1, by way of some unspecified entity that is generated by a1 and used by a2.",
+   "termCode": "prov:wasInformedBy"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/ns/prov#wasEndedBy",
    "name": "wasEndedBy",
    "description": "End is when an activity is deemed to have ended. An end may refer to an entity, known as trigger, that terminated the activity.",
@@ -655,24 +595,84 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#wasInfluencedBy",
-   "name": "wasInfluencedBy",
-   "description": "Because prov:wasInfluencedBy is a broad relation, its more specific subproperties (e.g. prov:wasInformedBy, prov:actedOnBehalfOf, prov:wasEndedBy, etc.) should be used when applicable.",
-   "termCode": "prov:wasInfluencedBy"
+   "@id": "http://www.w3.org/ns/prov#endedAtTime",
+   "name": "endedAtTime",
+   "description": "The time at which an activity ended. See also prov:startedAtTime.",
+   "termCode": "prov:endedAtTime"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#ActivityInfluence",
-   "name": "ActivityInfluence",
-   "description": "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.",
-   "termCode": "prov:ActivityInfluence"
+   "@id": "http://www.w3.org/ns/prov#hadMember",
+   "name": "hadMember",
+   "termCode": "prov:hadMember"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/prov#alternateOf",
-   "name": "alternateOf",
-   "description": "Two alternate entities present aspects of the same thing. These aspects may be the same or different, and the alternate entities may or may not overlap in time.",
-   "termCode": "prov:alternateOf"
+   "@id": "http://www.w3.org/ns/prov#InstantaneousEvent",
+   "name": "InstantaneousEvent",
+   "description": "The PROV data model is implicitly based on a notion of instantaneous events (or just events), that mark transitions in the world. Events include generation, usage, or invalidation of entities, as well as starting or ending of activities. This notion of event is not first-class in the data model, but it is useful for explaining its other concepts and its semantics.",
+   "termCode": "prov:InstantaneousEvent"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#wasQuotedFrom",
+   "name": "wasQuotedFrom",
+   "description": "An entity is derived from an original entity by copying, or 'quoting', some or all of it.",
+   "termCode": "prov:wasQuotedFrom"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Organization",
+   "name": "Organization",
+   "description": "An organization is a social or legal institution such as a company, society, etc.",
+   "termCode": "prov:Organization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#agent",
+   "name": "agent",
+   "termCode": "prov:agent"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#qualifiedInvalidation",
+   "name": "qualifiedInvalidation",
+   "description": "If this Entity prov:wasInvalidatedBy Activity :a, then it can qualify how it was invalidated using prov:qualifiedInvalidation [ a prov:Invalidation;  prov:activity :a; :foo :bar ].",
+   "termCode": "prov:qualifiedInvalidation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#category",
+   "name": "category",
+   "description": "Classify prov-o terms into three categories, including 'starting-point', 'qualifed', and 'extended'. This classification is used by the prov-o html document to gently introduce prov-o terms to its users. ",
+   "termCode": "prov:category"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Delegation",
+   "name": "Delegation",
+   "description": "Delegation is the assignment of authority and responsibility to an agent (by itself or by another agent) to carry out a specific activity as a delegate or representative, while the agent it acts on behalf of retains some responsibility for the outcome of the delegated work.\n\nFor example, a student acted on behalf of his supervisor, who acted on behalf of the department chair, who acted on behalf of the university; all those agents are responsible in some way for the activity that took place but ",
+   "termCode": "prov:Delegation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#aq",
+   "name": "aq",
+   "termCode": "prov:aq"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#Location",
+   "name": "Location",
+   "description": "A location can be an identifiable geographic place (ISO 19112), but it can also be a non-geographic place such as a directory, row, or column. As such, there are numerous ways in which location can be expressed, such as by a coordinate, address, landmark, and so forth.",
+   "termCode": "prov:Location"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/prov#hadPlan",
+   "name": "hadPlan",
+   "description": "The _optional_ Plan adopted by an Agent in Association with some Activity. Plan specifications are out of the scope of this specification.",
+   "termCode": "prov:hadPlan"
   }
  ]
 }</script></head>
@@ -838,8 +838,8 @@
     <span class="term-kind">Class</span>
   </header>
   <p class="term-iri"><code>http://www.w3.org/ns/prov#ActivityInfluence</code> <button class="copy" data-copy="http://www.w3.org/ns/prov#ActivityInfluence" aria-label="Copy IRI">copy</button></p>
-<div class="definition"><p>It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.</p>
-</div><div class="comment"><p>ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.</p>
+<div class="definition"><p>ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.</p>
+</div><div class="comment"><p>It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.</p>
 </div>  <table class="rel">
     <tbody>
 <tr><th scope="row">CURIE</th><td><code>prov:ActivityInfluence</code></td></tr><tr><th scope="row">Superclasses</th><td><a href="#Influence" class="ref" title="prov:Influence">Influence</a></td></tr><tr><th scope="row">Restrictions</th><td><span class="expr"><a href="#hadActivity" class="ref" title="prov:hadActivity">hadActivity</a> <span class="kw">max</span> <span class="lit">0</span></span></td></tr><tr><th scope="row">Subclasses</th><td><a href="#Communication" class="ref" title="prov:Communication">Communication</a>, <a href="#Generation" class="ref" title="prov:Generation">Generation</a>, <a href="#Invalidation" class="ref" title="prov:Invalidation">Invalidation</a></td></tr><tr><th scope="row">Disjoint with</th><td><a href="#EntityInfluence" class="ref" title="prov:EntityInfluence">EntityInfluence</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#activity" class="ref" title="prov:activity">activity</a></div></td></tr><tr><th scope="row">See also</th><td><span class="expr"><a href="#activity" class="ref" title="prov:activity">activity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">qualified</span></span></td></tr><tr><th scope="row"><a href="#editorsDefinition" class="ref" title="prov:editorsDefinition">editorsDefinition</a></th><td><span class="expr"><span class="lit">ActivitiyInfluence is the capacity of an activity to have an effect on the character, development, or behavior of another by means of generation, invalidation, communication, or other.</span></span></td></tr>    </tbody>
@@ -1112,7 +1112,7 @@
 </div><div class="comment"><p>There exist no prescriptive requirement on the nature of plans, their representation, the actions or steps they consist of, or their intended goals. Since plans may evolve over time, it may become necessary to track their provenance, so plans themselves are entities. Representing the plan explicitly in the provenance can be useful for various tasks: for example, to validate the execution as represented in the provenance record, to manage expectation failures, or to provide explanations.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:Plan</code></td></tr><tr><th scope="row">Superclasses</th><td><a href="#Entity" class="ref" title="prov:Entity">Entity</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#hadPlan" class="ref" title="prov:hadPlan">hadPlan</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><ul class="vlist"><li><span class="expr"><span class="lit">expanded</span></span></li><li><span class="expr"><span class="lit">qualified</span></span></li></ul></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">agents-responsibility</span></span></td></tr><tr><th scope="row"><a href="#dm" class="ref" title="prov:dm">dm</a></th><td><span class="expr"><a class="url" href="http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association">http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association</a></span></td></tr><tr><th scope="row"><a href="#n" class="ref" title="prov:n">n</a></th><td><span class="expr"><a class="url" href="http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association">http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:Plan</code></td></tr><tr><th scope="row">Superclasses</th><td><a href="#Entity" class="ref" title="prov:Entity">Entity</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#hadPlan" class="ref" title="prov:hadPlan">hadPlan</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><ul class="vlist"><li><span class="expr"><span class="lit">qualified</span></span></li><li><span class="expr"><span class="lit">expanded</span></span></li></ul></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">agents-responsibility</span></span></td></tr><tr><th scope="row"><a href="#dm" class="ref" title="prov:dm">dm</a></th><td><span class="expr"><a class="url" href="http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association">http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association</a></span></td></tr><tr><th scope="row"><a href="#n" class="ref" title="prov:n">n</a></th><td><span class="expr"><a class="url" href="http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association">http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association</a></span></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/ns/prov#Plan">Show in figure</a></p></article>
 <article class="term" id="PrimarySource" data-kind="class">
@@ -1266,7 +1266,7 @@
 </div><div class="comment"><p>This property has multiple RDFS domains to suit multiple OWL Profiles. See &lt;a href=&quot;#owl-profile&quot;&gt;PROV-O OWL Profile&lt;/a&gt;.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:atLocation</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a> <span class="kw">or</span> <a href="#Agent" class="ref" title="prov:Agent">Agent</a> <span class="kw">or</span> <a href="#Entity" class="ref" title="prov:Entity">Entity</a> <span class="kw">or</span> <a href="#InstantaneousEvent" class="ref" title="prov:InstantaneousEvent">InstantaneousEvent</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Location" class="ref" title="prov:Location">Location</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">expanded</span></span></td></tr><tr><th scope="row"><a href="#editorialNote" class="ref" title="prov:editorialNote">editorialNote</a></th><td><ul class="vlist"><li><span class="expr"><span class="lit">The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.</span></span></li><li><span class="expr"><span class="lit">This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).</span></span></li></ul></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">locationOf</span></span></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#Location" class="ref" title="prov:Location">Location</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:atLocation</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a> <span class="kw">or</span> <a href="#Agent" class="ref" title="prov:Agent">Agent</a> <span class="kw">or</span> <a href="#Entity" class="ref" title="prov:Entity">Entity</a> <span class="kw">or</span> <a href="#InstantaneousEvent" class="ref" title="prov:InstantaneousEvent">InstantaneousEvent</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Location" class="ref" title="prov:Location">Location</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">expanded</span></span></td></tr><tr><th scope="row"><a href="#editorialNote" class="ref" title="prov:editorialNote">editorialNote</a></th><td><ul class="vlist"><li><span class="expr"><span class="lit">This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).</span></span></li><li><span class="expr"><span class="lit">The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.</span></span></li></ul></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">locationOf</span></span></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#Location" class="ref" title="prov:Location">Location</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="entity" data-kind="object_property">
@@ -1301,7 +1301,7 @@
 </div><div class="comment"><p>This property has multiple RDFS domains to suit multiple OWL Profiles. See &lt;a href=&quot;#owl-profile&quot;&gt;PROV-O OWL Profile&lt;/a&gt;.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:hadActivity</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Influence" class="ref" title="prov:Influence">Influence</a></span></li><li><span class="expr"><a href="#Delegation" class="ref" title="prov:Delegation">Delegation</a> <span class="kw">or</span> <a href="#Derivation" class="ref" title="prov:Derivation">Derivation</a> <span class="kw">or</span> <a href="#End" class="ref" title="prov:End">End</a> <span class="kw">or</span> <a href="#Start" class="ref" title="prov:Start">Start</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">used in axioms of</span> <a href="#ActivityInfluence" class="ref" title="prov:ActivityInfluence">ActivityInfluence</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">qualified</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">derivations</span></span></td></tr><tr><th scope="row"><a href="#editorialNote" class="ref" title="prov:editorialNote">editorialNote</a></th><td><span class="expr"><span class="lit">The multiple rdfs:domain assertions are intended. One is simpler and works for OWL-RL, the union is more specific but is not recognized by OWL-RL.</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">wasActivityOfInfluence</span></span></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:hadActivity</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Delegation" class="ref" title="prov:Delegation">Delegation</a> <span class="kw">or</span> <a href="#Derivation" class="ref" title="prov:Derivation">Derivation</a> <span class="kw">or</span> <a href="#End" class="ref" title="prov:End">End</a> <span class="kw">or</span> <a href="#Start" class="ref" title="prov:Start">Start</a></span></li><li><span class="expr"><a href="#Influence" class="ref" title="prov:Influence">Influence</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">used in axioms of</span> <a href="#ActivityInfluence" class="ref" title="prov:ActivityInfluence">ActivityInfluence</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">qualified</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">derivations</span></span></td></tr><tr><th scope="row"><a href="#editorialNote" class="ref" title="prov:editorialNote">editorialNote</a></th><td><span class="expr"><span class="lit">The multiple rdfs:domain assertions are intended. One is simpler and works for OWL-RL, the union is more specific but is not recognized by OWL-RL.</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">wasActivityOfInfluence</span></span></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="hadGeneration" data-kind="object_property">
@@ -1347,7 +1347,7 @@
   <p class="term-iri"><code>http://www.w3.org/ns/prov#hadPrimarySource</code> <button class="copy" data-copy="http://www.w3.org/ns/prov#hadPrimarySource" aria-label="Copy IRI">copy</button></p>
   <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:hadPrimarySource</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasDerivedFrom" class="ref" title="prov:wasDerivedFrom">wasDerivedFrom</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedPrimarySource" class="ref" title="prov:qualifiedPrimarySource">qualifiedPrimarySource</a> <span class="kw">o</span> <a href="#entity" class="ref" title="prov:entity">entity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">expanded</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">derivations</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">wasPrimarySourceOf</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#PrimarySource" class="ref" title="prov:PrimarySource">PrimarySource</a></span></li><li><span class="expr"><a href="#qualifiedPrimarySource" class="ref" title="prov:qualifiedPrimarySource">qualifiedPrimarySource</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:hadPrimarySource</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasDerivedFrom" class="ref" title="prov:wasDerivedFrom">wasDerivedFrom</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedPrimarySource" class="ref" title="prov:qualifiedPrimarySource">qualifiedPrimarySource</a> <span class="kw">o</span> <a href="#entity" class="ref" title="prov:entity">entity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">expanded</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">derivations</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">wasPrimarySourceOf</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedPrimarySource" class="ref" title="prov:qualifiedPrimarySource">qualifiedPrimarySource</a></span></li><li><span class="expr"><a href="#PrimarySource" class="ref" title="prov:PrimarySource">PrimarySource</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="hadRole" data-kind="object_property">
@@ -1610,7 +1610,7 @@
 <div class="definition"><p>An prov:Agent that had some (unspecified) responsibility for the occurrence of this prov:Activity.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:wasAssociatedWith</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Agent" class="ref" title="prov:Agent">Agent</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedAssociation" class="ref" title="prov:qualifiedAssociation">qualifiedAssociation</a> <span class="kw">o</span> <a href="#agent" class="ref" title="prov:agent">agent</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">agents-responsibility</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">wasAssociateFor</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Association" class="ref" title="prov:Association">Association</a></span></li><li><span class="expr"><a href="#qualifiedAssociation" class="ref" title="prov:qualifiedAssociation">qualifiedAssociation</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:wasAssociatedWith</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Agent" class="ref" title="prov:Agent">Agent</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedAssociation" class="ref" title="prov:qualifiedAssociation">qualifiedAssociation</a> <span class="kw">o</span> <a href="#agent" class="ref" title="prov:agent">agent</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">agents-responsibility</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">wasAssociateFor</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedAssociation" class="ref" title="prov:qualifiedAssociation">qualifiedAssociation</a></span></li><li><span class="expr"><a href="#Association" class="ref" title="prov:Association">Association</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="wasAttributedTo" data-kind="object_property">
@@ -1623,7 +1623,7 @@
 </div><div class="comment"><p>Attribution is the ascribing of an entity to an agent.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:wasAttributedTo</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Agent" class="ref" title="prov:Agent">Agent</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedAttribution" class="ref" title="prov:qualifiedAttribution">qualifiedAttribution</a> <span class="kw">o</span> <a href="#agent" class="ref" title="prov:agent">agent</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">agents-responsibility</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">contributed</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedAttribution" class="ref" title="prov:qualifiedAttribution">qualifiedAttribution</a></span></li><li><span class="expr"><a href="#Attribution" class="ref" title="prov:Attribution">Attribution</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:wasAttributedTo</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Agent" class="ref" title="prov:Agent">Agent</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedAttribution" class="ref" title="prov:qualifiedAttribution">qualifiedAttribution</a> <span class="kw">o</span> <a href="#agent" class="ref" title="prov:agent">agent</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">agents-responsibility</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">contributed</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Attribution" class="ref" title="prov:Attribution">Attribution</a></span></li><li><span class="expr"><a href="#qualifiedAttribution" class="ref" title="prov:qualifiedAttribution">qualifiedAttribution</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="wasDerivedFrom" data-kind="object_property">
@@ -1636,7 +1636,7 @@
 </div><div class="comment"><p>The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:wasDerivedFrom</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#hadPrimarySource" class="ref" title="prov:hadPrimarySource">hadPrimarySource</a>, <a href="#wasQuotedFrom" class="ref" title="prov:wasQuotedFrom">wasQuotedFrom</a>, <a href="#wasRevisionOf" class="ref" title="prov:wasRevisionOf">wasRevisionOf</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedDerivation" class="ref" title="prov:qualifiedDerivation">qualifiedDerivation</a> <span class="kw">o</span> <a href="#entity" class="ref" title="prov:entity">entity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">derivations</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">hadDerivation</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Derivation" class="ref" title="prov:Derivation">Derivation</a></span></li><li><span class="expr"><a href="#qualifiedDerivation" class="ref" title="prov:qualifiedDerivation">qualifiedDerivation</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:wasDerivedFrom</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#hadPrimarySource" class="ref" title="prov:hadPrimarySource">hadPrimarySource</a>, <a href="#wasQuotedFrom" class="ref" title="prov:wasQuotedFrom">wasQuotedFrom</a>, <a href="#wasRevisionOf" class="ref" title="prov:wasRevisionOf">wasRevisionOf</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedDerivation" class="ref" title="prov:qualifiedDerivation">qualifiedDerivation</a> <span class="kw">o</span> <a href="#entity" class="ref" title="prov:entity">entity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">derivations</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">hadDerivation</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedDerivation" class="ref" title="prov:qualifiedDerivation">qualifiedDerivation</a></span></li><li><span class="expr"><a href="#Derivation" class="ref" title="prov:Derivation">Derivation</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="wasEndedBy" data-kind="object_property">
@@ -1659,7 +1659,7 @@
   <p class="term-iri"><code>http://www.w3.org/ns/prov#wasGeneratedBy</code> <button class="copy" data-copy="http://www.w3.org/ns/prov#wasGeneratedBy" aria-label="Copy IRI">copy</button></p>
   <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:wasGeneratedBy</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#generated" class="ref" title="prov:generated">generated</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedGeneration" class="ref" title="prov:qualifiedGeneration">qualifiedGeneration</a> <span class="kw">o</span> <a href="#activity" class="ref" title="prov:activity">activity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">generated</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedGeneration" class="ref" title="prov:qualifiedGeneration">qualifiedGeneration</a></span></li><li><span class="expr"><a href="#Generation" class="ref" title="prov:Generation">Generation</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:wasGeneratedBy</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Entity" class="ref" title="prov:Entity">Entity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#generated" class="ref" title="prov:generated">generated</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedGeneration" class="ref" title="prov:qualifiedGeneration">qualifiedGeneration</a> <span class="kw">o</span> <a href="#activity" class="ref" title="prov:activity">activity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">generated</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Generation" class="ref" title="prov:Generation">Generation</a></span></li><li><span class="expr"><a href="#qualifiedGeneration" class="ref" title="prov:qualifiedGeneration">qualifiedGeneration</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="wasInfluencedBy" data-kind="object_property">
@@ -1677,7 +1677,7 @@
 Subproperties of prov:wasInfluencedBy may also be asserted directly without being qualified.
 
 prov:wasInfluencedBy should not be used without also using one of its subproperties. 
-</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">influenced</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Influence" class="ref" title="prov:Influence">Influence</a></span></li><li><span class="expr"><a href="#qualifiedInfluence" class="ref" title="prov:qualifiedInfluence">qualifiedInfluence</a></span></li></ul></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#Influence" class="ref" title="prov:Influence">Influence</a></span></td></tr>    </tbody>
+</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">influenced</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedInfluence" class="ref" title="prov:qualifiedInfluence">qualifiedInfluence</a></span></li><li><span class="expr"><a href="#Influence" class="ref" title="prov:Influence">Influence</a></span></li></ul></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#Influence" class="ref" title="prov:Influence">Influence</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="wasInformedBy" data-kind="object_property">
@@ -1689,7 +1689,7 @@ prov:wasInfluencedBy should not be used without also using one of its subpropert
 <div class="definition"><p>An activity a2 is dependent on or informed by another activity a1, by way of some unspecified entity that is generated by a1 and used by a2.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:wasInformedBy</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedCommunication" class="ref" title="prov:qualifiedCommunication">qualifiedCommunication</a> <span class="kw">o</span> <a href="#activity" class="ref" title="prov:activity">activity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">informed</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Communication" class="ref" title="prov:Communication">Communication</a></span></li><li><span class="expr"><a href="#qualifiedCommunication" class="ref" title="prov:qualifiedCommunication">qualifiedCommunication</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:wasInformedBy</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#wasInfluencedBy" class="ref" title="prov:wasInfluencedBy">wasInfluencedBy</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Property chain</th><td><span class="expr"><a href="#qualifiedCommunication" class="ref" title="prov:qualifiedCommunication">qualifiedCommunication</a> <span class="kw">o</span> <a href="#activity" class="ref" title="prov:activity">activity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#inverse" class="ref" title="prov:inverse">inverse</a></th><td><span class="expr"><span class="lit">informed</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#qualifiedCommunication" class="ref" title="prov:qualifiedCommunication">qualifiedCommunication</a></span></li><li><span class="expr"><a href="#Communication" class="ref" title="prov:Communication">Communication</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="wasInvalidatedBy" data-kind="object_property">
@@ -1752,7 +1752,7 @@ prov:wasInfluencedBy should not be used without also using one of its subpropert
 <div class="definition"><p>The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:atTime</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#InstantaneousEvent" class="ref" title="prov:InstantaneousEvent">InstantaneousEvent</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ref ext" title="xsd:dateTime">xsd:dateTime</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">qualified</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#InstantaneousEvent" class="ref" title="prov:InstantaneousEvent">InstantaneousEvent</a></span></td></tr><tr><th scope="row"><a href="#unqualifiedForm" class="ref" title="prov:unqualifiedForm">unqualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#startedAtTime" class="ref" title="prov:startedAtTime">startedAtTime</a></span></li><li><span class="expr"><a href="#generatedAtTime" class="ref" title="prov:generatedAtTime">generatedAtTime</a></span></li><li><span class="expr"><a href="#endedAtTime" class="ref" title="prov:endedAtTime">endedAtTime</a></span></li><li><span class="expr"><a href="#invalidatedAtTime" class="ref" title="prov:invalidatedAtTime">invalidatedAtTime</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:atTime</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#InstantaneousEvent" class="ref" title="prov:InstantaneousEvent">InstantaneousEvent</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ref ext" title="xsd:dateTime">xsd:dateTime</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">qualified</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#sharesDefinitionWith" class="ref" title="prov:sharesDefinitionWith">sharesDefinitionWith</a></th><td><span class="expr"><a href="#InstantaneousEvent" class="ref" title="prov:InstantaneousEvent">InstantaneousEvent</a></span></td></tr><tr><th scope="row"><a href="#unqualifiedForm" class="ref" title="prov:unqualifiedForm">unqualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#generatedAtTime" class="ref" title="prov:generatedAtTime">generatedAtTime</a></span></li><li><span class="expr"><a href="#invalidatedAtTime" class="ref" title="prov:invalidatedAtTime">invalidatedAtTime</a></span></li><li><span class="expr"><a href="#startedAtTime" class="ref" title="prov:startedAtTime">startedAtTime</a></span></li><li><span class="expr"><a href="#endedAtTime" class="ref" title="prov:endedAtTime">endedAtTime</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="endedAtTime" data-kind="datatype_property">
@@ -1800,7 +1800,7 @@ prov:wasInfluencedBy should not be used without also using one of its subpropert
 <div class="definition"><p>The time at which an activity started. See also prov:endedAtTime.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>prov:startedAtTime</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ref ext" title="xsd:dateTime">xsd:dateTime</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#editorialNote" class="ref" title="prov:editorialNote">editorialNote</a></th><td><span class="expr"><span class="lit">It is the intent that the property chain holds: (prov:qualifiedStart o prov:atTime) rdfs:subPropertyOf prov:startedAtTime.</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Start" class="ref" title="prov:Start">Start</a></span></li><li><span class="expr"><a href="#atTime" class="ref" title="prov:atTime">atTime</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>prov:startedAtTime</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Activity" class="ref" title="prov:Activity">Activity</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ref ext" title="xsd:dateTime">xsd:dateTime</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/prov-o#" class="ref ext" title="http://www.w3.org/ns/prov-o#">W3C PROVenance Interchange Ontology (PROV-O)</a></td></tr><tr><th scope="row"><a href="#category" class="ref" title="prov:category">category</a></th><td><span class="expr"><span class="lit">starting-point</span></span></td></tr><tr><th scope="row"><a href="#component" class="ref" title="prov:component">component</a></th><td><span class="expr"><span class="lit">entities-activities</span></span></td></tr><tr><th scope="row"><a href="#editorialNote" class="ref" title="prov:editorialNote">editorialNote</a></th><td><span class="expr"><span class="lit">It is the intent that the property chain holds: (prov:qualifiedStart o prov:atTime) rdfs:subPropertyOf prov:startedAtTime.</span></span></td></tr><tr><th scope="row"><a href="#qualifiedForm" class="ref" title="prov:qualifiedForm">qualifiedForm</a></th><td><ul class="vlist"><li><span class="expr"><a href="#atTime" class="ref" title="prov:atTime">atTime</a></span></li><li><span class="expr"><a href="#Start" class="ref" title="prov:Start">Start</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="value" data-kind="datatype_property">
@@ -2018,7 +2018,7 @@ prov:activity :activity1;
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 35 warnings and 80 suggestions. ROBOT: 4 errors, 2 warnings, 1 suggestions. OOPS!: 1 errors, 1 warnings, 3 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 35 warnings and 80 suggestions. ROBOT: 18 errors, 99 warnings, 7 suggestions. Logical consistency: 0 errors, 0 warnings, 0 suggestions. OntoCheck: 0 errors, 1 warnings, 92 suggestions. OOPS!: 2 errors, 2 warnings, 33 suggestions.</p>
 
 <h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No license declared <span class="muted">(1) OB003</span></summary>
@@ -2071,24 +2071,24 @@ prov:activity :activity1;
 
   <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
   <details class="finding sev-error" open>
-    <summary><span class="sev">error</span> Missing label <span class="muted">(14) missing_label</span></summary>
+    <summary><span class="sev">error</span> Missing label <span class="muted">(15) missing_label</span></summary>
     <ul class="findings">
-<li><code>prov:aq</code></li><li><code>prov:category</code></li><li><code>prov:component</code></li><li><code>prov:constraints</code></li><li><code>prov:definition</code></li><li><code>prov:dm</code></li><li><code>prov:editorialNote</code></li><li><code>prov:editorsDefinition</code></li><li><code>prov:inverse</code></li><li><code>prov:n</code></li><li><code>prov:order</code></li><li><code>prov:qualifiedForm</code></li><li><code>prov:sharesDefinitionWith</code></li><li><code>prov:unqualifiedForm</code></li>    </ul>
+<li><code>http://www.w3.org/ns/prov-o#</code></li><li><code>prov:aq</code></li><li><code>prov:category</code></li><li><code>prov:component</code></li><li><code>prov:constraints</code></li><li><code>prov:definition</code></li><li><code>prov:dm</code></li><li><code>prov:editorialNote</code></li><li><code>prov:editorsDefinition</code></li><li><code>prov:inverse</code></li><li><code>prov:n</code></li><li><code>prov:order</code></li><li><code>prov:qualifiedForm</code></li><li><code>prov:sharesDefinitionWith</code></li><li><code>prov:unqualifiedForm</code></li>    </ul>
   </details>
   <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Missing ontology description <span class="muted">(1) missing_ontology_description</span></summary>
     <ul class="findings">
-<li><code>http://www.w3.org/ns/prov-o#</code></li>    </ul>
+<li><code>http://www.w3.org/ns/prov#</code></li>    </ul>
   </details>
   <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Missing ontology license <span class="muted">(1) missing_ontology_license</span></summary>
     <ul class="findings">
-<li><code>http://www.w3.org/ns/prov-o#</code></li>    </ul>
+<li><code>http://www.w3.org/ns/prov#</code></li>    </ul>
   </details>
   <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Missing ontology title <span class="muted">(1) missing_ontology_title</span></summary>
     <ul class="findings">
-<li><code>http://www.w3.org/ns/prov-o#</code></li>    </ul>
+<li><code>http://www.w3.org/ns/prov#</code></li>    </ul>
   </details>
   <details class="finding sev-warning">
     <summary><span class="sev">warning</span> Annotation whitespace <span class="muted">(6) annotation_whitespace</span></summary>
@@ -2105,8 +2105,67 @@ prov:activity :activity1;
     <ul class="findings">
 <li><code>prov:Activity</code></li><li><code>prov:Agent</code></li><li><code>prov:Entity</code></li><li><code>prov:Influence</code></li><li><code>prov:InstantaneousEvent</code></li><li><code>prov:Location</code></li><li><code>prov:Role</code></li>    </ul>
   </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-warn"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 30 of 31 classes (97%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 31 classes (0%)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-warn"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 31 classes (0%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-warn"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 0 classes, 12 properties<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-info"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 5 groups<span class="sr-only"> (info)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-warn"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 1 without domain, 2 without range<span class="sr-only"> (warn)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 30 of 31 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 8 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-warn"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Not found<span class="sr-only"> (warn)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 1.9% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 31 of 31 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-ok"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-info"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 79 possible misspellings in 2655 words (3.0%)<span class="sr-only"> (info)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-warn"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> 3 labels shared<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> No human-readable license <span class="muted">humanLicense</span></summary>
+<p class="muted rule-desc">No license or copyright text was found in the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without rdfs:label <span class="muted">(1) checkLabel</span></summary>
+<p class="muted rule-desc">OntoCheck checkLabel: these named classes have no rdfs:label.</p>    <ul class="findings">
+<li><code>http://www.w3.org/2002/07/owl#Thing</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without skos:definition <span class="muted">(31) definitionCheck</span></summary>
+<p class="muted rule-desc">OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).</p>    <ul class="findings">
+<li><code>http://www.w3.org/2002/07/owl#Thing</code></li><li><a href="#Activity">Activity</a> <code class="muted">prov:Activity</code></li><li><a href="#ActivityInfluence">ActivityInfluence</a> <code class="muted">prov:ActivityInfluence</code></li><li><a href="#Agent">Agent</a> <code class="muted">prov:Agent</code></li><li><a href="#AgentInfluence">AgentInfluence</a> <code class="muted">prov:AgentInfluence</code></li><li><a href="#Association">Association</a> <code class="muted">prov:Association</code></li><li><a href="#Attribution">Attribution</a> <code class="muted">prov:Attribution</code></li><li><a href="#Bundle">Bundle</a> <code class="muted">prov:Bundle</code></li><li><a href="#Collection">Collection</a> <code class="muted">prov:Collection</code></li><li><a href="#Communication">Communication</a> <code class="muted">prov:Communication</code></li><li><a href="#Delegation">Delegation</a> <code class="muted">prov:Delegation</code></li><li><a href="#Derivation">Derivation</a> <code class="muted">prov:Derivation</code></li><li><a href="#EmptyCollection">EmptyCollection</a> <code class="muted">prov:EmptyCollection</code></li><li><a href="#End">End</a> <code class="muted">prov:End</code></li><li><a href="#Entity">Entity</a> <code class="muted">prov:Entity</code></li><li><a href="#EntityInfluence">EntityInfluence</a> <code class="muted">prov:EntityInfluence</code></li><li><a href="#Generation">Generation</a> <code class="muted">prov:Generation</code></li><li><a href="#Influence">Influence</a> <code class="muted">prov:Influence</code></li><li><a href="#InstantaneousEvent">InstantaneousEvent</a> <code class="muted">prov:InstantaneousEvent</code></li><li><a href="#Invalidation">Invalidation</a> <code class="muted">prov:Invalidation</code></li><li><a href="#Location">Location</a> <code class="muted">prov:Location</code></li><li><a href="#Organization">Organization</a> <code class="muted">prov:Organization</code></li><li><a href="#Person">Person</a> <code class="muted">prov:Person</code></li><li><a href="#Plan">Plan</a> <code class="muted">prov:Plan</code></li><li><a href="#PrimarySource">PrimarySource</a> <code class="muted">prov:PrimarySource</code></li><li><a href="#Quotation">Quotation</a> <code class="muted">prov:Quotation</code></li><li><a href="#Revision">Revision</a> <code class="muted">prov:Revision</code></li><li><a href="#Role">Role</a> <code class="muted">prov:Role</code></li><li><a href="#SoftwareAgent">SoftwareAgent</a> <code class="muted">prov:SoftwareAgent</code></li><li><a href="#Start">Start</a> <code class="muted">prov:Start</code></li><li><a href="#Usage">Usage</a> <code class="muted">prov:Usage</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Shared labels <span class="muted">(6) duplicateLabels</span></summary>
+<p class="muted rule-desc">OntoCheck duplicateLabels (case-insensitive rdfs:label).</p><p class="rule-desc">“activity”: 2 entities; “agent”: 2 entities; “entity”: 2 entities</p>    <ul class="findings">
+<li><a href="#Activity">Activity</a> <code class="muted">prov:Activity</code></li><li><a href="#Agent">Agent</a> <code class="muted">prov:Agent</code></li><li><a href="#Entity">Entity</a> <code class="muted">prov:Entity</code></li><li><a href="#activity">activity</a> <code class="muted">prov:activity</code></li><li><a href="#agent">agent</a> <code class="muted">prov:agent</code></li><li><a href="#entity">entity</a> <code class="muted">prov:entity</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Isolated classes and properties <span class="muted">(12) isolatedElements</span></summary>
+<p class="muted rule-desc">OntoCheck isolatedElements: not related to any other class or property.</p>    <ul class="findings">
+<li><a href="#atLocation">atLocation</a> <code class="muted">prov:atLocation</code></li><li><a href="#atTime">atTime</a> <code class="muted">prov:atTime</code></li><li><a href="#endedAtTime">endedAtTime</a> <code class="muted">prov:endedAtTime</code></li><li><a href="#generatedAtTime">generatedAtTime</a> <code class="muted">prov:generatedAtTime</code></li><li><a href="#hadActivity">hadActivity</a> <code class="muted">prov:hadActivity</code></li><li><a href="#hadGeneration">hadGeneration</a> <code class="muted">prov:hadGeneration</code></li><li><a href="#hadPlan">hadPlan</a> <code class="muted">prov:hadPlan</code></li><li><a href="#hadRole">hadRole</a> <code class="muted">prov:hadRole</code></li><li><a href="#hadUsage">hadUsage</a> <code class="muted">prov:hadUsage</code></li><li><a href="#invalidatedAtTime">invalidatedAtTime</a> <code class="muted">prov:invalidatedAtTime</code></li><li><a href="#startedAtTime">startedAtTime</a> <code class="muted">prov:startedAtTime</code></li><li><a href="#value">value</a> <code class="muted">prov:value</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Properties without domain or range <span class="muted">(2) missingDomainRange</span></summary>
+<p class="muted rule-desc">1 without rdfs:domain, 2 without rdfs:range.</p>    <ul class="findings">
+<li><a href="#influenced">influenced</a> <code class="muted">prov:influenced</code></li><li><a href="#value">value</a> <code class="muted">prov:value</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Possible misspellings <span class="muted">(40) spellCheck</span></summary>
+<p class="muted rule-desc">OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.</p><p class="rule-desc">Subproperties, Venance → penance, etc → et, foo → for, href → ref, html → him, http → help, influencer → influence, org → or, qualifed → qualified, rdf → ref, responsiblity → responsibility, subproperties, subproperty, uncracked → cracked, www → wow, xsd → esd</p>    <ul class="findings">
+<li><a href="#Association">Association</a> <code class="muted">prov:Association</code></li><li><a href="#Attribution">Attribution</a> <code class="muted">prov:Attribution</code></li><li><a href="#Bundle">Bundle</a> <code class="muted">prov:Bundle</code></li><li><a href="#Communication">Communication</a> <code class="muted">prov:Communication</code></li><li><a href="#Delegation">Delegation</a> <code class="muted">prov:Delegation</code></li><li><a href="#Derivation">Derivation</a> <code class="muted">prov:Derivation</code></li><li><a href="#End">End</a> <code class="muted">prov:End</code></li><li><a href="#Generation">Generation</a> <code class="muted">prov:Generation</code></li><li><a href="#Influence">Influence</a> <code class="muted">prov:Influence</code></li><li><a href="#Invalidation">Invalidation</a> <code class="muted">prov:Invalidation</code></li><li><a href="#PrimarySource">PrimarySource</a> <code class="muted">prov:PrimarySource</code></li><li><a href="#Quotation">Quotation</a> <code class="muted">prov:Quotation</code></li><li><a href="#Revision">Revision</a> <code class="muted">prov:Revision</code></li><li><a href="#Start">Start</a> <code class="muted">prov:Start</code></li><li><a href="#Usage">Usage</a> <code class="muted">prov:Usage</code></li><li><a href="#atLocation">atLocation</a> <code class="muted">prov:atLocation</code></li><li><a href="#atTime">atTime</a> <code class="muted">prov:atTime</code></li><li><a href="#category">category</a> <code class="muted">prov:category</code></li><li><a href="#hadActivity">hadActivity</a> <code class="muted">prov:hadActivity</code></li><li><a href="#hadRole">hadRole</a> <code class="muted">prov:hadRole</code></li><li><a href="#influencer">influencer</a> <code class="muted">prov:influencer</code></li><li><a href="#order">order</a> <code class="muted">prov:order</code></li><li><a href="#qualifiedAssociation">qualifiedAssociation</a> <code class="muted">prov:qualifiedAssociation</code></li><li><a href="#qualifiedAttribution">qualifiedAttribution</a> <code class="muted">prov:qualifiedAttribution</code></li><li><a href="#qualifiedCommunication">qualifiedCommunication</a> <code class="muted">prov:qualifiedCommunication</code></li><li><a href="#qualifiedDelegation">qualifiedDelegation</a> <code class="muted">prov:qualifiedDelegation</code></li><li><a href="#qualifiedDerivation">qualifiedDerivation</a> <code class="muted">prov:qualifiedDerivation</code></li><li><a href="#qualifiedEnd">qualifiedEnd</a> <code class="muted">prov:qualifiedEnd</code></li><li><a href="#qualifiedForm">qualifiedForm</a> <code class="muted">prov:qualifiedForm</code></li><li><a href="#qualifiedGeneration">qualifiedGeneration</a> <code class="muted">prov:qualifiedGeneration</code></li><li><a href="#qualifiedInfluence">qualifiedInfluence</a> <code class="muted">prov:qualifiedInfluence</code></li><li><a href="#qualifiedInvalidation">qualifiedInvalidation</a> <code class="muted">prov:qualifiedInvalidation</code></li><li><a href="#qualifiedPrimarySource">qualifiedPrimarySource</a> <code class="muted">prov:qualifiedPrimarySource</code></li><li><a href="#qualifiedQuotation">qualifiedQuotation</a> <code class="muted">prov:qualifiedQuotation</code></li><li><a href="#qualifiedRevision">qualifiedRevision</a> <code class="muted">prov:qualifiedRevision</code></li><li><a href="#qualifiedStart">qualifiedStart</a> <code class="muted">prov:qualifiedStart</code></li><li><a href="#qualifiedUsage">qualifiedUsage</a> <code class="muted">prov:qualifiedUsage</code></li><li><a href="#wasDerivedFrom">wasDerivedFrom</a> <code class="muted">prov:wasDerivedFrom</code></li><li><a href="#wasInfluencedBy">wasInfluencedBy</a> <code class="muted">prov:wasInfluencedBy</code></li><li><code>http://www.w3.org/ns/prov-o#</code></li>    </ul>
+  </details>
   <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
-  <details class="finding sev-error" open>
+<p class="muted small">Full pitfall catalogue.</p>  <details class="finding sev-error" open>
     <summary><span class="sev">error</span> Defining multiple domains or ranges in properties <span class="muted">(2) P19</span></summary>
 <p class="muted rule-desc">The domain or range (or both) of a property (relationships and attributes) is defined by stating more than one rdfs:domain or rdfs:range statements. In OWL multiple rdfs:domain or rdfs:range axioms are allowed, but they are interpreted as conjunction, being, therefore, equivalent to the construct owl:intersectionOf. This pitfall is related to the common error that appears when defining domains and ranges described in [7].</p>    <ul class="findings">
 <li><a href="#hadActivity">hadActivity</a> <code class="muted">prov:hadActivity</code></li><li><a href="#hadRole">hadRole</a> <code class="muted">prov:hadRole</code></li>    </ul>
@@ -2197,10 +2256,10 @@ prov:activity :activity1;
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd3c0"></script>
+<script src="ontoreview-data.js?v=6afd13e5"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd3c0"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afd13e5"></script>
 </body>
 </html>

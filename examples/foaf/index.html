@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3c2">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd13ec">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -23,253 +23,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
-   "name": "term_status",
-   "termCode": "vs:term_status"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/pastProject",
-   "name": "past project",
-   "description": "A project this person has previously worked on.",
-   "termCode": "foaf:pastProject"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/aimChatID",
-   "name": "AIM chat ID",
-   "description": "An AIM chat ID",
-   "termCode": "foaf:aimChatID"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/holdsAccount",
-   "name": "account",
-   "description": "Indicates an account held by this agent.",
-   "termCode": "foaf:holdsAccount"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/yahooChatID",
-   "name": "Yahoo chat ID",
-   "description": "A Yahoo chat ID",
-   "termCode": "foaf:yahooChatID"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/OnlineGamingAccount",
-   "name": "Online Gaming Account",
-   "description": "An online gaming account.",
-   "termCode": "foaf:OnlineGamingAccount"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/based_near",
-   "name": "based near",
-   "description": "A location that something is based near, for some broadly human notion of near.",
-   "termCode": "foaf:based_near"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/primaryTopic",
-   "name": "primary topic",
-   "description": "The primary topic of some page or document.",
-   "termCode": "foaf:primaryTopic"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/mbox_sha1sum",
-   "name": "sha1sum of a personal mailbox URI name",
-   "description": "The sha1sum of the URI of an Internet mailbox associated with exactly one owner, the  first owner of the mailbox.",
-   "termCode": "foaf:mbox_sha1sum"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/depicts",
-   "name": "depicts",
-   "description": "A thing depicted in this representation.",
-   "termCode": "foaf:depicts"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/elements/1.1/description",
-   "name": "description",
-   "termCode": "dc:description"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/dnaChecksum",
-   "name": "DNA checksum",
-   "description": "A checksum for the DNA of some thing. Joke.",
-   "termCode": "foaf:dnaChecksum"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/phone",
-   "name": "phone",
-   "description": "A phone,  specified using fully qualified tel: URI scheme (refs: http://www.w3.org/Addressing/schemes.html#tel).",
-   "termCode": "foaf:phone"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/logo",
-   "name": "logo",
-   "description": "A logo representing some thing.",
-   "termCode": "foaf:logo"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/openid",
-   "name": "openid",
-   "description": "An OpenID for an Agent.",
-   "termCode": "foaf:openid"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/publications",
-   "name": "publications",
-   "description": "A link to the publications of this person.",
-   "termCode": "foaf:publications"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/givenname",
-   "name": "Given name",
-   "description": "The given name of some person.",
-   "termCode": "foaf:givenname"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/knows",
-   "name": "knows",
-   "description": "A person known by this person (indicating some level of reciprocated interaction between the parties).",
-   "termCode": "foaf:knows"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/sha1",
-   "name": "sha1sum (hex)",
-   "description": "A sha1sum hash, in hex.",
-   "termCode": "foaf:sha1"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/thumbnail",
-   "name": "thumbnail",
-   "description": "A derived thumbnail image.",
-   "termCode": "foaf:thumbnail"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Image",
-   "name": "Image",
-   "description": "An image.",
-   "termCode": "foaf:Image"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/skypeID",
-   "name": "Skype ID",
-   "description": "A Skype ID",
-   "termCode": "foaf:skypeID"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/title",
-   "name": "title",
-   "description": "Title (Mr, Mrs, Ms, Dr. etc)",
-   "termCode": "foaf:title"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
-   "name": "PersonalProfileDocument",
-   "description": "A personal profile RDF document.",
-   "termCode": "foaf:PersonalProfileDocument"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Project",
-   "name": "Project",
-   "description": "A project (a collective endeavour of some kind).",
-   "termCode": "foaf:Project"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/fundedBy",
-   "name": "funded by",
-   "description": "An organization funding a project or person.",
-   "termCode": "foaf:fundedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Document",
-   "name": "Document",
-   "description": "A document.",
-   "termCode": "foaf:Document"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/msnChatID",
-   "name": "MSN chat ID",
-   "description": "An MSN chat ID",
-   "termCode": "foaf:msnChatID"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/depiction",
-   "name": "depiction",
-   "description": "A depiction of some thing.",
-   "termCode": "foaf:depiction"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/birthday",
-   "name": "birthday",
-   "description": "The birthday of this Agent, represented in mm-dd string form, eg. '12-31'.",
-   "termCode": "foaf:birthday"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/LabelProperty",
-   "name": "Label Property",
-   "description": "A foaf:LabelProperty is any RDF property with texual values that serve as labels.",
-   "termCode": "foaf:LabelProperty"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/focus",
-   "name": "focus",
-   "description": "The underlying or 'focal' entity associated with some SKOS-described concept.",
-   "termCode": "foaf:focus"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/accountServiceHomepage",
-   "name": "account service homepage",
-   "description": "Indicates a homepage of the service provide for this online account.",
-   "termCode": "foaf:accountServiceHomepage"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/interest",
-   "name": "interest",
-   "description": "A page about a topic of interest to this person.",
-   "termCode": "foaf:interest"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/surname",
-   "name": "Surname",
-   "description": "The surname of some person.",
-   "termCode": "foaf:surname"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/plan",
-   "name": "plan",
-   "description": "A .plan comment, in the tradition of finger and '.plan' files.",
-   "termCode": "foaf:plan"
+   "@id": "http://xmlns.com/foaf/0.1/mbox",
+   "name": "personal mailbox",
+   "description": "A  personal mailbox, ie. an Internet mailbox associated with exactly one owner, the first owner of this mailbox. This is a 'static inverse functional property', in that  there is (across time and change) at most one individual that ever has any particular value for foaf:mbox.",
+   "termCode": "foaf:mbox"
   },
   {
    "@type": "DefinedTerm",
@@ -280,77 +37,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/currentProject",
-   "name": "current project",
-   "description": "A current project this person works on.",
-   "termCode": "foaf:currentProject"
+   "@id": "http://xmlns.com/foaf/0.1/primaryTopic",
+   "name": "primary topic",
+   "description": "The primary topic of some page or document.",
+   "termCode": "foaf:primaryTopic"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/jabberID",
-   "name": "jabber ID",
-   "description": "A jabber ID for something.",
-   "termCode": "foaf:jabberID"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
-   "name": "Spatial Thing"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/page",
-   "name": "page",
-   "description": "A page or document about this thing.",
-   "termCode": "foaf:page"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/age",
-   "name": "age",
-   "description": "The age in years of some agent.",
-   "termCode": "foaf:age"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Agent",
-   "name": "Agent",
-   "description": "An agent (eg. person, group, software or physical artifact).",
-   "termCode": "foaf:Agent"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/mbox",
-   "name": "personal mailbox",
-   "description": "A  personal mailbox, ie. an Internet mailbox associated with exactly one owner, the first owner of this mailbox. This is a 'static inverse functional property', in that  there is (across time and change) at most one individual that ever has any particular value for foaf:mbox.",
-   "termCode": "foaf:mbox"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/accountName",
-   "name": "account name",
-   "description": "Indicates the name (identifier) associated with this online account.",
-   "termCode": "foaf:accountName"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/member",
-   "name": "member",
-   "description": "Indicates a member of a Group",
-   "termCode": "foaf:member"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/wot/0.1/assurance",
-   "name": "assurance",
-   "termCode": "wot:assurance"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/myersBriggs",
-   "name": "myersBriggs",
-   "description": "A Myers Briggs (MBTI) personality classification.",
-   "termCode": "foaf:myersBriggs"
+   "@id": "http://xmlns.com/foaf/0.1/Image",
+   "name": "Image",
+   "description": "An image.",
+   "termCode": "foaf:Image"
   },
   {
    "@type": "DefinedTerm",
@@ -361,72 +58,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/family_name",
-   "name": "family_name",
-   "description": "The family name of some person.",
-   "termCode": "foaf:family_name"
+   "@id": "http://xmlns.com/foaf/0.1/accountName",
+   "name": "account name",
+   "description": "Indicates the name (identifier) associated with this online account.",
+   "termCode": "foaf:accountName"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/familyName",
-   "name": "familyName",
-   "description": "The family name of some person.",
-   "termCode": "foaf:familyName"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Person",
-   "name": "Person",
-   "description": "A person.",
-   "termCode": "foaf:Person"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/topic_interest",
-   "name": "topic_interest",
-   "description": "A thing of interest to this person.",
-   "termCode": "foaf:topic_interest"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/membershipClass",
-   "name": "membershipClass",
-   "description": "Indicates the class of individuals that are a member of a Group",
-   "termCode": "foaf:membershipClass"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/workplaceHomepage",
-   "name": "workplace homepage",
-   "description": "A workplace homepage of some person; the homepage of an organization they work for.",
-   "termCode": "foaf:workplaceHomepage"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/tipjar",
-   "name": "tipjar",
-   "description": "A tipjar document for this agent, describing means for payment and reward.",
-   "termCode": "foaf:tipjar"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/wot/0.1/src_assurance",
-   "name": "src_assurance",
-   "termCode": "wot:src_assurance"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/maker",
-   "name": "maker",
-   "description": "An agent that  made this thing.",
-   "termCode": "foaf:maker"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/OnlineChatAccount",
-   "name": "Online Chat Account",
-   "description": "An online chat account.",
-   "termCode": "foaf:OnlineChatAccount"
+   "@id": "http://xmlns.com/foaf/0.1/title",
+   "name": "title",
+   "description": "Title (Mr, Mrs, Ms, Dr. etc)",
+   "termCode": "foaf:title"
   },
   {
    "@type": "DefinedTerm",
@@ -437,52 +79,52 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/weblog",
-   "name": "weblog",
-   "description": "A weblog of some thing (whether person, group, company etc.).",
-   "termCode": "foaf:weblog"
+   "@id": "http://xmlns.com/foaf/0.1/maker",
+   "name": "maker",
+   "description": "An agent that  made this thing.",
+   "termCode": "foaf:maker"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/schoolHomepage",
-   "name": "schoolHomepage",
-   "description": "A homepage of a school attended by the person.",
-   "termCode": "foaf:schoolHomepage"
+   "@id": "http://xmlns.com/foaf/0.1/birthday",
+   "name": "birthday",
+   "description": "The birthday of this Agent, represented in mm-dd string form, eg. '12-31'.",
+   "termCode": "foaf:birthday"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/theme",
-   "name": "theme",
-   "description": "A theme.",
-   "termCode": "foaf:theme"
+   "@id": "http://xmlns.com/foaf/0.1/focus",
+   "name": "focus",
+   "description": "The underlying or 'focal' entity associated with some SKOS-described concept.",
+   "termCode": "foaf:focus"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/OnlineEcommerceAccount",
-   "name": "Online E-commerce Account",
-   "description": "An online e-commerce account.",
-   "termCode": "foaf:OnlineEcommerceAccount"
+   "@id": "http://xmlns.com/foaf/0.1/membershipClass",
+   "name": "membershipClass",
+   "description": "Indicates the class of individuals that are a member of a Group",
+   "termCode": "foaf:membershipClass"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/made",
-   "name": "made",
-   "description": "Something that was made by this agent.",
-   "termCode": "foaf:made"
+   "@id": "http://xmlns.com/foaf/0.1/yahooChatID",
+   "name": "Yahoo chat ID",
+   "description": "A Yahoo chat ID",
+   "termCode": "foaf:yahooChatID"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/status",
-   "name": "status",
-   "description": "A string expressing what the user is happy for the general public (normally) to know about their current activity.",
-   "termCode": "foaf:status"
+   "@id": "http://xmlns.com/foaf/0.1/Agent",
+   "name": "Agent",
+   "description": "An agent (eg. person, group, software or physical artifact).",
+   "termCode": "foaf:Agent"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/givenName",
-   "name": "Given name",
-   "description": "The given name of some person.",
-   "termCode": "foaf:givenName"
+   "@id": "http://xmlns.com/foaf/0.1/page",
+   "name": "page",
+   "description": "A page or document about this thing.",
+   "termCode": "foaf:page"
   },
   {
    "@type": "DefinedTerm",
@@ -500,78 +142,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/workInfoHomepage",
-   "name": "work info homepage",
-   "description": "A work info homepage of some person; a page about their work for some organization.",
-   "termCode": "foaf:workInfoHomepage"
+   "@id": "http://xmlns.com/foaf/0.1/Project",
+   "name": "Project",
+   "description": "A project (a collective endeavour of some kind).",
+   "termCode": "foaf:Project"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/img",
-   "name": "image",
-   "description": "An image that can be used to represent some thing (ie. those depictions which are particularly representative of something, eg. one's photo on a homepage).",
-   "termCode": "foaf:img"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Group",
-   "name": "Group",
-   "description": "A class of Agents.",
-   "termCode": "foaf:Group"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/elements/1.1/title",
-   "name": "title",
-   "termCode": "dc:title"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/name",
-   "name": "name",
-   "description": "A name for some thing.",
-   "termCode": "foaf:name"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/gender",
-   "name": "gender",
-   "description": "The gender of this Agent (typically but not necessarily 'male' or 'female').",
-   "termCode": "foaf:gender"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/OnlineAccount",
-   "name": "Online Account",
-   "description": "An online account.",
-   "termCode": "foaf:OnlineAccount"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
-   "name": "is primary topic of",
-   "description": "A document that this thing is the primary topic of.",
-   "termCode": "foaf:isPrimaryTopicOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/account",
-   "name": "account",
-   "description": "Indicates an account held by this agent.",
-   "termCode": "foaf:account"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/elements/1.1/date",
-   "name": "date",
-   "termCode": "dc:date"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/geekcode",
-   "name": "geekcode",
-   "description": "A textual geekcode for this person, see http://www.geekcode.com/geek.html",
-   "termCode": "foaf:geekcode"
+   "@id": "http://xmlns.com/foaf/0.1/givenName",
+   "name": "Given name",
+   "description": "The given name of some person.",
+   "termCode": "foaf:givenName"
   },
   {
    "@type": "DefinedTerm",
@@ -582,10 +163,429 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/jabberID",
+   "name": "jabber ID",
+   "description": "A jabber ID for something.",
+   "termCode": "foaf:jabberID"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/skypeID",
+   "name": "Skype ID",
+   "description": "A Skype ID",
+   "termCode": "foaf:skypeID"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/OnlineAccount",
+   "name": "Online Account",
+   "description": "An online account.",
+   "termCode": "foaf:OnlineAccount"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/workplaceHomepage",
+   "name": "workplace homepage",
+   "description": "A workplace homepage of some person; the homepage of an organization they work for.",
+   "termCode": "foaf:workplaceHomepage"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/pastProject",
+   "name": "past project",
+   "description": "A project this person has previously worked on.",
+   "termCode": "foaf:pastProject"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://xmlns.com/foaf/0.1/Organization",
    "name": "Organization",
    "description": "An organization.",
    "termCode": "foaf:Organization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/openid",
+   "name": "openid",
+   "description": "An OpenID for an Agent.",
+   "termCode": "foaf:openid"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
+   "name": "is primary topic of",
+   "description": "A document that this thing is the primary topic of.",
+   "termCode": "foaf:isPrimaryTopicOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/currentProject",
+   "name": "current project",
+   "description": "A current project this person works on.",
+   "termCode": "foaf:currentProject"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/thumbnail",
+   "name": "thumbnail",
+   "description": "A derived thumbnail image.",
+   "termCode": "foaf:thumbnail"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/sha1",
+   "name": "sha1sum (hex)",
+   "description": "A sha1sum hash, in hex.",
+   "termCode": "foaf:sha1"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/made",
+   "name": "made",
+   "description": "Something that was made by this agent.",
+   "termCode": "foaf:made"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/mbox_sha1sum",
+   "name": "sha1sum of a personal mailbox URI name",
+   "description": "The sha1sum of the URI of an Internet mailbox associated with exactly one owner, the  first owner of the mailbox.",
+   "termCode": "foaf:mbox_sha1sum"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/depiction",
+   "name": "depiction",
+   "description": "A depiction of some thing.",
+   "termCode": "foaf:depiction"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
+   "name": "term_status",
+   "termCode": "vs:term_status"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/topic_interest",
+   "name": "topic_interest",
+   "description": "A thing of interest to this person.",
+   "termCode": "foaf:topic_interest"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/schoolHomepage",
+   "name": "schoolHomepage",
+   "description": "A homepage of a school attended by the person.",
+   "termCode": "foaf:schoolHomepage"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/LabelProperty",
+   "name": "Label Property",
+   "description": "A foaf:LabelProperty is any RDF property with texual values that serve as labels.",
+   "termCode": "foaf:LabelProperty"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/myersBriggs",
+   "name": "myersBriggs",
+   "description": "A Myers Briggs (MBTI) personality classification.",
+   "termCode": "foaf:myersBriggs"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/name",
+   "name": "name",
+   "description": "A name for some thing.",
+   "termCode": "foaf:name"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/status",
+   "name": "status",
+   "description": "A string expressing what the user is happy for the general public (normally) to know about their current activity.",
+   "termCode": "foaf:status"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/family_name",
+   "name": "family_name",
+   "description": "The family name of some person.",
+   "termCode": "foaf:family_name"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/OnlineChatAccount",
+   "name": "Online Chat Account",
+   "description": "An online chat account.",
+   "termCode": "foaf:OnlineChatAccount"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/surname",
+   "name": "Surname",
+   "description": "The surname of some person.",
+   "termCode": "foaf:surname"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+   "name": "Spatial Thing"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/Document",
+   "name": "Document",
+   "description": "A document.",
+   "termCode": "foaf:Document"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/plan",
+   "name": "plan",
+   "description": "A .plan comment, in the tradition of finger and '.plan' files.",
+   "termCode": "foaf:plan"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/based_near",
+   "name": "based near",
+   "description": "A location that something is based near, for some broadly human notion of near.",
+   "termCode": "foaf:based_near"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/elements/1.1/date",
+   "name": "date",
+   "termCode": "dc:date"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/phone",
+   "name": "phone",
+   "description": "A phone,  specified using fully qualified tel: URI scheme (refs: http://www.w3.org/Addressing/schemes.html#tel).",
+   "termCode": "foaf:phone"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/age",
+   "name": "age",
+   "description": "The age in years of some agent.",
+   "termCode": "foaf:age"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/tipjar",
+   "name": "tipjar",
+   "description": "A tipjar document for this agent, describing means for payment and reward.",
+   "termCode": "foaf:tipjar"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/img",
+   "name": "image",
+   "description": "An image that can be used to represent some thing (ie. those depictions which are particularly representative of something, eg. one's photo on a homepage).",
+   "termCode": "foaf:img"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/interest",
+   "name": "interest",
+   "description": "A page about a topic of interest to this person.",
+   "termCode": "foaf:interest"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/weblog",
+   "name": "weblog",
+   "description": "A weblog of some thing (whether person, group, company etc.).",
+   "termCode": "foaf:weblog"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/geekcode",
+   "name": "geekcode",
+   "description": "A textual geekcode for this person, see http://www.geekcode.com/geek.html",
+   "termCode": "foaf:geekcode"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/elements/1.1/title",
+   "name": "title",
+   "termCode": "dc:title"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/Group",
+   "name": "Group",
+   "description": "A class of Agents.",
+   "termCode": "foaf:Group"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/workInfoHomepage",
+   "name": "work info homepage",
+   "description": "A work info homepage of some person; a page about their work for some organization.",
+   "termCode": "foaf:workInfoHomepage"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/theme",
+   "name": "theme",
+   "description": "A theme.",
+   "termCode": "foaf:theme"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/OnlineEcommerceAccount",
+   "name": "Online E-commerce Account",
+   "description": "An online e-commerce account.",
+   "termCode": "foaf:OnlineEcommerceAccount"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/elements/1.1/description",
+   "name": "description",
+   "termCode": "dc:description"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/gender",
+   "name": "gender",
+   "description": "The gender of this Agent (typically but not necessarily 'male' or 'female').",
+   "termCode": "foaf:gender"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/knows",
+   "name": "knows",
+   "description": "A person known by this person (indicating some level of reciprocated interaction between the parties).",
+   "termCode": "foaf:knows"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/logo",
+   "name": "logo",
+   "description": "A logo representing some thing.",
+   "termCode": "foaf:logo"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/aimChatID",
+   "name": "AIM chat ID",
+   "description": "An AIM chat ID",
+   "termCode": "foaf:aimChatID"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/Person",
+   "name": "Person",
+   "description": "A person.",
+   "termCode": "foaf:Person"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/familyName",
+   "name": "familyName",
+   "description": "The family name of some person.",
+   "termCode": "foaf:familyName"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/publications",
+   "name": "publications",
+   "description": "A link to the publications of this person.",
+   "termCode": "foaf:publications"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/member",
+   "name": "member",
+   "description": "Indicates a member of a Group",
+   "termCode": "foaf:member"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/msnChatID",
+   "name": "MSN chat ID",
+   "description": "An MSN chat ID",
+   "termCode": "foaf:msnChatID"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/wot/0.1/src_assurance",
+   "name": "src_assurance",
+   "termCode": "wot:src_assurance"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/fundedBy",
+   "name": "funded by",
+   "description": "An organization funding a project or person.",
+   "termCode": "foaf:fundedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/wot/0.1/assurance",
+   "name": "assurance",
+   "termCode": "wot:assurance"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/givenname",
+   "name": "Given name",
+   "description": "The given name of some person.",
+   "termCode": "foaf:givenname"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/accountServiceHomepage",
+   "name": "account service homepage",
+   "description": "Indicates a homepage of the service provide for this online account.",
+   "termCode": "foaf:accountServiceHomepage"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/OnlineGamingAccount",
+   "name": "Online Gaming Account",
+   "description": "An online gaming account.",
+   "termCode": "foaf:OnlineGamingAccount"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/holdsAccount",
+   "name": "account",
+   "description": "Indicates an account held by this agent.",
+   "termCode": "foaf:holdsAccount"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
+   "name": "PersonalProfileDocument",
+   "description": "A personal profile RDF document.",
+   "termCode": "foaf:PersonalProfileDocument"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/depicts",
+   "name": "depicts",
+   "description": "A thing depicted in this representation.",
+   "termCode": "foaf:depicts"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/account",
+   "name": "account",
+   "description": "Indicates an account held by this agent.",
+   "termCode": "foaf:account"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/dnaChecksum",
+   "name": "DNA checksum",
+   "description": "A checksum for the DNA of some thing. Joke.",
+   "termCode": "foaf:dnaChecksum"
   }
  ]
 }</script></head>
@@ -631,7 +631,7 @@
           <li class="toc-kind">
             <details>
               <summary><a href="#datatype-properties" data-section="datatype-properties"><span class="secno">2.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">27</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
-              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#accountName" class="ref" title="foaf:accountName">account name</a></span></li><li><span class="leaf"><a href="#age" class="ref" title="foaf:age">age</a></span></li><li><span class="leaf"><a href="#birthday" class="ref" title="foaf:birthday">birthday</a></span></li><li><span class="leaf"><a href="#dnaChecksum" class="ref" title="foaf:dnaChecksum">DNA checksum</a></span></li><li><span class="leaf"><a href="#family_name" class="ref" title="foaf:family_name">family_name</a></span></li><li><span class="leaf"><a href="#familyName" class="ref" title="foaf:familyName">familyName</a></span></li><li><span class="leaf"><a href="#firstName" class="ref" title="foaf:firstName">firstName</a></span></li><li><span class="leaf"><a href="#geekcode" class="ref" title="foaf:geekcode">geekcode</a></span></li><li><span class="leaf"><a href="#gender" class="ref" title="foaf:gender">gender</a></span></li><li><span class="leaf"><a href="#givenname" class="ref" title="foaf:givenname">Given name</a></span></li><li><span class="leaf"><a href="#givenName" class="ref" title="foaf:givenName">Given name</a></span></li><li><span class="leaf"><a href="#jabberID" class="ref" title="foaf:jabberID">jabber ID</a></span></li><li><span class="leaf"><a href="#lastName" class="ref" title="foaf:lastName">lastName</a></span></li><li><span class="leaf"><a href="#myersBriggs" class="ref" title="foaf:myersBriggs">myersBriggs</a></span></li><li><span class="leaf"><a href="#name" class="ref" title="foaf:name">name</a></span></li><li><details><summary><a href="#nick" class="ref" title="foaf:nick">nickname</a></summary><ul class="tree"><li><span class="leaf"><a href="#aimChatID" class="ref" title="foaf:aimChatID">AIM chat ID</a></span></li><li><span class="leaf"><a href="#icqChatID" class="ref" title="foaf:icqChatID">ICQ chat ID</a></span></li><li><span class="leaf"><a href="#msnChatID" class="ref" title="foaf:msnChatID">MSN chat ID</a></span></li><li><span class="leaf"><a href="#skypeID" class="ref" title="foaf:skypeID">Skype ID</a></span></li><li><span class="leaf"><a href="#yahooChatID" class="ref" title="foaf:yahooChatID">Yahoo chat ID</a></span></li></ul></details></li><li><span class="leaf"><a href="#plan" class="ref" title="foaf:plan">plan</a></span></li><li><span class="leaf"><a href="#sha1" class="ref" title="foaf:sha1">sha1sum (hex)</a></span></li><li><span class="leaf"><a href="#mbox_sha1sum" class="ref" title="foaf:mbox_sha1sum">sha1sum of a personal mailbox URI name</a></span></li><li><span class="leaf"><a href="#status" class="ref" title="foaf:status">status</a></span></li><li><span class="leaf"><a href="#surname" class="ref" title="foaf:surname">Surname</a></span></li><li><span class="leaf"><a href="#title" class="ref" title="foaf:title">title</a></span></li></ul></div>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#accountName" class="ref" title="foaf:accountName">account name</a></span></li><li><span class="leaf"><a href="#age" class="ref" title="foaf:age">age</a></span></li><li><span class="leaf"><a href="#birthday" class="ref" title="foaf:birthday">birthday</a></span></li><li><span class="leaf"><a href="#dnaChecksum" class="ref" title="foaf:dnaChecksum">DNA checksum</a></span></li><li><span class="leaf"><a href="#family_name" class="ref" title="foaf:family_name">family_name</a></span></li><li><span class="leaf"><a href="#familyName" class="ref" title="foaf:familyName">familyName</a></span></li><li><span class="leaf"><a href="#firstName" class="ref" title="foaf:firstName">firstName</a></span></li><li><span class="leaf"><a href="#geekcode" class="ref" title="foaf:geekcode">geekcode</a></span></li><li><span class="leaf"><a href="#gender" class="ref" title="foaf:gender">gender</a></span></li><li><span class="leaf"><a href="#givenName" class="ref" title="foaf:givenName">Given name</a></span></li><li><span class="leaf"><a href="#givenname" class="ref" title="foaf:givenname">Given name</a></span></li><li><span class="leaf"><a href="#jabberID" class="ref" title="foaf:jabberID">jabber ID</a></span></li><li><span class="leaf"><a href="#lastName" class="ref" title="foaf:lastName">lastName</a></span></li><li><span class="leaf"><a href="#myersBriggs" class="ref" title="foaf:myersBriggs">myersBriggs</a></span></li><li><span class="leaf"><a href="#name" class="ref" title="foaf:name">name</a></span></li><li><details><summary><a href="#nick" class="ref" title="foaf:nick">nickname</a></summary><ul class="tree"><li><span class="leaf"><a href="#aimChatID" class="ref" title="foaf:aimChatID">AIM chat ID</a></span></li><li><span class="leaf"><a href="#icqChatID" class="ref" title="foaf:icqChatID">ICQ chat ID</a></span></li><li><span class="leaf"><a href="#msnChatID" class="ref" title="foaf:msnChatID">MSN chat ID</a></span></li><li><span class="leaf"><a href="#skypeID" class="ref" title="foaf:skypeID">Skype ID</a></span></li><li><span class="leaf"><a href="#yahooChatID" class="ref" title="foaf:yahooChatID">Yahoo chat ID</a></span></li></ul></details></li><li><span class="leaf"><a href="#plan" class="ref" title="foaf:plan">plan</a></span></li><li><span class="leaf"><a href="#sha1" class="ref" title="foaf:sha1">sha1sum (hex)</a></span></li><li><span class="leaf"><a href="#mbox_sha1sum" class="ref" title="foaf:mbox_sha1sum">sha1sum of a personal mailbox URI name</a></span></li><li><span class="leaf"><a href="#status" class="ref" title="foaf:status">status</a></span></li><li><span class="leaf"><a href="#surname" class="ref" title="foaf:surname">Surname</a></span></li><li><span class="leaf"><a href="#title" class="ref" title="foaf:title">title</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
@@ -1725,7 +1725,7 @@
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 5 warnings and 27 suggestions. ROBOT: 2 errors, 2 warnings, 1 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 5 warnings and 27 suggestions. ROBOT: 5 errors, 82 warnings, 6 suggestions. Logical consistency: 0 errors, 0 warnings, 0 suggestions. OntoCheck: 0 errors, 1 warnings, 88 suggestions. OOPS!: 1 errors, 22 warnings, 10 suggestions.</p>
 
 <h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No license declared <span class="muted">(1) OB003</span></summary>
@@ -1743,7 +1743,7 @@
     <summary><span class="sev">warning</span> Duplicate labels <span class="muted">(3) OB016</span></summary>
     <p class="muted rule-desc">Two or more terms share the same label, which confuses readers and tools.</p>
     <ul class="findings">
-<li>Label “image” is used by <code>foaf:Image</code>, <code>foaf:img</code>. <a href="#Image">§</a></li><li>Label “given name” is used by <code>foaf:givenname</code>, <code>foaf:givenName</code>. <a href="#givenname">§</a></li><li>Label “account” is used by <code>foaf:holdsAccount</code>, <code>foaf:account</code>. <a href="#holdsAccount">§</a></li>    </ul>
+<li>Label “image” is used by <code>foaf:Image</code>, <code>foaf:img</code>. <a href="#Image">§</a></li><li>Label “given name” is used by <code>foaf:givenName</code>, <code>foaf:givenname</code>. <a href="#givenName">§</a></li><li>Label “account” is used by <code>foaf:holdsAccount</code>, <code>foaf:account</code>. <a href="#holdsAccount">§</a></li>    </ul>
   </details>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> No version information <span class="muted">(2) OB004</span></summary>
@@ -1807,6 +1807,110 @@
     <summary><span class="sev">info</span> Missing superclass <span class="muted">(6) missing_superclass</span></summary>
     <ul class="findings">
 <li><code>foaf:Agent</code></li><li><code>foaf:Document</code></li><li><code>foaf:LabelProperty</code></li><li><code>foaf:Project</code></li><li><a href="#SpatialThing">Spatial Thing</a> <code class="muted">http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing</code></li><li><code>skos:Concept</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-warn"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 15 of 16 classes (94%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 16 classes (0%)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-warn"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 16 classes (0%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-warn"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 2 classes, 41 properties<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-info"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 4 groups<span class="sr-only"> (info)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-warn"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 6 without domain, 6 without range<span class="sr-only"> (warn)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 11 of 16 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 7 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-warn"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Not found<span class="sr-only"> (warn)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 5.8% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 16 of 16 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-skipped"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: needs the original Turtle (.ttl) file; it reads the file text<span class="sr-only"> (skipped)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-info"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 35 possible misspellings in 697 words (5.0%)<span class="sr-only"> (info)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-warn"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> 3 labels shared<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> No human-readable license <span class="muted">humanLicense</span></summary>
+<p class="muted rule-desc">No license or copyright text was found in the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without rdfs:label <span class="muted">(1) checkLabel</span></summary>
+<p class="muted rule-desc">OntoCheck checkLabel: these named classes have no rdfs:label.</p>    <ul class="findings">
+<li><code>http://www.w3.org/2000/01/rdf-schema#Class</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without skos:definition <span class="muted">(16) definitionCheck</span></summary>
+<p class="muted rule-desc">OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).</p>    <ul class="findings">
+<li><code>http://www.w3.org/2000/01/rdf-schema#Class</code></li><li><code>http://www.w3.org/2002/07/owl#Thing</code></li><li><a href="#SpatialThing">Spatial Thing</a> <code class="muted">http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing</code></li><li><a href="#Agent">Agent</a> <code class="muted">foaf:Agent</code></li><li><a href="#Document">Document</a> <code class="muted">foaf:Document</code></li><li><a href="#Group">Group</a> <code class="muted">foaf:Group</code></li><li><a href="#Image">Image</a> <code class="muted">foaf:Image</code></li><li><a href="#LabelProperty">Label Property</a> <code class="muted">foaf:LabelProperty</code></li><li><a href="#OnlineAccount">Online Account</a> <code class="muted">foaf:OnlineAccount</code></li><li><a href="#OnlineChatAccount">Online Chat Account</a> <code class="muted">foaf:OnlineChatAccount</code></li><li><a href="#OnlineEcommerceAccount">Online E-commerce Account</a> <code class="muted">foaf:OnlineEcommerceAccount</code></li><li><a href="#OnlineGamingAccount">Online Gaming Account</a> <code class="muted">foaf:OnlineGamingAccount</code></li><li><a href="#Organization">Organization</a> <code class="muted">foaf:Organization</code></li><li><a href="#Person">Person</a> <code class="muted">foaf:Person</code></li><li><a href="#PersonalProfileDocument">PersonalProfileDocument</a> <code class="muted">foaf:PersonalProfileDocument</code></li><li><a href="#Project">Project</a> <code class="muted">foaf:Project</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Shared labels <span class="muted">(6) duplicateLabels</span></summary>
+<p class="muted rule-desc">OntoCheck duplicateLabels (case-insensitive rdfs:label).</p><p class="rule-desc">“image”: 2 entities; “account”: 2 entities; “given name”: 2 entities</p>    <ul class="findings">
+<li><a href="#Image">Image</a> <code class="muted">foaf:Image</code></li><li><a href="#account">account</a> <code class="muted">foaf:account</code></li><li><a href="#givenName">Given name</a> <code class="muted">foaf:givenName</code></li><li><a href="#givenname">Given name</a> <code class="muted">foaf:givenname</code></li><li><a href="#holdsAccount">account</a> <code class="muted">foaf:holdsAccount</code></li><li><a href="#img">image</a> <code class="muted">foaf:img</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Isolated classes and properties <span class="muted">(43) isolatedElements</span></summary>
+<p class="muted rule-desc">OntoCheck isolatedElements: not related to any other class or property.</p>    <ul class="findings">
+<li><code>http://www.w3.org/2000/01/rdf-schema#Class</code></li><li><a href="#LabelProperty">Label Property</a> <code class="muted">foaf:LabelProperty</code></li><li><a href="#account">account</a> <code class="muted">foaf:account</code></li><li><a href="#accountName">account name</a> <code class="muted">foaf:accountName</code></li><li><a href="#accountServiceHomepage">account service homepage</a> <code class="muted">foaf:accountServiceHomepage</code></li><li><a href="#age">age</a> <code class="muted">foaf:age</code></li><li><a href="#based_near">based near</a> <code class="muted">foaf:based_near</code></li><li><a href="#birthday">birthday</a> <code class="muted">foaf:birthday</code></li><li><a href="#currentProject">current project</a> <code class="muted">foaf:currentProject</code></li><li><a href="#dnaChecksum">DNA checksum</a> <code class="muted">foaf:dnaChecksum</code></li><li><a href="#familyName">familyName</a> <code class="muted">foaf:familyName</code></li><li><a href="#family_name">family_name</a> <code class="muted">foaf:family_name</code></li><li><a href="#firstName">firstName</a> <code class="muted">foaf:firstName</code></li><li><a href="#focus">focus</a> <code class="muted">foaf:focus</code></li><li><a href="#fundedBy">funded by</a> <code class="muted">foaf:fundedBy</code></li><li><a href="#geekcode">geekcode</a> <code class="muted">foaf:geekcode</code></li><li><a href="#gender">gender</a> <code class="muted">foaf:gender</code></li><li><a href="#givenName">Given name</a> <code class="muted">foaf:givenName</code></li><li><a href="#givenname">Given name</a> <code class="muted">foaf:givenname</code></li><li><a href="#holdsAccount">account</a> <code class="muted">foaf:holdsAccount</code></li><li><a href="#interest">interest</a> <code class="muted">foaf:interest</code></li><li><a href="#jabberID">jabber ID</a> <code class="muted">foaf:jabberID</code></li><li><a href="#knows">knows</a> <code class="muted">foaf:knows</code></li><li><a href="#lastName">lastName</a> <code class="muted">foaf:lastName</code></li><li><a href="#logo">logo</a> <code class="muted">foaf:logo</code></li><li><a href="#mbox">personal mailbox</a> <code class="muted">foaf:mbox</code></li><li><a href="#mbox_sha1sum">sha1sum of a personal mailbox URI name</a> <code class="muted">foaf:mbox_sha1sum</code></li><li><a href="#member">member</a> <code class="muted">foaf:member</code></li><li><a href="#myersBriggs">myersBriggs</a> <code class="muted">foaf:myersBriggs</code></li><li><a href="#pastProject">past project</a> <code class="muted">foaf:pastProject</code></li><li><a href="#phone">phone</a> <code class="muted">foaf:phone</code></li><li><a href="#plan">plan</a> <code class="muted">foaf:plan</code></li><li><a href="#publications">publications</a> <code class="muted">foaf:publications</code></li><li><a href="#schoolHomepage">schoolHomepage</a> <code class="muted">foaf:schoolHomepage</code></li><li><a href="#sha1">sha1sum (hex)</a> <code class="muted">foaf:sha1</code></li><li><a href="#status">status</a> <code class="muted">foaf:status</code></li><li><a href="#surname">Surname</a> <code class="muted">foaf:surname</code></li><li><a href="#theme">theme</a> <code class="muted">foaf:theme</code></li><li><a href="#thumbnail">thumbnail</a> <code class="muted">foaf:thumbnail</code></li><li><a href="#title">title</a> <code class="muted">foaf:title</code></li><li><a href="#topic_interest">topic_interest</a> <code class="muted">foaf:topic_interest</code></li><li><a href="#workInfoHomepage">work info homepage</a> <code class="muted">foaf:workInfoHomepage</code></li><li><a href="#workplaceHomepage">workplace homepage</a> <code class="muted">foaf:workplaceHomepage</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Properties without domain or range <span class="muted">(7) missingDomainRange</span></summary>
+<p class="muted rule-desc">6 without rdfs:domain, 6 without rdfs:range.</p>    <ul class="findings">
+<li><a href="#dnaChecksum">DNA checksum</a> <code class="muted">foaf:dnaChecksum</code></li><li><a href="#givenName">Given name</a> <code class="muted">foaf:givenName</code></li><li><a href="#givenname">Given name</a> <code class="muted">foaf:givenname</code></li><li><a href="#nick">nickname</a> <code class="muted">foaf:nick</code></li><li><a href="#phone">phone</a> <code class="muted">foaf:phone</code></li><li><a href="#sha1">sha1sum (hex)</a> <code class="muted">foaf:sha1</code></li><li><a href="#title">title</a> <code class="muted">foaf:title</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Possible misspellings <span class="muted">(15) spellCheck</span></summary>
+<p class="muted rule-desc">OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.</p><p class="rule-desc">characterising → characterizing, checksum → checks, dd → do, endeavour → endeavor, etc → et, foaf → foam, geekcode, html → him, http → help, ie → i, mbox → box, mm → my, openid → opened, org → or, sha → she, tel → tell, texual → sexual, tipjar → tipper, weblog → blog, www → wow</p>    <ul class="findings">
+<li><a href="#LabelProperty">Label Property</a> <code class="muted">foaf:LabelProperty</code></li><li><a href="#Project">Project</a> <code class="muted">foaf:Project</code></li><li><a href="#birthday">birthday</a> <code class="muted">foaf:birthday</code></li><li><a href="#dnaChecksum">DNA checksum</a> <code class="muted">foaf:dnaChecksum</code></li><li><a href="#geekcode">geekcode</a> <code class="muted">foaf:geekcode</code></li><li><a href="#img">image</a> <code class="muted">foaf:img</code></li><li><a href="#mbox">personal mailbox</a> <code class="muted">foaf:mbox</code></li><li><a href="#mbox_sha1sum">sha1sum of a personal mailbox URI name</a> <code class="muted">foaf:mbox_sha1sum</code></li><li><a href="#nick">nickname</a> <code class="muted">foaf:nick</code></li><li><a href="#openid">openid</a> <code class="muted">foaf:openid</code></li><li><a href="#phone">phone</a> <code class="muted">foaf:phone</code></li><li><a href="#sha1">sha1sum (hex)</a> <code class="muted">foaf:sha1</code></li><li><a href="#tipjar">tipjar</a> <code class="muted">foaf:tipjar</code></li><li><a href="#title">title</a> <code class="muted">foaf:title</code></li><li><a href="#weblog">weblog</a> <code class="muted">foaf:weblog</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+<p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Defining wrong equivalent classes <span class="muted">P31</span></summary>
+<p class="muted rule-desc">Two classes are defined as equivalent, using owl:equivalentClass, when they are not necessarily equivalent.</p>  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(7) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="#dnaChecksum">DNA checksum</a> <code class="muted">foaf:dnaChecksum</code></li><li><a href="#givenName">Given name</a> <code class="muted">foaf:givenName</code></li><li><a href="#givenname">Given name</a> <code class="muted">foaf:givenname</code></li><li><a href="#nick">nickname</a> <code class="muted">foaf:nick</code></li><li><a href="#phone">phone</a> <code class="muted">foaf:phone</code></li><li><a href="#sha1">sha1sum (hex)</a> <code class="muted">foaf:sha1</code></li><li><a href="#title">title</a> <code class="muted">foaf:title</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Equivalent properties not explicitly declared <span class="muted">(4) P12</span></summary>
+<p class="muted rule-desc">The ontology lacks information about equivalent properties (owl:equivalentProperty) in the cases of duplicated relationships and/or attributes.</p>    <ul class="findings">
+<li><a href="#familyName">familyName</a> <code class="muted">foaf:familyName</code></li><li><a href="#family_name">family_name</a> <code class="muted">foaf:family_name</code></li><li><a href="#givenName">Given name</a> <code class="muted">foaf:givenName</code></li><li><a href="#givenname">Given name</a> <code class="muted">foaf:givenname</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Untyped class <span class="muted">(5) P34</span></summary>
+<p class="muted rule-desc">An ontology element is used as a class without having been explicitly declared as such using the primitives owl:Class or rdfs:Class. This pitfall is related with the common problems listed in [8].</p>    <ul class="findings">
+<li><code>http://purl.org/dc/terms/Agent</code></li><li><code>http://schema.org/CreativeWork</code></li><li><code>http://schema.org/ImageObject</code></li><li><code>http://schema.org/Person</code></li><li><code>http://www.w3.org/2000/10/swap/pim/contact#Person</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Untyped property <span class="muted">(1) P35</span></summary>
+<p class="muted rule-desc">An ontology element is used as a property without having been explicitly declared as such using the primitives rdf:Property, owl:ObjectProperty or owl:DatatypeProperty. This pitfall is related with the common problems listed in [8].</p>    <ul class="findings">
+<li><code>http://purl.org/dc/terms/creator</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> WARNING: the following classes do not have rdf:type owl:Class or equivalent. <span class="muted">(5) Warning</span></summary>
+    <ul class="findings">
+<li><code>http://purl.org/dc/terms/Agent</code></li><li><code>http://schema.org/CreativeWork</code></li><li><code>http://schema.org/ImageObject</code></li><li><code>http://schema.org/Person</code></li><li><code>http://www.w3.org/2000/10/swap/pim/contact#Person</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Creating unconnected ontology elements <span class="muted">(2) P04</span></summary>
+<p class="muted rule-desc">Ontology elements (classes, object properties and datatype properties) are created isolated, with no relation to the rest of the ontology.</p>    <ul class="findings">
+<li><a href="#LabelProperty">Label Property</a> <code class="muted">foaf:LabelProperty</code></li><li><a href="#Project">Project</a> <code class="muted">foaf:Project</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Using different naming conventions in the ontology <span class="muted">P22</span></summary>
+<p class="muted rule-desc">The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &amp;quot;-&amp;quot; or &amp;quot;_&amp;quot;) . Some notions about naming conventions are provided in [2].</p><p class="rule-desc">There are elements following different naming conventions as for example: http://xmlns.com/foaf/0.1/topic_interest http://xmlns.com/foaf/0.1/workplaceHomepage</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> SUGGESTION: symmetric or transitive object properties. <span class="muted">(6) SUGGESTION: symmetric or transitive object properties.</span></summary>
+<p class="muted rule-desc">The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?</p>    <ul class="findings">
+<li><a href="#based_near">based near</a> <code class="muted">foaf:based_near</code></li><li><a href="#fundedBy">funded by</a> <code class="muted">foaf:fundedBy</code></li><li><a href="#knows">knows</a> <code class="muted">foaf:knows</code></li><li><a href="#logo">logo</a> <code class="muted">foaf:logo</code></li><li><a href="#theme">theme</a> <code class="muted">foaf:theme</code></li><li><a href="#thumbnail">thumbnail</a> <code class="muted">foaf:thumbnail</code></li>    </ul>
   </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">5</span> Download</h2>
@@ -1875,10 +1979,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd3c2"></script>
+<script src="ontoreview-data.js?v=6afd13ec"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd3c2"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afd13ec"></script>
 </body>
 </html>
