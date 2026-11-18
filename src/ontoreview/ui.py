@@ -266,6 +266,8 @@ HELP = [
         "IRI check with each term's result and where it was found.",
         "Terms nobody could confirm are <i>unverified</i>, not wrong. Add their vocabulary on the Term database page "
         "to verify them next time.",
+        "Every result records the vocabulary release it was checked against. Stored vocabularies older than 30 days "
+        "are fetched again automatically when online; use <b>Refresh</b> on the Term database page to do it now.",
     ], "Only external term IRIs are sent to OLS or BioPortal, never your ontology. Turn network lookups off in "
        "Settings › Quality checks to use the SQLite database only.",
      [("Open Term database", "/terms"), ("IRI settings", "settings:checks")]),
@@ -2123,6 +2125,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         .classes("or-table").props("flat dense wrap-cells").mark("term-results")
 
         async def show_docs() -> None:
+            from .config import Config
+
+            max_age = Config().evaluation.iri_cache_days
             docs = await run.io_bound(iri_db.list_documents)
             if docs_box.is_deleted:
                 return
@@ -2145,16 +2150,36 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                     "border-top: 1px solid var(--or-line-2)"):
                                 with ui.column().classes("gap-0 grow min-w-0"):
                                     ui.label(d["key"]).classes("or-label or-mono ellipsis w-full")
+                                    age = d.get("age_days")
+                                    old = age is not None and age > max_age > 0
                                     ui.label(f"{d['terms']:,} terms · {d['source_url']} · {d['fetched_at'][:10]}"
+                                             + (f" ({age:.0f} days ago)" if age is not None else "")
                                              + (f" · {', '.join(d['licenses'][:1])}" if d["licenses"] else "")) \
-                                        .classes("or-hint ellipsis w-full")
+                                        .classes("or-hint ellipsis w-full").style(
+                                            "color: var(--or-warn, #B54708)" if old else "")
+                                    if old:
+                                        ui.label(f"Older than {max_age:g} days: refreshed automatically on the next "
+                                                 "online IRI check, or now with Refresh.").classes("or-hint")
                                 ui.button("Browse", on_click=lambda d=d: (st.update(document=d["key"]),
                                                                           tabs.set_value("search"),
                                                                           background_tasks.create(search()))) \
                                     .props("flat dense no-caps")
+                                if d["source_url"].startswith(("http://", "https://", "file://")):
+                                    ui.button("Refresh", on_click=lambda d=d: refresh_doc(d["key"])) \
+                                        .props("flat dense no-caps").tooltip("Fetch this vocabulary again")
                                 if where == "cache":
                                     ui.button(icon="delete_outline", on_click=lambda d=d: remove(d["key"])) \
                                         .props(f'flat round dense aria-label="Remove {d["key"]}"').tooltip("Remove")
+
+        async def refresh_doc(key: str) -> None:
+            notify(f"Refreshing {key}…")
+            try:
+                res = await run.io_bound(iri_db.refresh_document, key)
+            except Exception as e:  # noqa: BLE001
+                notify(f"Could not refresh {key}: {str(e)[:160]}", "negative")
+                return
+            notify(f"{key}: {res['terms']:,} terms" + (" (changed)" if res["changed"] else " (unchanged)"), "positive")
+            await show_docs()
 
         async def remove(key: str) -> None:
             await run.io_bound(iri_db.remove_document, key)
@@ -2226,13 +2251,19 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 return
             with runs_box, ui.dialog() as dlg, ui.card().classes("or-card w-[64rem] max-w-full"):
                 ui.label(f"Run #{run_id}: {len(rows)} external terms").classes("or-h2")
+                def rel_text(rel):
+                    rel = rel or {}
+                    return rel.get("version_iri") or " ".join(x for x in (rel.get("ontology"), rel.get("version")) if x) \
+                        or (rel.get("sha256") or "")[:12]
+
                 data = [{"id": n, "iri": r["iri"], "status": r["status"].replace("_", " "),
                          "source": r.get("source") or "", "detail": (r.get("detail") or "")[:160],
+                         "release": rel_text(r.get("release")), "stale": "stale" if r.get("stale") else "",
                          "tried": " → ".join(a.get("provider", "") + ":" + str(a.get("status", "")) for a in r["attempts"])}
                         for n, r in enumerate(rows)]
                 cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
-                        (("iri", "IRI"), ("status", "Status"), ("source", "Source"), ("tried", "Lookups"),
-                         ("detail", "Detail"))]
+                        (("iri", "IRI"), ("status", "Status"), ("source", "Source"), ("release", "Release"),
+                         ("stale", ""), ("tried", "Lookups"), ("detail", "Detail"))]
                 ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 15}) \
                     .classes("or-table").props("flat dense wrap-cells")
                 with ui.row().classes("w-full justify-end"):

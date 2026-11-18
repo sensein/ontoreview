@@ -43,7 +43,7 @@ def ev(**kw):
 def test_iri_syntax():
     assert iri_issue("http://example.org/a#B") is None
     assert iri_issue("http://example.org/a B") and iri_issue("example.org/a") and iri_issue("http://%zz.org/")
-    assert iri_issue("http:///nohost") == "missing host or embedded credentials"
+    assert iri_issue("http:///nohost") == "missing host"
     assert iri_issue("urn:isbn:123") is None and iri_issue("urn:isbn:123", http_only=True)
 
 
@@ -220,3 +220,132 @@ async def test_term_database_page(tmp_path, monkeypatch):
     iri.add_document(path=f)
     assert json.dumps(iri.list_documents()).count("vocab.test") >= 1
     await asyncio.sleep(0)
+
+
+# ------------------------------------------------------------------ RFC 3987, releases, expiry
+@pytest.mark.parametrize("value", [
+    "http://example.org/a#B", "https://ex.org/p?q=1&r=a%20b#frag", "urn:isbn:0451450523", "mailto:a@b.org",
+    "http://[2001:db8::1]:8080/x", "http://[v1.fe80::a+en1]/", "http://例え.テスト/パス#断片", "tag:x.org,2026:a/b",
+    "http://ex.org/?", "file:///tmp/x.ttl", "http://ex.org/a%41b", "http://ex.org:8080/", "ex+t.a-1:x",
+])
+def test_rfc3987_valid(value):
+    assert iri_issue(value) is None
+
+
+@pytest.mark.parametrize("value,why", [
+    ("http://example.org/a b", "path"), ("example.org/x", "scheme"), ("http:///x", "host"),
+    ("http://ex.org:99999/", "port"), ("http://user:pw@ex.org/", "credentials"), ("http://[::zz]/", "IPv6"),
+    ("http://ex.org/%zz", "percent"), ("1http://x/", "scheme"), ("http://ex.org/a#b#c", "fragment"),
+    ("http://ex.org/a{b}", "path"), ("http://ex.org/", "path"), ("http://ex.org/a\u0000", "path"),
+    ("http://ex.org/<x>", "path"), ("http://ex.org:8a/", "port"), ("http://[::1/", "IP literal"),
+    ("http://ex.org/q?a b", "query"),
+])
+def test_rfc3987_invalid(value, why):
+    assert why in iri_issue(value)
+
+
+def _old(store, key, days):
+    from datetime import datetime, timedelta, timezone
+    when = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    with store.db:
+        store.db.execute("UPDATE documents SET fetched_at=? WHERE key=?", (when, key))
+
+
+def test_expired_snapshot_refreshed_or_flagged(tmp_path, monkeypatch):
+    f = tmp_path / "vocab.ttl"
+    f.write_text(VOCAB)
+    bundle = TermStore(iri.data_file("top_terms.sqlite3"), readonly=True)
+    cache = TermStore(tmp_path / "c.sqlite3")
+    try:
+        cache.save("https://vocab.test/", Graph().parse(f), f.as_uri(), f.read_bytes())
+        _old(cache, "https://vocab.test/", 90)
+        r = Validator(bundle, cache, iri.load_catalog(), offline=True, providers=[]).validate(
+            "https://vocab.test/Entity", {"class"})
+        assert r["status"] == "valid" and r["stale"] and r["age_days"] > 89          # offline: used, flagged
+        assert r["release"]["ontology_iri"] == "https://vocab.test/" and r["release"]["sha256"]
+        r = Validator(bundle, cache, iri.load_catalog(), providers=[]).validate("https://vocab.test/Entity", {"class"})
+        assert r["snapshot"] == "refreshed" and not r.get("stale")                    # online: re-read the file
+        _old(cache, "https://vocab.test/", 90)
+        f.unlink()                                                                     # source gone: flagged
+        r = Validator(bundle, cache, iri.load_catalog(), providers=[]).validate("https://vocab.test/Entity", {"class"})
+        assert r["status"] == "valid" and r["stale"]
+        assert not Validator(bundle, cache, iri.load_catalog(), providers=[], max_age_days=0).validate(
+            "https://vocab.test/Entity", {"class"}).get("stale")                       # 0 = never expires
+    finally:
+        bundle.close()
+        cache.close()
+
+
+def test_expired_repository_record_is_asked_again(tmp_path):
+    from datetime import datetime, timedelta, timezone
+
+    calls = []
+
+    class Down:
+        name = "ols"
+
+        def lookup(self, iri_, roles, timeout=20):
+            calls.append(iri_)
+            return None, {"provider": "ols", "status": "unavailable"}
+
+    bundle = TermStore(iri.data_file("top_terms.sqlite3"), readonly=True)
+    cache = TermStore(tmp_path / "c.sqlite3")
+    try:
+        old = (datetime.now(timezone.utc) - timedelta(days=60)).isoformat()
+        cache.save_repository_term("https://r.test/X", {"class"}, {"iri": "https://r.test/X", "status": "valid",
+                                                                  "provider": "ols", "fetched_at": old})
+        r = Validator(bundle, cache, iri.load_catalog(), providers=[Down()]).validate("https://r.test/X", {"class"})
+        assert calls == ["https://r.test/X"] and r["status"] == "valid" and r["stale"] and "could not refresh" in r["detail"]
+    finally:
+        bundle.close()
+        cache.close()
+
+
+def test_release_mismatch_with_versioned_import():
+    g = Graph().parse(data="""
+        @prefix owl: <http://www.w3.org/2002/07/owl#> . @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+        <https://me.test/o> a owl:Ontology ; owl:imports <http://www.w3.org/ns/prov-o-20120312> .
+        <https://me.test/o#A> a owl:Class ; rdfs:subClassOf <http://www.w3.org/ns/prov#Entity> .""", format="turtle")
+    rep = iri.run_iri_checks(g, ev(), None, "https://me.test/o#")
+    [mm] = [i for i in rep.items if i.code == "release_mismatch"]
+    assert mm.severity == "warning" and mm.affected == ["http://www.w3.org/ns/prov#Entity"]
+    assert "prov-o-20130430" in mm.note and "prov-o-20120312" in mm.note
+    by = {m["metric"]: m for m in rep.metrics}
+    assert "prov-o-20130430" in by["releases"]["value"] and by["freshness"]["status"] in ("ok", "info")
+
+
+def test_schema_v2_database_is_migrated(tmp_path):
+    import sqlite3
+
+    path = tmp_path / "old.sqlite3"
+    c = sqlite3.connect(path)
+    c.executescript("""CREATE TABLE runs (id INTEGER PRIMARY KEY AUTOINCREMENT, started_at TEXT NOT NULL,
+        finished_at TEXT, source TEXT, ontology_iri TEXT, settings TEXT NOT NULL, summary TEXT);
+        CREATE TABLE run_results (run_id INTEGER NOT NULL, iri TEXT NOT NULL, roles TEXT NOT NULL,
+        status TEXT NOT NULL, source TEXT, detail TEXT, attempts TEXT, PRIMARY KEY(run_id, iri));
+        PRAGMA user_version=2;""")
+    c.close()
+    st = TermStore(path)
+    try:
+        run = st.start_run(None, None, {})
+        st.finish_run(run, [{"iri": "http://x.org/a", "status": "valid", "release": {"version_iri": "v1"},
+                             "stale": True}], {})
+        [row] = st.run_results(run)
+        assert row["release"] == {"version_iri": "v1"} and row["stale"] is True
+        assert st.db.execute("PRAGMA user_version").fetchone()[0] == 3
+    finally:
+        st.close()
+
+
+def test_refresh_document_and_cli(tmp_path):
+    from typer.testing import CliRunner
+
+    from ontoreview.cli import app
+
+    _seed(tmp_path)
+    r = iri.refresh_document("https://vocab.test/")
+    assert r["terms"] == 4 and r["changed"] is False
+    (tmp_path / "vocab.ttl").write_text(VOCAB + '<https://vocab.test/New> a <http://www.w3.org/2002/07/owl#Class> .\n')
+    out = CliRunner().invoke(app, ["terms", "refresh", "https://vocab.test/"])
+    assert out.exit_code == 0 and "5 terms (changed)" in out.output
+    assert CliRunner().invoke(app, ["terms", "refresh", "https://nope.test/"]).exit_code == 1

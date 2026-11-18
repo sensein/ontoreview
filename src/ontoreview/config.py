@@ -146,6 +146,8 @@ class EvaluationConfig(BaseModel):
     iri_timeout: float = Field(20, description="Seconds per network connect/read")
     iri_max_mb: float = Field(50, description="Maximum download size per document, MiB")
     iri_budget: float = Field(120, description="Total seconds for network lookups per run")
+    iri_cache_days: float = Field(30, description="Cached and bundled entries older than this are refreshed "
+                                                  "when online (stale ones are flagged); 0 = never expire")
 
     @field_validator("oops", "robot", "ontocheck", "iri_checks", mode="before")
     @classmethod
@@ -300,6 +302,7 @@ ontocheck = "on"            # OntoCheck metrics (labeling, structural, accessibi
 iri_checks = "on"           # IRI syntax, header, resolution and external-term validation: "on" | "off"
 # iri_network = false       # bundled + cached SQLite only (no OLS/BioPortal/downloads)
 # iri_local_namespaces = ["https://example.org/my-ontology#"]
+# iri_cache_days = 30       # refresh cached / bundled vocabulary entries older than this (0 = never)
 
 # Metadata found in the ontology is used automatically; anything here overrides it.
 [metadata]

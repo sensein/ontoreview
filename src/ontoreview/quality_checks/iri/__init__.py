@@ -25,7 +25,7 @@ from rdflib.namespace import OWL, RDF
 from ...report.iri import iri_report
 from ...report.models import ExternalReport
 from .http import host_of, iri_issue, ontology_headers, resolve_ontology_iri
-from .store import TermStore, default_cache_path
+from .store import TermStore, age_days, default_cache_path
 from .validate import Validator, download_graph, references
 
 log = logging.getLogger(__name__)
@@ -98,6 +98,7 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
 
     # 4. external class/property references
     results: list[dict] = []
+    mismatches: list[dict] = []
     db = cache_path(ev)
     run_id, error, locals_ = None, None, []
     try:
@@ -112,9 +113,11 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
                 run_id = cache.start_run(source, ontology_iri, settings)
                 validator = Validator(bundle, cache, catalog, offline=offline, refresh=ev.iri_refresh and not offline,
                                       timeout=timeout, max_mb=max_mb,
-                                      providers=None if ev.iri_repositories else [], budget=ev.iri_budget)
+                                      providers=None if ev.iri_repositories else [], budget=ev.iri_budget,
+                                      max_age_days=ev.iri_cache_days)
                 for iri, roles in sorted(refs.items()):
                     results.append(validator.validate(iri, roles))
+                mismatches = release_mismatches(graph, results)
                 summary = _summary(results, invalid, len(all_iris))
                 cache.finish_run(run_id, results, summary)
             finally:
@@ -127,7 +130,38 @@ def run_iri_checks(graph: Graph, ev, source: str | None = None, namespace: str |
         all_iris=len(all_iris), invalid=invalid, headers=headers, version_iris=version_iris,
         resolution=resolution, offline=offline, results=results, local_namespaces=locals_,
         run_id=run_id, db=str(db), seconds=time.perf_counter() - t0, error=error,
-        resolve_enabled=bool(ev.iri_resolve))
+        resolve_enabled=bool(ev.iri_resolve), mismatches=mismatches, max_age_days=ev.iri_cache_days)
+
+
+def _stem(iri: str) -> str:
+    s = iri.rstrip("#/")
+    for ext in (".owl", ".ttl", ".rdf", ".nt", ".jsonld", ".xml"):
+        if s.endswith(ext):
+            return s[: -len(ext)]
+    return s
+
+
+def release_mismatches(graph: Graph, results: list[dict]) -> list[dict]:
+    """External terms verified against a different release than the one this ontology imports.
+
+    An ``owl:imports`` IRI counts as a release of a vocabulary when it starts with the vocabulary's
+    ontology IRI (without trailing ``#``/``/`` or file extension) but is not that IRI itself, e.g.
+    ``…/obo/go/releases/2024-01-01/go.owl`` for ``…/obo/go.owl``.
+    """
+    imports = sorted({str(o) for o in graph.objects(None, OWL.imports) if isinstance(o, URIRef)})
+    if not imports:
+        return []
+    out = []
+    for r in results:
+        rel = r.get("release") or {}
+        onto, version = rel.get("ontology_iri"), rel.get("version_iri")
+        if not onto or not version:
+            continue
+        stem = _stem(onto)
+        for imp in imports:
+            if imp.startswith(stem) and imp not in (onto, version) and _stem(imp) != stem:
+                out.append({"iri": r["iri"], "imports": imp, "verified_against": version, "source": rel.get("source")})
+    return out
 
 
 def _summary(results: list[dict], invalid, n_iris: int) -> dict:
@@ -138,7 +172,9 @@ def _summary(results: list[dict], invalid, n_iris: int) -> dict:
         src = r.get("snapshot") or "none"
         sources[src] = sources.get(src, 0) + 1
     return {"iris": n_iris, "invalid_iris": len(invalid), "external_terms": len(results),
-            "statuses": counts, "sources": sources}
+            "statuses": counts, "sources": sources, "stale": sum(1 for r in results if r.get("stale")),
+            "releases": sorted({(r.get("release") or {}).get("version_iri") or (r.get("release") or {}).get("version")
+                                or "" for r in results} - {""})}
 
 
 def check_iris(graph: Graph, ev, source: str | None = None, namespace: str | None = None) -> ExternalReport | None:
@@ -168,6 +204,7 @@ def list_documents(db: str | Path | None = None) -> list[dict]:
                 meta = json.loads(r["metadata"] or "{}")
                 out.append({"key": r["key"], "where": where, "source_url": r["source_url"],
                             "fetched_at": r["fetched_at"], "sha256": r["sha256"], "terms": r["terms"],
+                            "age_days": age_days(r["fetched_at"]),
                             "ontology_iris": meta.get("ontology_iris", []), "version_iris": meta.get("version_iris", []),
                             "licenses": meta.get("licenses", [])})
         return out
@@ -233,6 +270,27 @@ def add_document(*, url: str | None = None, path: str | Path | None = None, key:
     return {"key": key, "source_url": source, "terms": n, "ontology_iris": headers}
 
 
+def refresh_document(key: str, db: str | Path | None = None, timeout: float = 30, max_mb: float = 50) -> dict:
+    """Fetch a stored vocabulary again (bundled or cached) into the writable database."""
+    bundle, cache = open_stores(db)
+    try:
+        doc = cache.document(key) or bundle.document(key)
+        if doc is None:
+            raise ValueError(f"No stored vocabulary {key}")
+        entry = next((e for e in load_catalog() if e["ontology_iri"] == key), None)
+        v = Validator(bundle, cache, load_catalog(), timeout=timeout, max_mb=max_mb, providers=[])
+        err = v._refresh_document(key, entry, doc)
+        if err:
+            raise ValueError(err)
+        new = cache.document(key)
+        n = cache.db.execute("SELECT count(*) FROM terms WHERE document_key=?", (key,)).fetchone()[0]
+        return {"key": key, "terms": n, "source_url": new["source_url"], "fetched_at": new["fetched_at"],
+                "changed": new["sha256"] != doc["sha256"]}
+    finally:
+        bundle.close()
+        cache.close()
+
+
 def remove_document(key: str, db: str | Path | None = None) -> bool:
     """Remove a cached snapshot (bundled snapshots are read-only)."""
     cache = TermStore(Path(db) if db else default_cache_path())
@@ -252,5 +310,6 @@ def recent_runs(db: str | Path | None = None, limit: int = 50) -> list[dict]:
         cache.close()
 
 
-__all__ = ["add_document", "check_iris", "list_documents", "load_catalog", "recent_runs", "remove_document",
+__all__ = ["add_document", "check_iris", "list_documents", "load_catalog", "recent_runs", "refresh_document",
+           "release_mismatches", "remove_document",
            "run_iri_checks", "search_terms"]

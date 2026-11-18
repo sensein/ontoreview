@@ -22,6 +22,7 @@ from rdflib.namespace import OWL, RDF, RDFS, XSD
 
 from .http import fetch, host_of, iri_issue, parse_rdf
 from .providers import BioPortalProvider, OLSProvider
+from .store import age_days
 
 CLASS_TYPES = {str(OWL.Class), str(RDFS.Class)}
 PROPERTY_TYPES = {str(RDF.Property), str(OWL.ObjectProperty), str(OWL.DatatypeProperty),
@@ -83,7 +84,7 @@ def download_graph(urls, timeout=20, max_mb=50, failed_hosts: set[str] | None = 
 
 class Validator:
     def __init__(self, bundle, cache, catalog, offline=False, refresh=False, timeout=20, max_mb=50,
-                 providers=None, budget: float | None = None):
+                 providers=None, budget: float | None = None, max_age_days: float | None = 30):
         self.bundle, self.cache, self.catalog = bundle, cache, catalog
         self.offline, self.refresh = offline, refresh
         self.timeout, self.max_mb = timeout, max_mb
@@ -92,20 +93,62 @@ class Validator:
         self.dead_providers: set[str] = set()
         self.ns_misses: dict[str, int] = {}     # namespace -> repository / download misses this run
         self.deadline = time.monotonic() + budget if budget else None
+        self.max_age = max_age_days if max_age_days and max_age_days > 0 else None   # None: never expires
+        self.refreshed: dict[str, str | None] = {}   # document key -> error (None = refreshed) this run
         self.providers = [OLSProvider(), BioPortalProvider()] if providers is None else providers
 
     def _out_of_time(self) -> bool:
         return self.deadline is not None and time.monotonic() > self.deadline
+
+    def _expired(self, fetched_at: str | None) -> float | None:
+        """Age in days if older than the configured maximum, else None."""
+        age = age_days(fetched_at)
+        return age if self.max_age is not None and age is not None and age > self.max_age else None
+
+    def _refresh_document(self, key, entry, document) -> str | None:
+        """Re-fetch an expired snapshot into the cache (once per key per run). Returns an error or None."""
+        if key in self.refreshed:
+            return self.refreshed[key]
+        err = None
+        try:
+            src = document.get("source_url") or ""
+            if src.startswith("file://"):
+                from pathlib import Path as _P
+                from urllib.parse import unquote
+                from urllib.parse import urlsplit as _split
+
+                from rdflib import Graph as _G
+                path = _P(unquote(_split(src).path))
+                body = path.read_bytes()
+                graph = _G()
+                graph.parse(path)
+                self.cache.save(key, graph, src, body)
+            else:
+                urls = [entry["download_url"], entry["ontology_iri"]] if entry else [src or key]
+                graph, url, body = download_graph(urls, self.timeout, self.max_mb, self.failed_hosts)
+                self.cache.save(key, graph, url, body)
+        except (ValueError, OSError) as exc:
+            err = str(exc)[:300]
+        except Exception as exc:  # noqa: BLE001 - e.g. a parser error in a re-read local file
+            err = f"{type(exc).__name__}: {str(exc)[:280]}"
+        self.refreshed[key] = err
+        return err
 
     def validate(self, iri, roles):
         local = self._validate_snapshot(iri, roles, local_only=True)
         if local["status"] in ("valid", "deprecated", "type_not_declared", "invalid_iri"):
             return local
         attempts = [{"provider": "local", "status": local["status"]}]
+        stale_record = None
         if not self.refresh:
             cached = self.cache.repository_term(iri, roles)
             if cached:
-                return {**cached, "snapshot": "cache", "attempts": attempts}
+                age = self._expired(cached.get("fetched_at"))
+                if age is None or self.offline or self._out_of_time():
+                    extra = {"stale": True, "age_days": round(age, 1)} if age is not None else {}
+                    return {**cached, "snapshot": "cache", "attempts": attempts, **extra}
+                stale_record = {**cached, "snapshot": "cache", "stale": True, "age_days": round(age, 1)}
+                attempts.append({"provider": "cache", "status": f"expired ({age:.0f} days); asking again"})
         if self.offline:
             return {"iri": iri, "roles": sorted(roles), "status": "unverified",
                     "detail": "No matching local declaration; remote sources disabled", "attempts": attempts}
@@ -129,6 +172,10 @@ class Validator:
             if result:
                 self.cache.save_repository_term(iri, roles, result)
                 return {**result, "attempts": attempts}
+        if stale_record is not None:            # repositories did not confirm again: keep the old answer, flagged
+            return {**stale_record, "attempts": attempts,
+                    "detail": f"Cached repository result is {stale_record['age_days']:.0f} days old; "
+                              "could not refresh it"}
         downloaded = self._validate_snapshot(iri, roles, force_download=True)
         attempts.append({"provider": "direct_download", "status": downloaded["status"],
                          **({"detail": downloaded["detail"]} if "detail" in downloaded else {})})
@@ -175,9 +222,22 @@ class Validator:
                 return {**result, "status": "unverified", "detail": self.attempted[key]}
             store, origin = self.cache, "download"
         document = store.document(key)
+        age = self._expired(document["fetched_at"]) if origin in ("cache", "bundle") else None
+        if age is not None and not self.offline and not self._out_of_time():
+            err = self._refresh_document(key, entry, document)
+            if err is None:                      # fresh copy now in the cache
+                store, origin = self.cache, "refreshed"
+                document = store.document(key)
+                age = None
         term = store.lookup(key, iri)
+        meta = json.loads(document["metadata"])
         result.update(snapshot=origin, source_url=document["source_url"], fetched_at=document["fetched_at"],
-                      sha256=document["sha256"], ontology_metadata=json.loads(document["metadata"]))
+                      sha256=document["sha256"], ontology_metadata=meta,
+                      release={"source": origin, "ontology_iri": (meta.get("ontology_iris") or [None])[0],
+                               "version_iri": (meta.get("version_iris") or [None])[0], "sha256": document["sha256"],
+                               "fetched_at": document["fetched_at"], "source_url": document["source_url"]})
+        if age is not None:
+            result.update(stale=True, age_days=round(age, 1))
         if term is None:
             return {**result, "status": "not_declared_in_snapshot"}
         types = set(term["types"])

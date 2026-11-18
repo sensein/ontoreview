@@ -100,12 +100,14 @@ When there are no problems, the section says "Consistent; all classes satisfiabl
 
 | Metric | What it checks | Finding when it fails |
 |---|---|---|
-| IRI syntax | every IRI in the ontology: spaces, forbidden characters, bad percent escapes, missing scheme or host | `invalid_iri`, error |
+| IRI syntax | every IRI against the full RFC 3987 `IRI` grammar (with RFC 3986 IP literals); also a host for `http(s)`, no credentials, ports 0–65535. The message names the failing component | `invalid_iri`, error |
 | Ontology header | exactly one named `owl:Ontology` | `no_ontology_header` / `multiple_ontology_headers`, warning |
 | Version IRI | an `owl:versionIRI` distinct from the ontology IRI | `version_iri_equals_ontology_iri`, info |
 | Ontology IRI resolves | the ontology IRI returns RDF (content negotiation) whose header is that IRI | `ontology_iri_not_resolvable`, info (normal for unpublished ontologies) |
 | External terms | reused classes and properties exist in their vocabulary, with the expected type, and are not deprecated | `deprecated_external_term` and `external_term_wrong_type`, warning; `unverified_external_term`, info |
 | Lookup sources | where each external term was verified | — |
+| Freshness | whether any term was verified from an entry older than `iri_cache_days` that could not be refreshed | `stale_term_lookup`, info |
+| Releases verified against | the vocabulary release (version IRI, or repository version) each term was checked against | `release_mismatch`, warning: the ontology `owl:imports` a different release |
 
 External terms are found in class and property positions: predicates, `rdf:type` objects, subclass, equivalent and disjoint classes, domains and ranges, restrictions, and property relationships. Not checked as external:
 
@@ -118,7 +120,68 @@ Lookup order:
 2. **OLS**, then **BioPortal** (needs `BIOPORTAL_API_KEY`). Exact IRI matches only.
 3. **Direct RDF download.** Catalogued vocabularies use the catalog's download URL; other terms are dereferenced.
 
-Successful lookups and downloads are saved, so later runs are offline and fast. Terms that no source confirms are *unverified*, never *invalid*: coverage is incomplete. To keep runs bounded:
+```mermaid
+flowchart TD
+    subgraph INPUT["Input"]
+        direction LR
+        F["Ontology file<br/>Turtle, RDF/XML, N-Triples,<br/>JSON-LD or LinkML"]
+        CFG["Settings<br/>own namespaces, offline,<br/>time budget, timeouts"]
+        BUN[("Bundled SQLite<br/>10 W3C vocabularies, 739 terms<br/>+ catalog of 30 ontologies")]
+    end
+
+    F --> IN["Ontology graph"]
+    IN --> S1["① Syntax check<br/>every IRI"]
+    S1 --> S2["② Ontology identity<br/>one owl:Ontology, versionIRI ≠ IRI"]
+    S2 --> S3["③ Dereference ontology IRI<br/>content negotiation, exact header match"]
+    S3 --> EX["④ Extract external references<br/>class / property positions,<br/>excluding built-ins and own namespaces"]
+    CFG -.-> EX
+
+    subgraph CHAIN["Per-term lookup"]
+        direction TB
+        L1{"Local SQLite?<br/>bundled snapshot or user cache"}
+        L2{"OLS / BioPortal<br/>exact IRI match?"}
+        L3{"Direct RDF download<br/>declares term?"}
+        TY{"Asserted type fits role<br/>and not deprecated?"}
+        L1 -- no --> L2
+        L2 -- no --> L3
+        L1 -- yes --> TY
+        L2 -- yes --> TY
+        L3 -- yes --> TY
+    end
+
+    EX --> L1
+    BUN -.-> L1
+    CFG -.-> CHAIN
+    L3 -- "no / offline / limits reached" --> UNV["unverified (info)"]
+    TY -- yes --> VAL["valid"]
+    TY -- no --> BAD["type_not_declared /<br/>deprecated (warning)"]
+
+    subgraph OUTPUT["Output"]
+        direction LR
+        REP["Report: metrics + findings<br/>severity and affected IRIs;<br/>docs page, app, terminal, JSON"]
+        DB[("Writable SQLite<br/>snapshots + cache + run log")]
+    end
+
+    S1 -. "malformed → error" .-> REP
+    S2 -. "missing / duplicate → warning" .-> REP
+    S3 -. "not resolvable → info" .-> REP
+    VAL & BAD & UNV --> REP
+    L2 & L3 -. "cache result" .-> DB
+    VAL & BAD & UNV -.-> DB
+```
+
+Successful lookups and downloads are saved, so later runs are offline and fast. Every result records the **release** it was verified against:
+
+- snapshots: the version IRI, SHA-256, source URL and fetch time
+- OLS: the ontology's version IRI, version and load date
+- BioPortal: the latest submission's version and release date
+
+If the ontology `owl:imports` a specific release of a vocabulary (for example `…/prov-o-20120312`) and a term was verified against another, that's reported. **Cached and bundled entries expire** after `iri_cache_days` (default 30; 0 = never):
+
+- When online, expired entries are fetched again from their catalog URL, original URL or original file.
+- If that fails, or offline, the entry is still used but flagged as stale, with its age.
+- Expired OLS or BioPortal results are looked up again.
+- Refresh by hand with the **Refresh** button on the Term database page, or with `ontoreview terms refresh KEY` (or `--stale`). Terms that no source confirms are *unverified*, never *invalid*: coverage is incomplete. To keep runs bounded:
 
 - there is a time budget for network lookups (`iri_budget`, 120 s)
 - an unreachable host isn't contacted again in the same run
@@ -132,7 +195,7 @@ Successful lookups and downloads are saved, so later runs are offline and fast. 
 - remove cached vocabularies
 - open each run's results
 
-On the command line: `ontoreview terms list | search <text> | add <url-or-file> | runs`.
+On the command line: `ontoreview terms list | search <text> | add <url-or-file> | refresh <key> | runs`.
 
 **OntoCheck** (<https://ontocheck.readthedocs.io>, SDLE Research Center, CWRU, CC BY 4.0) reports 17 metrics, shown as a table in the review and in the app's "OntoCheck metrics" card:
 
@@ -201,6 +264,7 @@ iri_repositories = true   # ask OLS / BioPortal
 iri_resolve = true        # check that the ontology IRI resolves
 iri_local_namespaces = [] # extra namespaces owned by this ontology
 iri_budget = 120          # seconds of network lookups per run
+iri_cache_days = 30       # refresh cached / bundled entries older than this (0 = never)
 ```
 
 In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), **IRI checks**, **OntoCheck**, the OOPS! service and when a check run fails.

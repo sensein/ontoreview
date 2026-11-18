@@ -1,42 +1,25 @@
 """IRI syntax, HTTP retrieval with RDF content negotiation, and safe RDF parsing.
 
 Adapted from the ``ontology_quality`` reference implementation (``check_ontologies.py``).
-This is a practical preflight check, not a complete RFC 3987 validator.
+IRI syntax is validated against the full RFC 3987 grammar (:mod:`.rfc3987`).
 """
 
 from __future__ import annotations
 
-import re
 from urllib.parse import urlsplit
 
 from rdflib import Graph, URIRef
 from rdflib.namespace import OWL, RDF
+
+from . import rfc3987
 
 ACCEPT = "text/turtle, application/rdf+xml;q=0.9, application/n-triples;q=0.8"
 USER_AGENT = "ontoreview (ontology documentation; IRI checks)"
 
 
 def iri_issue(value, http_only: bool = False) -> str | None:
-    """A common IRI syntax defect, or None. Not a complete RFC 3987 validator."""
-    if not isinstance(value, str) or not value:
-        return "empty or non-string IRI"
-    if re.search(r'[\s<>"{}|\\^`\x00-\x1f\x7f]', value):
-        return "whitespace, control character or forbidden delimiter"
-    if re.search(r"%(?![0-9a-fA-F]{2})", value):
-        return "invalid percent escape"
-    try:
-        parts = urlsplit(value)
-        if not re.fullmatch(r"[A-Za-z][A-Za-z0-9+.-]*", parts.scheme):
-            return "missing or invalid scheme"
-        if http_only and parts.scheme not in ("http", "https"):
-            return "HTTP(S) required for retrieval"
-        if parts.scheme in ("http", "https"):
-            if not parts.hostname or parts.username or parts.password:
-                return "missing host or embedded credentials"
-            _ = parts.port
-    except ValueError as exc:
-        return str(exc)
-    return None
+    """Why ``value`` is not a valid absolute IRI (RFC 3987 grammar + web checks), or None."""
+    return rfc3987.check(value, http_only)
 
 
 def host_of(url: str) -> str:

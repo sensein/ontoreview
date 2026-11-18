@@ -58,6 +58,25 @@ def record(provider, iri, types, labels, deprecated, evidence):
 class OLSProvider:
     name = "ols"
 
+    def __init__(self):
+        self._releases: dict[str, dict | None] = {}
+
+    def release(self, ontology_name, timeout=20):
+        """Version IRI, version and load date of an OLS ontology (once per ontology per run)."""
+        if not ontology_name:
+            return None
+        if ontology_name not in self._releases:
+            try:
+                data = get_json(f"{OLS_API}/ontologies/{ontology_name}", {}, timeout) or {}
+                cfg = data.get("config") or {}
+                self._releases[ontology_name] = {
+                    "source": "ols", "ontology": ontology_name, "ontology_iri": cfg.get("id") or cfg.get("fileLocation"),
+                    "version_iri": cfg.get("versionIri"), "version": data.get("version") or cfg.get("version"),
+                    "loaded": data.get("loaded") or data.get("updated")}
+            except (ValueError, AttributeError, TypeError):
+                self._releases[ontology_name] = None
+        return self._releases[ontology_name]
+
     def lookup(self, iri, roles, timeout=20):
         types, labels, obsolete, evidence = [], [], [], []
         try:
@@ -82,7 +101,9 @@ class OLSProvider:
                                  "is_defining_ontology": selected.get("is_defining_ontology"),
                                  "replacement": selected.get("term_replaced_by")})
             deprecated = True if True in obsolete else False if obsolete and all(x is False for x in obsolete) else None
-            return record(self.name, iri, types, labels, deprecated, evidence), {"provider": self.name, "status": "found"}
+            rec = record(self.name, iri, types, labels, deprecated, evidence)
+            rec["release"] = self.release(evidence[0].get("ontology_name"), timeout) if evidence else None
+            return rec, {"provider": self.name, "status": "found"}
         except (ValueError, KeyError, TypeError, AttributeError):
             return None, {"provider": self.name, "status": "unavailable"}
 
@@ -92,6 +113,22 @@ class BioPortalProvider:
 
     def __init__(self, api_key=None):
         self.api_key = api_key if api_key is not None else os.environ.get("BIOPORTAL_API_KEY")
+        self._releases: dict[str, dict | None] = {}
+
+    def release(self, ontology_url, timeout=20):
+        """Version and release date of the latest BioPortal submission (once per ontology per run)."""
+        if not ontology_url or not str(ontology_url).startswith(BIOPORTAL_API):
+            return None
+        if ontology_url not in self._releases:
+            try:
+                data = get_json(f"{ontology_url}/latest_submission", {"display": "version,released,ontology"},
+                                timeout, {"Authorization": f"apikey token={self.api_key}"}) or {}
+                self._releases[ontology_url] = {"source": "bioportal", "ontology": ontology_url.rsplit("/", 1)[-1],
+                                                "version": data.get("version"), "released": data.get("released"),
+                                                "submission": data.get("@id")}
+            except (ValueError, AttributeError, TypeError):
+                self._releases[ontology_url] = None
+        return self._releases[ontology_url]
 
     def lookup(self, iri, roles, timeout=20):
         if not self.api_key:
@@ -101,7 +138,7 @@ class BioPortalProvider:
             for kind, term_type in needs(roles):
                 url = f"{BIOPORTAL_API}/{'search' if kind == 'terms' else 'property_search'}"
                 params = {"q": iri, "require_exact_match": "true", "pagesize": 100,
-                          "display_context": "false", "display_links": "false"}
+                          "display_context": "false", "display_links": "true"}
                 if kind == "terms":
                     params["also_search_obsolete"] = "true"
                 data = get_json(url, params, timeout, {"Authorization": f"apikey token={self.api_key}"})
@@ -117,8 +154,11 @@ class BioPortalProvider:
                     labels.append(label)
                 obsolete.append(selected.get("obsolete"))
                 evidence.append({"lookup_url": url, "returned_id": selected["@id"],
-                                 "reported_type": selected.get("@type")})
+                                 "reported_type": selected.get("@type"),
+                                 "ontology": (selected.get("links") or {}).get("ontology")})
             deprecated = True if True in obsolete else False if obsolete and all(x is False for x in obsolete) else None
-            return record(self.name, iri, types, labels, deprecated, evidence), {"provider": self.name, "status": "found"}
+            rec = record(self.name, iri, types, labels, deprecated, evidence)
+            rec["release"] = self.release(evidence[0].get("ontology"), timeout) if evidence else None
+            return rec, {"provider": self.name, "status": "found"}
         except (ValueError, KeyError, TypeError, AttributeError):
             return None, {"provider": self.name, "status": "unavailable"}

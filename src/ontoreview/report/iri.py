@@ -8,7 +8,7 @@ from .models import ExternalItem, new_report, sort_items
 
 STATUS_TEXT = {"valid": "valid", "deprecated": "deprecated", "type_not_declared": "wrong type",
                "unverified": "unverified", "invalid_iri": "malformed"}
-SOURCE_TEXT = {"bundle": "bundled", "cache": "cache", "download": "downloaded", "ols": "OLS",
+SOURCE_TEXT = {"bundle": "bundled", "cache": "cache", "download": "downloaded", "refreshed": "refreshed", "ols": "OLS",
                "bioportal": "BioPortal", "none": "no source"}
 
 
@@ -17,7 +17,7 @@ def _plural(n: int, one: str, many: str | None = None) -> str:
 
 
 def iri_report(*, all_iris: int, invalid, headers, version_iris, resolution, offline, results, local_namespaces,
-               run_id, db, seconds, error=None, resolve_enabled=True):
+               run_id, db, seconds, error=None, resolve_enabled=True, mismatches=None, max_age_days=30):
     metrics, items = [], []
 
     def metric(title, value, status, about, metric_id):
@@ -109,6 +109,39 @@ def iri_report(*, all_iris: int, invalid, headers, version_iris, resolution, off
         metric("Lookup sources", ", ".join(f"{SOURCE_TEXT.get(k, k)} {v}" for k, v in sorted(sources.items())),
                "info", "Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, "
                "or a direct download", "sources")
+    if results and not error:
+        stale = [r for r in results if r.get("stale")]
+        limit = f"{max_age_days:g} days" if max_age_days else "no limit"
+        metric("Freshness", "All lookups current" if not stale else
+               f"{len(stale)} term{'s' if len(stale) != 1 else ''} from entries older than {limit}",
+               "ok" if not stale else "info", f"Cached and bundled entries are refreshed after {limit}; entries "
+               "that could not be refreshed are used but flagged", "freshness")
+        releases: dict[str, int] = {}
+        for r in results:
+            rel = r.get("release") or {}
+            name = rel.get("version_iri") or (f"{rel.get('ontology')} {rel.get('version')}".strip()
+                                              if rel.get("version") else None)
+            if name:
+                releases[name] = releases.get(name, 0) + 1
+        if releases:
+            shown = ", ".join(f"{k} ({v})" for k, v in sorted(releases.items(), key=lambda kv: -kv[1])[:4])
+            metric("Releases verified against", shown + (f" and {len(releases) - 4} more" if len(releases) > 4 else ""),
+                   "warn" if mismatches else "info", "The vocabulary release (version IRI / version) each external "
+                   "term was checked against", "releases")
+        if stale:
+            items.append(ExternalItem("stale_term_lookup", "Verified from expired cache entries", "info",
+                                      f"These terms were confirmed by entries older than {limit} that could not be "
+                                      "refreshed (offline, time budget, or the source did not answer).",
+                                      affected=[r["iri"] for r in stale],
+                                      note="; ".join(f"{r['iri'].rsplit('/', 1)[-1].rsplit('#', 1)[-1]}: "
+                                                     f"{r.get('age_days', '?')} days" for r in stale[:8])[:300]))
+    if mismatches:
+        items.append(ExternalItem("release_mismatch", "Imported release differs from the release checked", "warning",
+                                  "This ontology imports a specific release of a vocabulary, but the terms were "
+                                  "verified against another release. Check the terms against the imported release, "
+                                  "or update the import.", affected=sorted({m["iri"] for m in mismatches}),
+                                  note="; ".join(sorted({f"imports {m['imports']}, checked {m['verified_against']}"
+                                                         for m in mismatches}))[:300]))
     if by.get("deprecated"):
         items.append(ExternalItem("deprecated_external_term", "Deprecated external terms", "warning",
                                   "These reused terms are marked deprecated by their source. Use the replacement.",

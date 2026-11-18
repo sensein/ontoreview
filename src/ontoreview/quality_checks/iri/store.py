@@ -21,7 +21,7 @@ from pathlib import Path
 from rdflib import URIRef
 from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS documents (
  key TEXT PRIMARY KEY, source_url TEXT NOT NULL, fetched_at TEXT NOT NULL,
@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS run_results (
  detail TEXT, attempts TEXT, PRIMARY KEY(run_id, iri));
 CREATE INDEX IF NOT EXISTS run_results_iri ON run_results(iri);
 """
+# columns added after the table first shipped: (table, column, type)
+MIGRATIONS = [("run_results", "release", "TEXT"), ("run_results", "stale", "INTEGER")]
 KEEP_RUNS = 500
 
 
@@ -63,6 +65,17 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def age_days(iso: str | None) -> float | None:
+    """Days since an ISO timestamp (None if it cannot be read)."""
+    try:
+        t = datetime.fromisoformat(iso)
+    except (TypeError, ValueError):
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
+    return (datetime.now(timezone.utc) - t).total_seconds() / 86400
+
+
 class TermStore:
     def __init__(self, path, readonly: bool = False):
         path = Path(path)
@@ -75,10 +88,14 @@ class TermStore:
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA foreign_keys=ON")
         version = self.db.execute("PRAGMA user_version").fetchone()[0]
-        if version not in (0, 1, SCHEMA_VERSION) or (readonly and version not in (1, SCHEMA_VERSION)):
+        if version > SCHEMA_VERSION or (readonly and version < 1):
             raise ValueError(f"Unsupported term database schema: {version}")
         if not readonly:
             self.db.executescript(SCHEMA)
+            for table, column, kind in MIGRATIONS:
+                cols = {r[1] for r in self.db.execute(f"PRAGMA table_info({table})")}
+                if column not in cols:
+                    self.db.execute(f"ALTER TABLE {table} ADD COLUMN {column} {kind}")
             self.db.execute(f"PRAGMA user_version={SCHEMA_VERSION}")
 
     def close(self) -> None:
@@ -153,9 +170,11 @@ class TermStore:
 
     def finish_run(self, run_id: int, results: list[dict], summary: dict, keep: int = KEEP_RUNS) -> None:
         rows = [(run_id, r["iri"], json.dumps(r.get("roles", [])), r["status"], r.get("snapshot") or r.get("provider"),
-                 r.get("detail"), json.dumps(r.get("attempts", []))) for r in results]
+                 r.get("detail"), json.dumps(r.get("attempts", [])),
+                 json.dumps(r["release"]) if r.get("release") else None, int(bool(r.get("stale")))) for r in results]
         with self.db:
-            self.db.executemany("INSERT OR REPLACE INTO run_results VALUES (?,?,?,?,?,?,?)", rows)
+            self.db.executemany("INSERT OR REPLACE INTO run_results (run_id, iri, roles, status, source, detail, "
+                                "attempts, release, stale) VALUES (?,?,?,?,?,?,?,?,?)", rows)
             self.db.execute("UPDATE runs SET finished_at=?, summary=? WHERE id=?",
                             (_now(), json.dumps(summary, sort_keys=True), run_id))
             self.db.execute("DELETE FROM runs WHERE id NOT IN (SELECT id FROM runs ORDER BY id DESC LIMIT ?)", (keep,))
@@ -172,4 +191,6 @@ class TermStore:
 
     def run_results(self, run_id: int) -> list[dict]:
         rows = self.db.execute("SELECT * FROM run_results WHERE run_id=? ORDER BY iri", (run_id,)).fetchall()
-        return [dict(r) | {"roles": json.loads(r["roles"]), "attempts": json.loads(r["attempts"] or "[]")} for r in rows]
+        return [dict(r) | {"roles": json.loads(r["roles"]), "attempts": json.loads(r["attempts"] or "[]"),
+                           "release": json.loads(r["release"]) if r["release"] else None, "stale": bool(r["stale"])}
+                for r in rows]

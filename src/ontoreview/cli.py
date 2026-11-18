@@ -730,6 +730,31 @@ def terms_add(source: str = typer.Argument(..., help="An ontology URL or a local
     console.print(f"[green]✓[/] {_rich_escape(res['key'])}: {res['terms']:,} terms from {_rich_escape(res['source_url'])}")
 
 
+@terms_app.command("refresh")
+def terms_refresh(key: str | None = typer.Argument(None, help="Vocabulary key (see `terms list`)."),
+                  stale: bool = typer.Option(False, "--stale", help="Refresh every vocabulary older than --days."),
+                  days: float = typer.Option(30, "--days", help="Age limit for --stale.")) -> None:
+    """Fetch stored vocabularies again (bundled ones are refreshed into the writable database)."""
+    from .quality_checks import iri
+
+    keys = [key] if key else [d["key"] for d in iri.list_documents()
+                              if stale and (d.get("age_days") or 0) > days]
+    if not keys:
+        console.print("Nothing to refresh." if stale else "Give a vocabulary key or --stale.")
+        return
+    failed = False
+    for k in dict.fromkeys(keys):
+        try:
+            r = iri.refresh_document(k)
+            console.print(f"[green]✓[/] {_rich_escape(k)}: {r['terms']:,} terms"
+                          + (" (changed)" if r["changed"] else " (unchanged)"))
+        except (ValueError, OSError) as e:
+            failed = True
+            err.print(f"[yellow]✗[/] {_rich_escape(k)}: {_rich_escape(str(e)[:200])}")
+    if failed:
+        raise typer.Exit(1)
+
+
 @terms_app.command("runs")
 def terms_runs(limit: int = typer.Option(20, "--limit", "-n")) -> None:
     """Recent IRI-check runs recorded in the database."""
