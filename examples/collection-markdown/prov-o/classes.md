@@ -20,9 +20,9 @@ An activity is something that occurs over a period of time and acts upon or with
 
 **IRI:** `http://www.w3.org/ns/prov#ActivityInfluence` · `prov:ActivityInfluence`
 
-It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.
-
 ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
+
+It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.
 
 | | |
 |---|---|
@@ -389,7 +389,7 @@ There exist no prescriptive requirement on the nature of plans, their representa
 |---|---|
 | Superclasses | [Entity](classes.md#entity) |
 | Used in | in range of [hadPlan](object-properties.md#hadplan) |
-| category | expanded; qualified |
+| category | qualified; expanded |
 | component | agents-responsibility |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association |
 | n | http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association |

@@ -29,6 +29,19 @@
     </tbody>
   </table>
   {% endif %}
+  {% if ext.provenance and ext.provenance.releases %}
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, {{ ext.provenance.checked_at[:19]|replace('T', ' ') }} UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <tbody>
+    {% for rel in ext.provenance.releases %}
+      <tr><td>{% if rel.title %}{{ rel.title }}<br>{% endif %}<code class="small">{{ rel.version_iri or ((rel.ontology or rel.ontology_iri or '') ~ (' ' ~ rel.version if rel.version else '')) or 'release not recorded' }}</code>{% if rel.sha256 %}<br><span class="muted small">sha256 {{ rel.sha256[:16] }}…</span>{% elif rel.documents %}<br><span class="muted small">{{ rel.documents|length }} documents, checksums in iri-checks.json</span>{% elif rel.note %}<br><span class="muted small">{{ rel.note }}</span>{% endif %}</td>
+      <td class="small">{{ rel.source }}{% if rel.source_url %}<br><span class="muted">{{ rel.source_url }}</span>{% endif %}</td>
+      <td class="small">{{ (rel.retrieved or '')[:10] }}</td><td>{{ rel.terms }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
   {% if ext.error %}<p class="note-line">{{ ext.error }}</p>
   {% elif not ext.items %}<p>{{ ext.note or t('no_findings') }}</p>
   {% else %}

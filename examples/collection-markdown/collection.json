@@ -12,7 +12,8 @@
       "quality": {},
       "external": [],
       "files": 4,
-      "error": null
+      "error": null,
+      "issues": []
     },
     {
       "source": "foaf.rdf",
@@ -24,7 +25,8 @@
       "quality": {},
       "external": [],
       "files": 5,
-      "error": null
+      "error": null,
+      "issues": []
     },
     {
       "source": "org.ttl",
@@ -36,7 +38,8 @@
       "quality": {},
       "external": [],
       "files": 7,
-      "error": null
+      "error": null,
+      "issues": []
     },
     {
       "source": "prov-o.ttl",
@@ -48,7 +51,8 @@
       "quality": {},
       "external": [],
       "files": 5,
-      "error": null
+      "error": null,
+      "issues": []
     },
     {
       "source": "skos.rdf",
@@ -60,7 +64,8 @@
       "quality": {},
       "external": [],
       "files": 5,
-      "error": null
+      "error": null,
+      "issues": []
     }
   ],
   "skipped": []

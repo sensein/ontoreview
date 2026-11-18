@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import shutil
 import time
@@ -126,7 +127,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:
-        report.external = run_evaluations(loaded.graph, cfg, loaded.source)
+        report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
     changelog = None
     if cfg.previous_version:
@@ -171,7 +172,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:
-        report.external = run_evaluations(loaded.graph, cfg, loaded.source)
+        report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
 
     changelog = None
@@ -239,9 +240,18 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             (out_dir / "w3id.htaccess").write_text(w3id_htaccess(cfg.base_url, downloads), "utf-8")
     if cfg.sections.citation:
         (out_dir / "CITATION.cff").write_text(citation_cff(onto.metadata, cfg.base_url), "utf-8")
+    iri_prov = next((x.provenance for x in (report.external if report else []) if x.provenance), None)
+    if iri_prov:
+        # frozen at build time: which release each external term was verified against
+        (out_dir / "iri-checks.json").write_text(json.dumps(iri_prov, indent=2, ensure_ascii=False), "utf-8")
     if cfg.sections.provenance:
-        provenance_graph(onto, Path(cfg.source or "").name, __version__).serialize(
-            destination=str(out_dir / "provenance.ttl"), format="turtle")
+        pg = provenance_graph(onto, Path(cfg.source or "").name, __version__)
+        if iri_prov:
+            from rdflib import URIRef
+
+            from .report.iri import add_iri_provenance
+            add_iri_provenance(pg, iri_prov, URIRef("urn:ontoreview:build"))
+        pg.serialize(destination=str(out_dir / "provenance.ttl"), format="turtle")
     if report is not None:
         (out_dir / "quality.json").write_text(report.to_json(), "utf-8")
     if changelog is not None:
@@ -269,6 +279,6 @@ def check(source: str | Path | None = None, config: Config | str | Path | None =
     plugins = PluginManager(load_plugins(cfg.plugins))
     onto = extract(loaded, cfg)
     report = run_checks(onto, loaded.graph, cfg, plugins.rules())
-    report.external = run_evaluations(loaded.graph, cfg, loaded.source)
+    report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     load_competency_questions(cfg, loaded, onto, report)
     return onto, report

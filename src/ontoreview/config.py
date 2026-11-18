@@ -132,8 +132,24 @@ class EvaluationConfig(BaseModel):
     ontocheck_network: bool = Field(True, description="Let OntoCheck contact SPARQL endpoints / RDF dump URLs "
                                                       "declared in the ontology")
     ontocheck_search: str | None = Field(None, description="Search term for OntoCheck's searchClass metric")
+    iri_checks: Literal["on", "off"] = Field("on", description="IRI checks: syntax, ontology header, ontology-IRI "
+                                                               "resolution, external-term validation")
+    iri_network: bool = Field(True, description="Allow network lookups (OLS, BioPortal, downloads, resolving the "
+                                                "ontology IRI); off = bundled and cached SQLite only")
+    iri_repositories: bool = Field(True, description="Ask OLS / BioPortal (BIOPORTAL_API_KEY) for terms not in SQLite")
+    iri_resolve: bool = Field(True, description="Check that the ontology IRI returns RDF describing this ontology")
+    iri_refresh: bool = Field(False, description="Ignore cached snapshots and look terms up again")
+    iri_local_namespaces: list[str] = Field(default_factory=list, description="Extra namespaces owned by this "
+                                                                              "ontology (not checked as external)")
+    iri_catalog: str | None = Field(None, description="Custom ontology catalog JSON (default: the bundled one)")
+    iri_db: str | None = Field(None, description="Writable SQLite database (default: the user cache folder)")
+    iri_timeout: float = Field(20, description="Seconds per network connect/read")
+    iri_max_mb: float = Field(50, description="Maximum download size per document, MiB")
+    iri_budget: float = Field(120, description="Total seconds for network lookups per run")
+    iri_cache_days: float = Field(30, description="Cached and bundled entries older than this are refreshed "
+                                                  "when online (stale ones are flagged); 0 = never expire")
 
-    @field_validator("oops", "robot", "ontocheck", mode="before")
+    @field_validator("oops", "robot", "ontocheck", "iri_checks", mode="before")
     @classmethod
     def _bool_to_mode(cls, v):
         # older configs used oops = true / false
@@ -283,6 +299,10 @@ reasoner = "hermit"         # logical consistency via ROBOT: "hermit" | "elk" (f
 ontocheck = "on"            # OntoCheck metrics (labeling, structural, accessibility, naming): "on" | "off"
 # ontocheck_network = false # don't contact SPARQL endpoints / dump URLs declared in the ontology
 # ontocheck_search = "Pizza"  # term for OntoCheck's searchClass metric
+iri_checks = "on"           # IRI syntax, header, resolution and external-term validation: "on" | "off"
+# iri_network = false       # bundled + cached SQLite only (no OLS/BioPortal/downloads)
+# iri_local_namespaces = ["https://example.org/my-ontology#"]
+# iri_cache_days = 30       # refresh cached / bundled vocabulary entries older than this (0 = never)
 
 # Metadata found in the ontology is used automatically; anything here overrides it.
 [metadata]

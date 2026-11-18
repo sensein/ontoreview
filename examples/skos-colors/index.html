@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afbd3be">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd13df">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -24,9 +24,9 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/colors/maroon",
-   "name": "maroon",
-   "termCode": "colors:maroon"
+   "@id": "https://example.org/colors/red",
+   "name": "red",
+   "termCode": "colors:red"
   },
   {
    "@type": "DefinedTerm",
@@ -36,16 +36,16 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "https://example.org/colors/maroon",
+   "name": "maroon",
+   "termCode": "colors:maroon"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "https://example.org/colors/color",
    "name": "colour",
    "description": "A visual property.",
    "termCode": "colors:color"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/colors/red",
-   "name": "red",
-   "termCode": "colors:red"
   }
  ]
 }</script></head>
@@ -228,7 +228,7 @@
   </table>
 </section><section class="section" id="quality">
   <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 4 warnings and 2 suggestions. ROBOT: 4 errors, 0 warnings, 0 suggestions.</p>
+  <p class="prose">ontoreview checks: 0 errors, 4 warnings and 2 suggestions. ROBOT: 8 errors, 0 warnings, 0 suggestions. Logical consistency: 0 errors, 0 warnings, 0 suggestions. OntoCheck: 0 errors, 0 warnings, 0 suggestions. OOPS!: 1 errors, 3 warnings, 0 suggestions.</p>
 
 <h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No creators <span class="muted">(1) OB005</span></summary>
@@ -270,6 +270,45 @@
     <ul class="findings">
 <li><code>blank node</code></li>    </ul>
   </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-ok"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 0 classes (–)<span class="sr-only"> (ok)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 0 classes (–)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-ok"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 0 classes (–)<span class="sr-only"> (ok)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-ok"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 0 classes, 0 properties<span class="sr-only"> (ok)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-ok"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 0 groups<span class="sr-only"> (ok)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-ok"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 0 without domain, 0 without range<span class="sr-only"> (ok)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 0 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 0 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-ok"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Found<span class="sr-only"> (ok)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 20.0% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 0 classes (–)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-ok"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-ok"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 possible misspellings in 2 words (0.0%)<span class="sr-only"> (ok)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-ok"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+<p>No issues found.</p>
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+<p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Ambiguous namespace <span class="muted">P39</span></summary>
+<p class="muted rule-desc">This pitfall consists in declaring neither the ontology URI nor the xml:base namespace. If this is the case, the ontology namespace is matched to the file location. This situation is not desirable, as the location of a file might change while the ontology should remain stable, as proposed in [12].</p>  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Untyped class <span class="muted">(2) P34</span></summary>
+<p class="muted rule-desc">An ontology element is used as a class without having been explicitly declared as such using the primitives owl:Class or rdfs:Class. This pitfall is related with the common problems listed in [8].</p>    <ul class="findings">
+<li><code>http://www.w3.org/2004/02/skos/core#Concept</code></li><li><code>http://www.w3.org/2004/02/skos/core#ConceptScheme</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> No OWL ontology declaration <span class="muted">P38</span></summary>
+<p class="muted rule-desc">This pitfall consists in not declaring the owl:Ontology tag, which provides the ontology metadata. The owl:Ontology tag aims at gathering metadata about a given ontology such as version information, license, provenance, creation date, and so on. It is also used to declare the inclusion of other ontologies.</p>  </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">5</span> Download</h2>
   <p class="prose">Download the ontology in your preferred format:</p>
@@ -337,10 +376,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afbd3be"></script>
+<script src="ontoreview-data.js?v=6afd13df"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afbd3be"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afd13df"></script>
 </body>
 </html>

@@ -29,7 +29,7 @@ Used to test **OntoReview**'s LinkML support.
 
 | | |
 |---|---|
-| Restrictions | [organizations](object-properties.md#organizations) *only* [Organization](classes.md#organization); [persons](object-properties.md#persons) *only* [Person](classes.md#person) |
+| Restrictions | [persons](object-properties.md#persons) *only* [Person](classes.md#person); [organizations](object-properties.md#organizations) *only* [Organization](classes.md#organization) |
 | tree root (LinkML) | true |
 
 ### GenderType
@@ -64,7 +64,7 @@ A generic grouping for any identifiable entity.
 
 | | |
 |---|---|
-| Restrictions | [description](datatype-properties.md#description) *max* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string); [name](datatype-properties.md#name) *max* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string); [id](datatype-properties.md#id) *exactly* `1` [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI) |
+| Restrictions | [name](datatype-properties.md#name) *max* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string); [id](datatype-properties.md#id) *exactly* `1` [xsd:anyURI](http://www.w3.org/2001/XMLSchema#anyURI); [description](datatype-properties.md#description) *max* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string) |
 | Subclasses | [Organization](classes.md#organization), [Person](classes.md#person) |
 | abstract (LinkML) | true |
 
@@ -89,7 +89,7 @@ A person (alive, dead, undead, or fictional).
 | | |
 |---|---|
 | Superclasses | [HasAliases](classes.md#hasaliases), [NamedThing](classes.md#namedthing) |
-| Restrictions | [birth_date](datatype-properties.md#birthdate) *max* `1` [xsd:date](http://www.w3.org/2001/XMLSchema#date); [employed_by](object-properties.md#employed_by) *max* `1` [Organization](classes.md#organization); [gender](object-properties.md#gender) *max* `1` [GenderType](classes.md#gendertype); [primary_email](datatype-properties.md#email) *exactly* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string)[*pattern* `"^\S+@[\S+\.]+\S+"`]; [age_in_years](datatype-properties.md#age_in_years) *max* `1` [xsd:integer](http://www.w3.org/2001/XMLSchema#integer)[*>=* `0`, *<=* `999`] |
+| Restrictions | [primary_email](datatype-properties.md#email) *exactly* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string)[*pattern* `"^\S+@[\S+\.]+\S+"`]; [age_in_years](datatype-properties.md#age_in_years) *max* `1` [xsd:integer](http://www.w3.org/2001/XMLSchema#integer)[*>=* `0`, *<=* `999`]; [birth_date](datatype-properties.md#birthdate) *max* `1` [xsd:date](http://www.w3.org/2001/XMLSchema#date); [gender](object-properties.md#gender) *max* `1` [GenderType](classes.md#gendertype); [employed_by](object-properties.md#employed_by) *max* `1` [Organization](classes.md#organization) |
 | Used in | in range of [employees](object-properties.md#employees); in range of [persons](object-properties.md#persons); used in axioms of [Container](classes.md#container); used in axioms of [Organization](classes.md#organization) |
 | Examples | `Ada Lovelace — a famous mathematician` |
 | mixins (LinkML) | personinfo:HasAliases |

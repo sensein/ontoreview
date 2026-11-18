@@ -17,9 +17,10 @@ Markdown and MyST exports, and **Compare versions**, don't run quality checks.
 2. **Built-in rules** OB001 → OB028, in ID order, then any rules added by plugins.
 3. **ROBOT report**, using a local `robot` command or the `obolibrary/robot` Docker image.
 4. **Logical consistency**, an OWL reasoner (HermiT by default, or ELK) run with `robot reason` through the same local `robot` or Docker image. It needs ROBOT, so it is skipped when ROBOT is off or unavailable.
-5. **OntoCheck metrics**, run in-process with the [OntoCheck](https://ontocheck.readthedocs.io) library: a scorecard of labeling, structural, accessibility and naming-convention metrics (see below). Only the SPARQL-endpoint and RDF-dump checks use the network, to contact URLs the ontology declares.
-6. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
-7. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
+5. **IRI checks**: IRI syntax, the ontology header and version IRI, whether the ontology IRI resolves to RDF describing this ontology, and whether reused external classes and properties exist in their vocabulary (see below). Terms are looked up in SQLite first; network lookups only send external term IRIs, never your ontology.
+6. **OntoCheck metrics**, run in-process with the [OntoCheck](https://ontocheck.readthedocs.io) library: a scorecard of labeling, structural, accessibility and naming-convention metrics (see below). Only the SPARQL-endpoint and RDF-dump checks use the network, to contact URLs the ontology declares.
+7. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
+8. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
 
 Counts are per affected element: a ROBOT rule that flags two terms counts as two findings, like the built-in rules, which report one finding per term. Overall totals (the `ontoreview check` summary line, the app's tiles and the JSON `totals`) include every checker. The JSON `summary` field and the docs' "OntoReview checks" line count the built-in rules only.
 
@@ -95,6 +96,115 @@ Questions without a query are listed as "not tested" and are not reported as fin
 
 When there are no problems, the section says "Consistent; all classes satisfiable (HermiT)". HermiT is complete for OWL 2 DL but can be slow on very large ontologies. ELK is much faster but only understands OWL 2 EL, so it can miss problems that depend on other constructs. The reasoner stops after `evaluation.reasoner_timeout` seconds (default 600). For an explanation of a problem, open the ontology in Protégé and use its explanation feature.
 
+**IRI checks** produce a small scorecard plus findings:
+
+| Metric | What it checks | Finding when it fails |
+|---|---|---|
+| IRI syntax | every IRI against the full RFC 3987 `IRI` grammar (with RFC 3986 IP literals); also a host for `http(s)`, no credentials, ports 0–65535. The message names the failing component | `invalid_iri`, error |
+| Ontology header | exactly one named `owl:Ontology` | `no_ontology_header` / `multiple_ontology_headers`, warning |
+| Version IRI | an `owl:versionIRI` distinct from the ontology IRI | `version_iri_equals_ontology_iri`, info |
+| Ontology IRI resolves | the ontology IRI returns RDF (content negotiation) whose header is that IRI | `ontology_iri_not_resolvable`, info (normal for unpublished ontologies) |
+| External terms | reused classes and properties exist in their vocabulary, with the expected type, and are not deprecated | `deprecated_external_term` and `external_term_wrong_type`, warning; `unverified_external_term`, info |
+| Lookup sources | where each external term was verified | — |
+| Freshness | whether any term was verified from an entry older than `iri_cache_days` that could not be refreshed | `stale_term_lookup`, info |
+| Releases verified against | the vocabulary release (version IRI, or repository version) each term was checked against | `release_mismatch`, warning: the ontology `owl:imports` a different release |
+
+External terms are found in class and property positions: predicates, `rdf:type` objects, subclass, equivalent and disjoint classes, domains and ranges, restrictions, and property relationships. Not checked as external:
+
+- RDF, RDFS, OWL and XSD built-ins
+- the ontology's own namespaces: its detected namespace, `evaluation.iri_local_namespaces`, namespaces of its IRI, and namespaces where it declares terms on the same host, unless the vocabulary is in the catalog
+
+Lookup order:
+
+1. **Local SQLite:** the read-only bundle (10 W3C vocabularies, 739 terms: PROV-O, SOSA, SSN, OWL-Time, SKOS, ORG, DCAT, DQV, ODRL, RDF Data Cube), then your writable cache.
+2. **OLS**, then **BioPortal** (needs `BIOPORTAL_API_KEY`). Exact IRI matches only.
+3. **Direct RDF download.** Catalogued vocabularies use the catalog's download URL; other terms are dereferenced.
+
+```mermaid
+flowchart TD
+    subgraph INPUT["Input"]
+        direction LR
+        F["Ontology file<br/>Turtle, RDF/XML, N-Triples,<br/>JSON-LD or LinkML"]
+        CFG["Settings<br/>own namespaces, offline,<br/>time budget, timeouts"]
+        BUN[("Bundled SQLite<br/>10 W3C vocabularies, 739 terms<br/>+ catalog of 30 ontologies")]
+    end
+
+    F --> IN["Ontology graph"]
+    IN --> S1["① Syntax check<br/>every IRI"]
+    S1 --> S2["② Ontology identity<br/>one owl:Ontology, versionIRI ≠ IRI"]
+    S2 --> S3["③ Dereference ontology IRI<br/>content negotiation, exact header match"]
+    S3 --> EX["④ Extract external references<br/>class / property positions,<br/>excluding built-ins and own namespaces"]
+    CFG -.-> EX
+
+    subgraph CHAIN["Per-term lookup"]
+        direction TB
+        L1{"Local SQLite?<br/>bundled snapshot or user cache"}
+        L2{"OLS / BioPortal<br/>exact IRI match?"}
+        L3{"Direct RDF download<br/>declares term?"}
+        TY{"Asserted type fits role<br/>and not deprecated?"}
+        L1 -- no --> L2
+        L2 -- no --> L3
+        L1 -- yes --> TY
+        L2 -- yes --> TY
+        L3 -- yes --> TY
+    end
+
+    EX --> L1
+    BUN -.-> L1
+    CFG -.-> CHAIN
+    L3 -- "no / offline / limits reached" --> UNV["unverified (info)"]
+    TY -- yes --> VAL["valid"]
+    TY -- no --> BAD["type_not_declared /<br/>deprecated (warning)"]
+
+    subgraph OUTPUT["Output"]
+        direction LR
+        REP["Report: metrics + findings<br/>severity and affected IRIs;<br/>docs page, app, terminal, JSON"]
+        DB[("Writable SQLite<br/>snapshots + cache + run log")]
+    end
+
+    S1 -. "malformed → error" .-> REP
+    S2 -. "missing / duplicate → warning" .-> REP
+    S3 -. "not resolvable → info" .-> REP
+    VAL & BAD & UNV --> REP
+    L2 & L3 -. "cache result" .-> DB
+    VAL & BAD & UNV -.-> DB
+```
+
+Successful lookups and downloads are saved, so later runs are offline and fast. Every result records the **release** it was verified against:
+
+- snapshots: the version IRI, SHA-256, source URL and fetch time
+- OLS: the ontology's version IRI, version and load date
+- BioPortal: the latest submission's version and release date
+
+If the ontology `owl:imports` a specific release of a vocabulary (for example `…/prov-o-20120312`) and a term was verified against another, that's reported. **Cached and bundled entries expire** after `iri_cache_days` (default 30; 0 = never):
+
+- When online, expired entries are fetched again from their catalog URL, original URL or original file.
+- If that fails, or offline, the entry is still used but flagged as stale, with its age.
+- Expired OLS or BioPortal results are looked up again.
+- Refresh by hand with the **Refresh** button on the Term database page, or with `ontoreview terms refresh KEY` (or `--stale`).
+
+**Provenance in the published docs.** Each build writes a frozen record of its IRI check into the documentation output, so the docs keep stating what they were checked against even after the local cache expires or is refreshed:
+
+- `iri-checks.json`: when the check ran, its settings, the ontology's own namespaces, and every external term with its status, source, lookup trail and release. It also lists each release used, with its name, ontology IRI, version IRI or version, source, retrieval time, the SHA-256 and URL of every snapshot document, and the number of terms verified against it. Terms verified from records that predate release tracking are listed as "release not recorded", never dropped.
+- `provenance.ttl`: `urn:ontoreview:build prov:used` each release, with `dcterms:isVersionOf`, `dcterms:hasVersion`, `dcterms:identifier "sha256:…"`, `dcterms:source` and `dcterms:date`.
+- The quality report's IRI section: a "Verified against" table.
+
+The bundled snapshot is never modified: refreshed copies go to the writable cache. Terms that no source confirms are *unverified*, never *invalid*: coverage is incomplete. To keep runs bounded:
+
+- there is a time budget for network lookups (`iri_budget`, 120 s)
+- an unreachable host isn't contacted again in the same run
+- after three misses in one namespace, its remaining terms aren't looked up
+
+**Run tracking and the database.** Every run is recorded in the writable SQLite database: the settings, a summary, and each term's status, source and lookup attempts. The default location is `~/Library/Caches/ontoreview/iri.sqlite3` on macOS, `$XDG_CACHE_HOME/ontoreview/iri.sqlite3` on Linux and `%LOCALAPPDATA%\ontoreview\iri.sqlite3` on Windows. Override it with `$ONTOREVIEW_IRI_DB` or `evaluation.iri_db`. The app's **Term database** page lists stored ontologies, vocabularies and schemas by name, grouping documents of one vocabulary (for example CIDOC CRM, whose server answers per term). It lets you:
+
+- search terms by IRI or label
+- browse the bundled and cached vocabularies
+- add an ontology by URL or file (or drag and drop)
+- remove cached vocabularies
+- open each run's results
+
+On the command line: `ontoreview terms list | search <text> | add <url-or-file> | refresh <key> | runs`.
+
 **OntoCheck** (<https://ontocheck.readthedocs.io>, SDLE Research Center, CWRU, CC BY 4.0) reports 17 metrics, shown as a table in the review and in the app's "OntoCheck metrics" card:
 
 | Category | Metric | What it measures |
@@ -156,9 +266,16 @@ reasoner_timeout = 600
 ontocheck = "on"          # OntoCheck metrics: "on" | "off"
 ontocheck_network = true  # contact SPARQL endpoints / dump URLs declared in the ontology
 ontocheck_search = ""     # term for the searchClass metric
+iri_checks = "on"         # IRI checks: "on" | "off"
+iri_network = true        # false = bundled + cached SQLite only
+iri_repositories = true   # ask OLS / BioPortal
+iri_resolve = true        # check that the ontology IRI resolves
+iri_local_namespaces = [] # extra namespaces owned by this ontology
+iri_budget = 120          # seconds of network lookups per run
+iri_cache_days = 30       # refresh cached / bundled entries older than this (0 = never)
 ```
 
-In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), **OntoCheck**, the OOPS! service and when a check run fails.
+In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), **IRI checks**, **OntoCheck**, the OOPS! service and when a check run fails.
 
 On the command line:
 
@@ -168,6 +285,8 @@ ontoreview check my-ontology.ttl --format json -o quality.json
 ontoreview check ontologies/                               # every ontology in a folder
 ontoreview check my-ontology.ttl --reasoner elk            # faster consistency check (or off)
 ontoreview check my-ontology.ttl --no-ontocheck            # skip the OntoCheck metrics
+ontoreview check my-ontology.ttl --offline                 # IRI checks from SQLite only
+ontoreview terms add https://www.w3.org/ns/dcat3.ttl       # add a vocabulary to the term database
 ```
 
 `--fail-on` accepts `error`, `warning`, `info` or `never`.
@@ -191,8 +310,9 @@ Checks and reports are kept apart. `ontoreview/quality_checks/` only evaluates t
 | `robot.py` | finds ROBOT (local or Docker) and runs `robot report` |
 | `logical_consistency.py` | runs the reasoner (`robot reason`) |
 | `ontocheck.py` | runs the OntoCheck metrics |
+| `iri/` | IRI checks: `http.py` (syntax, retrieval, parsing), `store.py` (SQLite + run tracking), `providers.py` (OLS, BioPortal), `validate.py` (lookup chain) |
 | `oops.py` | sends the ontology to the OOPS! web service |
-| `evaluators.py` | runs ROBOT, the reasoner, OntoCheck and OOPS! in order |
+| `evaluators.py` | runs ROBOT, the reasoner, IRI checks, OntoCheck and OOPS! in order |
 
 **`report/`: report generation**
 
@@ -202,6 +322,7 @@ Checks and reports are kept apart. `ontoreview/quality_checks/` only evaluates t
 | `robot.py` | ROBOT report TSV → findings |
 | `reasoner.py` | `robot reason` output → consistency findings |
 | `ontocheck.py` | OntoCheck results → metrics table and findings |
+| `iri.py` | IRI check results → metrics and findings |
 | `oops.py` | OOPS! RDF/XML response → pitfall findings |
 | `issues.py` | rows for the app's Issues table |
 | `console.py` | `ontoreview check` terminal output |

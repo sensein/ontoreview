@@ -4,6 +4,11 @@
     "warning": 8,
     "info": 1
   },
+  "totals": {
+    "error": 1,
+    "warning": 28,
+    "info": 31
+  },
   "external": [
     {
       "tool": "ROBOT",
@@ -69,10 +74,258 @@
         }
       ],
       "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
       "summary": {
         "error": 1,
-        "warning": 2,
+        "warning": 20,
         "info": 1
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "definitionCheck",
+          "name": "Classes without skos:definition",
+          "severity": "info",
+          "description": "OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).",
+          "affected": [
+            "https://w3id.org/example/personinfo/Container"
+          ],
+          "note": ""
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "http://schema.org/birthDate",
+            "http://schema.org/description",
+            "http://schema.org/email",
+            "http://schema.org/name",
+            "https://w3id.org/example/personinfo/age_in_years",
+            "https://w3id.org/example/personinfo/aliases",
+            "https://w3id.org/example/personinfo/founding_date",
+            "https://w3id.org/example/personinfo/gender",
+            "https://w3id.org/example/personinfo/id",
+            "https://w3id.org/example/personinfo/organizations",
+            "https://w3id.org/example/personinfo/persons"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "13 without rdfs:domain, 0 without rdfs:range.",
+          "affected": [
+            "http://schema.org/birthDate",
+            "http://schema.org/description",
+            "http://schema.org/email",
+            "http://schema.org/name",
+            "https://w3id.org/example/personinfo/age_in_years",
+            "https://w3id.org/example/personinfo/aliases",
+            "https://w3id.org/example/personinfo/employed_by",
+            "https://w3id.org/example/personinfo/employees",
+            "https://w3id.org/example/personinfo/founding_date",
+            "https://w3id.org/example/personinfo/gender",
+            "https://w3id.org/example/personinfo/id",
+            "https://w3id.org/example/personinfo/organizations",
+            "https://w3id.org/example/personinfo/persons"
+          ],
+          "note": ""
+        },
+        {
+          "code": "spellCheck",
+          "name": "Possible misspellings",
+          "severity": "info",
+          "description": "OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.",
+          "affected": [
+            "http://purl.obolibrary.org/obo/GSSO_009253",
+            "http://purl.obolibrary.org/obo/GSSO_009254",
+            "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
+            "https://w3id.org/example/personinfo/HasAliases"
+          ],
+          "note": "cisgender, mixin → mixing, nonbinary"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "6 of 6 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "1 of 6 classes (17%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "5 of 6 classes (83%)",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "0 classes, 11 properties",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "0 groups",
+          "status": "ok"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "13 without domain, 0 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "5 of 6 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 4 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Found",
+          "status": "ok"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "4.0% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "6 of 6 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "Skipped: needs the original Turtle (.ttl) file; it reads the file text",
+          "status": "skipped"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "4 possible misspellings in 106 words (3.8%)",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 29
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
       }
     }
   ],

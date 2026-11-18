@@ -43,7 +43,7 @@ A record in a data catalog, describing the registration of a single dataset or d
 
 | | |
 |---|---|
-| Restrictions | [primaryTopic](object-properties.md#primarytopic) *only* [Catalogued resource](classes.md#resource); [primaryTopic](object-properties.md#primarytopic) *exactly* `1` |
+| Restrictions | [primaryTopic](object-properties.md#primarytopic) *exactly* `1`; [primaryTopic](object-properties.md#primarytopic) *only* [Catalogued resource](classes.md#resource) |
 | Used in | in range of [record](object-properties.md#record) |
 
 ### Catalogued resource
@@ -523,7 +523,7 @@ The knowledge organization system (KOS) used to classify catalog's datasets.
 |---|---|
 | Domain | [Catalog](classes.md#catalog) |
 | Range | [rdfs:Resource](http://www.w3.org/2000/01/rdf-schema#Resource) |
-| sdo:rangeIncludes | owl:Ontology; skos:ConceptScheme; skos:Collection |
+| sdo:rangeIncludes | skos:Collection; skos:ConceptScheme; owl:Ontology |
 
 ---
 
@@ -585,7 +585,7 @@ The end of the period.
 
 **IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
 
-minimum spatial separation resolvable in a dataset, measured in meters.
+mindste geografiske afstand som kan resolveres i et datasæt, målt i meter.
 
 | | |
 |---|---|

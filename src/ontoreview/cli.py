@@ -80,8 +80,12 @@ def _overrides(**kw) -> dict:
 
 
 def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None = None,
-                    ontocheck: bool | None = None) -> dict | None:
+                    ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False) -> dict | None:
     ev = {}
+    if iri is not None:
+        ev["iri_checks"] = "on" if iri else "off"
+    if offline:
+        ev["iri_network"] = False
     if ontocheck is not None:
         ev["ontocheck"] = "on" if ontocheck else "off"
     if reasoner is not None:
@@ -196,6 +200,8 @@ def build(
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
     ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
+    iri: bool | None = typer.Option(None, "--iri/--no-iri", help="IRI checks: syntax, header, ontology-IRI resolution, external terms (default: on)."),
+    offline: bool = typer.Option(False, "--offline", help="IRI checks use only the bundled and cached SQLite database (no OLS, BioPortal or downloads)."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
@@ -209,7 +215,7 @@ def build(
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
                     base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason,
                     load_imports=imports, include_imported=include_imported,
-                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck),
+                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
     folder = _folder_source(source, config)
     if folder is not None:
@@ -398,6 +404,8 @@ def check(
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
     ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
+    iri: bool | None = typer.Option(None, "--iri/--no-iri", help="IRI checks: syntax, header, ontology-IRI resolution, external terms (default: on)."),
+    offline: bool = typer.Option(False, "--offline", help="IRI checks use only the bundled and cached SQLite database (no OLS, BioPortal or downloads)."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Run quality checks: built-in rules, ROBOT report and a reasoner consistency check (Docker),
@@ -408,11 +416,11 @@ def check(
 
     folder = _folder_source(source, config)
     if folder is not None:
-        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck)
+        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck, iri, offline)
         return
 
     try:
-        ev = _eval_overrides(oops, robot, reasoner, ontocheck)
+        ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline)
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
@@ -444,7 +452,7 @@ def check(
 
 def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path | None,
                   oops: bool | None, robot: str | None, reasoner: str | None = None,
-                  ontocheck: bool | None = None) -> None:
+                  ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False) -> None:
     import json
 
     from .build import check as do_check
@@ -454,7 +462,7 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
     if not files:
         err.print(f"[bold red]Error:[/] No ontology files found in {folder}")
         raise typer.Exit(2)
-    ev = _eval_overrides(oops, robot, reasoner, ontocheck)
+    ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline)
     extra = {"evaluation": ev} if ev else {}
     results, failed, broken = {}, False, False
     for f in files:
@@ -672,3 +680,92 @@ def init(
 
 if __name__ == "__main__":  # pragma: no cover
     app()
+
+
+# ------------------------------------------------------------------ term database (IRI checks)
+terms_app = typer.Typer(help="The SQLite term database used by the IRI checks: list, search, add, runs.",
+                        no_args_is_help=True)
+app.add_typer(terms_app, name="terms", rich_help_panel=ADVANCED)
+
+
+@terms_app.command("list")
+def terms_list() -> None:
+    """List stored ontologies, vocabularies and schemas (bundled and cached)."""
+    from .quality_checks import iri
+
+    table = Table("ontology / vocabulary / schema", "terms", "stored", "retrieved", "iri")
+    for g in iri.list_groups():
+        table.add_row(_rich_escape(g["title"]), f"{g['terms']:,}", g["where"], g["fetched_at"][:10],
+                      _rich_escape(g["group"]) + (f" [dim]({len(g['documents'])} documents)[/]" if len(g["documents"]) > 1 else ""))
+    console.print(table)
+    console.print(f"[dim]writable database: {iri.default_cache_path()}[/]")
+
+
+@terms_app.command("search")
+def terms_search(query: str = typer.Argument(..., help="Part of an IRI or label."),
+                 limit: int = typer.Option(50, "--limit", "-n")) -> None:
+    """Find terms by IRI or label."""
+    from .quality_checks import iri
+
+    rows = iri.search_terms(query, limit=limit)
+    table = Table("label", "iri", "type", "ontology / vocabulary")
+    for r in rows:
+        table.add_row(_rich_escape(", ".join(r["labels"][:1])), _rich_escape(r["iri"]),
+                      ", ".join(t.rsplit("#", 1)[-1].rsplit("/", 1)[-1] for t in r["types"][:2]),
+                      _rich_escape(r["vocabulary"]) + (" [yellow](deprecated)[/]" if r["deprecated"] else ""))
+    console.print(table)
+    console.print(f"[dim]{len(rows)} term(s)[/]")
+
+
+@terms_app.command("add")
+def terms_add(source: str = typer.Argument(..., help="An ontology URL or a local file.")) -> None:
+    """Add an ontology to the writable database (by URL with content negotiation, or a file)."""
+    from .quality_checks import iri
+
+    try:
+        res = (iri.add_document(url=source) if source.startswith(("http://", "https://"))
+               else iri.add_document(path=source))
+    except (ValueError, OSError) as e:
+        err.print(f"[bold red]Error:[/] {_rich_escape(str(e))}")
+        raise typer.Exit(1) from e
+    console.print(f"[green]✓[/] {_rich_escape(res['key'])}: {res['terms']:,} terms from {_rich_escape(res['source_url'])}")
+
+
+@terms_app.command("refresh")
+def terms_refresh(key: str | None = typer.Argument(None, help="Vocabulary key (see `terms list`)."),
+                  stale: bool = typer.Option(False, "--stale", help="Refresh every vocabulary older than --days."),
+                  days: float = typer.Option(30, "--days", help="Age limit for --stale.")) -> None:
+    """Fetch stored vocabularies again (bundled ones are refreshed into the writable database)."""
+    from .quality_checks import iri
+
+    keys = [key] if key else [d["key"] for d in iri.list_documents()
+                              if stale and (d.get("age_days") or 0) > days]
+    if not keys:
+        console.print("Nothing to refresh." if stale else "Give a vocabulary key or --stale.")
+        return
+    failed = False
+    for k in dict.fromkeys(keys):
+        try:
+            r = iri.refresh_document(k)
+            console.print(f"[green]✓[/] {_rich_escape(k)}: {r['terms']:,} terms"
+                          + (" (changed)" if r["changed"] else " (unchanged)"))
+        except (ValueError, OSError) as e:
+            failed = True
+            err.print(f"[yellow]✗[/] {_rich_escape(k)}: {_rich_escape(str(e)[:200])}")
+    if failed:
+        raise typer.Exit(1)
+
+
+@terms_app.command("runs")
+def terms_runs(limit: int = typer.Option(20, "--limit", "-n")) -> None:
+    """Recent IRI-check runs recorded in the database."""
+    from .quality_checks import iri
+
+    table = Table("#", "started", "ontology", "external terms", "result")
+    for r in iri.recent_runs(limit=limit):
+        sm = r.get("summary") or {}
+        table.add_row(str(r["id"]), (r["started_at"] or "")[:19].replace("T", " "),
+                      _rich_escape(Path(r.get("source") or "").name or (r.get("ontology_iri") or "")),
+                      str(sm.get("external_terms", "")),
+                      ", ".join(f"{v} {k}" for k, v in sorted((sm.get("statuses") or {}).items())))
+    console.print(table)

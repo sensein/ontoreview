@@ -97,10 +97,10 @@
       ],
       "rows": [
         [
-          "pizza:MeatTopping"
+          "pizza:CheeseTopping"
         ],
         [
-          "pizza:CheeseTopping"
+          "pizza:MeatTopping"
         ]
       ]
     },

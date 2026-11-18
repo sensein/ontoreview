@@ -1,63 +1,29 @@
 [
   {
-    "@id": "https://example.org/colors/maroon",
+    "@id": "https://example.org/colors/scheme",
     "@type": [
-      "http://www.w3.org/2004/02/skos/core#Concept"
+      "http://www.w3.org/2004/02/skos/core#ConceptScheme"
     ],
-    "http://www.w3.org/2004/02/skos/core#broader": [
-      {
-        "@id": "https://example.org/colors/red"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+    "http://purl.org/dc/terms/description": [
       {
         "@language": "en",
-        "@value": "maroon"
+        "@value": "A tiny SKOS vocabulary of colours."
       }
-    ]
-  },
-  {
-    "@id": "https://example.org/colors/darkred",
-    "@type": [
-      "http://www.w3.org/2004/02/skos/core#Concept"
     ],
-    "http://www.w3.org/2004/02/skos/core#broader": [
+    "http://purl.org/dc/terms/license": [
       {
-        "@id": "https://example.org/colors/red"
+        "@id": "https://creativecommons.org/publicdomain/zero/1.0/"
       }
     ],
-    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+    "http://purl.org/dc/terms/title": [
       {
         "@language": "en",
-        "@value": "dark red"
+        "@value": "Colour thesaurus"
       }
     ],
-    "http://www.w3.org/2004/02/skos/core#related": [
+    "http://www.w3.org/2004/02/skos/core#hasTopConcept": [
       {
-        "@id": "https://example.org/colors/maroon"
-      }
-    ]
-  },
-  {
-    "@id": "https://example.org/colors/color",
-    "@type": [
-      "http://www.w3.org/2004/02/skos/core#Concept"
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@language": "en",
-        "@value": "A visual property."
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#inScheme": [
-      {
-        "@id": "https://example.org/colors/scheme"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#prefLabel": [
-      {
-        "@language": "en",
-        "@value": "colour"
+        "@id": "https://example.org/colors/color"
       }
     ]
   },
@@ -95,30 +61,64 @@
     ]
   },
   {
-    "@id": "https://example.org/colors/scheme",
+    "@id": "https://example.org/colors/darkred",
     "@type": [
-      "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+      "http://www.w3.org/2004/02/skos/core#Concept"
     ],
-    "http://purl.org/dc/terms/description": [
+    "http://www.w3.org/2004/02/skos/core#broader": [
+      {
+        "@id": "https://example.org/colors/red"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
       {
         "@language": "en",
-        "@value": "A tiny SKOS vocabulary of colours."
+        "@value": "dark red"
       }
     ],
-    "http://purl.org/dc/terms/license": [
+    "http://www.w3.org/2004/02/skos/core#related": [
       {
-        "@id": "https://creativecommons.org/publicdomain/zero/1.0/"
+        "@id": "https://example.org/colors/maroon"
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/colors/maroon",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://www.w3.org/2004/02/skos/core#broader": [
+      {
+        "@id": "https://example.org/colors/red"
       }
     ],
-    "http://purl.org/dc/terms/title": [
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
       {
         "@language": "en",
-        "@value": "Colour thesaurus"
+        "@value": "maroon"
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/colors/color",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A visual property."
       }
     ],
-    "http://www.w3.org/2004/02/skos/core#hasTopConcept": [
+    "http://www.w3.org/2004/02/skos/core#inScheme": [
       {
-        "@id": "https://example.org/colors/color"
+        "@id": "https://example.org/colors/scheme"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en",
+        "@value": "colour"
       }
     ]
   }

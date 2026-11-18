@@ -14,7 +14,7 @@
     prov:wasAttributedTo <https://orcid.org/0000-0000-0000-0002> .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-17T04:10:37+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-18T02:56:28+00:00"^^xsd:dateTime ;
     prov:used "personinfo.yaml" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
 

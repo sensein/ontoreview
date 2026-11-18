@@ -37,9 +37,9 @@
    "curie": "prov:ActivityInfluence",
    "kind": "class",
    "label": "ActivityInfluence",
-   "definition": "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.",
+   "definition": "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.",
    "comments": [
-    "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity."
+    "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses."
    ],
    "superclasses": [
     "prov:Influence"
@@ -558,8 +558,8 @@
     "This property has multiple RDFS domains to suit multiple OWL Profiles. See <a href=\"#owl-profile\">PROV-O OWL Profile</a>."
    ],
    "domain": [
-    "prov:Influence",
-    "prov:Delegation or prov:Derivation or prov:End or prov:Start"
+    "prov:Delegation or prov:Derivation or prov:End or prov:Start",
+    "prov:Influence"
    ],
    "range": [
     "prov:Activity"

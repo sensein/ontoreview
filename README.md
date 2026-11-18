@@ -91,12 +91,13 @@ ontologies/                 docs/
 - `--single-file` writes one self-contained `index.html` per sub-folder.
 - `source = "ontologies/"` in `ontoreview.toml` works too.
 
-## External evaluators: ROBOT, reasoner, OntoCheck and OOPS!
+## External evaluators: ROBOT, reasoner, IRI checks, OntoCheck and OOPS!
 
 For the full list of quality checks, their order and how to configure them, see [quality_check.md](quality_check.md).
 
 - **ROBOT** (`robot report`) runs by default, on your machine, in Docker using the official `obolibrary/robot` image. You don't need Java or `robot.jar`. The first build pulls the image. A `robot` executable on your PATH, or one set with `evaluation.robot_path`, is used instead of Docker when present. Use `evaluation.robot_image` (or `ROBOT_DOCKER_IMAGE`) to pin a version tag, such as `obolibrary/robot:<version>`.
 - **Logical consistency** runs an OWL reasoner (HermiT by default, or ELK) through the same ROBOT set-up (`robot reason`). It reports an inconsistent ontology and unsatisfiable classes as errors. Set `evaluation.reasoner = "elk"` for speed on large ontologies, or `"off"` (`--reasoner off`) to skip it.
+- **IRI checks** cover IRI syntax, the ontology header and version IRI, whether the ontology IRI resolves, and whether reused external classes and properties exist in their vocabulary, with the right type and not deprecated. Lookups go to a bundled SQLite database of 10 W3C vocabularies first, then your cache, OLS, BioPortal and a direct download. IRI syntax follows the full RFC 3987 grammar. Every result records the vocabulary release it was verified against, cached entries expire after `iri_cache_days` (30), and every run is recorded. Browse, search and extend the database on the app's **Term database** page or with `ontoreview terms`. Use `--offline` for SQLite only, or turn the checks off with `evaluation.iri_checks = "off"` or `--no-iri`.
 - **OntoCheck** ([docs](https://ontocheck.readthedocs.io)) adds a scorecard of 17 metrics in four groups: labeling (labels, alternative labels, definitions), structural (isolated elements, class connections, domains and ranges, leaf classes, links to BFO/CCO), accessibility (SPARQL endpoint, RDF dump, human-readable license, external links) and naming conventions (capitalisation, spaces, spelling, duplicate labels, class search). It runs in-process. Only the endpoint and dump checks use the network (`evaluation.ontocheck_network`). Turn it off with `evaluation.ontocheck = "off"` or `--no-ontocheck`.
 - **OOPS!** runs alongside ROBOT, because it checks modelling (unconnected elements, missing domains, ranges, inverses and disjointness, naming) where ROBOT checks annotations. When the ROBOT report ran, OOPS! leaves out the three pitfalls ROBOT already covers (P08, P32, P41) and says so in the review. Without ROBOT it runs the full catalogue. It calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html), so **it sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to keep it local, or `"on"` (`--oops`) for the full catalogue every time. See [quality_check.md](quality_check.md).
 - To skip external evaluators entirely, set both `evaluation.robot = "off"` and `evaluation.oops = "off"`. With ROBOT off, OOPS! runs its full catalogue unless it is off too.
@@ -166,6 +167,7 @@ robot = "auto"                # ROBOT via local robot or Docker; "on" | "off"
 oops = "auto"                 # OOPS! alongside ROBOT (skips what ROBOT covers); "on" = full catalogue | "off"
 reasoner = "hermit"           # logical consistency via ROBOT; "elk" | "off"
 ontocheck = "on"              # OntoCheck metrics (labeling, structural, accessibility, naming); "off"
+iri_checks = "on"             # IRI syntax, header, resolution, external terms; iri_network = false for offline
 robot_image = "obolibrary/robot"
 ```
 
@@ -196,13 +198,15 @@ ontoreview ui [--port N] [--no-browser]       # the app (recommended); same as o
 # Advanced / CI. SOURCE is a file, a URL or a folder of ontologies
 ontoreview build [SOURCE] [-o docs] [--layout multi] [--lang en,es] [--previous v1.ttl] [--reason]
                  [--base-url URL] [--cq cq.yaml] [--single-file] [--robot auto|on|off] [--reasoner hermit|elk|off]
-                 [--ontocheck/--no-ontocheck] [--oops/--no-oops] [--open]
+                 [--ontocheck/--no-ontocheck] [--iri/--no-iri] [--offline]
+                 [--oops/--no-oops] [--open]
 ontoreview serve [SOURCE] [--port 8000]       # rebuilds on change, live reload
-ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html] [-o report] [--reasoner hermit|elk|off] [--no-ontocheck]
+ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html] [-o report] [--reasoner hermit|elk|off] [--no-ontocheck] [--no-iri] [--offline]
 ontoreview diff OLD NEW [--format console|markdown|json|html] [-o changes.html]
 ontoreview export [SOURCE] --format markdown|myst -o docs-md
 ontoreview init [SOURCE] [--from-widoco config.properties]   # ontoreview.toml + GitHub Pages workflow
 ontoreview cq-template competency-questions.xlsx             # or .yaml / .csv / .tsv
+ontoreview terms list | search TEXT | add URL-OR-FILE | refresh KEY | runs  # the IRI term database
 ```
 
 Python API:

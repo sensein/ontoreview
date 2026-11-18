@@ -76,7 +76,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | Domain | [Activity](classes.md#activity) *or* [Agent](classes.md#agent) *or* [Entity](classes.md#entity) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Location](classes.md#location) |
 | category | expanded |
-| editorialNote | The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.; This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair). |
+| editorialNote | This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).; The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes. |
 | inverse | locationOf |
 | sharesDefinitionWith | prov:Location |
 
@@ -120,7 +120,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Influence](classes.md#influence); [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start) |
+| Domain | [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start); [Influence](classes.md#influence) |
 | Range | [Activity](classes.md#activity) |
 | Used in | used in axioms of [ActivityInfluence](classes.md#activityinfluence) |
 | category | qualified |
@@ -186,7 +186,7 @@ The _optional_ Plan adopted by an Agent in Association with some Activity. Plan 
 | category | expanded |
 | component | derivations |
 | inverse | wasPrimarySourceOf |
-| qualifiedForm | prov:PrimarySource; prov:qualifiedPrimarySource |
+| qualifiedForm | prov:qualifiedPrimarySource; prov:PrimarySource |
 
 ### hadRole
 
@@ -198,7 +198,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Influence](classes.md#influence); [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
+| Domain | [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent); [Influence](classes.md#influence) |
 | Range | [Role](classes.md#role) |
 | category | qualified |
 | component | agents-responsibility |
@@ -555,7 +555,7 @@ An prov:Agent that had some (unspecified) responsibility for the occurrence of t
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | wasAssociateFor |
-| qualifiedForm | prov:Association; prov:qualifiedAssociation |
+| qualifiedForm | prov:qualifiedAssociation; prov:Association |
 
 ### wasAttributedTo
 
@@ -574,7 +574,7 @@ Attribution is the ascribing of an entity to an agent.
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | contributed |
-| qualifiedForm | prov:qualifiedAttribution; prov:Attribution |
+| qualifiedForm | prov:Attribution; prov:qualifiedAttribution |
 
 ### wasDerivedFrom
 
@@ -594,7 +594,7 @@ The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom
 | category | starting-point |
 | component | derivations |
 | inverse | hadDerivation |
-| qualifiedForm | prov:Derivation; prov:qualifiedDerivation |
+| qualifiedForm | prov:qualifiedDerivation; prov:Derivation |
 
 ### wasEndedBy
 
@@ -627,7 +627,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | starting-point |
 | component | entities-activities |
 | inverse | generated |
-| qualifiedForm | prov:qualifiedGeneration; prov:Generation |
+| qualifiedForm | prov:Generation; prov:qualifiedGeneration |
 
 ### wasInfluencedBy
 
@@ -647,7 +647,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | component | agents-responsibility |
 | editorialNote | The sub-properties of prov:wasInfluencedBy can be elaborated in more detail using the Qualification Pattern. For example, the binary relation :baking prov:used :spoon can be qualified by asserting :baking prov:qualifiedUsage [ a prov:Usage; prov:entity :spoon; prov:atLocation :kitchen ] .  Subproperties of prov:wasInfluencedBy may also be asserted directly without being qualified.  prov:wasInfluencedBy should not be used without also using one of its subproperties.   |
 | inverse | influenced |
-| qualifiedForm | prov:Influence; prov:qualifiedInfluence |
+| qualifiedForm | prov:qualifiedInfluence; prov:Influence |
 | sharesDefinitionWith | prov:Influence |
 
 ### wasInformedBy
@@ -665,7 +665,7 @@ An activity a2 is dependent on or informed by another activity a1, by way of som
 | category | starting-point |
 | component | entities-activities |
 | inverse | informed |
-| qualifiedForm | prov:Communication; prov:qualifiedCommunication |
+| qualifiedForm | prov:qualifiedCommunication; prov:Communication |
 
 ### wasInvalidatedBy
 

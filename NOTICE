@@ -10,3 +10,12 @@ SDLE Research Center, Case Western Reserve University, licensed under the Creati
 Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/). It is
 installed as a dependency and not modified; OntoReview calls its metric functions and analysis
 helpers (src/ontoreview/quality_checks/ontocheck.py).
+
+The IRI checks (src/ontoreview/quality_checks/iri/, scripts/build_iri_bundle.py) are adapted
+from the "ontology_quality" reference implementation (ontology IRI catalog and checker).
+
+src/ontoreview/data/iri/top_terms.sqlite3 contains modified, extracted indexes of public W3C
+vocabulary RDF documents (PROV-O, SOSA, SSN, OWL-Time, SKOS, ORG, DCAT, DQV, ODRL, RDF Data Cube).
+It is not an official W3C distribution; original rights remain with their authors. See
+src/ontoreview/data/iri/THIRD_PARTY_NOTICES.txt and top_terms.manifest.json for sources,
+checksums, licenses (W3C Software and Document License, CC BY 4.0, PDDL 1.0) and notices.
