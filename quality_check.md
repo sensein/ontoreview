@@ -20,6 +20,8 @@ Markdown and MyST exports, and **Compare versions**, don't run quality checks.
 5. **OOPS! pitfall scan**, the OOPS! web service. By default it runs only when ROBOT couldn't (no Docker, or ROBOT failed). Set it to "always" to run it as well, or "off" never to run it. **OOPS! uploads the ontology to oops.linkeddata.es.**
 6. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
 
+Counts are per affected element: a ROBOT rule that flags two terms counts as two findings, like the built-in rules, which report one finding per term. Overall totals (the `ontoreview check` summary line, the app's tiles and the JSON `totals`) include every checker. The JSON `summary` field and the docs' "OntoReview checks" line count the built-in rules only.
+
 Results are not shown in run order. Built-in findings are sorted by severity (errors, then warnings, then info), then by rule ID and term. ROBOT, logical-consistency and OOPS! results appear as their own sections of the quality report. In the app's Issues table, all of them are merged and sorted by severity.
 
 ## Built-in rules
@@ -88,6 +90,7 @@ Questions without a query are listed as "not tested" and are not reported as fin
 |---|---|---|
 | `inconsistent_ontology` | error | the ontology has no model, for example an individual typed with two disjoint classes |
 | `unsatisfiable_class` | error | a class can never have members, for example a subclass of two disjoint classes; the classes are listed |
+| `outside_owl2_dl` | warning | HermiT refused the ontology because it breaks an OWL 2 DL restriction (for example a transitive property in a cardinality restriction); the offending axiom is shown, and consistency was not checked |
 
 When there are no problems, the section says "Consistent; all classes satisfiable (HermiT)". HermiT is complete for OWL 2 DL but can be slow on very large ontologies. ELK is much faster but only understands OWL 2 EL, so it can miss problems that depend on other constructs. The reasoner stops after `evaluation.reasoner_timeout` seconds (default 600). For an explanation of a problem, open the ontology in Protégé and use its explanation feature.
 

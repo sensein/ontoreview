@@ -51,9 +51,11 @@ class ExternalReport:
 
     @property
     def summary(self) -> dict[str, int]:
+        """Counts per severity, one per affected element (like the built-in rules, which report
+        one finding per term); a finding without listed elements counts once."""
         out = {"error": 0, "warning": 0, "info": 0}
         for i in self.items:
-            out[i.severity] = out.get(i.severity, 0) + 1
+            out[i.severity] = out.get(i.severity, 0) + max(len(i.affected), 1)
         return out
 
     def to_dict(self) -> dict:
@@ -134,9 +136,20 @@ class Report:
         out.sort(key=lambda x: (-SEVERITY_RANK[x[1][0].severity], x[0].id))
         return out
 
+    @property
+    def totals(self) -> dict[str, int]:
+        """Counts across all checks: built-in rules plus ROBOT, logical consistency and OOPS!.
+        (:attr:`summary` is the built-in rules only.)"""
+        out = dict(self.summary)
+        for r in self.external:
+            for k, v in r.summary.items():
+                out[k] = out.get(k, 0) + v
+        return out
+
     def to_dict(self) -> dict:
         return {
             "summary": self.summary,
+            "totals": self.totals,
             "external": [r.to_dict() for r in self.external],
             "findings": [asdict(f) for f in self.findings],
             "rules": [

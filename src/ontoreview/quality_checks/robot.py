@@ -18,7 +18,7 @@ from pathlib import Path
 from rdflib import Graph
 
 from ..report.models import ExternalReport
-from ..report.robot import robot_report
+from ..report.robot import robot_message, robot_report
 
 log = logging.getLogger(__name__)
 
@@ -110,6 +110,6 @@ def run_robot(graph: Graph, robot: str | None = None, profile: str | None = None
         except Exception as e:  # noqa: BLE001
             return robot_report(None, f"ROBOT failed to run: {e}")
         if not out.is_file():
-            msg = (proc.stderr or proc.stdout or "").strip().splitlines()
-            return robot_report(None, "ROBOT report failed" + (f": {msg[-1]}" if msg else ""))
+            msg = robot_message(f"{proc.stderr}\n{proc.stdout}")
+            return robot_report(None, "ROBOT report failed" + (f": {msg}" if msg else ""))
         return robot_report(out.read_text("utf-8"))

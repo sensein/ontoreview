@@ -372,7 +372,7 @@ def run_task(settings: Settings) -> TaskResult:
                 onto, rep = check(f, **{k: v for k, v in ov.items()
                                         if k in ("evaluation", "competency_questions", "load_imports",
                                                  "include_individuals", "reason")})
-                sm = rep.summary
+                sm = rep.totals
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
                                     sm["warning"], sm["info"], _external_text(rep.external),
                                     issues=report_issues(rep)))
@@ -403,7 +403,7 @@ def run_task(settings: Settings) -> TaskResult:
         else:
             b = build(src, out=out, **ov)
             page = out / "index.html"
-        sm = b.report.summary if b.report else {"error": 0, "warning": 0, "info": 0}
+        sm = b.report.totals if b.report else {"error": 0, "warning": 0, "info": 0}
         res.rows = [Row(Path(src).name, b.ontology.metadata.title or Path(src).stem, len(b.ontology.terms),
                         sm["error"], sm["warning"], sm["info"],
                         _external_text(b.report.external if b.report else []), str(page),

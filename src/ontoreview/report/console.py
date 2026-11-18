@@ -40,11 +40,13 @@ def print_external(console: Console, report) -> None:
         for it in ext.items:
             console.print(f"   [{SEV_STYLE[it.severity]}]{it.severity.upper():8}[/] {it.code} {_esc(it.name)} "
                           + (f"[dim]({len(it.affected)})[/]" if it.affected else ""))
+            if it.note and not it.affected:
+                console.print(f"            [dim]{_esc(it.note[:300])}[/]")
 
 
 def print_report(console: Console, onto, report) -> None:
     print_findings(console, report)
     print_external(console, report)
-    s = report.summary
+    s = report.totals
     console.print(f"\n[bold]{s['error']}[/] errors, [bold]{s['warning']}[/] warnings, "
-                  f"[bold]{s['info']}[/] suggestions in {len(onto.terms)} terms.")
+                  f"[bold]{s['info']}[/] suggestions in {len(onto.terms)} terms (all checks).")

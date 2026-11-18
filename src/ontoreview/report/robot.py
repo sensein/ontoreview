@@ -3,10 +3,23 @@
 from __future__ import annotations
 
 import csv
+import re
 
 from .models import ExternalItem, ExternalReport, new_report, sort_items
 
 ROBOT_LEVELS = {"error": "error", "warn": "warning", "info": "info"}
+_NOISE = ("use the -vvv option", "use the --help option", "unfortunately, robot is not able", "tip:")
+_LOG_PREFIX = re.compile(r"^\S+ \S+ (ERROR|WARN|INFO) \S+ - \s*")
+
+
+def robot_message(output: str) -> str:
+    """The most useful line of ROBOT's console output: its first real message, without log
+    prefixes or the generic "Use the --help option" hints that ROBOT prints last."""
+    for line in output.splitlines():
+        line = _LOG_PREFIX.sub("", line.strip())
+        if line and not line.lower().startswith(_NOISE) and not line.startswith("at "):
+            return line
+    return ""
 
 
 def parse_robot_tsv(text: str) -> list[ExternalItem]:

@@ -5,9 +5,13 @@ from __future__ import annotations
 import re
 
 from .models import REASONERS, ExternalItem, ExternalReport, new_report, sort_items
+from .robot import robot_message
 
 _UNSAT = re.compile(r"unsatisfiable:\s*(\S+)")
 _INCONSISTENT = re.compile(r"ontology is inconsistent", re.I)
+# HermiT refuses ontologies that break OWL 2 DL's global restrictions (e.g. a transitive property in a
+# cardinality restriction); that is a problem with the ontology, so it is reported as a finding.
+_NOT_DL = re.compile(r"non-simple property|not (?:in|an?) OWL 2 DL|OWL 2 DL", re.I)
 
 
 def parse_reason_output(text: str, reasoner: str = "hermit") -> list[ExternalItem]:
@@ -40,6 +44,11 @@ def reasoner_report(returncode: int, output: str, reasoner: str = "hermit") -> E
         return new_report("reasoner", items)
     if returncode == 0:
         return new_report("reasoner", note=f"Consistent; all classes satisfiable ({label}).")
-    lines = [ln.strip() for ln in output.strip().splitlines() if ln.strip()]
-    return new_report("reasoner", error=f"{label} could not reason over the ontology"
-                                        + (f": {lines[-1]}" if lines else ""))
+    msg = robot_message(output)
+    if reasoner == "hermit" and _NOT_DL.search(msg):
+        return new_report("reasoner", [ExternalItem(
+            code="outside_owl2_dl", name="Ontology is outside OWL 2 DL", severity="warning",
+            description="HermiT only reasons over OWL 2 DL ontologies, so consistency was not checked. "
+                        "Fix the axiom below, or choose ELK in Settings › Quality checks (ELK skips "
+                        "axioms it does not support).", note=msg)])
+    return new_report("reasoner", error=f"{label} could not reason over the ontology" + (f": {msg}" if msg else ""))

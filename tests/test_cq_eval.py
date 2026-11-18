@@ -134,7 +134,7 @@ def test_robot_stub(tmp_path, pizza, monkeypatch):
     stub.chmod(stub.stat().st_mode | stat.S_IEXEC)
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}{os.environ['PATH']}")
     rep = run_robot(loaded.graph)
-    assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 1, "info": 1}
+    assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 2, "info": 1}  # per affected element
     reports = run_evaluations(loaded.graph, NO_REASONER)
     assert [r.tool for r in reports] == ["ROBOT"] and not oops_calls  # ROBOT worked: no OOPS! fallback
 
@@ -204,7 +204,7 @@ def test_robot_docker(tmp_path, pizza, monkeypatch):
     log = _docker_stub(tmp_path, canned, has_image=True)
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}/usr/bin{os.pathsep}/bin")
     rep = run_robot(loaded.graph, image="obolibrary/robot")
-    assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 1, "info": 1}
+    assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 2, "info": 1}  # per affected element
     calls = log.read_text()
     assert "run --rm" in calls and ":/work -w /work" in calls and "obolibrary/robot robot report" in calls
     assert not oops_calls

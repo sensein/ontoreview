@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import queue
 import secrets
 import sys
 import uuid
@@ -406,19 +405,73 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 """
 
 
-class _QueueHandler(logging.Handler):
-    """Collects log records from worker threads; the page drains the queue on a timer."""
+class _Session:
+    """Run state shared by every page and browser tab of this (single-user, local) app.
 
-    def __init__(self, q: queue.Queue) -> None:
+    A build or comparison keeps running in a worker thread when you switch pages, reload or open a
+    new tab; each view polls this state and redraws when what it shows has changed.
+    """
+
+    def __init__(self) -> None:
+        self.reset()
+
+    def reset(self) -> None:
+        self.build: dict = {"last": None, "running": False, "steps": [], "active": None, "done": frozenset(),
+                            "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
+        self.cmp: dict = {"old": "", "new": "", "output": "", "last": None, "running": False, "filter": "all",
+                          "done": None}
+        self.verbose = False
+
+    def progress(self, msg: str) -> None:
+        """Advance the Build progress steps from a log message (called from the worker thread)."""
+        st = self.build
+        if not st["running"]:
+            return
+        head = msg.split("]", 1)[0]
+        if msg.startswith("[") and "/" in head:
+            st["folder_pos"] = f"Ontology {head[1:].replace('/', ' of ')} · {msg.split('] ', 1)[-1]}"
+            st["done"], st["active"] = frozenset(), None
+        keys = [k for k, _ in st["steps"]]
+        for prefix, key in STEP_OF:
+            if msg.startswith(prefix) and key in keys:
+                st["done"] = st["done"] | frozenset(keys[:keys.index(key)])   # replaced, never mutated
+                st["active"] = key
+
+
+SESSION = _Session()
+LOG_LIMIT = 2000
+
+
+class _ProgressHandler(logging.Handler):
+    """Writes ontoreview log records (from worker threads) into :data:`SESSION`."""
+
+    def __init__(self) -> None:
         super().__init__(logging.DEBUG)
-        self.q = q
         self.setFormatter(logging.Formatter("%(levelname)-5s %(message)s"))
 
     def emit(self, record: logging.LogRecord) -> None:
         try:
-            self.q.put_nowait((record.levelno, record.getMessage(), self.format(record)))
+            msg = record.getMessage()
+            if record.levelno >= logging.INFO or SESSION.verbose:
+                log = SESSION.build["log"]
+                log.append(self.format(record))
+                if len(log) > LOG_LIMIT:
+                    del log[: len(log) - LOG_LIMIT]
+            SESSION.progress(msg)
         except Exception:  # noqa: BLE001
             pass
+
+
+_HANDLER = _ProgressHandler()
+
+
+def _install_log_handler() -> logging.Logger:
+    lg = logging.getLogger("ontoreview")
+    if _HANDLER not in lg.handlers:
+        lg.addHandler(_HANDLER)
+    if lg.level == logging.NOTSET or lg.level > logging.INFO:
+        lg.setLevel(logging.INFO)
+    return lg
 
 
 def _plan(s: Settings) -> list[tuple[str, str]]:
@@ -445,20 +498,16 @@ BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
 
 # ---------------------------------------------------------------------------- the app
 def build_page() -> None:  # noqa: C901 - the shell and its four pages share state
-    from nicegui import app, run, ui
+    from nicegui import app, background_tasks, run, ui
 
     register_upload_route(app)
     prefs = Prefs.load()
     s = Settings.load()
     prefs.apply(s)
-    state: dict = {"last": None, "running": False, "steps": [], "active": None, "done": set(),
-                   "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
-    logs: queue.Queue = queue.Queue()
-    handler = _QueueHandler(logs)
-    lg = logging.getLogger("ontoreview")
-    lg.addHandler(handler)
-    lg.setLevel(logging.INFO)
-    ui.context.client.on_disconnect(lambda: lg.removeHandler(handler))
+    state = SESSION.build          # shared across pages, reloads and tabs: a run outlives its view
+    cmp = SESSION.cmp
+    lg = _install_log_handler()
+    client = ui.context.client
 
     ui.colors(primary="#2F4FD8", positive="#067647", negative="#B42318", warning="#B54708")
     ui.add_css(CSS)
@@ -470,6 +519,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
     # ------------------------------------------------------------------ sidebar
     nav_links: dict = {}
+    nav_busy: dict = {}
     with ui.left_drawer(value=True, fixed=True).classes("or-side").props("width=232 breakpoint=900") as drawer:
         with ui.row().classes("items-center gap-3 no-wrap").style("padding: 0 10px 26px"):
             ui.html(LOGO_SVG.format(s=30), sanitize=False)
@@ -481,6 +531,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 with ui.link(target=path).classes("or-nav") as link:
                     ui.html(_icon(icon), sanitize=False)
                     ui.label(label)
+                    if key in ("build", "compare"):
+                        nav_busy[key] = ui.spinner(size="14px").classes("q-ml-auto").tooltip("Running")
+                        nav_busy[key].set_visibility(False)
                 nav_links[key] = link
         with ui.element("div").classes("or-env"):
             ui.label("Environment").style("font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--or-side-muted)")
@@ -522,6 +575,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 link.classes(remove="or-active")
                 link.props(remove="aria-current")
 
+    def show_busy() -> None:
+        for key, st in (("build", state), ("compare", cmp)):
+            if key in nav_busy:
+                nav_busy[key].set_visibility(bool(st["running"]))
+
+    ui.timer(0.5, show_busy)
+
     # ------------------------------------------------------------------ shared helpers
     def page_head(title: str, subtitle: str):
         with ui.row().classes("or-pagehead items-center justify-between gap-4") as head:
@@ -533,7 +593,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         return head
 
     def notify(msg: str, kind: str = "info") -> None:
-        ui.notify(msg, type=kind, position="bottom-right")
+        """Toast on this page, even when called from a task whose view has been replaced."""
+        if client.is_deleted:
+            return
+        with client.layout:
+            ui.notify(msg, type=kind, position="bottom-right")
 
     def reveal(path: str) -> None:
         try:
@@ -886,7 +950,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         def refresh() -> None:
             render_source()
             render_formats()
-            source_info.text = describe_source(s.source) if s.source.strip() else ""
+            describe_later()
             output.props(f'placeholder="{s.default_output()}"')
             output_info.text = f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)")
             prior = existing_output(s.output_path())
@@ -905,9 +969,29 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             f" · {'HermiT' if s.reasoner == 'hermit' else 'ELK'} consistency")
             checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}"
             cli.text = s.cli()
+            show_running()
+            s.save()
+
+        described = {"for": None}
+
+        def describe_later() -> None:
+            """Folder scans can take a while: describe the source in a worker thread."""
+            src = s.source.strip()
+            if src == described["for"]:
+                return
+            described["for"] = src
+            source_info.text = "Looking…" if src else ""
+            if src:
+                background_tasks.create(describe(src), name="describe-source")
+
+        async def describe(src: str) -> None:
+            text = await run.io_bound(describe_source, src)
+            if described["for"] == src and not source_info.is_deleted:
+                source_info.text = text
+
+        def show_running() -> None:
             run_btn.text = "Running…" if state["running"] else {"check": "Run checks", "diff": "Compare"}.get(s.task, "Build docs")
             run_btn.set_enabled(not state["running"])
-            s.save()
 
         def render_results() -> None:  # noqa: C901
             results.clear()
@@ -1063,65 +1147,68 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.button("Open report (JSON)", on_click=lambda: open_result(str(res.output))) \
                                 .props("flat dense no-caps")
 
-        def drain() -> None:
-            changed = False
-            while True:
-                try:
-                    level, msg, line = logs.get_nowait()
-                except queue.Empty:
-                    break
-                if level >= logging.INFO or s.verbose:
-                    state["log"].append(line)
-                    log_view.push(line)
-                if not state["running"]:
-                    continue
-                head_ = msg.split("]", 1)[0]
-                if msg.startswith("[") and "/" in head_:
-                    state["folder_pos"] = f"Ontology {head_[1:].replace('/', ' of ')} · {msg.split('] ', 1)[-1]}"
-                    state["done"], state["active"] = set(), None
-                    changed = True
-                keys = [k for k, _ in state["steps"]]
-                for prefix, key in STEP_OF:
-                    if msg.startswith(prefix) and key in keys:
-                        state["done"] |= set(keys[:keys.index(key)])
-                        state["active"] = key
-                        changed = True
-            if changed:
-                render_results()
+        def signature() -> tuple:
+            return (state["running"], state["active"], state["done"], state["folder_pos"], id(state["last"]))
 
-        ui.timer(0.25, drain)
+        seen = {"sig": signature(), "log": len(state["log"])}
+
+        def sync() -> None:
+            """Pick up progress made by the worker thread (also after coming back to this page)."""
+            if results.is_deleted:
+                return
+            lines = state["log"]
+            if seen["log"] > len(lines):
+                seen["log"] = 0
+            for line in lines[seen["log"]:]:
+                log_view.push(line)
+            seen["log"] = len(lines)
+            sig = signature()
+            if sig == seen["sig"]:
+                return
+            finished = seen["sig"][0] and not state["running"]
+            seen["sig"] = sig
+            if finished:
+                refresh()            # e.g. "Previous output here …" now exists
+            else:
+                show_running()
+            render_results()
+
+        ui.timer(0.25, sync)
 
         async def start() -> None:
+            if state["running"]:
+                notify("A build is already running.", "warning")
+                return
             problems = s.validate()
             if problems:
                 for p in problems:
                     notify(p, "warning")
                 return
             s.save()
-            state.update(running=True, steps=_plan(s), active="parse", done=set(), folder_pos="", filter="all")
-            lg.setLevel(logging.DEBUG if s.verbose else logging.INFO)
-            line = f"$ {s.cli()}"
-            state["log"].append(line)
-            log_view.push(line)
-            refresh()
-            render_results()
+            job = Settings(**asdict(s))           # the form may change while the task runs
+            state.update(running=True, steps=_plan(job), active="parse", done=frozenset(), folder_pos="",
+                         filter="all")
+            state["log"].append(f"$ {job.cli()}")
+            background_tasks.create(run_build(job), name="ontoreview-build")
+            sync()
+
+        async def run_build(job: Settings) -> None:
+            """Runs independently of this view: switching pages does not stop or lose it."""
+            SESSION.verbose = job.verbose
+            lg.setLevel(logging.DEBUG if job.verbose else logging.INFO)
             try:
-                res = await run.io_bound(run_task, s)
+                res = await run.io_bound(run_task, job)
             except Exception as e:  # noqa: BLE001
-                drain()
-                state.update(running=False, last=e)
+                state["last"] = e
                 if prefs.keep_history:
-                    record_run(s, None, str(e), limit=prefs.history_limit)
+                    record_run(job, None, str(e), limit=prefs.history_limit)
                 notify(f"Failed: {e}", "negative")
             else:
-                drain()
-                state.update(running=False, last=res)
+                state["last"] = res
                 if prefs.keep_history:
-                    record_run(s, res, limit=prefs.history_limit)
+                    record_run(job, res, limit=prefs.history_limit)
                 failed = len(res.rows) - res.ok
-                line = f"DONE  {res.ok} of {len(res.rows)} succeeded · {res.seconds:.1f}s"
-                state["log"].append(line)
-                log_view.push(line)
+                state["log"].append(f"DONE  {res.ok} of {len(res.rows)} succeeded · {res.seconds:.1f}s")
                 notify(f"{res.ok} of {len(res.rows)} succeeded" + (f", {failed} failed" if failed else ""),
                        "positive" if not failed else "warning")
                 if (prefs.open_when_done and res.index and res.task != "check" and res.ok
@@ -1129,10 +1216,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     webbrowser.open(Path(res.index).resolve().as_uri())
             finally:
                 lg.setLevel(logging.INFO)
+                SESSION.verbose = False
                 state["running"] = False
-                refresh()
-                render_results()
-
+    
         def save_toml() -> None:
             if not s.source.strip():
                 notify("Choose an ontology file or a folder of ontologies first.", "warning")
@@ -1674,7 +1760,6 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         ui.timer(0.05, fill, once=True)
 
     # ------------------------------------------------------------------ Compare
-    cmp = {"old": "", "new": "", "output": "", "last": None, "running": False, "filter": "all", "done": None}
 
     def compare_view() -> None:  # noqa: C901
         set_active("compare")
@@ -1820,7 +1905,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     notify(p_, "warning")
                 return
             cmp.update(running=True, filter="all", done=(cmp["old"], cmp["new"]))
-            render()
+            background_tasks.create(compare_job(st), name="ontoreview-compare")
+            cmp_sync()
+
+        async def compare_job(st: Settings) -> None:
+            """Runs independently of this view: switching pages does not stop or lose it."""
             try:
                 res = await run.io_bound(run_task, st)
             except Exception as e:  # noqa: BLE001
@@ -1836,7 +1925,17 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 notify(f"{n} change{'s' if n != 1 else ''} found" if n else "No differences", "positive")
             finally:
                 cmp["running"] = False
-                render()
+    
+        cmp_seen = {"sig": (cmp["running"], id(cmp["last"]))}
+
+        def cmp_sync() -> None:
+            sig = (cmp["running"], id(cmp["last"]))
+            if results.is_deleted or sig == cmp_seen["sig"]:
+                return
+            cmp_seen["sig"] = sig
+            render()
+
+        ui.timer(0.3, cmp_sync)
 
         drop_targets.clear()
         for side in ("old", "new"):

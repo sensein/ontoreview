@@ -64,7 +64,7 @@ def test_run_reasoner_with_stub(tmp_path, monkeypatch):
     g = Graph().parse(data=UNSAT_TTL, format="turtle")
     _robot_stub(tmp_path, UNSAT_LOG, 1)
     rep = run_reasoner(g, "hermit")
-    assert rep.tool == "Logical consistency" and rep.error is None and rep.summary["error"] == 1
+    assert rep.tool == "Logical consistency" and rep.error is None and rep.summary["error"] == 2   # two unsatisfiable classes
     assert "reason --input" in (tmp_path / "calls.log").read_text() and "--reasoner hermit" in (tmp_path / "calls.log").read_text()
     _robot_stub(tmp_path, "", 0)                                   # consistent
     rep = run_reasoner(g, "elk")
@@ -138,9 +138,37 @@ def test_report_builders():
     ok = reasoner_report(0, "", "elk")
     assert ok.tool == TOOLS["reasoner"].name and ok.items == [] and ok.note.endswith("(ELK).") and not ok.error
     bad = reasoner_report(1, UNSAT_LOG)
-    assert bad.summary["error"] == 1 and not bad.note and not bad.error
+    assert bad.summary["error"] == 2 and not bad.note and not bad.error
     crash = reasoner_report(1, "java.lang.OutOfMemoryError\n")
     assert "OutOfMemoryError" in crash.error and crash.items == []
     assert "not available" in unavailable("robot", "obolibrary/robot").error
     assert robot_report(None, "boom").error == "boom"
     assert robot_report("Level\tRule Name\tSubject\nerror\tmissing_label\thttp://x/a\n").summary["error"] == 1
+
+
+def test_readable_robot_errors_and_outside_dl():
+    from ontoreview.report.reasoner import reasoner_report
+    from ontoreview.report.robot import robot_message
+
+    out = ("Non-simple property '<http://ex.org/n#partOf>' or its inverse appears in the cardinality restriction "
+           "'ObjectMaxCardinality(1 <http://ex.org/n#partOf> owl:Thing)'.\n"
+           "Use the -vvv option to show the stack trace.\nUse the --help option to see usage information.\n")
+    assert robot_message(out).startswith("Non-simple property")
+    assert robot_message("2026-11-18 01:08:33,724 ERROR org.x.Y - Something broke\nUse the --help option\n") == "Something broke"
+    rep = reasoner_report(1, out, "hermit")
+    [item] = rep.items
+    assert item.code == "outside_owl2_dl" and item.severity == "warning" and "partOf" in item.note and not rep.error
+    crash = reasoner_report(1, "OWLOntologyCreationException: bad syntax\nUse the --help option to see usage information.\n")
+    assert crash.error.endswith("OWLOntologyCreationException: bad syntax")
+
+
+def test_totals_include_external_checks():
+    from ontoreview.report.models import ExternalItem, Finding, Report, new_report
+
+    rep = Report(findings=[Finding("OB001", "t", "warning", "m")],
+                 external=[new_report("robot", [ExternalItem("duplicate_label", "Duplicate label", "error",
+                                                              affected=["http://x/a", "http://x/b"])]),
+                           new_report("reasoner", [ExternalItem("inconsistent_ontology", "Inc", "error")])])
+    assert rep.summary == {"error": 0, "warning": 1, "info": 0}            # built-in only
+    assert rep.totals == {"error": 3, "warning": 1, "info": 0}             # per affected element
+    assert rep.to_dict()["totals"] == rep.totals

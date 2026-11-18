@@ -189,7 +189,7 @@ def _fill(e: Entry, res) -> None:
     e.terms = len(res.ontology.terms)
     e.files = len(res.files)
     if res.report is not None:
-        e.quality = res.report.summary
+        e.quality = res.report.totals
         e.external = [{"tool": x.tool, "problem": x.error, "summary": x.summary} for x in res.report.external]
         e.issues = report_issues(res.report)
 

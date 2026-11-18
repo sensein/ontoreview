@@ -245,9 +245,11 @@ def build(
     console.print(f"[green]✓[/] [bold]{o.metadata.title or 'Ontology'}[/] → {where}")
     console.print(f"  {counts}")
     if res.report:
-        s = res.report.summary
-        console.print(f"  quality: [red]{s['error']} errors[/], [yellow]{s['warning']} warnings[/], "
+        s = res.report.totals
+        console.print(f"  quality (all checks): [red]{s['error']} errors[/], [yellow]{s['warning']} warnings[/], "
                       f"[cyan]{s['info']} suggestions[/]  (ontoreview check for details)")
+        b = res.report.summary
+        console.print(f"  built-in checks: {b['error']} errors, {b['warning']} warnings, {b['info']} suggestions")
     if res.competency_questions:
         c = res.competency_questions.summary
         console.print(f"  competency questions: {c['passed']} answerable, {c['failed']} not answerable, "
@@ -462,10 +464,10 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
         failed = failed or (fail_on != FailOn.never and report.failed(fail_on.value))
         results[rel] = json.loads(report.to_json())
         if fmt == CheckFormat.console:
-            s = report.summary
+            s = report.totals
             mark = "[red]✗[/]" if fail_on != FailOn.never and report.failed(fail_on.value) else "[green]✓[/]"
             console.print(f"{mark} [bold]{_rich_escape(rel)}[/]  {s['error']} errors, {s['warning']} warnings, "
-                          f"{s['info']} suggestions in {len(onto.terms)} terms")
+                          f"{s['info']} suggestions in {len(onto.terms)} terms (all checks)")
             for x in report.external:
                 console.print(f"    {x.tool}: " + (f"[yellow]{_rich_escape(x.error)}[/]" if x.error else
                               f"{x.summary['error']} errors, {x.summary['warning']} warnings, {x.summary['info']} suggestions"))
