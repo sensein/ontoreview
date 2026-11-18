@@ -401,3 +401,13 @@ input[type="search"]:focus-visible, .term-filter:focus-visible, .index-filter:fo
   .term-flag, .sev, .cq-status { forced-color-adjust: none; color: CanvasText; }
   mark { forced-color-adjust: none; background: Highlight; color: HighlightText; }
 }
+
+/* OntoCheck metrics table */
+.metrics { margin: .4rem 0 1rem; }
+.metrics .metric-group th { padding-top: .9rem; color: var(--ink, inherit); }
+.metrics .mstat { display: inline-block; width: .55rem; height: .55rem; border-radius: 50%; margin-right: .3rem; background: var(--rule-strong); vertical-align: middle; }
+.metrics .metric-ok .mstat { background: var(--add, #067647); }
+.metrics .metric-warn .mstat { background: var(--mod, #B54708); }
+.metrics .metric-error .mstat { background: var(--del, #B42318); }
+.metrics .metric-skipped td { color: var(--muted); }
+@media (forced-colors: active) { .metrics .mstat { border: 1px solid CanvasText; } }

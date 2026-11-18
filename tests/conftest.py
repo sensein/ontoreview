@@ -5,7 +5,7 @@ import pytest
 from ontoreview.config import Config
 from ontoreview.loader import load_ontology
 from ontoreview.model.extract import extract
-from ontoreview.quality_checks import logical_consistency, oops, robot
+from ontoreview.quality_checks import logical_consistency, ontocheck, oops, robot
 from ontoreview.report.models import ExternalReport
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -31,7 +31,10 @@ def personinfo():
 @pytest.fixture(autouse=True)
 def _no_external_evaluators(request, monkeypatch):
     """Builds run ROBOT (Docker) and the OOPS! web service by default; tests must stay offline.
-    Tests marked ``real_evaluators`` exercise the real dispatch with their own stubs."""
+    Tests marked ``real_evaluators`` exercise the real dispatch with their own stubs; OntoCheck
+    (in-process, a few seconds) only runs in tests marked ``real_ontocheck``."""
+    if "real_ontocheck" not in request.keywords:
+        monkeypatch.setattr(ontocheck, "check_ontocheck", lambda *a, **k: None)
     if "real_evaluators" in request.keywords:
         return
     monkeypatch.setattr(robot, "run_robot", lambda *a, **k: None)

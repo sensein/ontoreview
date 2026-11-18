@@ -1,5 +1,5 @@
 """Runs the external quality checks in order: ROBOT report, reasoner consistency check (both on
-this machine, locally or in Docker), then the OOPS! web service. With ``evaluation.oops = "auto"``
+this machine, locally or in Docker), OntoCheck metrics (in-process), then the OOPS! web service. With ``evaluation.oops = "auto"``
 (default) OOPS! complements ROBOT: pitfalls the ROBOT report covers are left out, and the full
 catalogue runs when ROBOT did not. ``"on"`` always runs the full catalogue; ``"off"`` never uploads.
 
@@ -13,12 +13,12 @@ import logging
 from rdflib import Graph
 
 from ..report.models import ExternalReport, unavailable
-from . import logical_consistency, oops, robot
+from . import logical_consistency, ontocheck, oops, robot
 
 log = logging.getLogger(__name__)
 
 
-def run_evaluations(graph: Graph, config) -> list[ExternalReport]:
+def run_evaluations(graph: Graph, config, source: str | None = None) -> list[ExternalReport]:
     ev = config.evaluation
     out: list[ExternalReport] = []
     robot_state = "off"
@@ -34,6 +34,9 @@ def run_evaluations(graph: Graph, config) -> list[ExternalReport]:
         lc = logical_consistency.check_consistency(graph, ev)
         if lc is not None:
             out.append(lc)
+    oc = ontocheck.check_ontocheck(graph, ev, source)       # local, in-process (network: declared endpoints)
+    if oc is not None:
+        out.append(oc)
     if ev.oops != "off":
         # auto: complement ROBOT (skip what its report covers); full catalogue when ROBOT did not run
         skip = oops.ROBOT_COVERED if ev.oops == "auto" and robot_state == "ok" else None

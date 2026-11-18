@@ -127,8 +127,13 @@ class EvaluationConfig(BaseModel):
         "hermit", description="Logical consistency check with an OWL reasoner via `robot reason` (needs ROBOT): "
                               "hermit = full OWL 2 DL, elk = fast, OWL 2 EL only, off = skip")
     reasoner_timeout: int = Field(600, description="Seconds before the reasoner is stopped")
+    ontocheck: Literal["on", "off"] = Field("on", description="OntoCheck quality metrics (labeling, structure, "
+                                                              "accessibility, naming); runs locally")
+    ontocheck_network: bool = Field(True, description="Let OntoCheck contact SPARQL endpoints / RDF dump URLs "
+                                                      "declared in the ontology")
+    ontocheck_search: str | None = Field(None, description="Search term for OntoCheck's searchClass metric")
 
-    @field_validator("oops", "robot", mode="before")
+    @field_validator("oops", "robot", "ontocheck", mode="before")
     @classmethod
     def _bool_to_mode(cls, v):
         # older configs used oops = true / false
@@ -275,6 +280,9 @@ disable = []                # e.g. ["OB019"]
 robot = "auto"              # ROBOT via a local robot or Docker: "auto" | "on" | "off"
 oops = "auto"               # OOPS! web service (uploads the ontology): "auto" (complements ROBOT) | "on" (full) | "off"
 reasoner = "hermit"         # logical consistency via ROBOT: "hermit" | "elk" (fast, OWL 2 EL only) | "off"
+ontocheck = "on"            # OntoCheck metrics (labeling, structural, accessibility, naming): "on" | "off"
+# ontocheck_network = false # don't contact SPARQL endpoints / dump URLs declared in the ontology
+# ontocheck_search = "Pizza"  # term for OntoCheck's searchClass metric
 
 # Metadata found in the ontology is used automatically; anything here overrides it.
 [metadata]

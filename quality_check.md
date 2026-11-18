@@ -17,8 +17,9 @@ Markdown and MyST exports, and **Compare versions**, don't run quality checks.
 2. **Built-in rules** OB001 → OB028, in ID order, then any rules added by plugins.
 3. **ROBOT report**, using a local `robot` command or the `obolibrary/robot` Docker image.
 4. **Logical consistency**, an OWL reasoner (HermiT by default, or ELK) run with `robot reason` through the same local `robot` or Docker image. It needs ROBOT, so it is skipped when ROBOT is off or unavailable.
-5. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
-6. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
+5. **OntoCheck metrics**, run in-process with the [OntoCheck](https://ontocheck.readthedocs.io) library: a scorecard of labeling, structural, accessibility and naming-convention metrics (see below). Only the SPARQL-endpoint and RDF-dump checks use the network, to contact URLs the ontology declares.
+6. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
+7. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
 
 Counts are per affected element: a ROBOT rule that flags two terms counts as two findings, like the built-in rules, which report one finding per term. Overall totals (the `ontoreview check` summary line, the app's tiles and the JSON `totals`) include every checker. The JSON `summary` field and the docs' "OntoReview checks" line count the built-in rules only.
 
@@ -94,6 +95,36 @@ Questions without a query are listed as "not tested" and are not reported as fin
 
 When there are no problems, the section says "Consistent; all classes satisfiable (HermiT)". HermiT is complete for OWL 2 DL but can be slow on very large ontologies. ELK is much faster but only understands OWL 2 EL, so it can miss problems that depend on other constructs. The reasoner stops after `evaluation.reasoner_timeout` seconds (default 600). For an explanation of a problem, open the ontology in Protégé and use its explanation feature.
 
+**OntoCheck** (<https://ontocheck.readthedocs.io>, SDLE Research Center, CWRU, CC BY 4.0) reports 17 metrics, shown as a table in the review and in the app's "OntoCheck metrics" card:
+
+| Category | Metric | What it measures |
+|---|---|---|
+| Labeling | `checkLabel` | named classes with an `rdfs:label` |
+| | `altLabelCheck` | named classes with a `skos:altLabel` |
+| | `definitionCheck` | named classes with a `skos:definition` (not IAO:0000115 or `rdfs:comment`) |
+| Structural | `isolatedElements` | classes and properties not connected to anything else |
+| | `classConnections` | separate groups of classes (1 means fully connected) |
+| | `missingDomainRange` | object/datatype properties without `rdfs:domain` / `rdfs:range` |
+| | `leafNodeCheck` | classes with no subclasses |
+| | `semanticConnection` | top-level classes connected to BFO or CCO |
+| Accessibility | `sparqlEndpoint` | declared SPARQL endpoints that answer a query (network) |
+| | `rdfDump` | declared RDF dump URLs that can be downloaded (network) |
+| | `humanLicense` | license or copyright text in the ontology |
+| | `externalLinks` | entities linked to external resources (`owl:sameAs`, `rdfs:seeAlso`, SKOS mappings, …) |
+| Naming convention | `classCapitalCheck` | class names starting with a capital letter |
+| | `classSpaceCheck` | class names containing spaces in the Turtle source (Turtle files only) |
+| | `spellCheck` | words in English or untagged labels, definitions and comments not in an English dictionary |
+| | `duplicateLabels` | classes and properties sharing an `rdfs:label` (case-insensitive) |
+| | `searchClass` | classes whose name contains the configured search term (skipped without one) |
+
+Each metric has a status: green (fine), amber (worth fixing), red (`classSpaceCheck` found names with spaces), grey (informational or skipped). Results that point at something to fix also appear in the findings. Most are *info*, because missing labels and definitions, duplicate labels and missing domains or ranges are already graded by the built-in rules and ROBOT. A missing human-readable license and unreachable declared endpoints or dumps are *warnings*. A class name with spaces is an *error*.
+
+How OntoReview runs OntoCheck, and where it differs from OntoCheck's own command line:
+
+- The ontology as loaded (without imports) is written to a temporary Turtle file, so any input format works, including RDF/XML, JSON-LD and LinkML.
+- `spellCheck` only checks English or untagged text; other languages would otherwise all count as misspellings. Suggestions are computed for the first 25 words shown, which keeps it fast.
+- `classSpaceCheck` ignores fragments such as `rdfs:range [ a owl:Class` that OntoCheck's text heuristic mistakes for class names.
+
 **OOPS!** (<https://oops.linkeddata.es>) reports pitfalls from its catalogue, such as P04, P10, P11, P13 and P22. It grades them critical, important or minor, which OntoReview shows as error, warning and info.
 
 **How ROBOT and OOPS! differ.** ROBOT's report checks annotations and metadata: labels, definitions, deprecations, label formatting and ontology metadata. OOPS! checks modelling: unconnected elements, missing domains, ranges, inverses and disjointness, multiple domains or ranges, merged concepts, naming conventions and namespaces. They overlap on three pitfalls:
@@ -122,9 +153,12 @@ robot = "auto"     # "auto" (local robot, else Docker) | "on" (also report when 
 oops = "auto"      # "auto" (alongside ROBOT, skipping what ROBOT covers) | "on" (full catalogue) | "off" (never upload)
 reasoner = "hermit"  # logical consistency: "hermit" | "elk" (fast, OWL 2 EL only) | "off"
 reasoner_timeout = 600
+ontocheck = "on"          # OntoCheck metrics: "on" | "off"
+ontocheck_network = true  # contact SPARQL endpoints / dump URLs declared in the ontology
+ontocheck_search = ""     # term for the searchClass metric
 ```
 
-In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), the OOPS! service and when a check run fails.
+In the app, use **Settings › Quality checks** for ROBOT (Docker or a local `robot`), the reasoner (**Logical consistency** card), **OntoCheck**, the OOPS! service and when a check run fails.
 
 On the command line:
 
@@ -133,6 +167,7 @@ ontoreview check my-ontology.ttl --fail-on error          # exit 1 on any error 
 ontoreview check my-ontology.ttl --format json -o quality.json
 ontoreview check ontologies/                               # every ontology in a folder
 ontoreview check my-ontology.ttl --reasoner elk            # faster consistency check (or off)
+ontoreview check my-ontology.ttl --no-ontocheck            # skip the OntoCheck metrics
 ```
 
 `--fail-on` accepts `error`, `warning`, `info` or `never`.
@@ -155,8 +190,9 @@ Checks and reports are kept apart. `ontoreview/quality_checks/` only evaluates t
 | `rules.py` | built-in rules OB001–OB028 |
 | `robot.py` | finds ROBOT (local or Docker) and runs `robot report` |
 | `logical_consistency.py` | runs the reasoner (`robot reason`) |
+| `ontocheck.py` | runs the OntoCheck metrics |
 | `oops.py` | sends the ontology to the OOPS! web service |
-| `evaluators.py` | runs ROBOT, the reasoner and OOPS! in order |
+| `evaluators.py` | runs ROBOT, the reasoner, OntoCheck and OOPS! in order |
 
 **`report/`: report generation**
 
@@ -165,6 +201,7 @@ Checks and reports are kept apart. `ontoreview/quality_checks/` only evaluates t
 | `models.py` | result types (`Finding`, `Report`, `ExternalItem`, `ExternalReport`), severity order, and `TOOLS` (each external checker's name and URL) |
 | `robot.py` | ROBOT report TSV → findings |
 | `reasoner.py` | `robot reason` output → consistency findings |
+| `ontocheck.py` | OntoCheck results → metrics table and findings |
 | `oops.py` | OOPS! RDF/XML response → pitfall findings |
 | `issues.py` | rows for the app's Issues table |
 | `console.py` | `ontoreview check` terminal output |

@@ -59,6 +59,9 @@ class Settings:
     oops_timeout: int = 90
     oops_endpoint: str = ""
     reasoner: Literal["hermit", "elk", "off"] = "hermit"
+    ontocheck: bool = True
+    ontocheck_network: bool = True
+    ontocheck_search: str = ""
     default_root: str = ""          # Settings > default output folder
     verbose: bool = False
 
@@ -127,6 +130,12 @@ class Settings:
             ev["robot_image"] = self.robot_image.strip()
         if self.reasoner != "hermit":
             ev["reasoner"] = self.reasoner
+        if not self.ontocheck:
+            ev["ontocheck"] = "off"
+        if not self.ontocheck_network:
+            ev["ontocheck_network"] = False
+        if self.ontocheck_search.strip():
+            ev["ontocheck_search"] = self.ontocheck_search.strip()
         from .quality_checks.oops import OOPS_ENDPOINT
 
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
@@ -190,6 +199,8 @@ class Settings:
                 args.append("--oops" if self.oops == "on" else "--no-oops")
             if self.reasoner != "hermit" and self.robot != "off":
                 args += ["--reasoner", self.reasoner]
+            if not self.ontocheck:
+                args.append("--no-ontocheck")
         if self.task == "check" and self.fail_on != "error":
             args += ["--fail-on", self.fail_on]
         return " ".join(args)
@@ -212,7 +223,8 @@ class Settings:
         cqs = [x.strip() for x in self.competency_questions.split(",") if x.strip()]
         if cqs:
             lines.append(f"competency_questions = [{', '.join(s(x) for x in cqs)}]")
-        lines += ["", "[evaluation]", f"robot = {s(self.robot)}", f"oops = {s(self.oops)}", f"reasoner = {s(self.reasoner)}", ""]
+        lines += ["", "[evaluation]", f"robot = {s(self.robot)}", f"oops = {s(self.oops)}", f"reasoner = {s(self.reasoner)}",
+                  f"ontocheck = {s('on' if self.ontocheck else 'off')}", ""]
         return "\n".join(lines)
 
     @classmethod
@@ -238,6 +250,8 @@ class Settings:
             competency_questions=", ".join(rel(c) for c in raw.get("competency_questions", [])),
             previous_version=rel(raw.get("previous_version", "") or ""),
             robot=ev.get("robot", "auto"), oops=oops, reasoner=ev.get("reasoner", "hermit"),
+            ontocheck=ev.get("ontocheck", "on") not in ("off", False),
+            ontocheck_network=bool(ev.get("ontocheck_network", True)), ontocheck_search=ev.get("ontocheck_search") or "",
         )
 
     # -------------------------------------------------------------- persistence
@@ -277,6 +291,7 @@ class Row:
     problem: str | None = None
     issues: list[dict] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)   # what each checker did (not) check, e.g. OOPS! scope
+    metrics: list[dict] = field(default_factory=list)  # OntoCheck scorecard rows
 
 
 @dataclass
@@ -305,6 +320,10 @@ class TaskResult:
     def totals(self) -> dict[str, int]:
         return {"terms": sum(r.terms for r in self.rows), "errors": sum(r.errors for r in self.rows),
                 "warnings": sum(r.warnings for r in self.rows), "suggestions": sum(r.suggestions for r in self.rows)}
+
+
+def _metrics(reports) -> list[dict]:
+    return [m for x in reports if not isinstance(x, dict) for m in (x.metrics or [])]
 
 
 def _scope_notes(reports) -> list[str]:
@@ -385,7 +404,8 @@ def run_task(settings: Settings) -> TaskResult:
                 sm = rep.totals
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
                                     sm["warning"], sm["info"], _external_text(rep.external),
-                                    issues=report_issues(rep), notes=_scope_notes(rep.external)))
+                                    issues=report_issues(rep), notes=_scope_notes(rep.external),
+                                    metrics=_metrics(rep.external)))
                 report_json[name] = json.loads(rep.to_json())
             except Exception as e:  # noqa: BLE001
                 res.rows.append(Row(name, problem=str(e)))
@@ -418,7 +438,8 @@ def run_task(settings: Settings) -> TaskResult:
                         sm["error"], sm["warning"], sm["info"],
                         _external_text(b.report.external if b.report else []), str(page),
                         issues=report_issues(b.report) if b.report else [],
-                        notes=_scope_notes(b.report.external) if b.report else [])]
+                        notes=_scope_notes(b.report.external) if b.report else [],
+                        metrics=_metrics(b.report.external) if b.report else [])]
         res.index = str(page)
     res.seconds = time.perf_counter() - t0
     return res
@@ -738,6 +759,9 @@ class Prefs:
     oops_endpoint: str = "https://oops.linkeddata.es/rest"
     oops_timeout: int = 90
     reasoner: Literal["hermit", "elk", "off"] = "hermit"
+    ontocheck: bool = True
+    ontocheck_network: bool = True
+    ontocheck_search: str = ""
     theme: Literal["light", "dark", "system"] = "system"
     compact: bool = False
     # documentation options (Settings > Documentation)
@@ -783,6 +807,7 @@ class Prefs:
         s.robot_image = self.robot_image or "obolibrary/robot"
         s.oops, s.oops_endpoint, s.oops_timeout = self.oops, self.oops_endpoint, self.oops_timeout
         s.reasoner = self.reasoner
+        s.ontocheck, s.ontocheck_network, s.ontocheck_search = self.ontocheck, self.ontocheck_network, self.ontocheck_search
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",
                   "competency_questions", "previous_version", "fail_on"):
             setattr(s, k, getattr(self, k))

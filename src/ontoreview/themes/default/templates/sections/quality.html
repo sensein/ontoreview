@@ -17,6 +17,18 @@
   {% for ext in r.external %}
   <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}">{{ ext.tool }} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a></h3>
   {% if ext.scope %}<p class="muted small">{{ ext.scope }}</p>{% endif %}
+  {% if ext.metrics %}
+  <table class="plain metrics">
+    <caption class="sr-only">{{ ext.tool }} metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+    {% for m in ext.metrics %}{% if loop.first or m.group != ext.metrics[loop.index0 - 1].group %}
+      <tr class="metric-group"><th colspan="3" scope="colgroup">{{ m.group }}</th></tr>{% endif %}
+      <tr class="metric-{{ m.status }}"><td>{{ m.title }} <code class="muted small">{{ m.metric }}</code></td><td><span class="mstat" aria-hidden="true"></span> {{ m.value }}<span class="sr-only"> ({{ m.status }})</span></td><td class="muted small">{{ m.about }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
   {% if ext.error %}<p class="note-line">{{ ext.error }}</p>
   {% elif not ext.items %}<p>{{ ext.note or t('no_findings') }}</p>
   {% else %}

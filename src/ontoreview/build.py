@@ -126,7 +126,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:
-        report.external = run_evaluations(loaded.graph, cfg)
+        report.external = run_evaluations(loaded.graph, cfg, loaded.source)
     cqset = load_competency_questions(cfg, loaded, onto, report)
     changelog = None
     if cfg.previous_version:
@@ -171,7 +171,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:
-        report.external = run_evaluations(loaded.graph, cfg)
+        report.external = run_evaluations(loaded.graph, cfg, loaded.source)
     cqset = load_competency_questions(cfg, loaded, onto, report)
 
     changelog = None
@@ -269,6 +269,6 @@ def check(source: str | Path | None = None, config: Config | str | Path | None =
     plugins = PluginManager(load_plugins(cfg.plugins))
     onto = extract(loaded, cfg)
     report = run_checks(onto, loaded.graph, cfg, plugins.rules())
-    report.external = run_evaluations(loaded.graph, cfg)
+    report.external = run_evaluations(loaded.graph, cfg, loaded.source)
     load_competency_questions(cfg, loaded, onto, report)
     return onto, report
