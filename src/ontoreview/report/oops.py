@@ -46,11 +46,27 @@ def _parse_oops_ns(g: Graph, OOPS: Namespace) -> list[ExternalItem]:  # noqa: N8
     return items
 
 
-def oops_report(response: str | None, failure: str | None = None) -> ExternalReport:
+ROBOT_STATES = {
+    "unavailable": "ROBOT was not available",
+    "failed": "the ROBOT report failed",
+    "off": "ROBOT is turned off",
+}
+
+
+def oops_scope(skipped: dict[str, tuple[str, str]] | None, robot_state: str = "ok") -> str:
+    """Which part of the OOPS! catalogue ran. ``skipped`` maps pitfall code -> (name, ROBOT rules)."""
+    if skipped:
+        parts = [f"{code} {name} (ROBOT {rules})" for code, (name, rules) in skipped.items()]
+        return "Run alongside ROBOT. Not run here because ROBOT already checks them: " + "; ".join(parts) + "."
+    reason = ROBOT_STATES.get(robot_state)
+    return f"Full pitfall catalogue ({reason})." if reason else "Full pitfall catalogue."
+
+
+def oops_report(response: str | None, failure: str | None = None, scope: str = "") -> ExternalReport:
     """Report from the OOPS! service: its RDF/XML response, or why the request failed."""
     if response is None:
-        return new_report("oops", error=failure or "OOPS! request failed")
+        return new_report("oops", error=failure or "OOPS! request failed", scope=scope)
     try:
-        return new_report("oops", parse_oops(response))
+        return new_report("oops", parse_oops(response), scope=scope)
     except Exception as e:  # noqa: BLE001
-        return new_report("oops", error=f"Could not parse the OOPS! response: {e}")
+        return new_report("oops", error=f"Could not parse the OOPS! response: {e}", scope=scope)

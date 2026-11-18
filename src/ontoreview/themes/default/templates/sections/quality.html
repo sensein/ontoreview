@@ -16,6 +16,7 @@
 
   {% for ext in r.external %}
   <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}">{{ ext.tool }} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a></h3>
+  {% if ext.scope %}<p class="muted small">{{ ext.scope }}</p>{% endif %}
   {% if ext.error %}<p class="note-line">{{ ext.error }}</p>
   {% elif not ext.items %}<p>{{ ext.note or t('no_findings') }}</p>
   {% else %}

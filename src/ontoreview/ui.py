@@ -67,7 +67,7 @@ INCLUDES = {
     "diff": "Includes: added, removed and modified terms with the exact statements that changed, as Markdown "
             "and JSON. To put a changelog inside the website instead, set Previous version in Settings › Documentation",
 }
-OOPS_CHOICES = {"off": "Off", "auto": "Only if ROBOT can't run", "on": "Always"}
+OOPS_CHOICES = {"auto": "Alongside ROBOT (default)", "on": "Full catalogue, always", "off": "Off"}
 REASONER_CHOICES = {"hermit": "HermiT (OWL 2 DL)", "elk": "ELK (fast, OWL 2 EL)", "off": "Off"}
 
 # ---------------------------------------------------------------------------- drag and drop
@@ -195,7 +195,7 @@ HELP = [
         "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
         "files or folders onto the page.",
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
-    ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service.", [("Open Build", "/")]),
+    ], "Everything runs on your computer except the OOPS! scan, which sends the ontology to a web service (turn it off in Settings › Quality checks).", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
         "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
@@ -485,7 +485,7 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
             if s.reasoner != "off":
                 steps.append(("reasoner", "Logical consistency (" + {"hermit": "HermiT", "elk": "ELK"}[s.reasoner] + ")"))
         if s.oops != "off":
-            steps.append(("oops", "OOPS! pitfall scan" + (" (if ROBOT can't run)" if s.oops == "auto" else "")))
+            steps.append(("oops", "OOPS! pitfall scan"))
     steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
                              "myst": "Write MyST files", "check": "Write report"}[s.task]))
     return steps
@@ -963,8 +963,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             prev_box.set_visibility(s.task == "diff")
             robot_txt = ("ROBOT off" if s.robot == "off" else
                          f"ROBOT ({'local' if s.robot_path else 'Docker'})")
-            oops_txt = {"off": "OOPS! off", "auto": "OOPS! only if ROBOT can't run (uploads the ontology)",
-                        "on": "OOPS! always (uploads the ontology)"}[s.oops]
+            oops_txt = {"off": "OOPS! off", "auto": "OOPS! alongside ROBOT (uploads the ontology)",
+                        "on": "OOPS! full catalogue (uploads the ontology)"}[s.oops]
             reasoner_txt = ("" if s.robot == "off" or s.reasoner == "off" else
                             f" · {'HermiT' if s.reasoner == 'hermit' else 'ELK'} consistency")
             checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}"
@@ -1120,6 +1120,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             opts.append(("info", f"Info {counts['info']}"))
                         segmented(opts, state["filter"],
                                   lambda k: (state.__setitem__("filter", k), render_results()), "Filter issues")
+                    notes = sorted({n for r in res.rows for n in r.notes})
+                    for n in notes:
+                        ui.label(n).classes("or-hint")
                     shown = [i for i in all_issues if state["filter"] in ("all", i["severity"])]
                     if not shown:
                         ui.label("No issues found." if not all_issues else "No issues of this kind.").classes("or-hint q-py-md")

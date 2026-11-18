@@ -113,7 +113,8 @@ class EvaluationConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
     oops: Literal["auto", "on", "off"] = Field(
         "auto", description="OOPS! pitfall scanner web service (uploads the ontology to "
-                            "https://oops.linkeddata.es): auto = only when ROBOT cannot run, on = always, off = never")
+                            "https://oops.linkeddata.es): auto = run alongside ROBOT, leaving out the pitfalls ROBOT "
+                            "covers (full catalogue when ROBOT cannot run); on = always the full catalogue; off = never")
     oops_timeout: int = 90
     oops_endpoint: str | None = Field(None, description="OOPS! REST endpoint (default https://oops.linkeddata.es/rest)")
     robot: Literal["auto", "on", "off"] = Field(
@@ -272,7 +273,7 @@ disable = []                # e.g. ["OB019"]
 
 [evaluation]
 robot = "auto"              # ROBOT via a local robot or Docker: "auto" | "on" | "off"
-oops = "auto"               # OOPS! web service (uploads the ontology): "auto" (only if ROBOT can't run) | "on" | "off"
+oops = "auto"               # OOPS! web service (uploads the ontology): "auto" (complements ROBOT) | "on" (full) | "off"
 reasoner = "hermit"         # logical consistency via ROBOT: "hermit" | "elk" (fast, OWL 2 EL only) | "off"
 
 # Metadata found in the ontology is used automatically; anything here overrides it.

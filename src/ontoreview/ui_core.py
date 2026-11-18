@@ -276,6 +276,7 @@ class Row:
     output: str = ""                # file to open (index.html / index.md / report)
     problem: str | None = None
     issues: list[dict] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)   # what each checker did (not) check, e.g. OOPS! scope
 
 
 @dataclass
@@ -304,6 +305,15 @@ class TaskResult:
     def totals(self) -> dict[str, int]:
         return {"terms": sum(r.terms for r in self.rows), "errors": sum(r.errors for r in self.rows),
                 "warnings": sum(r.warnings for r in self.rows), "suggestions": sum(r.suggestions for r in self.rows)}
+
+
+def _scope_notes(reports) -> list[str]:
+    out = []
+    for x in reports:
+        tool, scope = (x["tool"], x.get("scope", "")) if isinstance(x, dict) else (x.tool, x.scope)
+        if scope:
+            out.append(f"{tool}: {scope}")
+    return out
 
 
 def _external_text(reports) -> str:
@@ -375,7 +385,7 @@ def run_task(settings: Settings) -> TaskResult:
                 sm = rep.totals
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
                                     sm["warning"], sm["info"], _external_text(rep.external),
-                                    issues=report_issues(rep)))
+                                    issues=report_issues(rep), notes=_scope_notes(rep.external)))
                 report_json[name] = json.loads(rep.to_json())
             except Exception as e:  # noqa: BLE001
                 res.rows.append(Row(name, problem=str(e)))
@@ -407,7 +417,8 @@ def run_task(settings: Settings) -> TaskResult:
         res.rows = [Row(Path(src).name, b.ontology.metadata.title or Path(src).stem, len(b.ontology.terms),
                         sm["error"], sm["warning"], sm["info"],
                         _external_text(b.report.external if b.report else []), str(page),
-                        issues=report_issues(b.report) if b.report else [])]
+                        issues=report_issues(b.report) if b.report else [],
+                        notes=_scope_notes(b.report.external) if b.report else [])]
         res.index = str(page)
     res.seconds = time.perf_counter() - t0
     return res
@@ -417,7 +428,7 @@ def _row_from_entry(e, out: Path, page: str) -> Row:
     q = e.quality or {}
     return Row(e.source, e.title, e.terms, q.get("error", 0), q.get("warning", 0), q.get("info", 0),
                _external_text(e.external), str(out / e.slug / page) if not e.error else "", e.error,
-               issues=list(e.issues))
+               issues=list(e.issues), notes=_scope_notes(e.external))
 
 
 # ------------------------------------------------------------------ browsing

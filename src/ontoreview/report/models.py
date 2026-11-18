@@ -48,6 +48,7 @@ class ExternalReport:
     items: list[ExternalItem] = field(default_factory=list)
     error: str | None = None
     note: str = ""  # shown when there are no findings, e.g. "Consistent; ... (HermiT)."
+    scope: str = ""  # what was (not) checked, e.g. which OOPS! pitfalls were left to ROBOT
 
     @property
     def summary(self) -> dict[str, int]:
@@ -78,10 +79,10 @@ REASONERS = {"hermit": "HermiT", "elk": "ELK"}
 
 
 def new_report(tool: str, items: list[ExternalItem] | None = None, *, error: str | None = None,
-               note: str = "") -> ExternalReport:
+               note: str = "", scope: str = "") -> ExternalReport:
     """An empty (or pre-filled) report for one of :data:`TOOLS`."""
     t = TOOLS[tool]
-    return ExternalReport(t.name, t.url, items=list(items or []), error=error, note=note)
+    return ExternalReport(t.name, t.url, items=list(items or []), error=error, note=note, scope=scope)
 
 
 def unavailable(tool: str, image: str) -> ExternalReport:

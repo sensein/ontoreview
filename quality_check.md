@@ -17,7 +17,7 @@ Markdown and MyST exports, and **Compare versions**, don't run quality checks.
 2. **Built-in rules** OB001 → OB028, in ID order, then any rules added by plugins.
 3. **ROBOT report**, using a local `robot` command or the `obolibrary/robot` Docker image.
 4. **Logical consistency**, an OWL reasoner (HermiT by default, or ELK) run with `robot reason` through the same local `robot` or Docker image. It needs ROBOT, so it is skipped when ROBOT is off or unavailable.
-5. **OOPS! pitfall scan**, the OOPS! web service. By default it runs only when ROBOT couldn't (no Docker, or ROBOT failed). Set it to "always" to run it as well, or "off" never to run it. **OOPS! uploads the ontology to oops.linkeddata.es.**
+5. **OOPS! pitfall scan**, the OOPS! web service. It runs alongside ROBOT, because the two check different things (see below). When the ROBOT report ran, OOPS! leaves out the pitfalls ROBOT already checks (P08, P32, P41), and its section says so. When ROBOT could not run (no Docker, ROBOT failed, or ROBOT turned off), OOPS! runs its full catalogue. **OOPS! uploads the ontology to oops.linkeddata.es**; set it to "off" for private ontologies.
 6. **Competency questions**, when a competency-questions file is given. Each SPARQL query runs against the ontology plus any example data.
 
 Counts are per affected element: a ROBOT rule that flags two terms counts as two findings, like the built-in rules, which report one finding per term. Overall totals (the `ontoreview check` summary line, the app's tiles and the JSON `totals`) include every checker. The JSON `summary` field and the docs' "OntoReview checks" line count the built-in rules only.
@@ -94,7 +94,17 @@ Questions without a query are listed as "not tested" and are not reported as fin
 
 When there are no problems, the section says "Consistent; all classes satisfiable (HermiT)". HermiT is complete for OWL 2 DL but can be slow on very large ontologies. ELK is much faster but only understands OWL 2 EL, so it can miss problems that depend on other constructs. The reasoner stops after `evaluation.reasoner_timeout` seconds (default 600). For an explanation of a problem, open the ontology in Protégé and use its explanation feature.
 
-**OOPS!** (<https://oops.linkeddata.es>) reports pitfalls from its catalogue, such as P04, P08, P10, P11, P13 and P22. It grades them critical, important or minor, which OntoReview shows as error, warning and info.
+**OOPS!** (<https://oops.linkeddata.es>) reports pitfalls from its catalogue, such as P04, P10, P11, P13 and P22. It grades them critical, important or minor, which OntoReview shows as error, warning and info.
+
+**How ROBOT and OOPS! differ.** ROBOT's report checks annotations and metadata: labels, definitions, deprecations, label formatting and ontology metadata. OOPS! checks modelling: unconnected elements, missing domains, ranges, inverses and disjointness, multiple domains or ranges, merged concepts, naming conventions and namespaces. They overlap on three pitfalls:
+
+| OOPS! pitfall | Covered by ROBOT rule |
+|---|---|
+| P08 Missing annotations | `missing_label`, `missing_definition` |
+| P32 Several classes with the same label | `duplicate_label` |
+| P41 No license declared | `missing_ontology_license` |
+
+With `oops = "auto"` (default), these three are left out of the OOPS! request when the ROBOT report ran, so nothing is reported twice. The OOPS! section of the review lists what was left out and why. Without ROBOT, OOPS! runs the full catalogue, and `oops = "on"` always does.
 
 If a checker can't run, the reason is shown in its section of the report (for example "ROBOT is not available" or "OOPS! request failed"). The build still finishes.
 
@@ -109,7 +119,7 @@ severity = { OB023 = "warning" }         # change a rule's severity
 
 [evaluation]
 robot = "auto"     # "auto" (local robot, else Docker) | "on" (also report when unavailable) | "off"
-oops = "auto"      # "auto" (only if ROBOT can't run) | "on" (always) | "off" (never upload)
+oops = "auto"      # "auto" (alongside ROBOT, skipping what ROBOT covers) | "on" (full catalogue) | "off" (never upload)
 reasoner = "hermit"  # logical consistency: "hermit" | "elk" (fast, OWL 2 EL only) | "off"
 reasoner_timeout = 600
 ```

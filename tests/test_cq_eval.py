@@ -112,7 +112,7 @@ def _fake_oops(monkeypatch):
     calls = []
 
     def fake(graph, *a, **k):
-        calls.append(graph)
+        calls.append(k)                      # skip= / robot_state= tell which part of the catalogue ran
         return ExternalReport("OOPS!", "https://oops.linkeddata.es", items=parse_oops(OOPS_SAMPLE))
     monkeypatch.setattr(oops_mod, "run_oops", fake)
     return calls
@@ -136,7 +136,8 @@ def test_robot_stub(tmp_path, pizza, monkeypatch):
     rep = run_robot(loaded.graph)
     assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 2, "info": 1}  # per affected element
     reports = run_evaluations(loaded.graph, NO_REASONER)
-    assert [r.tool for r in reports] == ["ROBOT"] and not oops_calls  # ROBOT worked: no OOPS! fallback
+    assert [r.tool for r in reports] == ["ROBOT", "OOPS!"]           # both run: they check different things
+    assert set(oops_calls[0]["skip"]) == {"P08", "P32", "P41"}      # ...minus what ROBOT already covers: no OOPS! fallback
 
 
 @pytest.mark.real_evaluators
@@ -146,6 +147,7 @@ def test_no_robot_falls_back_to_oops(pizza, monkeypatch):
     monkeypatch.setenv("PATH", "/nonexistent")  # no robot, no docker
     reports = run_evaluations(loaded.graph, Config())
     assert [r.tool for r in reports] == ["OOPS!"] and len(oops_calls) == 1
+    assert oops_calls[0]["skip"] is None and oops_calls[0]["robot_state"] == "unavailable"   # full catalogue
     forced = run_evaluations(loaded.graph, Config(evaluation={"robot": "on"}))
     assert [r.tool for r in forced] == ["ROBOT", "Logical consistency", "OOPS!"]
     assert "not available" in forced[0].error and "not available" in forced[1].error
@@ -157,8 +159,10 @@ def test_oops_off_never_uploads(pizza, monkeypatch):
     oops_calls = _fake_oops(monkeypatch)
     monkeypatch.setenv("PATH", "/nonexistent")
     assert run_evaluations(loaded.graph, Config(evaluation={"oops": "off"})) == []
-    assert run_evaluations(loaded.graph, Config(evaluation={"robot": "off"})) == []
+    assert run_evaluations(loaded.graph, Config(evaluation={"robot": "off", "oops": "off"})) == []
     assert not oops_calls
+    [rep] = run_evaluations(loaded.graph, Config(evaluation={"robot": "off"}))   # no ROBOT: full OOPS!
+    assert rep.tool == "OOPS!" and oops_calls[0]["skip"] is None and oops_calls[0]["robot_state"] == "off"
 
 
 def test_oops_config_accepts_booleans():
@@ -219,8 +223,8 @@ def test_robot_docker_pulls_by_default(tmp_path, pizza, monkeypatch):
     log = _docker_stub(tmp_path, canned, has_image=False)
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}/usr/bin{os.pathsep}/bin")
     reports = run_evaluations(loaded.graph, NO_REASONER)  # image missing: `docker run` pulls it
-    assert [r.tool for r in reports] == ["ROBOT"] and reports[0].error is None
-    assert "\nrun --rm" in f"\n{log.read_text()}" and not oops_calls
+    assert [r.tool for r in reports] == ["ROBOT", "OOPS!"] and reports[0].error is None
+    assert "\nrun --rm" in f"\n{log.read_text()}" and oops_calls[0]["skip"]
 
 
 def test_llm_files(fixtures, tmp_path):

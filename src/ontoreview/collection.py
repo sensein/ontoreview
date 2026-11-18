@@ -190,7 +190,8 @@ def _fill(e: Entry, res) -> None:
     e.files = len(res.files)
     if res.report is not None:
         e.quality = res.report.totals
-        e.external = [{"tool": x.tool, "problem": x.error, "summary": x.summary} for x in res.report.external]
+        e.external = [{"tool": x.tool, "problem": x.error, "summary": x.summary, "scope": x.scope}
+                      for x in res.report.external]
         e.issues = report_issues(res.report)
 
 
