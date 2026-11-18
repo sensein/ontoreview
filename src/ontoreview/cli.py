@@ -79,8 +79,11 @@ def _overrides(**kw) -> dict:
     return out
 
 
-def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None = None) -> dict | None:
+def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None = None,
+                    ontocheck: bool | None = None) -> dict | None:
     ev = {}
+    if ontocheck is not None:
+        ev["ontocheck"] = "on" if ontocheck else "off"
     if reasoner is not None:
         if reasoner.lower() not in ("hermit", "elk", "off"):
             raise typer.BadParameter("use hermit, elk or off", param_hint="--reasoner")
@@ -192,6 +195,7 @@ def build(
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="--oops: full OOPS! pitfall catalogue; --no-oops: never upload to oops.linkeddata.es. By default OOPS! runs alongside ROBOT, skipping what ROBOT checks (full when ROBOT cannot run)."),
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
+    ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
@@ -205,7 +209,7 @@ def build(
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
                     base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason,
                     load_imports=imports, include_imported=include_imported,
-                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner),
+                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
     folder = _folder_source(source, config)
     if folder is not None:
@@ -393,6 +397,7 @@ def check(
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="--oops: full OOPS! pitfall catalogue; --no-oops: never upload to oops.linkeddata.es. By default OOPS! runs alongside ROBOT, skipping what ROBOT checks (full when ROBOT cannot run)."),
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
+    ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Run quality checks: built-in rules, ROBOT report and a reasoner consistency check (Docker),
@@ -403,11 +408,11 @@ def check(
 
     folder = _folder_source(source, config)
     if folder is not None:
-        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner)
+        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck)
         return
 
     try:
-        ev = _eval_overrides(oops, robot, reasoner)
+        ev = _eval_overrides(oops, robot, reasoner, ontocheck)
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
@@ -438,7 +443,8 @@ def check(
 
 
 def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path | None,
-                  oops: bool | None, robot: str | None, reasoner: str | None = None) -> None:
+                  oops: bool | None, robot: str | None, reasoner: str | None = None,
+                  ontocheck: bool | None = None) -> None:
     import json
 
     from .build import check as do_check
@@ -448,7 +454,7 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
     if not files:
         err.print(f"[bold red]Error:[/] No ontology files found in {folder}")
         raise typer.Exit(2)
-    ev = _eval_overrides(oops, robot, reasoner)
+    ev = _eval_overrides(oops, robot, reasoner, ontocheck)
     extra = {"evaluation": ev} if ev else {}
     results, failed, broken = {}, False, False
     for f in files:

@@ -29,7 +29,7 @@ def print_findings(console: Console, report) -> None:
 
 
 def print_external(console: Console, report) -> None:
-    """One section per external checker (ROBOT, logical consistency, OOPS!)."""
+    """One section per external checker (ROBOT, logical consistency, OntoCheck, OOPS!)."""
     for ext in report.external:
         console.print(f"\n[bold]{ext.tool}[/] [dim]{ext.url}[/]")
         if ext.scope:
@@ -37,13 +37,29 @@ def print_external(console: Console, report) -> None:
         if ext.error:
             console.print(f"   [red]{_esc(ext.error)}[/]")
             continue
-        if not ext.items:
+        print_metrics(console, ext.metrics)
+        if not ext.items and not ext.metrics:
             console.print(f"   [green]{_esc(ext.note or 'No issues reported.')}[/]")
         for it in ext.items:
             console.print(f"   [{SEV_STYLE[it.severity]}]{it.severity.upper():8}[/] {it.code} {_esc(it.name)} "
                           + (f"[dim]({len(it.affected)})[/]" if it.affected else ""))
             if it.note and not it.affected:
                 console.print(f"            [dim]{_esc(it.note[:300])}[/]")
+
+
+METRIC_STYLE = {"ok": "green", "warn": "yellow", "error": "bold red", "info": "", "skipped": "dim"}
+
+
+def print_metrics(console: Console, metrics: list[dict]) -> None:
+    """A scorecard (OntoCheck): one line per metric, grouped by category."""
+    group = None
+    for m in metrics:
+        if m["group"] != group:
+            group = m["group"]
+            console.print(f"   [bold]{_esc(group)}[/]")
+        style = METRIC_STYLE.get(m["status"], "")
+        value = f"[{style}]{_esc(m['value'])}[/]" if style else _esc(m["value"])
+        console.print(f"     {_esc(m['title']):<26} {value}")
 
 
 def print_report(console: Console, onto, report) -> None:

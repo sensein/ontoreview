@@ -53,17 +53,17 @@ FORMATS = [  # id, name, description, tag
     ("single", "Single HTML file", "One portable file to share or attach", ".html"),
     ("markdown", "Markdown", "Editable text, good for Git repos, MkDocs or Docusaurus", ".md"),
     ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
-    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner and OOPS! without docs", "report"),
+    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner, OntoCheck and OOPS! without docs", "report"),
     ("diff", "Compare versions", "What changed since a previous release of this ontology", "changes.md"),
 ]
 RECOMMENDED = "site"
 INCLUDES = {
-    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, OOPS!), "
+    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, OntoCheck metrics, OOPS!), "
             "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
     "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
-    "check": "Includes: built-in checks, ROBOT, reasoner and OOPS! results as JSON; no documentation",
+    "check": "Includes: built-in checks, ROBOT, reasoner, OntoCheck and OOPS! results as JSON; no documentation",
     "diff": "Includes: added, removed and modified terms with the exact statements that changed, as Markdown "
             "and JSON. To put a changelog inside the website instead, set Previous version in Settings › Documentation",
 }
@@ -199,7 +199,9 @@ HELP = [
     ("results", "Reading the results", "results.png", [
         "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
-        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner and OOPS! findings are merged with "
+        "<b>OntoCheck metrics</b> is a scorecard for labeling, structure, accessibility and naming conventions; "
+        "hover a metric to see what it measures.",
+        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner, OntoCheck and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
         "<b>Logical consistency</b> errors come from an OWL reasoner (HermiT by default): an inconsistent ontology, "
         "or classes that can never have members. Use Protégé's explanations to find the axioms responsible.",
@@ -284,7 +286,8 @@ HELP = [
         "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
         "questions and the previous version (for the changelog).",
         "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the reasoner for the "
-        "logical consistency check (HermiT, ELK or off), the OOPS! service, and when a "
+        "logical consistency check (HermiT, ELK or off), OntoCheck (on/off, network checks, class search term), "
+        "the OOPS! service, and when a "
         "check run counts as failed.",
         "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
@@ -484,6 +487,8 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
             steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
             if s.reasoner != "off":
                 steps.append(("reasoner", "Logical consistency (" + {"hermit": "HermiT", "elk": "ELK"}[s.reasoner] + ")"))
+        if s.ontocheck:
+            steps.append(("ontocheck", "OntoCheck metrics"))
         if s.oops != "off":
             steps.append(("oops", "OOPS! pitfall scan"))
     steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
@@ -492,7 +497,8 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
 
 
 STEP_OF = [("Parsing ontology", "parse"), ("Parsed ", "checks"), ("Running ROBOT", "robot"),
-           ("Checking logical consistency", "reasoner"), ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
+           ("Checking logical consistency", "reasoner"), ("Running OntoCheck", "ontocheck"),
+           ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
 BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
 
 
@@ -1077,6 +1083,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 ui.label(" · ".join(ran) or "Built-in only").classes("v small")
                 if many:
                     ontology_table(res)
+                elif res.rows and res.rows[0].metrics:
+                    metrics_card(res.rows[0].metrics)
                 issues_card(res, many)
 
         def ontology_table(res) -> None:
@@ -1106,6 +1114,23 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         </q-td>''')
                     tbl.on("open", lambda e: open_result(e.args))
                     tbl.on("reveal", lambda e: reveal(e.args))
+
+        def metrics_card(metrics: list[dict]) -> None:
+            dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
+            with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
+                ui.label("OntoCheck metrics").classes("or-h2").mark("ontocheck-metrics")
+                with ui.element("div").classes("w-full").style(
+                        "display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 28px"):
+                    for group in dict.fromkeys(m["group"] for m in metrics):
+                        with ui.column().classes("gap-2 q-mb-sm min-w-0"):
+                            ui.label(group).classes("or-hint text-uppercase").style("letter-spacing:.6px")
+                            for m in (m for m in metrics if m["group"] == group):
+                                with ui.row().classes("items-start gap-2 no-wrap min-w-0").tooltip(m["about"]):
+                                    ui.element("span").classes(f"or-dot {dot.get(m['status'], 'off')}") \
+                                        .style("margin-top:6px")
+                                    with ui.column().classes("gap-0 min-w-0"):
+                                        ui.label(m["title"]).classes("text-weight-medium")
+                                        ui.label(m["value"]).classes("or-hint").style("word-break:break-word")
 
         def issues_card(res, many: bool) -> None:
             all_issues = res.issues
@@ -1563,6 +1588,21 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 .classes("or-hint")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
+                            ui.label("OntoCheck").classes("or-h2")
+                            ui.label("Quality metrics for labeling, structure, accessibility and naming conventions, "
+                                     "shown as a scorecard in the review. Runs on this machine.").classes("or-hint")
+                            ui.checkbox("Run OntoCheck").bind_value(work, "ontocheck").mark("ontocheck")
+                            ui.checkbox("Check declared SPARQL endpoints and RDF dumps are reachable").bind_value(
+                                work, "ontocheck_network")
+                            ui.label("Contacts the URLs listed in the ontology (nothing is uploaded). Each can take up "
+                                     "to 10 seconds when a server does not answer.").classes("or-hint")
+                            ui.label("Class search term").classes("or-label")
+                            ui.input(placeholder="e.g. Person (optional)").bind_value(work, "ontocheck_search") \
+                                .props('outlined dense clearable aria-label="Class search term"').classes("w-72")
+                            ui.label("For the searchClass metric: lists classes whose name contains this text.") \
+                                .classes("or-hint")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
                                 ui.label("OOPS!").classes("or-h2")
                                 with ui.row().classes("items-center gap-2"):
@@ -1732,11 +1772,12 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     with ui.column().classes("or-sec gap-2"):
                         ui.label("Built on").classes("or-h2")
                         for name, what in (("ROBOT", "OBO tool for ontology reports"), ("OOPS!", "OntOlogy Pitfall Scanner"),
+                                           ("OntoCheck", "Ontology quality metrics, SDLE Research Center, CWRU (CC BY 4.0)"),
                                            ("HermiT / ELK", "OWL reasoners, run through ROBOT"),
                                            ("NiceGUI", "Python UI framework"), ("rdflib", "RDF parsing and serialization")):
                             ui.html(f'<div style="font-size:13px"><b>{name}</b> <span class="or-muted">— {what}</span></div>',
                                     sanitize=False)
-                        ui.label("Please cite ROBOT and OOPS! when publishing their results.").classes("or-hint q-mt-sm")
+                        ui.label("Please cite ROBOT, OntoCheck and OOPS! when publishing their results.").classes("or-hint q-mt-sm")
             with ui.element("footer").classes("w-full row items-center justify-between gap-4 q-mt-md q-pt-md").style(
                     "border-top: 1px solid var(--or-line)"):
                 with ui.row().classes("items-center gap-4"):

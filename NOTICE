@@ -4,3 +4,9 @@ Copyright 2026 CAIR-Nepal (https://cair-nepal.org)
 This product bundles third-party JavaScript libraries under their own licenses:
 Cytoscape.js (MIT), cytoscape-dagre (MIT), dagre (MIT) and MiniSearch (MIT),
 in src/ontoreview/themes/default/static/vendor/.
+
+This product uses OntoCheck (https://github.com/cwru-sdle/OntoCheck), Copyright (c) 2025
+SDLE Research Center, Case Western Reserve University, licensed under the Creative Commons
+Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/). It is
+installed as a dependency and not modified; OntoReview calls its metric functions and analysis
+helpers (src/ontoreview/quality_checks/ontocheck.py).
