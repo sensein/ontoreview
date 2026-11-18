@@ -5,10 +5,16 @@ import textwrap
 import pytest
 
 import ontoreview
-from ontoreview import evaluate as evaluators
 from ontoreview.config import Config
 from ontoreview.cq import evaluate, load_cqs, load_many, write_template
-from ontoreview.evaluate import parse_oops, parse_robot_tsv, run_evaluations, run_robot
+from ontoreview.quality_checks import oops as oops_mod
+from ontoreview.quality_checks.evaluators import run_evaluations
+from ontoreview.quality_checks.robot import run_robot
+from ontoreview.report.models import ExternalReport
+from ontoreview.report.oops import parse_oops
+from ontoreview.report.robot import parse_robot_tsv
+
+NO_REASONER = Config(evaluation={"reasoner": "off"})   # ROBOT-report tests: the reasoner has its own tests
 
 
 def test_yaml_cqs_are_evaluated(fixtures, pizza):
@@ -107,8 +113,8 @@ def _fake_oops(monkeypatch):
 
     def fake(graph, *a, **k):
         calls.append(graph)
-        return evaluators.ExternalReport("OOPS!", "https://oops.linkeddata.es", items=parse_oops(OOPS_SAMPLE))
-    monkeypatch.setattr(evaluators, "run_oops", fake)
+        return ExternalReport("OOPS!", "https://oops.linkeddata.es", items=parse_oops(OOPS_SAMPLE))
+    monkeypatch.setattr(oops_mod, "run_oops", fake)
     return calls
 
 
@@ -129,7 +135,7 @@ def test_robot_stub(tmp_path, pizza, monkeypatch):
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}{os.environ['PATH']}")
     rep = run_robot(loaded.graph)
     assert rep is not None and rep.error is None and rep.summary == {"error": 1, "warning": 1, "info": 1}
-    reports = run_evaluations(loaded.graph, Config())
+    reports = run_evaluations(loaded.graph, NO_REASONER)
     assert [r.tool for r in reports] == ["ROBOT"] and not oops_calls  # ROBOT worked: no OOPS! fallback
 
 
@@ -141,7 +147,8 @@ def test_no_robot_falls_back_to_oops(pizza, monkeypatch):
     reports = run_evaluations(loaded.graph, Config())
     assert [r.tool for r in reports] == ["OOPS!"] and len(oops_calls) == 1
     forced = run_evaluations(loaded.graph, Config(evaluation={"robot": "on"}))
-    assert [r.tool for r in forced] == ["ROBOT", "OOPS!"] and "not available" in forced[0].error
+    assert [r.tool for r in forced] == ["ROBOT", "Logical consistency", "OOPS!"]
+    assert "not available" in forced[0].error and "not available" in forced[1].error
 
 
 @pytest.mark.real_evaluators
@@ -211,7 +218,7 @@ def test_robot_docker_pulls_by_default(tmp_path, pizza, monkeypatch):
     canned.write_text(ROBOT_TSV)
     log = _docker_stub(tmp_path, canned, has_image=False)
     monkeypatch.setenv("PATH", f"{tmp_path}{os.pathsep}/usr/bin{os.pathsep}/bin")
-    reports = run_evaluations(loaded.graph, Config())  # image missing: `docker run` pulls it
+    reports = run_evaluations(loaded.graph, NO_REASONER)  # image missing: `docker run` pulls it
     assert [r.tool for r in reports] == ["ROBOT"] and reports[0].error is None
     assert "\nrun --rm" in f"\n{log.read_text()}" and not oops_calls
 

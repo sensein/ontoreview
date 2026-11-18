@@ -122,6 +122,10 @@ class EvaluationConfig(BaseModel):
     robot_path: str | None = Field(None, description="A local `robot` executable (optional; Docker is used otherwise)")
     robot_image: str = Field("obolibrary/robot", description="Docker image used to run ROBOT")
     robot_profile: str | None = Field(None, description="Custom ROBOT report profile (TSV)")
+    reasoner: Literal["hermit", "elk", "off"] = Field(
+        "hermit", description="Logical consistency check with an OWL reasoner via `robot reason` (needs ROBOT): "
+                              "hermit = full OWL 2 DL, elk = fast, OWL 2 EL only, off = skip")
+    reasoner_timeout: int = Field(600, description="Seconds before the reasoner is stopped")
 
     @field_validator("oops", "robot", mode="before")
     @classmethod
@@ -269,6 +273,7 @@ disable = []                # e.g. ["OB019"]
 [evaluation]
 robot = "auto"              # ROBOT via a local robot or Docker: "auto" | "on" | "off"
 oops = "auto"               # OOPS! web service (uploads the ontology): "auto" (only if ROBOT can't run) | "on" | "off"
+reasoner = "hermit"         # logical consistency via ROBOT: "hermit" | "elk" (fast, OWL 2 EL only) | "off"
 
 # Metadata found in the ontology is used automatically; anything here overrides it.
 [metadata]

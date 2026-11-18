@@ -54,21 +54,22 @@ FORMATS = [  # id, name, description, tag
     ("single", "Single HTML file", "One portable file to share or attach", ".html"),
     ("markdown", "Markdown", "Editable text, good for Git repos, MkDocs or Docusaurus", ".md"),
     ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
-    ("check", "Quality check only", "Run the checks, ROBOT and OOPS! without docs", "report"),
+    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner and OOPS! without docs", "report"),
     ("diff", "Compare versions", "What changed since a previous release of this ontology", "changes.md"),
 ]
 RECOMMENDED = "site"
 INCLUDES = {
-    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, OOPS!), "
+    "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, OOPS!), "
             "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
     "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
-    "check": "Includes: built-in checks, ROBOT and OOPS! results as JSON; no documentation",
+    "check": "Includes: built-in checks, ROBOT, reasoner and OOPS! results as JSON; no documentation",
     "diff": "Includes: added, removed and modified terms with the exact statements that changed, as Markdown "
             "and JSON. To put a changelog inside the website instead, set Previous version in Settings › Documentation",
 }
 OOPS_CHOICES = {"off": "Off", "auto": "Only if ROBOT can't run", "on": "Always"}
+REASONER_CHOICES = {"hermit": "HermiT (OWL 2 DL)", "elk": "ELK (fast, OWL 2 EL)", "off": "Off"}
 
 # ---------------------------------------------------------------------------- drag and drop
 # The page uploads dropped files to this endpoint. The token is embedded in the page, so other
@@ -197,10 +198,12 @@ HELP = [
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
     ], "Everything runs on your computer. Only the optional OOPS! scan sends the ontology to a web service.", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
-        "While it runs you see each step: parse, built-in checks, ROBOT, OOPS!, render.",
+        "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
-        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT and OOPS! findings are merged with "
+        "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
+        "<b>Logical consistency</b> errors come from an OWL reasoner (HermiT by default): an inconsistent ontology, "
+        "or classes that can never have members. Use Protégé's explanations to find the axioms responsible.",
         "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
     ], "", [("Open Build", "/")]),
     ("compare", "Comparing two versions", "compare.png", [
@@ -281,7 +284,8 @@ HELP = [
         "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
         "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
         "questions and the previous version (for the changelog).",
-        "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the OOPS! service, and when a "
+        "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the reasoner for the "
+        "logical consistency check (HermiT, ELK or off), the OOPS! service, and when a "
         "check run counts as failed.",
         "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
@@ -425,6 +429,8 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
     if s.task in ("site", "single", "check"):
         if s.robot != "off":
             steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
+            if s.reasoner != "off":
+                steps.append(("reasoner", "Logical consistency (" + {"hermit": "HermiT", "elk": "ELK"}[s.reasoner] + ")"))
         if s.oops != "off":
             steps.append(("oops", "OOPS! pitfall scan" + (" (if ROBOT can't run)" if s.oops == "auto" else "")))
     steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
@@ -433,7 +439,7 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
 
 
 STEP_OF = [("Parsing ontology", "parse"), ("Parsed ", "checks"), ("Running ROBOT", "robot"),
-           ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
+           ("Checking logical consistency", "reasoner"), ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
 BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
 
 
@@ -895,7 +901,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                          f"ROBOT ({'local' if s.robot_path else 'Docker'})")
             oops_txt = {"off": "OOPS! off", "auto": "OOPS! only if ROBOT can't run (uploads the ontology)",
                         "on": "OOPS! always (uploads the ontology)"}[s.oops]
-            checks_info.text = f"Quality checks: built-in · {robot_txt} · {oops_txt}"
+            reasoner_txt = ("" if s.robot == "off" or s.reasoner == "off" else
+                            f" · {'HermiT' if s.reasoner == 'hermit' else 'ELK'} consistency")
+            checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}"
             cli.text = s.cli()
             run_btn.text = "Running…" if state["running"] else {"check": "Run checks", "diff": "Compare"}.get(s.task, "Build docs")
             run_btn.set_enabled(not state["running"])
@@ -1151,7 +1159,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 notify(f"Could not read {path}: {e}", "negative")
                 return
             for k in ("source", "output", "layout", "languages", "base_url", "reason", "load_imports",
-                      "include_individuals", "competency_questions", "previous_version", "robot", "oops"):
+                      "include_individuals", "competency_questions", "previous_version", "robot", "oops", "reasoner"):
                 setattr(s, k, getattr(loaded, k))
             refresh()
             notify(f"Loaded {path}", "positive")
@@ -1454,6 +1462,18 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.checkbox("Run ROBOT by default").bind_value(work, "robot_enabled")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
+                            ui.label("Logical consistency").classes("or-h2")
+                            ui.label("An OWL reasoner checks that the ontology is consistent and that every class "
+                                     "can have members. It runs through ROBOT (above), on this machine.") \
+                                .classes("or-hint")
+                            ui.label("Reasoner").classes("or-label")
+                            ui.select(REASONER_CHOICES).bind_value(work, "reasoner") \
+                                .props('outlined dense aria-label="Reasoner"').classes("w-72").mark("reasoner")
+                            ui.label("HermiT is complete for OWL 2 DL but can be slow on very large ontologies; "
+                                     "ELK is fast but only understands OWL 2 EL, so it can miss problems.") \
+                                .classes("or-hint")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
                                 ui.label("OOPS!").classes("or-h2")
                                 with ui.row().classes("items-center gap-2"):
@@ -1597,7 +1617,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 for icon, title, text in (
                         ("language", "Documentation", "Website, single HTML file, Markdown or a MyST / Sphinx project — "
                                                       "for one ontology or a whole folder."),
-                        ("task_alt", "Quality review", "Built-in checks, ROBOT reports and OOPS! pitfall scans, merged "
+                        ("task_alt", "Quality review", "Built-in checks, ROBOT reports, reasoner consistency and OOPS! pitfall scans, merged "
                                                        "into one list of errors and warnings."),
                         ("code", "Reproducible", "Every run here maps to an ontoreview command and can be saved as "
                                                  "ontoreview.toml for CI."),
@@ -1623,6 +1643,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     with ui.column().classes("or-sec gap-2"):
                         ui.label("Built on").classes("or-h2")
                         for name, what in (("ROBOT", "OBO tool for ontology reports"), ("OOPS!", "OntOlogy Pitfall Scanner"),
+                                           ("HermiT / ELK", "OWL reasoners, run through ROBOT"),
                                            ("NiceGUI", "Python UI framework"), ("rdflib", "RDF parsing and serialization")):
                             ui.html(f'<div style="font-size:13px"><b>{name}</b> <span class="or-muted">— {what}</span></div>',
                                     sanitize=False)

@@ -5,7 +5,6 @@ from __future__ import annotations
 import functools
 import http.server
 import logging
-import re
 import sys
 import threading
 import time
@@ -33,7 +32,6 @@ console = Console(emoji=False)
 ADVANCED = "Advanced / CI"
 err = Console(stderr=True, emoji=False)
 
-SEV_STYLE = {"error": "bold red", "warning": "yellow", "info": "cyan"}
 
 
 class Layout(str, Enum):
@@ -81,8 +79,12 @@ def _overrides(**kw) -> dict:
     return out
 
 
-def _eval_overrides(oops: bool | None, robot: str | None) -> dict | None:
+def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None = None) -> dict | None:
     ev = {}
+    if reasoner is not None:
+        if reasoner.lower() not in ("hermit", "elk", "off"):
+            raise typer.BadParameter("use hermit, elk or off", param_hint="--reasoner")
+        ev["reasoner"] = reasoner.lower()
     if oops is not None:
         ev["oops"] = "on" if oops else "off"
     if robot is not None:
@@ -132,19 +134,6 @@ def _print_collection(res, verb: str) -> None:
     index = res.output / ("index.html" if verb == "built" else "index.md")
     console.print(f"[green]✓[/] {verb} {len(res.ok)} of {len(res.entries)} ontologies → {index}"
                   f"  [dim]{res.seconds:.2f}s[/]")
-
-
-def _print_external(report) -> None:
-    for ext in report.external:
-        console.print(f"\n[bold]{ext.tool}[/] [dim]{ext.url}[/]")
-        if ext.error:
-            console.print(f"   [red]{_rich_escape(ext.error)}[/]")
-            continue
-        if not ext.items:
-            console.print("   [green]No issues reported.[/]")
-        for it in ext.items:
-            console.print(f"   [{SEV_STYLE[it.severity]}]{it.severity.upper():8}[/] {it.code} {_rich_escape(it.name)} "
-                          f"[dim]({len(it.affected) or ''})[/]")
 
 
 def _version_cb(value: bool) -> None:
@@ -202,6 +191,7 @@ def build(
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file (.yaml/.json/.csv/.tsv/.xlsx); repeatable."),
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Always run OOPS! (uploads the ontology to oops.linkeddata.es), or never. By default it runs only when ROBOT cannot."),
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
+    reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
@@ -215,7 +205,7 @@ def build(
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
                     base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason,
                     load_imports=imports, include_imported=include_imported,
-                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot),
+                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
     folder = _folder_source(source, config)
     if folder is not None:
@@ -400,20 +390,22 @@ def check(
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file; repeatable."),
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="Always run OOPS! (uploads the ontology to oops.linkeddata.es), or never. By default it runs only when ROBOT cannot."),
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
+    reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
-    """Run quality checks: built-in rules plus ROBOT (Docker), with OOPS! as fallback (great for CI).
+    """Run quality checks: built-in rules, ROBOT report and a reasoner consistency check (Docker),
+    with OOPS! as fallback (great for CI).
     SOURCE may be a folder: every ontology in it is checked; JSON output is keyed by file."""
     _setup_logging(verbose)
     from .build import check as do_check
 
     folder = _folder_source(source, config)
     if folder is not None:
-        _check_folder(folder, config, fmt, fail_on, output, oops, robot)
+        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner)
         return
 
     try:
-        ev = _eval_overrides(oops, robot)
+        ev = _eval_overrides(oops, robot, reasoner)
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
@@ -429,34 +421,22 @@ def check(
         else:
             sys.stdout.write(text + "\n")   # raw JSON: safe to pipe
     elif fmt == CheckFormat.html:
-        from .render.site import SiteRenderer, codeticks  # noqa: F401
+        from .report.html import quality_html
 
-        html = _report_html(onto, report)
+        html = quality_html(onto, report)
         target = output or Path("quality.html")
         target.write_text(html, "utf-8")
         console.print(f"Report written to {target}")
     else:
-        if not report.findings:
-            console.print("[green]✓ No issues found.[/]")
-        for rule, findings in report.by_rule():
-            sev = findings[0].severity
-            console.print(f"\n[{SEV_STYLE[sev]}]{sev.upper():8}[/] [bold]{rule.id}[/] {rule.title} "
-                          f"[dim]({len(findings)})[/]")
-            for f in findings[:50]:
-                msg = re.sub(r"`([^`]+)`", r"[bold]\1[/]", _rich_escape(f.message))
-                console.print(f"   • {msg}")
-            if len(findings) > 50:
-                console.print(f"   [dim]… and {len(findings) - 50} more[/]")
-        _print_external(report)
-        s = report.summary
-        console.print(f"\n[bold]{s['error']}[/] errors, [bold]{s['warning']}[/] warnings, "
-                      f"[bold]{s['info']}[/] suggestions in {len(onto.terms)} terms.")
+        from .report.console import print_report
+
+        print_report(console, onto, report)
     if fail_on != FailOn.never and report.failed(fail_on.value):
         raise typer.Exit(1)
 
 
 def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path | None,
-                  oops: bool | None, robot: str | None) -> None:
+                  oops: bool | None, robot: str | None, reasoner: str | None = None) -> None:
     import json
 
     from .build import check as do_check
@@ -466,7 +446,7 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
     if not files:
         err.print(f"[bold red]Error:[/] No ontology files found in {folder}")
         raise typer.Exit(2)
-    ev = _eval_overrides(oops, robot)
+    ev = _eval_overrides(oops, robot, reasoner)
     extra = {"evaluation": ev} if ev else {}
     results, failed, broken = {}, False, False
     for f in files:
@@ -507,25 +487,6 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
 
 def _rich_escape(s: str) -> str:
     return s.replace("[", "\\[")
-
-
-def _report_html(onto, report) -> str:
-    from .config import Config
-    from .render.site import Section, SiteRenderer
-
-    cfg = Config()
-    r = SiteRenderer(cfg, onto, Path("."), report=report)
-    tmpl = r.env.from_string(
-        '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-        '<title>Quality report · {{ meta.title }}</title><style>{{ css|safe }}</style></head>'
-        '<body><main class="content" style="margin:auto">{% include "sections/quality.html" %}</main></body></html>'
-    )
-    from .render.site import THEME_DIR
-
-    css = (THEME_DIR / "static" / "ontoreview.css").read_text("utf-8")
-    s = Section("quality", f"Quality report: {onto.metadata.title or ''}", "quality.html",
-                context={"report": report})
-    return tmpl.render(s=s, css=css, page="index.html", sections=[s])
 
 
 @app.command(rich_help_panel=ADVANCED)

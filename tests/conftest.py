@@ -2,10 +2,11 @@ from pathlib import Path
 
 import pytest
 
-from ontoreview import evaluate
 from ontoreview.config import Config
 from ontoreview.loader import load_ontology
 from ontoreview.model.extract import extract
+from ontoreview.quality_checks import logical_consistency, oops, robot
+from ontoreview.report.models import ExternalReport
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -33,8 +34,9 @@ def _no_external_evaluators(request, monkeypatch):
     Tests marked ``real_evaluators`` exercise the real dispatch with their own stubs."""
     if "real_evaluators" in request.keywords:
         return
-    monkeypatch.setattr(evaluate, "run_robot", lambda *a, **k: None)
-    monkeypatch.setattr(evaluate, "run_oops", lambda *a, **k: evaluate.ExternalReport("OOPS!", "https://oops.linkeddata.es"))
+    monkeypatch.setattr(robot, "run_robot", lambda *a, **k: None)
+    monkeypatch.setattr(logical_consistency, "run_reasoner", lambda *a, **k: None)
+    monkeypatch.setattr(oops, "run_oops", lambda *a, **k: ExternalReport("OOPS!", "https://oops.linkeddata.es"))
 
 
 @pytest.fixture

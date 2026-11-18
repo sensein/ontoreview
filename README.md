@@ -91,9 +91,12 @@ ontologies/                 docs/
 - `--single-file` writes one self-contained `index.html` per sub-folder.
 - `source = "ontologies/"` in `ontoreview.toml` works too.
 
-## External evaluators: OOPS! and ROBOT
+## External evaluators: ROBOT, reasoner and OOPS!
+
+For the full list of quality checks, their order and how to configure them, see [quality_check.md](quality_check.md).
 
 - **ROBOT** (`robot report`) runs by default, on your machine, in Docker using the official `obolibrary/robot` image. You don't need Java or `robot.jar`. The first build pulls the image. A `robot` executable on your PATH, or one set with `evaluation.robot_path`, is used instead of Docker when present. Use `evaluation.robot_image` (or `ROBOT_DOCKER_IMAGE`) to pin a version tag, such as `obolibrary/robot:<version>`.
+- **Logical consistency** runs an OWL reasoner (HermiT by default, or ELK) through the same ROBOT set-up (`robot reason`). It reports an inconsistent ontology and unsatisfiable classes as errors. Set `evaluation.reasoner = "elk"` for speed on large ontologies, or `"off"` (`--reasoner off`) to skip it.
 - **OOPS!** is the fallback. When ROBOT can't run (Docker isn't installed or running, or ROBOT fails), OntoReview calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html) instead. **This sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to never upload it, or `"on"` (`--oops`) to run OOPS! alongside ROBOT.
 - To skip external evaluators entirely, set `evaluation.robot = "off"`; OOPS! then runs only if `oops = "on"`.
 
@@ -160,6 +163,7 @@ section_order = ["introduction", "competency-questions", "reference", "graph"]
 [evaluation]
 robot = "auto"                # ROBOT via local robot or Docker; "on" | "off"
 oops = "auto"                 # OOPS! web service only when ROBOT can't run; "on" | "off"
+reasoner = "hermit"           # logical consistency via ROBOT; "elk" | "off"
 robot_image = "obolibrary/robot"
 ```
 
@@ -189,9 +193,10 @@ ontoreview ui [--port N] [--no-browser]       # the app (recommended); same as o
 
 # Advanced / CI. SOURCE is a file, a URL or a folder of ontologies
 ontoreview build [SOURCE] [-o docs] [--layout multi] [--lang en,es] [--previous v1.ttl] [--reason]
-                 [--base-url URL] [--cq cq.yaml] [--single-file] [--robot auto|on|off] [--oops/--no-oops] [--open]
+                 [--base-url URL] [--cq cq.yaml] [--single-file] [--robot auto|on|off] [--reasoner hermit|elk|off]
+                 [--oops/--no-oops] [--open]
 ontoreview serve [SOURCE] [--port 8000]       # rebuilds on change, live reload
-ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html] [-o report]
+ontoreview check [SOURCE] [--fail-on warning] [--format console|json|html] [-o report] [--reasoner hermit|elk|off]
 ontoreview diff OLD NEW [--format console|markdown|json|html] [-o changes.html]
 ontoreview export [SOURCE] --format markdown|myst -o docs-md
 ontoreview init [SOURCE] [--from-widoco config.properties]   # ontoreview.toml + GitHub Pages workflow

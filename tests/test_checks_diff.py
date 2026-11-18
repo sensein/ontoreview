@@ -1,6 +1,6 @@
-from ontoreview.checks import Rule, run_checks
 from ontoreview.config import Config
 from ontoreview.diff import compare_files
+from ontoreview.quality_checks import Rule, run_checks
 
 
 def _ids(report):

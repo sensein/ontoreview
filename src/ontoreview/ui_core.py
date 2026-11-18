@@ -58,6 +58,7 @@ class Settings:
     robot_image: str = "obolibrary/robot"
     oops_timeout: int = 90
     oops_endpoint: str = ""
+    reasoner: Literal["hermit", "elk", "off"] = "hermit"
     default_root: str = ""          # Settings > default output folder
     verbose: bool = False
 
@@ -124,7 +125,9 @@ class Settings:
             ev["robot_path"] = self.robot_path.strip()
         if self.robot_image.strip() and self.robot_image.strip() != "obolibrary/robot":
             ev["robot_image"] = self.robot_image.strip()
-        from .evaluate import OOPS_ENDPOINT
+        if self.reasoner != "hermit":
+            ev["reasoner"] = self.reasoner
+        from .quality_checks.oops import OOPS_ENDPOINT
 
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
             ev["oops_endpoint"] = self.oops_endpoint.strip()
@@ -185,6 +188,8 @@ class Settings:
                 args += ["--robot", self.robot]
             if self.oops != "auto":
                 args.append("--oops" if self.oops == "on" else "--no-oops")
+            if self.reasoner != "hermit" and self.robot != "off":
+                args += ["--reasoner", self.reasoner]
         if self.task == "check" and self.fail_on != "error":
             args += ["--fail-on", self.fail_on]
         return " ".join(args)
@@ -207,7 +212,7 @@ class Settings:
         cqs = [x.strip() for x in self.competency_questions.split(",") if x.strip()]
         if cqs:
             lines.append(f"competency_questions = [{', '.join(s(x) for x in cqs)}]")
-        lines += ["", "[evaluation]", f"robot = {s(self.robot)}", f"oops = {s(self.oops)}", ""]
+        lines += ["", "[evaluation]", f"robot = {s(self.robot)}", f"oops = {s(self.oops)}", f"reasoner = {s(self.reasoner)}", ""]
         return "\n".join(lines)
 
     @classmethod
@@ -232,7 +237,7 @@ class Settings:
             include_individuals=bool(raw.get("include_individuals", True)),
             competency_questions=", ".join(rel(c) for c in raw.get("competency_questions", [])),
             previous_version=rel(raw.get("previous_version", "") or ""),
-            robot=ev.get("robot", "auto"), oops=oops,
+            robot=ev.get("robot", "auto"), oops=oops, reasoner=ev.get("reasoner", "hermit"),
         )
 
     # -------------------------------------------------------------- persistence
@@ -316,9 +321,10 @@ def _external_text(reports) -> str:
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
     from .build import build, build_single_file, check, load, resolve_config
-    from .collection import build_collection, export_collection, report_issues
+    from .collection import build_collection, export_collection
     from .export import export_markdown
     from .model.extract import extract
+    from .report.issues import report_issues
 
     problems = settings.validate()
     if problems:
@@ -720,6 +726,7 @@ class Prefs:
     oops: Literal["auto", "on", "off"] = "auto"
     oops_endpoint: str = "https://oops.linkeddata.es/rest"
     oops_timeout: int = 90
+    reasoner: Literal["hermit", "elk", "off"] = "hermit"
     theme: Literal["light", "dark", "system"] = "system"
     compact: bool = False
     # documentation options (Settings > Documentation)
@@ -764,6 +771,7 @@ class Prefs:
         s.robot_path = self.robot_path if self.robot_mode == "local" else ""
         s.robot_image = self.robot_image or "obolibrary/robot"
         s.oops, s.oops_endpoint, s.oops_timeout = self.oops, self.oops_endpoint, self.oops_timeout
+        s.reasoner = self.reasoner
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",
                   "competency_questions", "previous_version", "fail_on"):
             setattr(s, k, getattr(self, k))
@@ -779,7 +787,7 @@ def robot_status(prefs: Prefs) -> dict[str, str]:
     """{state: ok | warn | off | missing, label, detail} for the sidebar and Settings."""
     import shutil
 
-    from .evaluate import _docker, _image_present
+    from .quality_checks.robot import _docker, _image_present
 
     if not prefs.robot_enabled:
         return {"state": "off", "label": "ROBOT · off", "detail": "Turned off in Settings"}
@@ -801,7 +809,7 @@ def oops_status(prefs: Prefs, check: bool = True) -> dict[str, str]:
     """Reachability of the OOPS! service (a HEAD request; the ontology is not sent). Cached 10 min."""
     if prefs.oops == "off":
         return {"state": "off", "label": "OOPS! · off", "detail": "Never uploads"}
-    from .evaluate import OOPS_ENDPOINT
+    from .quality_checks.oops import OOPS_ENDPOINT
 
     url = prefs.oops_endpoint or OOPS_ENDPOINT
     hit = _oops_cache.get(url)
@@ -835,7 +843,7 @@ def system_info() -> dict[str, str]:
         ng = nicegui.__version__
     except ImportError:
         ng = "not installed"
-    from .evaluate import _docker
+    from .quality_checks.robot import _docker
 
     docker = _docker()
     if docker:
