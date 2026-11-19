@@ -37,7 +37,27 @@ def _namespace(iri: str) -> str:
 
 
 def references(graph, local_namespaces) -> dict[str, set[str]]:
-    """External IRIs in class/property positions -> expected roles. Built-ins and local terms excluded."""
+    """External IRIs in class/property positions -> expected roles. Built-ins and local terms excluded.
+
+    Every predicate counts as a property reference, so annotation properties reused from other
+    vocabularies (``skos:definition``, ``dcterms:creator`` …) are checked like reused classes: a
+    reused IRI can be misspelled or missing from its vocabulary. Built-in annotation properties
+    (``rdfs:label``, ``rdfs:comment``, ``owl:versionInfo`` …) are skipped with the rest of the
+    RDF/RDFS/OWL/XSD namespaces, and so are the ontology's own namespaces.
+
+    Roles come from how the IRI is used: any predicate, the object of ``owl:onProperty``, and
+    either side of ``rdfs:subPropertyOf``/``owl:equivalentProperty``/``owl:inverseOf`` are
+    properties; the object of ``rdf:type`` and either side of ``rdfs:subClassOf``/
+    ``owl:equivalentClass``/``owl:disjointWith`` are classes; the object of ``rdfs:domain``,
+    ``rdfs:range``, ``owl:onClass``, ``owl:someValuesFrom`` and ``owl:allValuesFrom`` is a class
+    or datatype. ``Validator`` then requires each role to match a declared type; an annotation
+    property passes the property role because ``PROPERTY_TYPES`` includes
+    ``owl:AnnotationProperty``.
+
+    Example (``tests/fixtures/pizza.ttl``): ``:Pizza skos:definition "…"`` makes
+    ``skos:definition`` a property reference; SKOS declares it an annotation property, so it is
+    valid. ``rdfs:comment`` is built in and never checked.
+    """
     refs: dict[str, set[str]] = {}
     skip = BUILTINS + tuple(ns for ns in local_namespaces if ns)
 
