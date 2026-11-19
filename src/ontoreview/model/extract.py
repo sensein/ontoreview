@@ -528,7 +528,26 @@ class Extractor:
                                         typed: set[str]) -> None:
         """List annotation properties used on documented terms or the ontology header but not
         declared in the input (``skos:definition``, ``dcterms:creator``, ``rdfs:label`` …), so the
-        docs show every annotation property in play, not only the declared ones."""
+        docs show every annotation property in play, not only the declared ones.
+
+        A predicate is listed when it is used on a documented term or the ontology header in the
+        ontology's own graph (imports are not scanned) and it is not:
+
+        * already a documented term, or typed with a recognised kind anywhere in the input;
+        * a hidden LinkML predicate;
+        * an RDF/RDFS/OWL/XSD/XML built-in, except the nine OWL 2 built-in annotation
+          properties in ``BUILTIN_ANNOTATION_PROPERTIES`` (``rdfs:label``, ``rdfs:comment`` …);
+        * typed as an object or datatype property in the ontology or its imports.
+
+        Each entry records ``use_count``, the number of terms (plus the header) that use it, and
+        is flagged ``undeclared``, or ``imported`` when only an import declares it as an
+        ``owl:AnnotationProperty``.
+
+        Example (``tests/fixtures/pizza.ttl``): the ontology declares no annotation properties.
+        ``skos:definition`` (used on 8 resources), ``dcterms:creator`` (1) and ``rdfs:label``
+        (14) are listed, while ``rdfs:subClassOf`` and ``owl:versionIRI`` are left out as
+        non-annotation built-ins. In total 17 annotation properties are listed where there were 0.
+        """
         subjects = [URIRef(i) for i in self.terms] + ([onto] if onto is not None else [])
         uses: dict[URIRef, set] = defaultdict(set)
         for s in subjects:
