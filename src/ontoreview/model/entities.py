@@ -104,6 +104,8 @@ class Term:
     status: str | None = None
     external: bool = False  # declared here but outside the ontology namespace
     imported: bool = False  # only declared in an imported ontology
+    undeclared: bool = False  # annotation property used here but declared nowhere in the input
+    use_count: int = 0  # undeclared annotation properties: number of terms (and header) using it
 
     # classes
     superclasses: list[Ref] = field(default_factory=list)

@@ -20,7 +20,8 @@ _LITERAL_TYPES = {str(RDFS.Literal), str(RDF.langString), str(RDF.PlainLiteral),
 
 def _own(ctx: CheckContext):
     """Terms that belong to this ontology (not imported, not external)."""
-    return [t for t in ctx.ontology.terms.values() if not t.imported and not t.external]
+    return [t for t in ctx.ontology.terms.values()
+            if not t.imported and not t.external and not t.undeclared]
 
 
 # ------------------------------------------------------------------ metadata
@@ -283,7 +284,7 @@ def external(ctx):
     if ctx.ontology.source_kind == "linkml":
         return  # class_uri/slot_uri/meaning mappings to external IRIs are intentional in LinkML
     for t in ctx.ontology.terms.values():
-        if t.external and not t.imported:
+        if t.external and not t.imported and not t.undeclared:
             yield t.iri, f"`{t.curie or t.iri}` is declared here but is outside the namespace."
 
 

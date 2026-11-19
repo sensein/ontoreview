@@ -157,6 +157,11 @@ _KIND_TYPES = [
     (SKOS.Concept, "concept"),
     (OWL.NamedIndividual, "individual"),
 ]
+# OWL 2 built-in annotation properties (OWL 2 Structural Specification §5.5).
+BUILTIN_ANNOTATION_PROPERTIES = {
+    RDFS.label, RDFS.comment, RDFS.seeAlso, RDFS.isDefinedBy, OWL.deprecated, OWL.versionInfo,
+    OWL.priorVersion, OWL.backwardCompatibleWith, OWL.incompatibleWith,
+}
 _PROPERTY_KINDS = {"object_property", "datatype_property", "property", "annotation_property"}
 
 
@@ -366,6 +371,9 @@ class Extractor:
             )
             self.terms[iri] = t
 
+        if cfg.include_annotation_properties and cfg.include_used_annotation_properties:
+            self._add_used_annotation_properties(onto, namespace, set(candidates))
+
         for t in self.terms.values():
             self._fill_common(t)
         for t in self.terms.values():
@@ -515,6 +523,34 @@ class Extractor:
                 pref = Ref(pref.iri, nice, pref.curie, pref.internal, pref.anchor, pref.kind)
             t.annotations.append(Annotation(pref, vals))
         t.annotations.sort(key=lambda a: a.prop.label.lower())
+
+    def _add_used_annotation_properties(self, onto: URIRef | None, namespace: str | None,
+                                        typed: set[str]) -> None:
+        """List annotation properties used on documented terms or the ontology header but not
+        declared in the input (``skos:definition``, ``dcterms:creator``, ``rdfs:label`` …), so the
+        docs show every annotation property in play, not only the declared ones."""
+        subjects = [URIRef(i) for i in self.terms] + ([onto] if onto is not None else [])
+        uses: dict[URIRef, set] = defaultdict(set)
+        for s in subjects:
+            for p in self.main.predicates(s, None):
+                uses[p].add(s)
+        for p, users in uses.items():
+            iri = str(p)
+            if iri in self.terms or iri in typed or iri in HIDDEN_PREDICATES:
+                continue
+            if _is_builtin(iri) and p not in BUILTIN_ANNOTATION_PROPERTIES:
+                continue  # rdf:type, rdfs:subClassOf, owl:versionIRI … are not annotations
+            types = set(self.g.objects(p, RDF.type))
+            if types & {OWL.ObjectProperty, OWL.DatatypeProperty}:
+                continue  # assertions on individuals, documented as facts
+            ln = local_name(iri)
+            self.terms[iri] = Term(
+                iri=iri, kind="annotation_property", anchor=self._unique_anchor(ln),
+                curie=self.curie(iri), local_name=ln, label=ln,
+                external=not (namespace and iri.startswith(namespace)),
+                imported=OWL.AnnotationProperty in types,
+                undeclared=OWL.AnnotationProperty not in types, use_count=len(users),
+            )
 
     def _is_assertion_predicate(self, p) -> bool:
         types = set(self.g.objects(p, RDF.type))
