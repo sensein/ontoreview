@@ -102,3 +102,17 @@ def test_skos(fixtures):
     assert red.alt_labels == ["crimson"]
     assert "exact match" in red.mappings
     assert o.concept_tree[0].ref.label == "colour"
+
+
+def test_used_annotation_properties(fixtures):
+    loaded = load_ontology(fixtures / "pizza.ttl")
+    o = extract(loaded, Config())
+    aps = {t.curie: t for t in o.by_kind("annotation_property")}
+    assert {"skos:definition", "dcterms:creator", "rdfs:label", "owl:versionInfo"} <= set(aps)
+    assert not {"rdfs:subClassOf", "owl:versionIRI", "rdf:type"} & set(aps)  # not annotations
+    d = aps["skos:definition"]
+    assert d.undeclared and d.external and d.use_count > 1
+    assert "annotation_property" in o.kind_trees  # listed in the sidebar
+
+    off = extract(loaded, Config(include_used_annotation_properties=False))
+    assert not off.by_kind("annotation_property")

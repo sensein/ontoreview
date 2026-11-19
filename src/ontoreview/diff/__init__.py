@@ -164,7 +164,8 @@ def _onto_node(g: Graph):
 def compare(old: LoadedOntology, new: LoadedOntology, config: Config | None = None) -> Changelog:
     config = config or Config()
     cfg = config.model_copy(update={"include_external": True, "include_individuals": True,
-                                    "include_annotation_properties": True, "reason": False})
+                                    "include_annotation_properties": True,
+                                    "include_used_annotation_properties": False, "reason": False})
     e_old, e_new = Extractor(old, cfg), Extractor(new, cfg)
     e_new._prefixes = _shared_prefixes(e_old._prefixes, e_new._prefixes)
     o_old, o_new = e_old.extract(), e_new.extract()

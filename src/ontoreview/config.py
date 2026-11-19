@@ -177,6 +177,9 @@ class Config(BaseModel):
     # Content selection
     include_individuals: bool = True
     include_annotation_properties: bool = True
+    include_used_annotation_properties: bool = Field(
+        True, description="Also list annotation properties the ontology uses but does not declare "
+                          "(e.g. skos:definition, dcterms:creator, rdfs:label)")
     include_external: bool = True
     reason: bool = False
     label_properties: list[str] = Field(default_factory=list, description="Extra label properties (CURIE/IRI), highest priority")

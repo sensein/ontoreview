@@ -44,7 +44,7 @@
     <h3 class="term-title"><a href="#{{ x.anchor }}">{{ x.label }}</a></h3>
     <span class="term-kind">{{ x.kind_label }}</span>
     {% if x.deprecated %}<span class="term-flag">{{ t('deprecated') }}</span>{% endif %}
-    {% if x.imported %}<span class="term-flag">{{ t('imported') }}</span>{% elif x.external %}<span class="term-flag">{{ t('external') }}</span>{% endif %}
+    {% if x.imported %}<span class="term-flag">{{ t('imported') }}</span>{% elif x.undeclared %}<span class="term-flag" title="{{ t('undeclared_help') }}">{{ t('undeclared') }}</span>{% elif x.external %}<span class="term-flag">{{ t('external') }}</span>{% endif %}
     {% if x.status %}<span class="term-flag">{{ x.status }}</span>{% endif %}
   </header>
   <p class="term-iri"><code>{{ x.iri }}</code> <button class="copy" data-copy="{{ x.iri }}" aria-label="{{ t('copy_iri') }}">copy</button></p>
@@ -54,6 +54,7 @@
   <table class="rel">
     <tbody>
     {% if x.curie %}{{ row('CURIE', '<code>'|safe ~ x.curie ~ '</code>'|safe) }}{% endif %}
+    {% if x.undeclared and x.use_count %}{{ row(t('used_on'), t('used_on_n', n=x.use_count)) }}{% endif %}
     {% if x.alt_labels %}{{ row(t('alt_labels'), x.alt_labels|join(", ")) }}{% endif %}
     {% if x.superclasses %}{{ row(t('superclasses'), refs(x.superclasses)) }}{% endif %}
     {% if x.inferred_superclasses %}{{ row(t('inferred_superclasses'), refs(x.inferred_superclasses)) }}{% endif %}

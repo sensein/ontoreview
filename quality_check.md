@@ -120,17 +120,19 @@ Lookup order:
 2. **OLS**, then **BioPortal** (needs `BIOPORTAL_API_KEY`). Exact IRI matches only.
 3. **Direct RDF download.** Catalogued vocabularies use the catalog's download URL; other terms are dereferenced.
 
+The ontology is parsed, every IRI is validated against the RFC 3987 grammar, and the ontology's identity and resolvability are checked. External class and property references are then resolved in order: the read-only bundled snapshot and the user cache (refreshed when older than the expiry, otherwise used but flagged as stale), OLS/BioPortal, and finally a direct RDF download. Each verified term records the exact release it was checked against (version IRI or version, SHA-256, source and retrieval time), and a different imported release is reported. Results go to the report and the run log, and a frozen copy of the releases used is written into the documentation, so the published provenance does not change when the cache later expires or is refreshed.
+
 ```mermaid
 flowchart TD
     subgraph INPUT["Input"]
         direction LR
         F["Ontology file<br/>Turtle, RDF/XML, N-Triples,<br/>JSON-LD or LinkML"]
-        CFG["Settings<br/>own namespaces, offline,<br/>time budget, timeouts"]
-        BUN[("Bundled SQLite<br/>10 W3C vocabularies, 739 terms<br/>+ catalog of 30 ontologies")]
+        CFG["Settings<br/>own namespaces, offline, time budget,<br/>timeouts, cache expiry (30 days)"]
+        BUN[("Bundled SQLite (read-only)<br/>10 W3C vocabularies, 739 terms<br/>+ catalog of 30 ontologies")]
     end
 
     F --> IN["Ontology graph"]
-    IN --> S1["① Syntax check<br/>every IRI"]
+    IN --> S1["① Syntax check<br/>every IRI, full RFC 3987 grammar"]
     S1 --> S2["② Ontology identity<br/>one owl:Ontology, versionIRI ≠ IRI"]
     S2 --> S3["③ Dereference ontology IRI<br/>content negotiation, exact header match"]
     S3 --> EX["④ Extract external references<br/>class / property positions,<br/>excluding built-ins and own namespaces"]
@@ -138,7 +140,7 @@ flowchart TD
 
     subgraph CHAIN["Per-term lookup"]
         direction TB
-        L1{"Local SQLite?<br/>bundled snapshot or user cache"}
+        L1{"Local SQLite?<br/>bundled snapshot or user cache;<br/>older than expiry → refresh,<br/>else use flagged stale"}
         L2{"OLS / BioPortal<br/>exact IRI match?"}
         L3{"Direct RDF download<br/>declares term?"}
         TY{"Asserted type fits role<br/>and not deprecated?"}
@@ -155,19 +157,22 @@ flowchart TD
     L3 -- "no / offline / limits reached" --> UNV["unverified (info)"]
     TY -- yes --> VAL["valid"]
     TY -- no --> BAD["type_not_declared /<br/>deprecated (warning)"]
+    VAL & BAD --> REL["Record release<br/>version IRI or version, SHA-256,<br/>source URL, retrieval time;<br/>imports a different release → warning"]
 
     subgraph OUTPUT["Output"]
         direction LR
         REP["Report: metrics + findings<br/>severity and affected IRIs;<br/>docs page, app, terminal, JSON"]
+        FROZEN["Frozen provenance in the docs<br/>iri-checks.json, provenance.ttl,<br/>'Verified against' table"]
         DB[("Writable SQLite<br/>snapshots + cache + run log")]
     end
 
     S1 -. "malformed → error" .-> REP
     S2 -. "missing / duplicate → warning" .-> REP
     S3 -. "not resolvable → info" .-> REP
-    VAL & BAD & UNV --> REP
+    REL & UNV --> REP
+    REL & UNV --> FROZEN
     L2 & L3 -. "cache result" .-> DB
-    VAL & BAD & UNV -.-> DB
+    REL & UNV -. "run log" .-> DB
 ```
 
 Successful lookups and downloads are saved, so later runs are offline and fast. Every result records the **release** it was verified against:
