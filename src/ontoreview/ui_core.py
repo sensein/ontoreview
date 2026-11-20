@@ -66,6 +66,15 @@ class Settings:
     iri_network: bool = True
     iri_repositories: bool = True
     iri_resolve: bool = True
+    cdi: bool = True                # cross-domain interoperability (on like every other check)
+    cdi_references: str = "ols"     # one reference per line (a line may hold commas: ols:envo,chebi)
+    cdi_domains: str = ""           # comma-separated
+    cdi_generality: bool = True
+    cdi_top_n: int = 10
+    cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
+    cdi_bioportal_key: str = field(default="", repr=False)    # optional; never in the CLI line, TOML or history
+    cdi_ontoportal_key: str = field(default="", repr=False)   # any other OntoPortal service
+    hf_token: str = field(default="", repr=False)             # Hugging Face token for model downloads (optional)
     default_root: str = ""          # Settings > default output folder
     verbose: bool = False
 
@@ -145,11 +154,44 @@ class Settings:
         for k in ("iri_network", "iri_repositories", "iri_resolve"):
             if not getattr(self, k):
                 ev[k] = False
+        if not self.cdi:
+            ev["cdi"] = "off"
+        else:                       # on by default: only what differs from the defaults
+            refs = self.cdi_reference_list()
+            if refs != ["ols"]:
+                ev["cdi_references"] = refs
+            domains = [d.strip() for d in self.cdi_domains.split(",") if d.strip()]
+            if domains:
+                ev["cdi_domains"] = domains
+            if not self.cdi_generality:
+                ev["cdi_generality"] = False
+            if int(self.cdi_top_n or 10) != 10:
+                ev["cdi_top_n"] = int(self.cdi_top_n or 10)
+            if self.cdi_ontoaligner != "sbert":
+                ev["cdi_ontoaligner"] = self.cdi_ontoaligner
+            keys = {"bioportal": self.cdi_bioportal_key.strip(), "ontoportal": self.cdi_ontoportal_key.strip()}
+            if any(keys.values()):
+                ev["cdi_api_keys"] = {k: v for k, v in keys.items() if v}
+            if self.hf_token.strip():
+                ev["cdi_hf_token"] = self.hf_token.strip()
         from .quality_checks.oops import OOPS_ENDPOINT
 
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
             ev["oops_endpoint"] = self.oops_endpoint.strip()
         return ev
+
+    def cdi_reference_list(self) -> list[str]:
+        """References, one per line; local paths made absolute."""
+        from .quality_checks.cdi import parse_reference
+
+        out = []
+        for line in self.cdi_references.splitlines():
+            ref = line.strip()
+            if not ref:
+                continue
+            kind = parse_reference(ref)["kind"]
+            out.append(str(Path(ref).expanduser().resolve()) if kind in ("file", "sssom") else ref)
+        return out
 
     def validate(self) -> list[str]:
         problems = []
@@ -168,6 +210,16 @@ class Settings:
             for v in [x.strip() for x in val.split(",") if x.strip()]:
                 if not v.startswith(("http://", "https://")) and not Path(v).expanduser().exists():
                     problems.append(f"{label} file not found: {v}")
+        if self.cdi and self.task in ("site", "single", "check"):
+            from .quality_checks.cdi import parse_reference
+
+            refs = [r for r in self.cdi_references.splitlines() if r.strip()]
+            if not refs:
+                problems.append("Cross-domain interoperability needs at least one reference (e.g. ols).")
+            for r in refs:
+                ref = parse_reference(r)
+                if ref["kind"] in ("file", "sssom") and not Path(ref["path"]).exists():
+                    problems.append(f"Reference ontology not found: {r.strip()}")
         return problems
 
     # -------------------------------------------------------------- CLI / TOML
@@ -214,6 +266,16 @@ class Settings:
                 args.append("--no-iri")
             elif not self.iri_network:
                 args.append("--offline")
+            if not self.cdi:
+                args.append("--no-cdi")
+            else:
+                refs = self.cdi_reference_list()
+                for r in refs if refs != ["ols"] else []:
+                    args += ["--cdi", q(r)]
+                for d in [x.strip() for x in self.cdi_domains.split(",") if x.strip()]:
+                    args += ["--cdi-domain", q(d)]
+                if self.cdi_ontoaligner != "sbert":
+                    args += ["--cdi-ontoaligner", self.cdi_ontoaligner]
         if self.task == "check" and self.fail_on != "error":
             args += ["--fail-on", self.fail_on]
         return " ".join(args)
@@ -239,7 +301,16 @@ class Settings:
         lines += ["", "[evaluation]", f"robot = {s(self.robot)}", f"oops = {s(self.oops)}", f"reasoner = {s(self.reasoner)}",
                   f"ontocheck = {s('on' if self.ontocheck else 'off')}",
                   f"iri_checks = {s('on' if self.iri_checks else 'off')}",
-                  f"iri_network = {'true' if self.iri_network else 'false'}", ""]
+                  f"iri_network = {'true' if self.iri_network else 'false'}",
+                  f"cdi = {s('on' if self.cdi else 'off')}"]
+        if self.cdi:
+            lines += [f"cdi_references = [{', '.join(s(x) for x in self.cdi_reference_list())}]",
+                      f"cdi_domains = [{', '.join(s(x.strip()) for x in self.cdi_domains.split(',') if x.strip())}]",
+                      f"cdi_generality = {'true' if self.cdi_generality else 'false'}",
+                      f"cdi_top_n = {int(self.cdi_top_n or 10)}",
+                      f"cdi_ontoaligner = {s(self.cdi_ontoaligner)}",
+                      "# API keys and tokens are not saved here: set BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY / HF_TOKEN"]
+        lines.append("")
         return "\n".join(lines)
 
     @classmethod
@@ -269,6 +340,11 @@ class Settings:
             ontocheck_network=bool(ev.get("ontocheck_network", True)), ontocheck_search=ev.get("ontocheck_search") or "",
             iri_checks=ev.get("iri_checks", "on") not in ("off", False), iri_network=bool(ev.get("iri_network", True)),
             iri_repositories=bool(ev.get("iri_repositories", True)), iri_resolve=bool(ev.get("iri_resolve", True)),
+            cdi=ev.get("cdi", "on") not in ("off", False),
+            cdi_references="\n".join(r if r.startswith(("ols", "bioportal", "ontoportal", "http://", "https://"))
+                                      else rel(r) for r in ev.get("cdi_references", ["ols"])),
+            cdi_domains=", ".join(ev.get("cdi_domains", [])), cdi_generality=bool(ev.get("cdi_generality", True)),
+            cdi_top_n=int(ev.get("cdi_top_n", 10)), cdi_ontoaligner=ev.get("cdi_ontoaligner", "sbert"),
         )
 
     # -------------------------------------------------------------- persistence
@@ -276,7 +352,8 @@ class Settings:
         path = path or SETTINGS_FILE
         try:
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(json.dumps(asdict(self), indent=2), "utf-8")
+            data = {k: v for k, v in asdict(self).items() if not k.endswith(("_key", "_token"))}   # secrets: Prefs only
+            path.write_text(json.dumps(data, indent=2), "utf-8")
         except OSError as e:  # settings are a convenience; never fail a run over them
             log.debug("could not save UI settings: %s", e)
 
@@ -591,7 +668,7 @@ def record_run(settings: Settings, result: TaskResult | None, error: str | None 
         output=str(r.output if r else settings.output_path()), index=r.index if r else None,
         ok=r.ok if r else 0, total=len(r.rows) if r else 0,
         errors=sum(x.errors for x in r.rows) if r else 0, warnings=sum(x.warnings for x in r.rows) if r else 0,
-        seconds=round(r.seconds, 2) if r else 0.0, settings=asdict(settings), failed=error,
+        seconds=round(r.seconds, 2) if r else 0.0, settings={k: v for k, v in asdict(settings).items() if not k.endswith(("_key", "_token"))}, failed=error,
         summary="{added} added · {removed} removed · {modified} modified".format(**change_counts(r.changes))
         if r and r.changes else "")
     entries = [entry] + load_history(path)
@@ -689,6 +766,17 @@ def upload_target(batch: str, name: str) -> Path | None:
     return target if target.is_relative_to(root) else None
 
 
+def upload_files(batch: str) -> list[str]:
+    """Every ontology or mapping (.tsv) file in a drop, e.g. several reference ontologies."""
+    if not valid_batch(batch):
+        return []
+    root = uploads_dir() / batch
+    if not root.is_dir():
+        return []
+    return sorted(str(p) for p in root.rglob("*") if p.is_file() and not p.name.startswith(".")
+                  and (is_ontology_file(p) or p.suffix.lower() == ".tsv"))
+
+
 def upload_source(batch: str) -> str | None:
     """What to document from a drop: the single ontology file, the single dropped folder, or
     the whole batch when several things were dropped."""
@@ -783,6 +871,15 @@ class Prefs:
     iri_network: bool = True
     iri_repositories: bool = True
     iri_resolve: bool = True
+    cdi: bool = True
+    cdi_references: str = "ols"
+    cdi_domains: str = ""
+    cdi_generality: bool = True
+    cdi_top_n: int = 10
+    cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
+    cdi_bioportal_key: str = field(default="", repr=False)
+    cdi_ontoportal_key: str = field(default="", repr=False)
+    hf_token: str = field(default="", repr=False)
     theme: Literal["light", "dark", "system"] = "system"
     compact: bool = False
     # documentation options (Settings > Documentation)
@@ -804,7 +901,11 @@ class Prefs:
     def save(self) -> None:
         try:
             self.path().parent.mkdir(parents=True, exist_ok=True)
-            self.path().write_text(json.dumps(asdict(self), indent=2), "utf-8")
+            path = self.path()
+            path.touch(mode=0o600, exist_ok=True)
+            if self.cdi_bioportal_key or self.cdi_ontoportal_key or self.hf_token:
+                path.chmod(0o600)                       # optional API keys: readable by this user only
+            path.write_text(json.dumps(asdict(self), indent=2), "utf-8")
         except OSError as e:
             log.debug("could not save preferences: %s", e)
 
@@ -829,7 +930,9 @@ class Prefs:
         s.oops, s.oops_endpoint, s.oops_timeout = self.oops, self.oops_endpoint, self.oops_timeout
         s.reasoner = self.reasoner
         s.ontocheck, s.ontocheck_network, s.ontocheck_search = self.ontocheck, self.ontocheck_network, self.ontocheck_search
-        for k in ("iri_checks", "iri_network", "iri_repositories", "iri_resolve"):
+        for k in ("iri_checks", "iri_network", "iri_repositories", "iri_resolve",
+                  "cdi", "cdi_references", "cdi_domains", "cdi_generality", "cdi_top_n", "cdi_ontoaligner",
+                  "cdi_bioportal_key", "cdi_ontoportal_key", "hf_token"):
             setattr(s, k, getattr(self, k))
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",
                   "competency_questions", "previous_version", "fail_on"):

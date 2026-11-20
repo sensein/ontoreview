@@ -80,8 +80,33 @@ def _overrides(**kw) -> dict:
 
 
 def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None = None,
-                    ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False) -> dict | None:
+                    ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False,
+                    cdi: list[str] | None = None, cdi_domain: list[str] | None = None,
+                    cdi_api_key: list[str] | None = None, cdi_ontoaligner: str | None = None,
+                    no_cdi: bool = False, hf_token: str | None = None) -> dict | None:
     ev = {}
+    if hf_token:
+        ev["cdi_hf_token"] = hf_token
+    if no_cdi:
+        ev["cdi"] = "off"
+    if cdi_ontoaligner is not None:
+        if cdi_ontoaligner not in ("off", "fuzzy", "sbert"):
+            raise typer.BadParameter("use fuzzy, sbert or off", param_hint="--cdi-ontoaligner")
+        ev["cdi_ontoaligner"] = cdi_ontoaligner
+    if cdi_api_key:
+        keys = {}
+        for item in cdi_api_key:
+            repo, sep, key = item.partition("=")
+            if not sep:
+                repo, key = "bioportal", item
+            keys[repo.strip()] = key.strip()
+        ev["cdi_api_keys"] = keys
+    if cdi:
+        ev["cdi"] = "on"
+        ev["cdi_references"] = [c if c.startswith(("ols", "bioportal", "ontoportal", "http://", "https://"))
+                                and not Path(c).exists() else str(Path(c).expanduser().resolve()) for c in cdi]
+    if cdi_domain:
+        ev["cdi_domains"] = list(cdi_domain)
     if iri is not None:
         ev["iri_checks"] = "on" if iri else "off"
     if offline:
@@ -202,6 +227,12 @@ def build(
     ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
     iri: bool | None = typer.Option(None, "--iri/--no-iri", help="IRI checks: syntax, header, ontology-IRI resolution, external terms (default: on)."),
     offline: bool = typer.Option(False, "--offline", help="IRI checks use only the bundled and cached SQLite database (no OLS, BioPortal or downloads)."),
+    cdi: list[str] | None = typer.Option(None, "--cdi", help="Score cross-domain interoperability against this reference; repeatable: a file or URL (RDF, or SSSOM .tsv), ols, ols:envo,chebi, bioportal, bioportal:NCIT, or another OLS/OntoPortal service as ols@https://…/api."),
+    cdi_domain: list[str] | None = typer.Option(None, "--cdi-domain", help="The ontology's own domain; discovered reference ontologies from it are left out. Repeatable."),
+    hf_token: str | None = typer.Option(None, "--hf-token", help="Optional Hugging Face token for downloading the CDI language models (higher rate limits). Prefer the HF_TOKEN environment variable to keep it out of shell history."),
+    no_cdi: bool = typer.Option(False, "--no-cdi", help="Skip the cross-domain interoperability score (on by default; it queries OLS and runs a language model)."),
+    cdi_ontoaligner: str | None = typer.Option(None, "--cdi-ontoaligner", help="Also match file/URL references with OntoAligner: sbert (sentence embeddings, default; model downloaded automatically), fuzzy (string similarity) or off. Needs ontoreview[cdi]."),
+    cdi_api_key: list[str] | None = typer.Option(None, "--cdi-api-key", help="Optional API key for BioPortal (KEY or bioportal=KEY), another OntoPortal service (ontoportal=KEY or bioportal@host=KEY). Avoids shared rate limits; OLS needs none. Prefer BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY to keep keys out of shell history."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
@@ -215,7 +246,7 @@ def build(
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
                     base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason,
                     load_imports=imports, include_imported=include_imported,
-                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline),
+                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
     folder = _folder_source(source, config)
     if folder is not None:
@@ -406,6 +437,12 @@ def check(
     ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
     iri: bool | None = typer.Option(None, "--iri/--no-iri", help="IRI checks: syntax, header, ontology-IRI resolution, external terms (default: on)."),
     offline: bool = typer.Option(False, "--offline", help="IRI checks use only the bundled and cached SQLite database (no OLS, BioPortal or downloads)."),
+    cdi: list[str] | None = typer.Option(None, "--cdi", help="Score cross-domain interoperability against this reference; repeatable: a file or URL (RDF, or SSSOM .tsv), ols, ols:envo,chebi, bioportal, bioportal:NCIT, or another OLS/OntoPortal service as ols@https://…/api."),
+    cdi_domain: list[str] | None = typer.Option(None, "--cdi-domain", help="The ontology's own domain; discovered reference ontologies from it are left out. Repeatable."),
+    hf_token: str | None = typer.Option(None, "--hf-token", help="Optional Hugging Face token for downloading the CDI language models (higher rate limits). Prefer the HF_TOKEN environment variable to keep it out of shell history."),
+    no_cdi: bool = typer.Option(False, "--no-cdi", help="Skip the cross-domain interoperability score (on by default; it queries OLS and runs a language model)."),
+    cdi_ontoaligner: str | None = typer.Option(None, "--cdi-ontoaligner", help="Also match file/URL references with OntoAligner: sbert (sentence embeddings, default; model downloaded automatically), fuzzy (string similarity) or off. Needs ontoreview[cdi]."),
+    cdi_api_key: list[str] | None = typer.Option(None, "--cdi-api-key", help="Optional API key for BioPortal (KEY or bioportal=KEY), another OntoPortal service (ontoportal=KEY or bioportal@host=KEY). Avoids shared rate limits; OLS needs none. Prefer BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY to keep keys out of shell history."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Run quality checks: built-in rules, ROBOT report and a reasoner consistency check (Docker),
@@ -416,11 +453,11 @@ def check(
 
     folder = _folder_source(source, config)
     if folder is not None:
-        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck, iri, offline)
+        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token)
         return
 
     try:
-        ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline)
+        ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token)
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
@@ -452,7 +489,10 @@ def check(
 
 def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path | None,
                   oops: bool | None, robot: str | None, reasoner: str | None = None,
-                  ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False) -> None:
+                  ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False,
+                  cdi: list[str] | None = None, cdi_domain: list[str] | None = None,
+                  cdi_api_key: list[str] | None = None, cdi_ontoaligner: str | None = None,
+                  no_cdi: bool = False, hf_token: str | None = None) -> None:
     import json
 
     from .build import check as do_check
@@ -462,7 +502,7 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
     if not files:
         err.print(f"[bold red]Error:[/] No ontology files found in {folder}")
         raise typer.Exit(2)
-    ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline)
+    ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token)
     extra = {"evaluation": ev} if ev else {}
     results, failed, broken = {}, False, False
     for f in files:

@@ -16,6 +16,18 @@
         {% else %}
         <a href="{{ page_href(e.children[0].section, page) }}" data-section="{{ e.children[0].id }}"><span class="secno">{{ e.number }}</span><span class="toc-label">{{ e.title }}</span></a>
         {% endif %}
+        {% set qrep = e.section.context.report if e.section and e.id == 'quality' else none %}
+        {% if qrep and qrep.external %}
+        {# quality report: one entry per checker, like the per-kind entries under Reference #}
+        {% set qbase = '' if e.page == page or not multi else e.page %}
+        <ol class="toc-quality">
+          <li><a href="{{ qbase }}#quality-builtin"><span class="secno">{{ e.number }}.1</span><span class="toc-label">{{ t('quality_builtin') }}</span>{% if qrep.findings %}<span class="toc-count">{{ qrep.findings|length }}</span>{% endif %}</a></li>
+          {% for ext in qrep.external %}
+          {% set n = ext.summary.error + ext.summary.warning + ext.summary.info %}
+          <li><a href="{{ qbase }}#quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}"><span class="secno">{{ e.number }}.{{ loop.index + 1 }}</span><span class="toc-label">{{ ext.tool }}</span>{% if ext.error %}<span class="toc-count" title="{{ ext.error }}">!</span>{% elif n %}<span class="toc-count">{{ n }}</span>{% endif %}</a></li>
+          {% endfor %}
+        </ol>
+        {% endif %}
         {% if e.children %}
         <ol>
           {% for c in e.children %}

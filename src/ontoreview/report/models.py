@@ -69,7 +69,7 @@ class ExternalReport:
 @dataclass(frozen=True)
 class Tool:
     name: str  # shown as the section title in reports and in the app's Issues table
-    url: str   # reference documentation, linked from the section title
+    url: str   # reference documentation, linked from the section title ("" = none)
 
 
 TOOLS: dict[str, Tool] = {
@@ -78,6 +78,7 @@ TOOLS: dict[str, Tool] = {
     "ontocheck": Tool("OntoCheck", "https://ontocheck.readthedocs.io"),
     "iri": Tool("IRI checks", "https://www.w3.org/TR/cooluris/"),
     "oops": Tool("OOPS!", "https://oops.linkeddata.es"),
+    "cdi": Tool("Cross-domain interoperability", ""),         # OntoReview's own check: no external reference
 }
 REASONERS = {"hermit": "HermiT", "elk": "ELK"}
 

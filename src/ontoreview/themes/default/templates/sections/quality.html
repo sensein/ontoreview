@@ -3,7 +3,7 @@
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
   <p class="prose">{{ t('quality_builtin') }}: {{ r.summary.error }} {{ t('errors') }}, {{ r.summary.warning }} {{ t('warnings') }} {{ t('and') }} {{ r.summary.info }} {{ t('infos') }}.{% if not r.findings %} {{ t('no_findings') }}{% endif %}{% for ext in r.external %}{% if not ext.error %} {{ ext.tool }}: {{ ext.summary.error }} {{ t('errors') }}, {{ ext.summary.warning }} {{ t('warnings') }}, {{ ext.summary.info }} {{ t('infos') }}.{% endif %}{% endfor %}</p>
 
-  {% if r.external %}<h3 class="subhead">{{ t('quality_builtin') }}</h3>{% endif %}
+  {% if r.external %}<h3 class="subhead" id="quality-builtin">{{ t('quality_builtin') }}</h3>{% endif %}
   {% for rule, findings in r.by_rule() %}
   <details class="finding sev-{{ findings[0].severity }}"{% if findings[0].severity == 'error' %} open{% endif %}>
     <summary><span class="sev">{{ findings[0].severity }}</span> {{ rule.title }} <span class="muted">({{ findings|length }}) {{ rule.id }}</span></summary>
@@ -15,7 +15,7 @@
   {% endfor %}
 
   {% for ext in r.external %}
-  <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}">{{ ext.tool }} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a></h3>
+  <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}">{{ ext.tool }}{% if ext.url %} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a>{% endif %}</h3>
   {% if ext.scope %}<p class="muted small">{{ ext.scope }}</p>{% endif %}
   {% if ext.metrics %}
   <table class="plain metrics">
@@ -31,11 +31,12 @@
   {% endif %}
   {% if ext.provenance and ext.provenance.releases %}
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, {{ ext.provenance.checked_at[:19]|replace('T', ' ') }} UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    {% set recfile = ext.provenance.record_file or 'iri-checks.json' %}
+    <caption class="muted small" style="text-align:left;caption-side:top">{{ ext.provenance.label or 'Verified against' }} (frozen at build time, {{ (ext.provenance.checked_at or '')[:19]|replace('T', ' ') }} UTC; full record in <a href="{{ recfile }}">{{ recfile }}</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
     {% for rel in ext.provenance.releases %}
-      <tr><td>{% if rel.title %}{{ rel.title }}<br>{% endif %}<code class="small">{{ rel.version_iri or ((rel.ontology or rel.ontology_iri or '') ~ (' ' ~ rel.version if rel.version else '')) or 'release not recorded' }}</code>{% if rel.sha256 %}<br><span class="muted small">sha256 {{ rel.sha256[:16] }}…</span>{% elif rel.documents %}<br><span class="muted small">{{ rel.documents|length }} documents, checksums in iri-checks.json</span>{% elif rel.note %}<br><span class="muted small">{{ rel.note }}</span>{% endif %}</td>
+      <tr><td>{% if rel.title %}{{ rel.title }}<br>{% endif %}<code class="small">{{ rel.version_iri or ((rel.ontology or rel.ontology_iri or '') ~ (' ' ~ rel.version if rel.version else '')) or 'release not recorded' }}</code>{% if rel.identified_by and not (rel.version_iri or rel.version) %}<br><span class="muted small">version not reported; identified by {{ rel.identified_by }}{% if rel.released %} ({{ rel.released[:19] }}){% endif %}</span>{% endif %}{% if rel.sha256 %}<br><span class="muted small">sha256 {{ rel.sha256[:16] }}…</span>{% elif rel.documents %}<br><span class="muted small">{{ rel.documents|length }} documents, checksums in iri-checks.json</span>{% elif rel.note %}<br><span class="muted small">{{ rel.note }}</span>{% endif %}</td>
       <td class="small">{{ rel.source }}{% if rel.source_url %}<br><span class="muted">{{ rel.source_url }}</span>{% endif %}</td>
       <td class="small">{{ (rel.retrieved or '')[:10] }}</td><td>{{ rel.terms }}</td></tr>
     {% endfor %}

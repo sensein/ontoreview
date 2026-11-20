@@ -35,6 +35,8 @@ dependencies = [
 [project.optional-dependencies]
 reason = ["owlrl>=6.0"]
 excel = ["openpyxl>=3.1"]
+# cross-domain interoperability: definition generality model (transformers, torch) and the OntoAligner matcher
+cdi = ["transformers>=5.13", "torch>=2.8", "ontoaligner>=1.9,<2; python_version < '3.14'"]
 ui = ["nicegui>=4.0; python_version >= '3.11'"]
 all = ["owlrl>=6.0", "openpyxl>=3.1", "nicegui>=4.0; python_version >= '3.11'"]
 dev = ["pytest>=8", "ruff>=0.5", "owlrl>=6.0", "openpyxl>=3.1"]
@@ -61,4 +63,6 @@ ignore = ["E501", "B008"]
 testpaths = ["tests"]
 markers = ["real_evaluators: run the real ROBOT/OOPS! dispatch (with stubbed tools) instead of the offline default",
            "real_ontocheck: run the real OntoCheck metrics (in-process, network checks off)",
-           "real_iri: run the real IRI checks (offline unless the test says otherwise)"]
+           "real_iri: run the real IRI checks (offline unless the test says otherwise)",
+           "real_cdi: run the cross-domain interoperability evaluator in builds (its inputs stay offline)",
+           "ontoaligner: run the real OntoAligner matcher (slow import; skipped unless ONTOREVIEW_TEST_ONTOALIGNER=1)"]

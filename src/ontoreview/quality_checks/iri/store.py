@@ -6,6 +6,11 @@ Adapted from the ``ontology_quality`` reference implementation (``term_store.py`
 * The **writable** database (the user cache, :func:`default_cache_path`) holds downloaded
   snapshots, positive repository (OLS/BioPortal) results and, since schema version 2, a record of
   every IRI-check run (``runs`` / ``run_results``).
+* Since schema version 4 it is shared with the cross-domain interoperability (CDI) check: reference
+  ontologies the user provides are indexed as ``documents`` (so the database grows), repository
+  ontology metadata and releases are cached in ``reference_ontologies`` (asked before OLS /
+  BioPortal), and every CDI run is recorded with the reference releases it was checked against and
+  every correspondence (``cdi_runs`` / ``cdi_references`` / ``cdi_correspondences``).
 """
 
 from __future__ import annotations
@@ -21,7 +26,7 @@ from pathlib import Path
 from rdflib import URIRef
 from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS documents (
  key TEXT PRIMARY KEY, source_url TEXT NOT NULL, fetched_at TEXT NOT NULL,
@@ -42,6 +47,21 @@ CREATE TABLE IF NOT EXISTS run_results (
  iri TEXT NOT NULL, roles TEXT NOT NULL, status TEXT NOT NULL, source TEXT,
  detail TEXT, attempts TEXT, PRIMARY KEY(run_id, iri));
 CREATE INDEX IF NOT EXISTS run_results_iri ON run_results(iri);
+CREATE TABLE IF NOT EXISTS reference_ontologies (
+ id TEXT PRIMARY KEY, source TEXT NOT NULL, title TEXT, domain TEXT, ontology_iri TEXT,
+ version_iri TEXT, version TEXT, released TEXT, fetched_at TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS cdi_runs (
+ id INTEGER PRIMARY KEY AUTOINCREMENT, started_at TEXT NOT NULL, finished_at TEXT,
+ source TEXT, ontology_iri TEXT, settings TEXT NOT NULL, summary TEXT);
+CREATE TABLE IF NOT EXISTS cdi_references (
+ run_id INTEGER NOT NULL REFERENCES cdi_runs(id) ON DELETE CASCADE, ontology_id TEXT NOT NULL,
+ title TEXT, source TEXT, status TEXT, given INTEGER, coverage REAL, align_d REAL,
+ n_correspondences INTEGER, release TEXT, PRIMARY KEY(run_id, ontology_id));
+CREATE TABLE IF NOT EXISTS cdi_correspondences (
+ run_id INTEGER NOT NULL REFERENCES cdi_runs(id) ON DELETE CASCADE, source TEXT NOT NULL,
+ target TEXT NOT NULL, relation TEXT NOT NULL, confidence REAL NOT NULL, depth INTEGER NOT NULL,
+ method TEXT, target_ontology TEXT, via TEXT);
+CREATE INDEX IF NOT EXISTS cdi_correspondences_run ON cdi_correspondences(run_id);
 """
 # columns added after the table first shipped: (table, column, type)
 MIGRATIONS = [("run_results", "release", "TEXT"), ("run_results", "stale", "INTEGER")]
@@ -172,11 +192,60 @@ class TermStore:
             self.db.executemany("INSERT INTO terms VALUES (?,?,?,?,?)", rows)
         return len(rows)
 
+    # ------------------------------------------------------------ CDI: reference ontology metadata
+    def reference_ontology(self, ontology_id: str) -> dict | None:
+        """Cached repository metadata and release of a reference ontology (e.g. ``ols:envo``)."""
+        row = self.db.execute("SELECT * FROM reference_ontologies WHERE id=?", (ontology_id,)).fetchone()
+        return dict(row) | {"payload": json.loads(row["payload"])} if row else None
+
+    def save_reference_ontology(self, info: dict) -> None:
+        keys = ("id", "source", "title", "domain", "ontology_iri", "version_iri", "version", "released")
+        with self.db:
+            self.db.execute("INSERT OR REPLACE INTO reference_ontologies VALUES (?,?,?,?,?,?,?,?,?,?)",
+                            (*(info.get(k) for k in keys), _now(), json.dumps(info.get("payload") or {})))
+
+    # ------------------------------------------------------------ CDI: run tracking
+    def start_cdi_run(self, source: str | None, ontology_iri: str | None, settings: dict) -> int:
+        with self.db:
+            cur = self.db.execute("INSERT INTO cdi_runs(started_at, source, ontology_iri, settings) VALUES (?,?,?,?)",
+                                  (_now(), source, ontology_iri, json.dumps(settings, sort_keys=True)))
+        return int(cur.lastrowid)
+
+    def finish_cdi_run(self, run_id: int, references: list[dict], correspondences: list[dict], summary: dict,
+                       keep: int = KEEP_RUNS) -> None:
+        refs = [(run_id, r["id"], r.get("title"), r.get("source"), r.get("status"), int(bool(r.get("given"))),
+                 r.get("coverage"), r.get("align_d"), r.get("n_correspondences"),
+                 json.dumps(r["release"]) if r.get("release") else None) for r in references]
+        corr = [(run_id, c["source"], c["target"], c["relation"], c["confidence"], c["depth"], c.get("method"),
+                 c.get("target_ontology"), c.get("via")) for c in correspondences]
+        with self.db:
+            self.db.executemany("INSERT OR REPLACE INTO cdi_references VALUES (?,?,?,?,?,?,?,?,?,?)", refs)
+            self.db.executemany("INSERT INTO cdi_correspondences VALUES (?,?,?,?,?,?,?,?,?)", corr)
+            self.db.execute("UPDATE cdi_runs SET finished_at=?, summary=? WHERE id=?",
+                            (_now(), json.dumps(summary, sort_keys=True), run_id))
+            self.db.execute("DELETE FROM cdi_runs WHERE id NOT IN (SELECT id FROM cdi_runs ORDER BY id DESC LIMIT ?)",
+                            (keep,))
+
+    def recent_cdi_runs(self, limit: int = 20) -> list[dict]:
+        rows = self.db.execute("SELECT * FROM cdi_runs ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
+        return [dict(r) | {f: json.loads(r[f]) if r[f] else None for f in ("settings", "summary")} for r in rows]
+
+    def cdi_run_references(self, run_id: int) -> list[dict]:
+        rows = self.db.execute("SELECT * FROM cdi_references WHERE run_id=? ORDER BY ontology_id", (run_id,)).fetchall()
+        return [dict(r) | {"given": bool(r["given"]), "release": json.loads(r["release"]) if r["release"] else None}
+                for r in rows]
+
+    def cdi_run_correspondences(self, run_id: int) -> list[dict]:
+        rows = self.db.execute("SELECT * FROM cdi_correspondences WHERE run_id=?", (run_id,)).fetchall()
+        return [dict(r) for r in rows]
+
     def stats(self) -> dict[str, int]:
         q = lambda sql: self.db.execute(sql).fetchone()[0]  # noqa: E731
         return {"documents": q("SELECT count(*) FROM documents"), "terms": q("SELECT count(*) FROM terms"),
                 "repository_terms": q("SELECT count(*) FROM repository_terms"),
-                "runs": q("SELECT count(*) FROM runs")}
+                "runs": q("SELECT count(*) FROM runs"),
+                "reference_ontologies": q("SELECT count(*) FROM reference_ontologies"),
+                "cdi_runs": q("SELECT count(*) FROM cdi_runs")}
 
     # ------------------------------------------------------------ run tracking
     def start_run(self, source: str | None, ontology_iri: str | None, settings: dict) -> int:

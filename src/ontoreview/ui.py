@@ -42,6 +42,7 @@ from .ui_core import (
     run_task,
     system_info,
     task_kind,
+    upload_files,
     upload_source,
     upload_target,
     when_text,
@@ -54,13 +55,14 @@ FORMATS = [  # id, name, description, tag
     ("single", "Single HTML file", "One portable file to share or attach", ".html"),
     ("markdown", "Markdown", "Editable text, good for Git repos, MkDocs or Docusaurus", ".md"),
     ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
-    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner, IRI checks, OntoCheck and OOPS! without docs", "report"),
+    ("check", "Quality check only", "Run the checks, ROBOT, the reasoner, IRI checks, OntoCheck, cross-domain "
+     "interoperability and OOPS! without docs", "report"),
     ("diff", "Compare versions", "What changed since a previous release of this ontology", "changes.md"),
 ]
 RECOMMENDED = "site"
 INCLUDES = {
     "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, "
-            "OOPS!), "
+            "cross-domain interoperability, OOPS!), "
             "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
@@ -199,12 +201,16 @@ HELP = [
         "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
         "files or folders onto the page.",
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
-    ], "Everything runs on your computer except the OOPS! scan, which sends the ontology to a web service (turn it off in Settings › Quality checks).", [("Open Build", "/")]),
+    ], "Everything runs on your computer except the OOPS! scan, which sends the ontology to a web service, and the "
+       "cross-domain interoperability score, which sends labels and IRIs (never the file) to OLS. Turn either off in "
+       "Settings › Quality checks.", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
-        "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, OOPS!, render.",
+        "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, IRI checks, OntoCheck, "
+        "cross-domain interoperability, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
-        "<b>OntoCheck metrics</b> is a scorecard for labeling, structure, accessibility and naming conventions; "
-        "hover a metric to see what it measures.",
+        "<b>Quality metrics</b> is a scorecard: OntoCheck's labeling, structure, accessibility and naming metrics, "
+        "and the cross-domain interoperability scores (CDI, Align, Gen, and Align per reference ontology). Hover a "
+        "metric to see what it measures.",
         "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner, OntoCheck and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
         "<b>Logical consistency</b> errors come from an OWL reasoner (HermiT by default): an inconsistent ontology, "
@@ -271,6 +277,44 @@ HELP = [
     ], "Only external term IRIs are sent to OLS or BioPortal, never your ontology. Turn network lookups off in "
        "Settings › Quality checks to use the SQLite database only.",
      [("Open Term database", "/terms"), ("IRI settings", "settings:checks")]),
+    ("cdi", "Cross-domain interoperability", ("cdi-settings.png", "cdi-results.png"), [
+        "<b>What it measures:</b> whether the ontology can serve beyond its own domain. <b>Align</b> is how well its "
+        "classes and properties map to ontologies from other domains; <b>Gen</b> is how general and domain-neutral "
+        "its class definitions are; <b>CDI</b> combines both and stays low when either is low. CDI ≥ 0.5 counts as "
+        "interoperable.",
+        "<b>Align:</b> each class or property gets the strength of its best correspondence: shared IRIs, "
+        "<code>owl:equivalentClass</code> / <code>rdfs:subClassOf</code> axioms, SSSOM mappings, exact label and "
+        "synonym matches, OntoAligner matches, and matches inherited from superclasses (weaker per step). "
+        "Subclass-type matches count 0.8, matches below 0.5 don't count.",
+        "<b>Gen:</b> a language model rates each class definition from “broad, abstract statement” to “highly "
+        "specific, with measurable details”. Classes without a definition count as 0, so missing definitions "
+        "lower Gen.",
+        "<b>Reference ontologies</b> (Settings › Quality checks, one per line): <code>ols</code> or "
+        "<code>bioportal</code> find ontologies with matching terms and keep the top 10; <code>ols:envo,chebi</code> "
+        "or <code>bioportal:NCIT</code> use those; files and URLs can be ontologies or SSSOM <code>.tsv</code> "
+        "mappings; other services as <code>ols@https://…/api</code> or <code>ontoportal@https://…</code>. Drop "
+        "several files on the drop area at once.",
+        "<b>Own domain(s)</b> leave out discovered ontologies from your own field, so only cross-domain links count.",
+        "<b>Term database first:</b> every vocabulary stored on the Term database page (the bundled W3C ones and "
+        "everything you or the IRI checks added) is matched first, offline. Details of OLS and BioPortal ontologies "
+        "(title, domain, release) are read from the database before asking the service, and saved when fetched. "
+        "Reference ontologies you provide are added to the database, so it grows with every run.",
+        "<b>What it was checked against:</b> each reference's release is recorded: version IRI or version when the "
+        "source gives one, otherwise the release/load date, the file's SHA-256 or a fingerprint of the repository's "
+        "answer (shown as “version not reported”). Every run is kept on the Term database page under <b>Runs</b>, "
+        "and the docs list the releases and write them to cdi.json and provenance.ttl.",
+        "<b>OntoAligner</b> (SBERT by default) adds automatic matches for file and URL references. Its embedding "
+        "model and the generality model are downloaded automatically on first use (about 90 MB and 1.6 GB) and "
+        "then run on this computer.",
+        "<b>Keys (optional):</b> OLS needs none. BioPortal and other OntoPortal services answer only with an API "
+        "key, and your own key avoids shared rate limits. A Hugging Face token speeds up model downloads. Keys are "
+        "never written to reports, ontoreview.toml, the history or the command line shown in the app.",
+        "<b>In the results:</b> the scores, Align per reference ontology, entities with no correspondence and classes "
+        "with very specific definitions (both as Info issues: what to map or reword to raise the score). The docs "
+        "folder gets <code>cdi.json</code> with every correspondence.",
+    ], "Needs pip install \"ontoreview[cdi]\" for the language models and OntoAligner; without it only Align is "
+       "scored and the review says why. Turn the score off in Settings › Quality checks or with --no-cdi.",
+     [("Cross-domain settings", "settings:checks"), ("Open Build", "/")]),
     ("publish", "Publishing the website", "", [
         "The output folder (by default <code>docs</code> next to your ontology) is a complete static website: "
         "copy it to any web server.",
@@ -306,7 +350,8 @@ HELP = [
         "questions and the previous version (for the changelog).",
         "<b>Quality checks:</b> run ROBOT in Docker or with a local <code>robot</code>, the reasoner for the "
         "logical consistency check (HermiT, ELK or off), OntoCheck (on/off, network checks, class search term), "
-        "the OOPS! service, and when a "
+        "cross-domain interoperability (references, domains, OntoAligner, optional API keys and Hugging Face "
+        "token), the OOPS! service, and when a "
         "check run counts as failed.",
         "<b>Appearance:</b> light, dark or match the system, and a compact layout.",
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
@@ -510,6 +555,8 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
             steps.append(("iri", "IRI checks" + ("" if s.iri_network else " (offline)")))
         if s.ontocheck:
             steps.append(("ontocheck", "OntoCheck metrics"))
+        if s.cdi:
+            steps.append(("cdi", "Cross-domain interoperability"))
         if s.oops != "off":
             steps.append(("oops", "OOPS! pitfall scan"))
     steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
@@ -519,6 +566,7 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
 
 STEP_OF = [("Parsing ontology", "parse"), ("Parsed ", "checks"), ("Running ROBOT", "robot"),
            ("Checking logical consistency", "reasoner"), ("Checking IRIs", "iri"), ("Running OntoCheck", "ontocheck"),
+           ("Scoring cross-domain interoperability", "cdi"),
            ("Running OOPS!", "oops"), ("Rendering", "render"), ("Exporting", "render")]
 BADGE_KIND = {"ok": "ok", "warn": "warn", "off": "off", "missing": "err"}
 
@@ -994,7 +1042,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         "on": "OOPS! full catalogue (uploads the ontology)"}[s.oops]
             reasoner_txt = ("" if s.robot == "off" or s.reasoner == "off" else
                             f" · {'HermiT' if s.reasoner == 'hermit' else 'ELK'} consistency")
-            checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}"
+            cdi_txt = f" · cross-domain interoperability ({len(s.cdi_reference_list())} references)" if s.cdi else ""
+            checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}{cdi_txt}"
             cli.text = s.cli()
             show_running()
             s.save()
@@ -1638,6 +1687,92 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 .props('outlined dense clearable aria-label="Class search term"').classes("w-72")
                             ui.label("For the searchClass metric: lists classes whose name contains this text.") \
                                 .classes("or-hint")
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            ui.label("Cross-domain interoperability").classes("or-h2")
+                            ui.label("Scores how well the ontology aligns with ontologies from other domains "
+                                     "(Align) and how general its class definitions are (Gen); CDI combines "
+                                     "both.").classes("or-hint")
+                            ui.checkbox("Score cross-domain interoperability").bind_value(work, "cdi").mark("cdi")
+                            ui.label("Reference ontologies, one per line").classes("or-label")
+                            cdi_refs = ui.textarea(placeholder="ols\nols:envo,chebi\nbioportal:NCIT\n"
+                                                               "ols@https://service.tib.eu/ts4tib/api\n"
+                                                               "https://example.org/other.owl\n/path/to/mappings.sssom.tsv") \
+                                .bind_value(work, "cdi_references").mark("cdi-references") \
+                                .props('outlined dense autogrow aria-label="Reference ontologies"').classes("w-full or-mono")
+
+                            def add_refs(paths: list[str]) -> None:
+                                lines = [x for x in work.cdi_references.splitlines() if x.strip()]
+                                cdi_refs.set_value("\n".join(lines + [p for p in paths if p not in lines]))
+
+                            with ui.element("div").props('data-zone="cdi"').classes("ob-dropzone w-full"):
+                                with ui.row().classes("w-full items-center no-wrap gap-2"):
+                                    ui.icon("upload_file", size="20px").classes("text-primary")
+                                    cdi_drop = ui.label("Drop reference ontologies or SSSOM mapping files here "
+                                                        "(several at once)").classes("or-hint grow")
+                                    ui.button("Browse…", on_click=lambda: pick(
+                                        "any", lambda p: add_refs([p]), False,
+                                        title="Choose a reference ontology or SSSOM file")).props("outline no-caps")
+                            ui.label("ols / bioportal: find ontologies with matching terms and keep the top N. "
+                                     "ols:envo,chebi or bioportal:NCIT: use those. Other OLS or OntoPortal services: "
+                                     "ols@URL or ontoportal@URL. Files and URLs: RDF ontologies or SSSOM .tsv. "
+                                     "BioPortal needs BIOPORTAL_API_KEY, other OntoPortal services "
+                                     "ONTOPORTAL_API_KEY. Repositories receive labels and IRIs, never the "
+                                     "ontology file.").classes("or-hint")
+                            with ui.row().classes("gap-6 items-end"):
+                                with ui.column().classes("gap-1"):
+                                    ui.label("Own domain(s)").classes("or-label")
+                                    ui.input(placeholder="e.g. agriculture").bind_value(work, "cdi_domains") \
+                                        .props('outlined dense clearable aria-label="Own domains"').classes("w-56")
+                                with ui.column().classes("gap-1"):
+                                    ui.label("Discovered ontologies kept").classes("or-label")
+                                    ui.number(min=0, max=100, step=1, format="%d").bind_value(
+                                        work, "cdi_top_n", forward=lambda v: int(v or 0)) \
+                                        .props('outlined dense aria-label="Discovered ontologies kept"').classes("w-28")
+                            ui.label("Discovered ontologies from your own domain(s) are left out; comma-separated.") \
+                                .classes("or-hint")
+                            ui.checkbox("Score definition generality with a language model").bind_value(
+                                work, "cdi_generality")
+                            ui.label("Needs pip install 'ontoreview[cdi]'; the model (about 1.6 GB) is downloaded "
+                                     "on first use and runs on this machine. Without it only Align is scored.") \
+                                .classes("or-hint")
+                            ui.label("Automatic matcher for file and URL references").classes("or-label")
+                            ui.select({"sbert": "OntoAligner, sentence embeddings (SBERT)",
+                                       "fuzzy": "OntoAligner, fuzzy string matching", "off": "Off"}) \
+                                .bind_value(work, "cdi_ontoaligner").mark("cdi-ontoaligner") \
+                                .props('outlined dense aria-label="Automatic matcher"').classes("w-80")
+                            ui.label("Adds ≡ matches found by OntoAligner (score ≥ 0.8) to the asserted and lexical "
+                                     "ones. Needs ontoreview[cdi]; SBERT's embedding model (all-MiniLM-L6-v2, about "
+                                     "90 MB) is downloaded automatically on first use. Repositories (OLS, BioPortal) "
+                                     "are matched through their search instead.") \
+                                .classes("or-hint")
+                            with ui.row().classes("gap-6 items-end"):
+                                for label, attr in (("BioPortal API key (optional)", "cdi_bioportal_key"),
+                                                    ("Other OntoPortal API key (optional)", "cdi_ontoportal_key"),
+                                                    ("Hugging Face token (optional)", "hf_token")):
+                                    with ui.column().classes("gap-1"):
+                                        ui.label(label).classes("or-label")
+                                        ui.input(password=True, password_toggle_button=True).bind_value(work, attr) \
+                                            .props(f'outlined dense clearable autocomplete="off" aria-label="{label}"') \
+                                            .classes("w-64 or-mono").mark(attr)
+                            ui.label("Your own key avoids shared rate limits; OntoPortal services (BioPortal, "
+                                     "AgroPortal, …) answer only with one, otherwise those references are skipped. "
+                                     "OLS needs no key. The Hugging Face token is used to download the language "
+                                     "models (higher rate limits, gated models). Left empty: BIOPORTAL_API_KEY / "
+                                     "ONTOPORTAL_API_KEY / HF_TOKEN. Keys stay "
+                                     "on this machine; they are not written to reports, ontoreview.toml or the "
+                                     "command line shown here.").classes("or-hint")
+
+                            def cdi_dropped(a: dict) -> None:
+                                files = upload_files(a.get("batch") or "") if a.get("ok") else []
+                                if not files:
+                                    cdi_drop.text = "Nothing usable was dropped: no ontology or .tsv files found."
+                                    notify(cdi_drop.text, "warning")
+                                    return
+                                add_refs(files)
+                                cdi_drop.text = f"Added {len(files)} reference file(s)."
+
+                            drop_targets["cdi"] = (lambda a: setattr(cdi_drop, "text", "Copying…"), cdi_dropped)
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
@@ -2295,6 +2430,75 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     .classes("or-table").props("flat dense wrap-cells").mark("term-runs")
                 tbl.on("rowClick", lambda e: background_tasks.create(run_details(e.args[1]["id"])))
                 ui.label("Click a run to see each term.").classes("or-hint")
+            await show_cdi_runs()
+
+        async def show_cdi_runs() -> None:
+            runs = await run.io_bound(iri_db.recent_cdi_runs, None, 100)
+            if runs_box.is_deleted:
+                return
+            with runs_box, ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2 w-full"):
+                ui.label(f"Cross-domain interoperability runs ({len(runs)})").classes("or-h2")
+                ui.label("Every CDI score is recorded with its settings, the scores, each reference ontology and "
+                         "the release it was checked against, and every correspondence. Reference ontologies you "
+                         "provide are added to the database.").classes("or-hint")
+                if not runs:
+                    ui.label("No runs yet.").classes("or-hint q-py-sm")
+                    return
+
+                def f(x):
+                    return "–" if x is None else f"{x:.2f}"
+                data = []
+                for r in runs:
+                    sm = r.get("summary") or {}
+                    try:
+                        when = when_text(datetime.fromisoformat(r["started_at"]).timestamp())
+                    except (TypeError, ValueError):
+                        when = r.get("started_at") or ""
+                    data.append({"id": r["id"], "when": when,
+                                 "ontology": Path(r.get("source") or "").name or (r.get("ontology_iri") or ""),
+                                 "scores": f"CDI {f(sm.get('cdi'))} · Align {f(sm.get('align'))} · Gen {f(sm.get('gen'))}"
+                                 if sm else "unfinished",
+                                 "refs": len(sm.get("reference_ontologies") or [])})
+                cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
+                        (("id", "#"), ("when", "When"), ("ontology", "Ontology"), ("scores", "Scores"),
+                         ("refs", "References"))]
+                tbl = ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 20}) \
+                    .classes("or-table").props("flat dense wrap-cells").mark("cdi-runs")
+                tbl.on("rowClick", lambda e: background_tasks.create(cdi_run_details(e.args[1]["id"])))
+                ui.label("Click a run to see what it was checked against.").classes("or-hint")
+
+        async def cdi_run_details(run_id: int) -> None:
+            rows = await run.io_bound(iri_db.cdi_run_references, run_id)
+            if runs_box.is_deleted:
+                return
+            with runs_box, ui.dialog() as dlg, ui.card().classes("or-card w-[64rem] max-w-full"):
+                ui.label(f"CDI run #{run_id}: {len(rows)} reference ontologies").classes("or-h2")
+
+                def rel_text(rel):
+                    rel = rel or {}
+                    what = rel.get("version_iri") or rel.get("version")
+                    if what:
+                        return what
+                    if not rel:
+                        return "not recorded"
+                    return f"version not reported ({rel.get('identified_by', 'retrieval time')})"
+                data = [{"id": n, "ref": r["ontology_id"], "title": r.get("title") or "",
+                         "status": (r.get("status") or "").replace("-", " "), "given": "given" if r["given"] else "",
+                         "align": "" if r.get("align_d") is None else f"{r['align_d']:.2f}",
+                         "n": r.get("n_correspondences") or 0, "release": rel_text(r.get("release")),
+                         "source": (r.get("release") or {}).get("source", ""),
+                         "when": ((r.get("release") or {}).get("retrieved") or "")[:10]}
+                        for n, r in enumerate(sorted(rows, key=lambda r: (r.get("status") != "selected",
+                                                                           -(r.get("align_d") or 0))))]
+                cols = [{"name": k, "label": lbl, "field": k, "align": "left"} for k, lbl in
+                        (("title", "Ontology"), ("ref", "Id"), ("status", "Status"), ("given", ""),
+                         ("align", "Align_d"), ("n", "Correspondences"), ("release", "Checked against"),
+                         ("source", "From"), ("when", "Retrieved"))]
+                ui.table(rows=data, columns=cols, row_key="id", pagination={"rowsPerPage": 15}) \
+                    .classes("or-table").props("flat dense wrap-cells")
+                with ui.row().classes("w-full justify-end"):
+                    ui.button("Close", on_click=dlg.close).props("flat no-caps")
+            dlg.open()
 
         async def run_details(run_id: int) -> None:
             def load():

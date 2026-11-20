@@ -1,0 +1,144 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <http://www.w3.org/ns/ssn/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:wasDerivedFrom sosa: ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:40Z"^^xsd:string ;
+    dcterms:hasVersion "26.02d" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/ncit.owl> ;
+    dcterms:title "NCI Thesaurus OBO Edition" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (21 correspondence(s), via ols)." .
+
+<http://purl.obolibrary.org/obo/txpo/releases/2022-12-07/txpo.owl> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:37Z"^^xsd:string ;
+    dcterms:hasVersion "2022/12/07" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/txpo.owl> ;
+    dcterms:title "Toxic Process Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (3 correspondence(s), via ols)." .
+
+<http://semanticscience.org/ontology/sio/v1.62/sio-release.owl> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:38Z"^^xsd:string ;
+    dcterms:hasVersion "1.62" ;
+    dcterms:isVersionOf <http://semanticscience.org/ontology/sio.owl> ;
+    dcterms:title "Semanticscience Integrated Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (5 correspondence(s), via ols)." .
+
+<http://snomed.info/sct/900000000000207008/version/20251017> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:34Z"^^xsd:string ;
+    dcterms:isVersionOf <http://snomed.info/sct/9000000000002070081231> ;
+    dcterms:title "SNOMED CT (International Edition)" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
+
+<http://www.w3.org/ns/prov-o-20130430> a prov:Entity ;
+    dcterms:date "2026-11-20T01:27:54.209966+00:00"^^xsd:string ;
+    dcterms:hasVersion "Recommendation version 2013-04-30" ;
+    dcterms:identifier "sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96" ;
+    dcterms:isVersionOf prov: ;
+    dcterms:source <file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl> ;
+    dcterms:title "W3C PROVenance Interchange Ontology (PROV-O)" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (0 correspondence(s), via file)." .
+
+<https://w3id.org/emi/version/1.0> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:59Z"^^xsd:string ;
+    dcterms:hasVersion "1.0" ;
+    dcterms:isVersionOf <https://w3id.org/emi> ;
+    dcterms:title "The Earth Metabolome Initiative (EMI) ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (13 correspondence(s), via ols)." .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-20T01:28:01+00:00"^^xsd:dateTime ;
+    prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
+        <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
+        <http://purl.obolibrary.org/obo/txpo/releases/2022-12-07/txpo.owl>,
+        <http://semanticscience.org/ontology/sio/v1.62/sio-release.owl>,
+        <http://snomed.info/sct/900000000000207008/version/20251017>,
+        <http://www.w3.org/ns/prov-o-20130430>,
+        <https://w3id.org/emi/version/1.0>,
+        <urn:sha256:14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914>,
+        <urn:sha256:184d86189191146e314cc52b1bceb96fca11e70aacbc160d71588102a5153eb9>,
+        <urn:sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310>,
+        <urn:sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e>,
+        <urn:sha256:96f292eb212f77468a680e101112e5dc688bb92c807f9b648422cb976d4dd6fa>,
+        <urn:sha256:b033e47539459482ec0d4c6fc0dc29a9f91175b3a7dff8beab217ccab5f812a8>,
+        <urn:sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392>,
+        <urn:sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6>,
+        "sosa.ttl" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+
+<urn:sha256:14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:59Z"^^xsd:string ;
+    dcterms:isVersionOf <http://schema.org/> ;
+    dcterms:title "ols:schemaorg_http" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (3 correspondence(s), via ols)." .
+
+<urn:sha256:184d86189191146e314cc52b1bceb96fca11e70aacbc160d71588102a5153eb9> a prov:Entity ;
+    dcterms:date "2026-11-18T01:08:30.815475+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:184d86189191146e314cc52b1bceb96fca11e70aacbc160d71588102a5153eb9" ;
+    dcterms:isVersionOf ssn: ;
+    dcterms:source <https://www.w3.org/ns/ssn/ssn.ttl> ;
+    dcterms:title "http://www.w3.org/ns/ssn/" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (3 correspondence(s), via term database (bundled))." .
+
+<urn:sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310> a prov:Entity ;
+    dcterms:date "2026-11-18T03:50:03.244033+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310" ;
+    dcterms:isVersionOf <http://purl.org/ontology/bibo/> ;
+    dcterms:source <https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl> ;
+    dcterms:title "bibo (purl.org)" ;
+    rdfs:comment "Release used to verify 7 external term(s) (via cache)." .
+
+<urn:sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e> a prov:Entity ;
+    dcterms:date "2026-11-19T17:47:34.665699+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e" ;
+    dcterms:isVersionOf <http://purl.org/goodrelations/v1> ;
+    dcterms:source <http://www.heppnetz.de/ontologies/goodrelations/v1.owl> ;
+    dcterms:title "The GoodRelations Vocabulary for Semantic Web-based E-Commerce" ;
+    rdfs:comment "Release used to verify 1 external term(s) (via cache)." .
+
+<urn:sha256:96f292eb212f77468a680e101112e5dc688bb92c807f9b648422cb976d4dd6fa> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:44Z"^^xsd:string ;
+    dcterms:hasVersion "33.0" ;
+    dcterms:isVersionOf <http://opendata.inrae.fr/PO2/Ontology/TransformON/> ;
+    dcterms:title "TransformON" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (7 correspondence(s), via ols)." .
+
+<urn:sha256:b033e47539459482ec0d4c6fc0dc29a9f91175b3a7dff8beab217ccab5f812a8> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:58Z"^^xsd:string ;
+    dcterms:isVersionOf schema: ;
+    dcterms:title "ols:schemaorg_https" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (3 correspondence(s), via ols)." .
+
+<urn:sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392> a prov:Entity ;
+    dcterms:date "2026-11-18T01:08:30.672748+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392" ;
+    dcterms:isVersionOf sosa: ;
+    dcterms:source <https://www.w3.org/ns/sosa/sosa.ttl> ;
+    dcterms:title "Sensor, Observation, Sample, and Actuator" ;
+    rdfs:comment "Release used to verify 5 external term(s) (via bundle)." .
+
+<urn:sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6> a prov:Entity ;
+    dcterms:date "2026-11-18T01:08:31.108081+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6" ;
+    dcterms:isVersionOf <http://www.w3.org/2004/02/skos/core> ;
+    dcterms:source <https://www.w3.org/2009/08/skos-reference/skos.rdf> ;
+    dcterms:title "Simple Knowledge Organization System" ;
+    rdfs:comment "Release used to verify 3 external term(s) (via bundle)." .
+
+<http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:42Z"^^xsd:string ;
+    dcterms:hasVersion "REC/2026/09" ;
+    dcterms:isVersionOf <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> ;
+    dcterms:title "Allotrope Merged Ontology Suite" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (15 correspondence(s), via ols)." .
+
+sosa: a prov:Entity ;
+    dcterms:title "Sensor, Observation, Sample, and Actuator (SOSA) Ontology" .
+

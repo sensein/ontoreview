@@ -240,17 +240,29 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             (out_dir / "w3id.htaccess").write_text(w3id_htaccess(cfg.base_url, downloads), "utf-8")
     if cfg.sections.citation:
         (out_dir / "CITATION.cff").write_text(citation_cff(onto.metadata, cfg.base_url), "utf-8")
-    iri_prov = next((x.provenance for x in (report.external if report else []) if x.provenance), None)
+    from .report.models import TOOLS
+
+    externals = report.external if report else []
+    iri_prov = next((x.provenance for x in externals if x.tool == TOOLS["iri"].name and x.provenance), None)
+    cdi_rec = next((x.provenance for x in externals if x.tool == TOOLS["cdi"].name and x.provenance), None)
+    if cdi_rec:
+        # scores, per-entity and per-reference results, and every correspondence
+        (out_dir / "cdi.json").write_text(json.dumps(cdi_rec, indent=2, ensure_ascii=False), "utf-8")
     if iri_prov:
         # frozen at build time: which release each external term was verified against
         (out_dir / "iri-checks.json").write_text(json.dumps(iri_prov, indent=2, ensure_ascii=False), "utf-8")
     if cfg.sections.provenance:
         pg = provenance_graph(onto, Path(cfg.source or "").name, __version__)
-        if iri_prov:
+        if iri_prov or cdi_rec:
             from rdflib import URIRef
 
             from .report.iri import add_iri_provenance
-            add_iri_provenance(pg, iri_prov, URIRef("urn:ontoreview:build"))
+            if iri_prov:
+                add_iri_provenance(pg, iri_prov, URIRef("urn:ontoreview:build"))
+            if cdi_rec:     # the reference ontology releases the CDI score was computed against
+                add_iri_provenance(pg, cdi_rec, URIRef("urn:ontoreview:build"),
+                                   purpose="Reference release used for the cross-domain interoperability score "
+                                           "({terms} correspondence(s), via {source}).")
         pg.serialize(destination=str(out_dir / "provenance.ttl"), format="turtle")
     if report is not None:
         (out_dir / "quality.json").write_text(report.to_json(), "utf-8")

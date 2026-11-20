@@ -1,0 +1,27 @@
+# Sensor, Observation, Sample, and Actuator (SOSA) Ontology
+
+> This ontology is based on the SSN Ontology by the W3C Semantic Sensor Networks Incubator Group (SSN-XG), together with considerations from the W3C/OGC Spatial Data on the Web Working Group.
+
+- Ontology IRI: http://www.w3.org/ns/sosa/
+- Namespace: http://www.w3.org/ns/sosa/ (prefix `sosa:`)
+- License: W3C Software and Document License
+- Contents: 16 classes, 21 object properties, 2 datatype properties, 17 annotation properties
+
+Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
+
+## Documentation
+
+- [Overview](index.md): metadata and contents
+- [Classes](classes.md): 16 classes with definitions and axioms
+- [Object properties](object-properties.md): 21 object properties with definitions and axioms
+- [Datatype properties](datatype-properties.md): 2 datatype properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 17 annotation properties with definitions and axioms
+
+## Machine-readable
+
+- [ontology.json](ontology.json): all terms as JSON (IRI, label, definition, hierarchy, domain/range)
+- [llms-full.txt](llms-full.txt): the complete documentation as one Markdown file
+- [Turtle](ontology.ttl): the ontology source (text/turtle)
+- [RDF/XML](ontology.owl): the ontology source (application/rdf+xml)
+- [JSON-LD](ontology.jsonld): the ontology source (application/ld+json)
+- [N-Triples](ontology.nt): the ontology source (application/n-triples)

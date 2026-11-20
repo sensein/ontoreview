@@ -332,7 +332,8 @@ def test_schema_v2_database_is_migrated(tmp_path):
                              "stale": True}], {})
         [row] = st.run_results(run)
         assert row["release"] == {"version_iri": "v1"} and row["stale"] is True
-        assert st.db.execute("PRAGMA user_version").fetchone()[0] == 3
+        assert st.db.execute("PRAGMA user_version").fetchone()[0] == 4
+        assert st.stats()["cdi_runs"] == 0          # v4: CDI tables added in place
     finally:
         st.close()
 
