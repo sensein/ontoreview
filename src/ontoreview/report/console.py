@@ -31,7 +31,7 @@ def print_findings(console: Console, report) -> None:
 def print_external(console: Console, report) -> None:
     """One section per external checker (ROBOT, logical consistency, OntoCheck, OOPS!)."""
     for ext in report.external:
-        console.print(f"\n[bold]{ext.tool}[/] [dim]{ext.url}[/]")
+        console.print(f"\n[bold]{ext.tool}[/]" + (f" [dim]{ext.url}[/]" if ext.url else ""))
         if ext.scope:
             console.print(f"   [dim]{_esc(ext.scope)}[/]")
         if ext.error:

@@ -153,3 +153,13 @@ def test_real_world_ontologies_build(fixtures, tmp_path, name):
     assert res.ontology.metadata.title
     assert len(res.ontology.terms) > 20
     assert (tmp_path / "index.html").stat().st_size > 10_000
+
+
+def test_sidebar_lists_quality_subsections(fixtures, tmp_path):
+    ontoreview.build(fixtures / "pizza.ttl", out=tmp_path)
+    html = (tmp_path / "index.html").read_text()
+    nav = html[html.index('class="toc-quality"'):]
+    nav = nav[:nav.index("</ol>")]
+    assert 'href="#quality-builtin"' in nav and 'href="#quality-oops"' in nav and "OOPS!" in nav
+    assert 'id="quality-builtin"' in html and 'id="quality-oops"' in html
+    assert 'href=""' not in html[html.index('id="quality"'):]          # tools without a URL get no empty link

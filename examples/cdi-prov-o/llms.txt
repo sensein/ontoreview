@@ -1,0 +1,27 @@
+# W3C PROVenance Interchange Ontology (PROV-O)
+
+> This document is published by the Provenance Working Group (http://www.w3.org/2011/prov/wiki/Main_Page). If you wish to make comments regarding this document, please send them to public-prov-comments@w3.org (subscribe public-prov-comments-request@w3.org, archives http://lists.w3.org/Archives/Public/public-prov-comments/). All feedback is welcome.
+
+- Ontology IRI: http://www.w3.org/ns/prov-o#
+- Namespace: http://www.w3.org/ns/prov# (prefix `prov:`)
+- Version: Recommendation version 2013-04-30
+- Contents: 30 classes, 44 object properties, 6 datatype properties, 20 annotation properties
+
+Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
+
+## Documentation
+
+- [Overview](index.md): metadata and contents
+- [Classes](classes.md): 30 classes with definitions and axioms
+- [Object properties](object-properties.md): 44 object properties with definitions and axioms
+- [Datatype properties](datatype-properties.md): 6 datatype properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 20 annotation properties with definitions and axioms
+
+## Machine-readable
+
+- [ontology.json](ontology.json): all terms as JSON (IRI, label, definition, hierarchy, domain/range)
+- [llms-full.txt](llms-full.txt): the complete documentation as one Markdown file
+- [Turtle](ontology.ttl): the ontology source (text/turtle)
+- [RDF/XML](ontology.owl): the ontology source (application/rdf+xml)
+- [JSON-LD](ontology.jsonld): the ontology source (application/ld+json)
+- [N-Triples](ontology.nt): the ontology source (application/n-triples)

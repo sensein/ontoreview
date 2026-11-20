@@ -1,0 +1,9 @@
+# curie_map:
+#   ex: http://example.org/toy/
+#   BFO: http://purl.obolibrary.org/obo/BFO_
+#   sosa: http://www.w3.org/ns/sosa/
+subject_id	predicate_id	object_id	mapping_justification	confidence
+ex:Process	skos:exactMatch	BFO:0000015	semapv:ManualMappingCuration	0.95
+ex:hasParticipant	skos:exactMatch	http://purl.obolibrary.org/obo/RO_0000057	semapv:ManualMappingCuration	0.9
+ex:Tractor	skos:relatedMatch	BFO:0000040	semapv:ManualMappingCuration	0.9
+ex:Measurement	skos:broadMatch	sosa:Observation	semapv:ManualMappingCuration	0.9

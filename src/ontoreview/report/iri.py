@@ -233,8 +233,10 @@ def iri_provenance(results, *, run_id=None, db=None, settings=None, checked_at=N
             "terms": terms}
 
 
-def add_iri_provenance(g, provenance: dict, activity) -> None:
-    """PROV-O: the build activity used each vocabulary release the IRI check verified terms against."""
+def add_iri_provenance(g, provenance: dict, activity, purpose: str | None = None) -> None:
+    """PROV-O: the build activity used each vocabulary release the IRI check verified terms against
+    (or, with ``purpose``, each release another check such as CDI was computed against). Releases
+    without a version are identified by their content hash or metadata fingerprint."""
     import hashlib
 
     from rdflib import Literal, URIRef
@@ -243,7 +245,8 @@ def add_iri_provenance(g, provenance: dict, activity) -> None:
     for rel in provenance.get("releases", []):
         if rel.get("release_recorded") is False:
             continue
-        ident = rel.get("version_iri") or (f"urn:sha256:{rel['sha256']}" if rel.get("sha256") else None)
+        ident = rel.get("version_iri") or (f"urn:sha256:{rel['sha256']}" if rel.get("sha256") else None) \
+            or (f"urn:sha256:{rel['metadata_sha256']}" if rel.get("metadata_sha256") else None)
         if not ident:
             basis = f"{rel.get('source')}|{rel.get('ontology') or rel.get('ontology_iri')}|{rel.get('version')}"
             ident = "urn:ontoreview:release:" + hashlib.sha256(basis.encode()).hexdigest()[:16]
@@ -263,8 +266,9 @@ def add_iri_provenance(g, provenance: dict, activity) -> None:
                 g.add((node, DCTERMS.source, URIRef(doc["source_url"])))
         if rel.get("retrieved"):
             g.add((node, DCTERMS.date, Literal(rel["retrieved"], datatype=XSD.string)))
-        g.add((node, RDFS.comment, Literal(f"Release used to verify {rel['terms']} external term(s) "
-                                           f"(via {rel.get('source')}).")))
+        text = (purpose or "Release used to verify {terms} external term(s) (via {source}).").format(
+            terms=rel.get("terms", 0), source=rel.get("source"))
+        g.add((node, RDFS.comment, Literal(text)))
 
 
 __all__ = ["add_iri_provenance", "iri_provenance", "iri_report"]

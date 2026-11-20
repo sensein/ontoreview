@@ -411,6 +411,25 @@ def recent_runs(db: str | Path | None = None, limit: int = 50) -> list[dict]:
         cache.close()
 
 
-__all__ = ["add_document", "check_iris", "list_documents", "list_groups", "load_catalog", "recent_runs", "refresh_document",
+def recent_cdi_runs(db: str | Path | None = None, limit: int = 50) -> list[dict]:
+    """Cross-domain interoperability runs recorded in the term database (newest first)."""
+    cache = TermStore(Path(db) if db else default_cache_path())
+    try:
+        return cache.recent_cdi_runs(limit)
+    finally:
+        cache.close()
+
+
+def cdi_run_references(run_id: int, db: str | Path | None = None) -> list[dict]:
+    """Each reference ontology of a CDI run: status, scores and the release it was checked against."""
+    cache = TermStore(Path(db) if db else default_cache_path())
+    try:
+        return cache.cdi_run_references(run_id)
+    finally:
+        cache.close()
+
+
+__all__ = ["add_document", "cdi_run_references", "check_iris", "list_documents", "list_groups", "load_catalog",
+           "recent_cdi_runs", "recent_runs", "refresh_document",
            "release_mismatches", "remove_document",
            "run_iri_checks", "search_terms"]

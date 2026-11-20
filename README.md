@@ -100,9 +100,40 @@ For the full list of quality checks, their order and how to configure them, see 
 - **IRI checks** cover IRI syntax, the ontology header and version IRI, whether the ontology IRI resolves, and whether reused external classes and properties exist in their vocabulary, with the right type and not deprecated. Lookups go to a bundled SQLite database of 10 W3C vocabularies first, then your cache, OLS, BioPortal and a direct download. IRI syntax follows the full RFC 3987 grammar. Every result records the vocabulary release it was verified against, cached entries expire after `iri_cache_days` (30), and every run is recorded. Browse, search and extend the database on the app's **Term database** page or with `ontoreview terms`. Use `--offline` for SQLite only, or turn the checks off with `evaluation.iri_checks = "off"` or `--no-iri`.
 - **OntoCheck** ([docs](https://ontocheck.readthedocs.io)) adds a scorecard of 17 metrics in four groups: labeling (labels, alternative labels, definitions), structural (isolated elements, class connections, domains and ranges, leaf classes, links to BFO/CCO), accessibility (SPARQL endpoint, RDF dump, human-readable license, external links) and naming conventions (capitalisation, spaces, spelling, duplicate labels, class search). It runs in-process. Only the endpoint and dump checks use the network (`evaluation.ontocheck_network`). Turn it off with `evaluation.ontocheck = "off"` or `--no-ontocheck`.
 - **OOPS!** runs alongside ROBOT, because it checks modelling (unconnected elements, missing domains, ranges, inverses and disjointness, naming) where ROBOT checks annotations. When the ROBOT report ran, OOPS! leaves out the three pitfalls ROBOT already covers (P08, P32, P41) and says so in the review. Without ROBOT it runs the full catalogue. It calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html), so **it sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to keep it local, or `"on"` (`--oops`) for the full catalogue every time. See [quality_check.md](quality_check.md).
+- **Cross-domain interoperability** (on by default; turn off with `evaluation.cdi = "off"` or `--no-cdi`) scores whether the ontology can serve beyond its own domain. *Align* is the mean strength of each entity's best correspondence into reference ontologies from other domains (direct, lexical, or inherited through superclasses). *Gen* is how domain-neutral the class definitions are, rated by a zero-shot language model. *CDI* is their weighted harmonic mean. See [Cross-domain interoperability](#cross-domain-interoperability).
 - To skip external evaluators entirely, set both `evaluation.robot = "off"` and `evaluation.oops = "off"`. With ROBOT off, OOPS! runs its full catalogue unless it is off too.
 
 Both tools' results go in the quality report next to OntoReview's own checks, with affected elements linked to their term entries.
+
+## Cross-domain interoperability
+
+An ontology is cross-domain interoperable when it aligns with ontologies from other domains **and** defines its classes in general, domain-neutral terms. OntoReview scores both and combines them:
+
+- **Align** is, for each class and property, the strength of its best correspondence into a reference ontology (`confidence × relation weight × 0.8^steps`, counted from τ = 0.5), averaged over all entities. Correspondences come from shared IRIs, `owl:equivalentClass`/`rdfs:subClassOf` axioms, SSSOM mappings, exact label and synonym matches, and superclasses (up to 3 steps). OntoAligner can add automatic matches for file references.
+- **Gen** is, for each class, 1 minus the expected specificity of its definition on a five-level scale (from "broad, abstract statement" to "highly specific, measurable details"), rated by a zero-shot NLI model (`facebook/bart-large-mnli`). Classes without a definition count as 0.
+- **CDI** = (1+β²)·Align·Gen / (Align + β²·Gen). With β = 1 both weigh the same, and CDI ≥ θ = 0.5 counts as interoperable.
+
+Reference ontologies can be mixed:
+
+```bash
+ontoreview check my.ttl --cdi ols --cdi-domain agriculture       # discover: top 10 OLS ontologies by coverage, own domain left out
+ontoreview check my.ttl --cdi ols:envo,chebi --cdi bioportal:NCIT  # named repository ontologies
+ontoreview check my.ttl --cdi ref1.owl --cdi https://example.org/ref2.ttl --cdi maps.sssom.tsv
+ontoreview check my.ttl --cdi "ols@https://service.tib.eu/ts4tib/api" --cdi "ontoportal:AGROVOC@https://data.agroportal.lirmm.fr"
+```
+
+It runs by default, like every other check (`--no-cdi` or `evaluation.cdi = "off"` to skip it); with no references given it discovers them on OLS. In the app it is under **Settings → Quality checks → Cross-domain interoperability**. List one reference per line, or drop several reference ontologies or SSSOM files at once. API keys are optional. OLS needs none. OntoPortal services (BioPortal, AgroPortal, …) answer only with a key, and your own key avoids shared rate limits; without one, those references are skipped and the review says so. Enter keys in Settings, pass `--cdi-api-key bioportal=KEY` (or `ontoportal=KEY` for any other OntoPortal service), or set `BIOPORTAL_API_KEY` / `ONTOPORTAL_API_KEY`. Keys are never written to reports, `ontoreview.toml`, the run history or the command line shown in the app. Repositories receive the ontology's labels, synonyms and IRIs, never the file. `--offline` skips repositories and URLs.
+
+**Term database.** CDI uses the term database first (the bundled W3C vocabularies plus your cache; see IRI checks). Every stored vocabulary is matched offline as a reference. Details of OLS and BioPortal ontologies (title, domain, version IRI, version, load or release date) are read from the database before the service is asked, and saved once fetched, for `iri_cache_days` (30). Reference ontologies you provide (files, uploads, URLs) are indexed into the database, so it grows and later runs find them without being told. Each run is recorded there (Term database › Runs) with its settings, scores, every correspondence and the release of each reference ontology. Not every ontology states a version IRI or version, and not every repository reports a load date. A release is then identified by what is available (release date, the file's SHA-256, or a SHA-256 fingerprint of the repository's answer), marked "version not reported", and never dropped. The same release list appears in the docs' quality section, `cdi.json` and `provenance.ttl` (`prov:used`). Set `evaluation.cdi_term_db = false` to skip the database.
+
+Gen needs a language model: `pip install "ontoreview[cdi]"` (transformers, torch and OntoAligner; Python 3.10–3.13 for OntoAligner). The same extra enables OntoAligner for file and URL references: `--cdi-ontoaligner fuzzy` (string similarity) or `sbert` (sentence embeddings), or the matcher choice in Settings. The model, about 1.6 GB, is downloaded on first use and runs locally. Without it, only Align is scored and the report says why. The review shows the scores, Align per reference ontology, entities without any correspondence, and classes with very specific definitions. The docs folder gets a `cdi.json` with every correspondence. Parameters (`cdi_tau`, `cdi_c_lex`, `cdi_rho_sub`, `cdi_gamma`, `cdi_k_max`, `cdi_top_n`, `cdi_beta`, `cdi_theta`, `cdi_model`, `cdi_ontoaligner`, …) go under `[evaluation]`:
+
+```toml
+[evaluation]
+cdi = "on"
+cdi_references = ["ols", "ols:envo,chebi", "refs/upper.owl", "refs/maps.sssom.tsv"]
+cdi_domains = ["agriculture"]
+```
 
 ## For LLMs and agents
 

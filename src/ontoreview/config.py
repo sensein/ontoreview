@@ -149,7 +149,55 @@ class EvaluationConfig(BaseModel):
     iri_cache_days: float = Field(30, description="Cached and bundled entries older than this are refreshed "
                                                   "when online (stale ones are flagged); 0 = never expire")
 
-    @field_validator("oops", "robot", "ontocheck", "iri_checks", mode="before")
+    cdi: Literal["on", "off"] = Field("on", description="Cross-domain interoperability score: alignment with "
+                                                         "reference ontologies from other domains and generality "
+                                                         "of class definitions")
+    cdi_references: list[str] = Field(
+        default_factory=lambda: ["ols"],
+        description="Reference ontologies: files or URLs (RDF, or SSSOM .tsv mappings), 'ols' / 'bioportal' "
+                    "(discover candidates), 'ols:envo,chebi' / 'bioportal:NCIT' (named ones), and other "
+                    "OLS / OntoPortal services as 'ols@https://…/api' or 'ontoportal:AGROVOC@https://…'")
+    cdi_term_db: bool = Field(True, description="Use the term database (bundled vocabularies and your cache) as "
+                                                "the first reference source; user-provided references are saved "
+                                                "to it, and every run is recorded there")
+    cdi_domains: list[str] = Field(default_factory=list, description="The ontology's own domain(s); discovered "
+                                                                     "ontologies from the same domain are left out")
+    cdi_exclude: list[str] = Field(default_factory=list, description="Reference ontology ids to leave out, e.g. ols:ncit")
+    cdi_namespace: list[str] = Field(default_factory=list, description="IRI prefix(es) of the ontology's own "
+                                                                       "entities (default: the detected namespace)")
+    cdi_classes_only: bool = Field(False, description="Score classes only (default: classes and object/datatype "
+                                                      "properties)")
+    cdi_top_n: int = Field(10, ge=0, description="Discovered reference ontologies kept (N)")
+    cdi_tau: float = Field(0.5, ge=0, le=1, description="τ: minimum correspondence strength that counts")
+    cdi_c_lex: float = Field(0.9, ge=0, le=1, description="c_lex: confidence of a lexical match")
+    cdi_rho_sub: float = Field(0.8, gt=0, le=1, description="ρ_sub: weight of subsumption (⊑/⊒) correspondences")
+    cdi_gamma: float = Field(0.8, gt=0, le=1, description="γ: discount per hierarchy step")
+    cdi_k_max: int = Field(3, ge=0, description="k_max: hierarchy steps followed for inferred correspondences")
+    cdi_beta: float = Field(1.0, gt=0, description="β: >1 favours alignment, <1 favours generality")
+    cdi_theta: float = Field(0.5, ge=0, le=1, description="θ: CDI at or above this counts as interoperable")
+    cdi_model: str = Field("facebook/bart-large-mnli", description="Zero-shot NLI model for definition generality "
+                                                                    "(needs `pip install 'ontoreview[cdi]'`)")
+    cdi_generality: bool = Field(True, description="Score definition generality with the language model; "
+                                                   "off = alignment only")
+    cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = Field(
+        "sbert", description="Also match file and URL references with OntoAligner: sbert = sentence embeddings "
+                             "(model downloaded automatically on first use), fuzzy = string similarity, off = "
+                             "asserted and lexical matches only. Needs ontoreview[cdi]; skipped with a note otherwise")
+    cdi_sbert_model: str = Field("all-MiniLM-L6-v2", description="Sentence-embedding model for the SBERT matcher "
+                                                                 "(Hugging Face id)")
+    cdi_hf_token: str | None = Field(None, repr=False, description="Optional Hugging Face token for downloading the "
+                                                                   "language models (higher rate limits, gated models); "
+                                                                   "default: HF_TOKEN")
+    cdi_ontoaligner_threshold: float = Field(0.8, ge=0, le=1, description="Minimum OntoAligner score")
+    cdi_api_keys: dict[str, str] = Field(
+        default_factory=dict, repr=False,
+        description="Optional API keys: 'bioportal' for BioPortal, 'ontoportal' for any other OntoPortal service, "
+                    "or 'bioportal@host' for one service. A key avoids shared rate limits; OntoPortal services "
+                    "need one. Default: BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY. OLS needs no key")
+    cdi_timeout: float = Field(30, description="Seconds per repository request")
+    cdi_budget: float = Field(600, description="Total seconds for repository lookups per run")
+
+    @field_validator("oops", "robot", "ontocheck", "iri_checks", "cdi", mode="before")
     @classmethod
     def _bool_to_mode(cls, v):
         # older configs used oops = true / false
