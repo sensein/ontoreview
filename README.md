@@ -77,6 +77,8 @@ Command line: `ontoreview fix list a.ttl [--ai]` and `ontoreview fix apply a.ttl
 | `ontoreview ui` | The app (recommended) |
 | `ontoreview build SOURCE -o docs` | Documentation website (`--single-file` for one HTML file) |
 | `ontoreview check SOURCE` | Quality checks; `--interop-only` for CDI and SI only |
+| `ontoreview evaluate SOURCE -f json` | Every evaluation and setting as an option, one JSON result (for integration) |
+| `ontoreview fix list / apply SOURCE` | Suggested fixes, written to a new version |
 | `ontoreview diff OLD NEW` | Compare two versions |
 | `ontoreview export SOURCE --format markdown` | Markdown or MyST pages |
 | `ontoreview serve SOURCE` | Live preview while you edit |
@@ -85,11 +87,55 @@ Command line: `ontoreview fix list a.ttl [--ai]` and `ontoreview fix apply a.ttl
 `SOURCE` is a file, a URL or a folder of ontologies. Settings can live in `ontoreview.toml` next to the
 ontology, so the app, the command line and CI build exactly the same docs.
 
+## Integrate with other tools and sites
+
+`ontoreview evaluate` runs the evaluations from a script, a CI job or a web service and prints one JSON
+object, so another site (for example a schema or ontology catalogue) can show OntoReview's results.
+
+```bash
+pip install ontoreview                     # add [cdi] for the interoperability scores
+
+# all evaluations, JSON to stdout (exit 1 on errors; --fail-on never to always exit 0)
+ontoreview evaluate onto.ttl -f json
+
+# only some: rules, robot, reasoner, iri, ontocheck, oops, cdi, si
+ontoreview evaluate onto.ttl --only rules,iri,ontocheck --no-iri-network -f json -o result.json
+
+# any setting: every [evaluation] key is an option (or use --set KEY=VALUE, also on build and check)
+ontoreview evaluate onto.ttl --only cdi,si --cdi-references ols --cdi-tau 0.6 --si-theta-s 0.4 -f json
+ontoreview evaluate onto.ttl --disable-rule OB019 --severity OB011=info -f json
+
+# the options themselves, as JSON: build a form from it
+ontoreview evaluate --list-options -f json
+```
+
+**Result** (`"schema": "ontoreview.evaluation/1"`):
+
+| Key | Contents |
+|---|---|
+| `tool`, `source` | OntoReview version; the file or URL evaluated, with its SHA-256 |
+| `ontology` | IRI, title, version, license, number of terms |
+| `evaluations` | Per check: `ran`, `off`, `skipped` (e.g. no Docker for ROBOT) or `error`, with its finding count |
+| `summary` | Distinct issues by severity, raw findings, overlaps between checks, consistency, CDI/SI scores |
+| `issues` | Each problem once, with the checks that found it and the affected terms |
+| `settings` | The effective settings (API keys and tokens shown as `***`) |
+| `report` | The full report: every finding and every check's own results and metrics |
+
+Notes for services:
+
+- **Network and uploads.** OOPS! uploads the ontology to oops.linkeddata.es, and CDI/SI query OLS or
+  BioPortal. Use `--only` or `--oops off` to keep an evaluation local, and `--no-iri-network` for
+  offline IRI checks.
+- **Keys.** Pass them through the environment (`BIOPORTAL_API_KEY`, `HF_TOKEN`), not on the command line.
+- **Records.** `--records DIR` also writes `cdi.json`, `si.json`, `iri-checks.json` and `provenance.ttl`.
+- **Python.** The same in Python: `from ontoreview.build import check;
+  onto, report = check("onto.ttl", evaluation={"cdi": "off"})`.
+
 ## Learn more
 
 - **[Guide](guide/GUIDE.md):** every feature, option, check and configuration key.
 - **In the app:** Help (searchable, with screenshots).
-- **Examples:** `python scripts/build_examples.py && python -m http.server -d examples`.
+- **Examples:** `examples/toy_onto.ttl`; build the full set with `python scripts/build_examples.py && python -m http.server -d examples/site`.
 
 ## Development
 

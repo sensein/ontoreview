@@ -129,6 +129,13 @@ def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None =
     return ev or None
 
 
+def _with_set(ev: dict | None, items: list[str] | None) -> dict | None:
+    """Add ``--set KEY=VALUE`` settings (validated like ontoreview.toml) to the evaluation overrides."""
+    from .cli_evaluate import parse_set
+    extra = parse_set(items)
+    return {**(ev or {}), **extra} or None
+
+
 INTEROP_ONLY = {"robot": "off", "oops": "off", "ontocheck": "off", "iri_checks": "off", "reasoner": "off"}
 
 
@@ -264,6 +271,7 @@ def build(
     si_theta_s: float | None = typer.Option(None, "--si-theta-s", help="θ_s: a domain counts as covered when its CDI reaches this (default 0.3)."),
     si_domain: list[str] | None = typer.Option(None, "--si-domain", help="Your scientific domain for a reference ontology, e.g. ols:emi=1.5 (several: ols:emi=1.5;1.6). Repeatable."),
     si_ref: list[str] | None = typer.Option(None, "--si-ref", help="Reference ontology for scientific interoperability only (same forms as --cdi: file, SSSOM, ols, ols:envo, bioportal:NCIT). Repeatable; default: the --cdi references."),
+    set_: list[str] | None = typer.Option(None, "--set", metavar="KEY=VALUE", help="Any [evaluation] setting, e.g. --set cdi_tau=0.6 --set iri_network=false. Repeatable; see `ontoreview evaluate --list-options`."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
     standalone: bool | None = typer.Option(None, "--standalone/--no-standalone", help="Also write standalone.html (the whole documentation in one file) in the output folder (default: on)."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
@@ -278,7 +286,7 @@ def build(
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
                     base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason, standalone=standalone,
                     load_imports=imports, include_imported=include_imported,
-                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, _si_overrides(no_si, si_home_domain, si_theta_s, si_domain, si_ref)),
+                    include_individuals=individuals, evaluation=_with_set(_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, _si_overrides(no_si, si_home_domain, si_theta_s, si_domain, si_ref)), set_),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
     folder = _folder_source(source, config)
     if folder is not None:
@@ -481,6 +489,7 @@ def check(
     si_theta_s: float | None = typer.Option(None, "--si-theta-s", help="θ_s: a domain counts as covered when its CDI reaches this (default 0.3)."),
     si_domain: list[str] | None = typer.Option(None, "--si-domain", help="Your scientific domain for a reference ontology, e.g. ols:emi=1.5 (several: ols:emi=1.5;1.6). Repeatable."),
     si_ref: list[str] | None = typer.Option(None, "--si-ref", help="Reference ontology for scientific interoperability only (same forms as --cdi: file, SSSOM, ols, ols:envo, bioportal:NCIT). Repeatable; default: the --cdi references."),
+    set_: list[str] | None = typer.Option(None, "--set", metavar="KEY=VALUE", help="Any [evaluation] setting, e.g. --set cdi_tau=0.6 --set iri_network=false. Repeatable; see `ontoreview evaluate --list-options`."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Run quality checks: built-in rules, ROBOT report and a reasoner consistency check (Docker),
@@ -496,7 +505,7 @@ def check(
         return
 
     try:
-        ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, si_ev)
+        ev = _with_set(_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, si_ev), set_)
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
@@ -947,3 +956,9 @@ def fix_apply(source: str = typer.Argument(..., help="Ontology file."), config: 
     console.print(f"  fixed: {len(r.fixed)} findings" + (f"; new: {', '.join(r.new_findings)}" if r.new_findings else ""))
     if s.required_open():
         console.print("[yellow]Still required before docs:[/] " + ", ".join(x.title.lower() for x in s.required_open()))
+
+
+# every evaluation and every [evaluation] setting as an option, with a JSON result (cli_evaluate.py)
+from .cli_evaluate import register as _register_evaluate  # noqa: E402
+
+_register_evaluate(app, ADVANCED)

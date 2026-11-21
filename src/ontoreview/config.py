@@ -116,7 +116,7 @@ class EvaluationConfig(BaseModel):
         "auto", description="OOPS! pitfall scanner web service (uploads the ontology to "
                             "https://oops.linkeddata.es): auto = run alongside ROBOT, leaving out the pitfalls ROBOT "
                             "covers (full catalogue when ROBOT cannot run); on = always the full catalogue; off = never")
-    oops_timeout: int = 90
+    oops_timeout: int = Field(90, description="Seconds to wait for the OOPS! web service")
     oops_endpoint: str | None = Field(None, description="OOPS! REST endpoint (default https://oops.linkeddata.es/rest)")
     robot: Literal["auto", "on", "off"] = Field(
         "auto", description="Run `robot report` (local robot, else Docker). auto = run, falling back to OOPS! "
