@@ -457,7 +457,6 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-hero { background: #0F1724; color: #fff; border-radius: 14px; padding: 32px; }
 .or-feature .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
   display: flex; align-items: center; justify-content: center; }
-.or-logo-panel { background: #fff; border-radius: 10px; padding: 10px 14px; display: inline-flex; border: 1px solid var(--or-line); }
 .or-notice { padding: 10px 12px; background: var(--or-warn-bg); color: var(--or-warn); border-radius: 8px; font-size: 12.5px; }
 .or-themeprev { display: block; height: 64px; border-radius: 8px; border: 1px solid var(--or-line); width: 100%; }
 @media (prefers-reduced-motion: reduce) { .ob-dropzone { transition: none; } }
@@ -1906,7 +1905,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                              "OOPS! — from one window or the command line.").style(
                         "font-size:15px;line-height:1.55;color:#C9D1DB;max-width:560px")
                     with ui.row().classes("gap-2 q-mt-sm"):
-                        for chip in (f"Version {__version__}", "Apache License 2.0", "CAIR-Nepal"):
+                        for chip in (f"Version {__version__}", "MIT License", "CAIR-Nepal"):
                             ui.label(chip).style("background:#1E293B;padding:4px 10px;border-radius:20px;font-size:12px")
                 with ui.column().classes("gap-2"):
                     ui.button("View on GitHub", on_click=lambda: ui.navigate.to(REPO, new_tab=True)) \
@@ -1952,16 +1951,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.label("Please cite ROBOT, OntoCheck and OOPS! when publishing their results.").classes("or-hint q-mt-sm")
             with ui.element("footer").classes("w-full row items-center justify-between gap-4 q-mt-md q-pt-md").style(
                     "border-top: 1px solid var(--or-line)"):
-                with ui.row().classes("items-center gap-4"):
-                    with ui.link(target="https://cair-nepal.org", new_tab=True).classes("or-logo-panel") \
-                            .props('aria-label="CAIR-Nepal website"'):
-                        ui.image(f"{STATIC_URL}/cair-nepal-logo.png") \
-                            .props('alt="CAIR-Nepal — Shaping the Future with AI" fit=contain no-spinner') \
-                            .style("width: 220px; height: 54px")
-                    with ui.column().classes("gap-0"):
-                        ui.label("Developed by CAIR-Nepal").classes("or-label")
-                        ui.link("cair-nepal.org", "https://cair-nepal.org", new_tab=True).classes("or-hint")
-                ui.label(f"© CAIR-Nepal · Apache License 2.0 · OntoReview {__version__}").classes("or-hint")
+                with ui.column().classes("gap-0"):
+                    ui.label("Developed by CAIR-Nepal").classes("or-label")
+                    ui.link("cair-nepal.org", "https://cair-nepal.org", new_tab=True).classes("or-hint")
+                ui.label(f"MIT License · OntoReview {__version__}").classes("or-hint")
 
         async def fill() -> None:
             info = await run.io_bound(system_info)
