@@ -1,0 +1,259 @@
+@prefix GSSO: <http://purl.obolibrary.org/obo/GSSO_> .
+@prefix ORCID: <https://orcid.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix linkml: <https://w3id.org/linkml/> .
+@prefix ns1: <https://schema.org/> .
+@prefix ns2: <http://purl.org/vocab/vann/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix personinfo: <https://w3id.org/example/personinfo/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+personinfo:PhoneNumberType a rdfs:Datatype ;
+    rdfs:label "PhoneNumberType" ;
+    rdfs:isDefinedBy <https://w3id.org/example/core> ;
+    owl:equivalentClass [ a rdfs:Datatype ;
+            owl:onDatatype xsd:string ;
+            owl:withRestrictions ( [ xsd:pattern "^[\\d\\(\\)\\-]+$" ] ) ] ;
+    skos:definition "A phone number." .
+
+GSSO:000384 a owl:NamedIndividual,
+        personinfo:GenderType ;
+    rdfs:label "transgender woman" ;
+    linkml:permissible_value "transgender woman" .
+
+GSSO:009253 a owl:NamedIndividual,
+        personinfo:GenderType ;
+    rdfs:label "nonbinary woman" ;
+    linkml:permissible_value "nonbinary woman" .
+
+GSSO:009254 a owl:NamedIndividual,
+        personinfo:GenderType ;
+    rdfs:label "nonbinary man" ;
+    linkml:permissible_value "nonbinary man" .
+
+schema:birthDate a owl:DatatypeProperty ;
+    rdfs:label "birth_date" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range xsd:date ;
+    linkml:domain_of schema:Person .
+
+schema:description a owl:DatatypeProperty ;
+    rdfs:label "description" ;
+    rdfs:isDefinedBy <https://w3id.org/example/core> ;
+    rdfs:range xsd:string ;
+    skos:definition "A human-readable description for a thing." ;
+    linkml:domain_of personinfo:NamedThing .
+
+schema:email a owl:DatatypeProperty ;
+    rdfs:label "primary_email" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:onDatatype xsd:string ;
+            owl:withRestrictions ( [ xsd:pattern "^\\S+@[\\S+\\.]+\\S+" ] ) ] ;
+    skos:definition "The main email address of a person." ;
+    linkml:domain_of schema:Person ;
+    linkml:pattern "^\\S+@[\\S+\\.]+\\S+" .
+
+schema:name a owl:DatatypeProperty ;
+    rdfs:label "name" ;
+    rdfs:isDefinedBy <https://w3id.org/example/core> ;
+    rdfs:range xsd:string ;
+    skos:definition "A human-readable name for a thing." ;
+    linkml:domain_of personinfo:NamedThing .
+
+<https://w3id.org/example/personinfo/GenderType#cisgender%20man> a owl:NamedIndividual,
+        personinfo:GenderType ;
+    rdfs:label "cisgender man" ;
+    skos:definition "A man whose gender matches the sex assigned at birth." ;
+    linkml:permissible_value "cisgender man" .
+
+personinfo:age_in_years a owl:DatatypeProperty ;
+    rdfs:label "age_in_years" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 999 ] ) ] ;
+    linkml:domain_of schema:Person ;
+    linkml:maximum_value 999 ;
+    linkml:minimum_value 0 .
+
+personinfo:aliases a owl:DatatypeProperty ;
+    rdfs:label "aliases" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range xsd:string ;
+    linkml:attribute_of personinfo:HasAliases ;
+    linkml:domain_of personinfo:HasAliases ;
+    linkml:multivalued true .
+
+personinfo:employees a owl:ObjectProperty ;
+    rdfs:label "employees" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range schema:Person ;
+    owl:inverseOf personinfo:employed_by ;
+    linkml:attribute_of personinfo:Organization ;
+    linkml:domain_of personinfo:Organization ;
+    linkml:multivalued true .
+
+personinfo:founding_date a owl:DatatypeProperty ;
+    rdfs:label "founding_date" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range xsd:date ;
+    skos:definition "When the organization was founded." ;
+    linkml:attribute_of personinfo:Organization ;
+    linkml:domain_of personinfo:Organization .
+
+personinfo:gender a owl:ObjectProperty ;
+    rdfs:label "gender" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range personinfo:GenderType ;
+    linkml:domain_of schema:Person .
+
+personinfo:id a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "id" ;
+    rdfs:isDefinedBy <https://w3id.org/example/core> ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "A unique identifier for a thing." ;
+    linkml:domain_of personinfo:NamedThing ;
+    linkml:identifier true .
+
+personinfo:organizations a owl:ObjectProperty ;
+    rdfs:label "organizations" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range personinfo:Organization ;
+    linkml:attribute_of personinfo:Container ;
+    linkml:domain_of personinfo:Container ;
+    linkml:inlined_as_list true ;
+    linkml:multivalued true .
+
+personinfo:persons a owl:ObjectProperty ;
+    rdfs:label "persons" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range schema:Person ;
+    linkml:attribute_of personinfo:Container ;
+    linkml:domain_of personinfo:Container ;
+    linkml:inlined_as_list true ;
+    linkml:multivalued true .
+
+personinfo:employed_by a owl:ObjectProperty ;
+    rdfs:label "employed_by" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:range personinfo:Organization ;
+    owl:deprecated true ;
+    skos:historyNote "Use employment history instead." ;
+    linkml:domain_of schema:Person .
+
+personinfo:Container a owl:Class ;
+    rdfs:label "Container" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom personinfo:Organization ;
+            owl:onProperty personinfo:organizations ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom schema:Person ;
+            owl:onProperty personinfo:persons ] ;
+    linkml:tree_root true .
+
+personinfo:HasAliases a owl:Class ;
+    rdfs:label "HasAliases" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty personinfo:aliases ] ;
+    skos:definition "A mixin applied to any class that can have aliases." ;
+    linkml:mixin true .
+
+personinfo:NamedThing a owl:Class ;
+    rdfs:label "NamedThing" ;
+    rdfs:isDefinedBy <https://w3id.org/example/core> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onDataRange xsd:anyURI ;
+            owl:onProperty personinfo:id ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:string ;
+            owl:onProperty schema:description ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:string ;
+            owl:onProperty schema:name ] ;
+    skos:definition "A generic grouping for any identifiable entity." ;
+    linkml:abstract true .
+
+personinfo:GenderType a owl:Class ;
+    rdfs:label "GenderType" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:oneOf ( GSSO:009254 GSSO:009253 GSSO:000384 <https://w3id.org/example/personinfo/GenderType#cisgender%20man> ) ] ;
+    skos:definition "Gender of a person." ;
+    linkml:kind "enum" .
+
+personinfo:Organization a owl:Class ;
+    rdfs:label "Organization" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:date ;
+            owl:onProperty personinfo:founding_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom schema:Person ;
+            owl:onProperty personinfo:employees ],
+        personinfo:NamedThing ;
+    skos:definition "An organization such as a company or university." .
+
+schema:Person a owl:Class ;
+    rdfs:label "Person" ;
+    rdfs:isDefinedBy <https://w3id.org/example/personinfo> ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange xsd:date ;
+            owl:onProperty schema:birthDate ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onDataRange [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions ( [ xsd:minInclusive 0 ] [ xsd:maxInclusive 999 ] ) ] ;
+            owl:onProperty personinfo:age_in_years ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass personinfo:Organization ;
+            owl:onProperty personinfo:employed_by ],
+        [ a owl:Restriction ;
+            owl:onDataRange [ a rdfs:Datatype ;
+                    owl:onDatatype xsd:string ;
+                    owl:withRestrictions ( [ xsd:pattern "^\\S+@[\\S+\\.]+\\S+" ] ) ] ;
+            owl:onProperty schema:email ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass personinfo:GenderType ;
+            owl:onProperty personinfo:gender ],
+        personinfo:HasAliases,
+        personinfo:NamedThing ;
+    skos:altLabel "human being" ;
+    skos:definition "A person (alive, dead, undead, or fictional)." ;
+    skos:exactMatch schema:Person ;
+    skos:example "Ada Lovelace — a famous mathematician" ;
+    linkml:mixins personinfo:HasAliases .
+
+<https://w3id.org/example/personinfo> a owl:Ontology ;
+    dcterms:contributor "Grace Hopper" ;
+    dcterms:created "2025-02-01" ;
+    dcterms:creator ORCID:0000-0000-0000-0002 ;
+    dcterms:description """A LinkML model for people, organizations and their relationships.
+Used to test **OntoReview**'s LinkML support.""" ;
+    dcterms:license <https://creativecommons.org/publicdomain/zero/1.0/> ;
+    dcterms:modified "2026-10-15" ;
+    dcterms:title "Person Information Model" ;
+    ns2:preferredNamespacePrefix "personinfo" ;
+    ns2:preferredNamespaceUri "https://w3id.org/example/personinfo/" ;
+    owl:versionInfo "0.3.0" ;
+    ns1:keywords "organizations",
+        "people" ;
+    linkml:generation_source "LinkML schema" .
+

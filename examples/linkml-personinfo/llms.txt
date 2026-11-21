@@ -1,0 +1,30 @@
+# Person Information Model
+
+> A LinkML model for people, organizations and their relationships. Used to test **OntoReview**'s LinkML support.
+
+- Ontology IRI: https://w3id.org/example/personinfo
+- Namespace: https://w3id.org/example/personinfo/ (prefix `personinfo:`)
+- Version: 0.3.0
+- License: CC0 1.0 (Public Domain)
+- Contents: 6 classes, 5 object properties, 8 datatype properties, 31 annotation properties, 1 datatype, 4 named individuals
+
+Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
+
+## Documentation
+
+- [Overview](index.md): metadata and contents
+- [Classes](classes.md): 6 classes with definitions and axioms
+- [Object properties](object-properties.md): 5 object properties with definitions and axioms
+- [Datatype properties](datatype-properties.md): 8 datatype properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 31 annotation properties with definitions and axioms
+- [Datatypes](datatypes.md): 1 datatype with definitions and axioms
+- [Named individuals](individuals.md): 4 named individuals with definitions and axioms
+
+## Machine-readable
+
+- [ontology.json](ontology.json): all terms as JSON (IRI, label, definition, hierarchy, domain/range)
+- [llms-full.txt](llms-full.txt): the complete documentation as one Markdown file
+- [Turtle](ontology.ttl): the ontology source (text/turtle)
+- [RDF/XML](ontology.owl): the ontology source (application/rdf+xml)
+- [JSON-LD](ontology.jsonld): the ontology source (application/ld+json)
+- [N-Triples](ontology.nt): the ontology source (application/n-triples)

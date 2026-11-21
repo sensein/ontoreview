@@ -1,0 +1,481 @@
+{
+ "title": "Person Information Model",
+ "iri": "https://w3id.org/example/personinfo",
+ "version": "0.3.0",
+ "namespace": "https://w3id.org/example/personinfo/",
+ "prefix": "personinfo",
+ "description": "A LinkML model for people, organizations and their relationships.\nUsed to test **OntoReview**'s LinkML support.",
+ "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+ "creators": [
+  "https://orcid.org/0000-0000-0000-0002"
+ ],
+ "prefixes": {
+  "ORCID": "https://orcid.org/",
+  "dcterms": "http://purl.org/dc/terms/",
+  "linkml": "https://w3id.org/linkml/",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "personinfo": "https://w3id.org/example/personinfo/",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "schema": "http://schema.org/",
+  "skos": "http://www.w3.org/2004/02/skos/core#",
+  "xsd": "http://www.w3.org/2001/XMLSchema#"
+ },
+ "counts": {
+  "class": 6,
+  "object_property": 5,
+  "datatype_property": 8,
+  "annotation_property": 31,
+  "datatype": 1,
+  "individual": 4,
+  "triples": 267
+ },
+ "terms": [
+  {
+   "iri": "https://w3id.org/example/personinfo/Container",
+   "curie": "personinfo:Container",
+   "kind": "class",
+   "label": "Container",
+   "restrictions": [
+    "personinfo:organizations only personinfo:Organization",
+    "personinfo:persons only schema:Person"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/GenderType",
+   "curie": "personinfo:GenderType",
+   "kind": "class",
+   "label": "GenderType",
+   "definition": "Gender of a person.",
+   "equivalent_to": [
+    "{GSSO:009254, GSSO:009253, GSSO:000384, cisgender man}"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/HasAliases",
+   "curie": "personinfo:HasAliases",
+   "kind": "class",
+   "label": "HasAliases",
+   "definition": "A mixin applied to any class that can have aliases.",
+   "subclasses": [
+    "schema:Person"
+   ],
+   "restrictions": [
+    "personinfo:aliases only xsd:string"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/NamedThing",
+   "curie": "personinfo:NamedThing",
+   "kind": "class",
+   "label": "NamedThing",
+   "definition": "A generic grouping for any identifiable entity.",
+   "subclasses": [
+    "personinfo:Organization",
+    "schema:Person"
+   ],
+   "restrictions": [
+    "personinfo:id exactly 1 xsd:anyURI",
+    "schema:description max 1 xsd:string",
+    "schema:name max 1 xsd:string"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/Organization",
+   "curie": "personinfo:Organization",
+   "kind": "class",
+   "label": "Organization",
+   "definition": "An organization such as a company or university.",
+   "superclasses": [
+    "personinfo:NamedThing"
+   ],
+   "restrictions": [
+    "personinfo:founding_date max 1 xsd:date",
+    "personinfo:employees only schema:Person"
+   ]
+  },
+  {
+   "iri": "http://schema.org/Person",
+   "curie": "schema:Person",
+   "kind": "class",
+   "label": "Person",
+   "definition": "A person (alive, dead, undead, or fictional).",
+   "synonyms": [
+    "human being"
+   ],
+   "examples": [
+    "Ada Lovelace — a famous mathematician"
+   ],
+   "superclasses": [
+    "personinfo:HasAliases",
+    "personinfo:NamedThing"
+   ],
+   "restrictions": [
+    "personinfo:gender max 1 personinfo:GenderType",
+    "schema:email exactly 1 xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]",
+    "personinfo:age_in_years max 1 xsd:integer[>= 0, <= 999]",
+    "personinfo:employed_by max 1 personinfo:Organization",
+    "schema:birthDate max 1 xsd:date"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/employed_by",
+   "curie": "personinfo:employed_by",
+   "kind": "object_property",
+   "label": "employed_by",
+   "deprecated": true,
+   "range": [
+    "personinfo:Organization"
+   ],
+   "inverse_of": [
+    "personinfo:employees"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/employees",
+   "curie": "personinfo:employees",
+   "kind": "object_property",
+   "label": "employees",
+   "range": [
+    "schema:Person"
+   ],
+   "inverse_of": [
+    "personinfo:employed_by"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/gender",
+   "curie": "personinfo:gender",
+   "kind": "object_property",
+   "label": "gender",
+   "range": [
+    "personinfo:GenderType"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/organizations",
+   "curie": "personinfo:organizations",
+   "kind": "object_property",
+   "label": "organizations",
+   "range": [
+    "personinfo:Organization"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/persons",
+   "curie": "personinfo:persons",
+   "kind": "object_property",
+   "label": "persons",
+   "range": [
+    "schema:Person"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/age_in_years",
+   "curie": "personinfo:age_in_years",
+   "kind": "datatype_property",
+   "label": "age_in_years",
+   "range": [
+    "xsd:integer[>= 0, <= 999]"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/aliases",
+   "curie": "personinfo:aliases",
+   "kind": "datatype_property",
+   "label": "aliases",
+   "range": [
+    "xsd:string"
+   ]
+  },
+  {
+   "iri": "http://schema.org/birthDate",
+   "curie": "schema:birthDate",
+   "kind": "datatype_property",
+   "label": "birth_date",
+   "range": [
+    "xsd:date"
+   ]
+  },
+  {
+   "iri": "http://schema.org/description",
+   "curie": "schema:description",
+   "kind": "datatype_property",
+   "label": "description",
+   "definition": "A human-readable description for a thing.",
+   "range": [
+    "xsd:string"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/founding_date",
+   "curie": "personinfo:founding_date",
+   "kind": "datatype_property",
+   "label": "founding_date",
+   "definition": "When the organization was founded.",
+   "range": [
+    "xsd:date"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/id",
+   "curie": "personinfo:id",
+   "kind": "datatype_property",
+   "label": "id",
+   "definition": "A unique identifier for a thing.",
+   "range": [
+    "xsd:anyURI"
+   ],
+   "characteristics": [
+    "Functional"
+   ]
+  },
+  {
+   "iri": "http://schema.org/name",
+   "curie": "schema:name",
+   "kind": "datatype_property",
+   "label": "name",
+   "definition": "A human-readable name for a thing.",
+   "range": [
+    "xsd:string"
+   ]
+  },
+  {
+   "iri": "http://schema.org/email",
+   "curie": "schema:email",
+   "kind": "datatype_property",
+   "label": "primary_email",
+   "definition": "The main email address of a person.",
+   "range": [
+    "xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]"
+   ]
+  },
+  {
+   "iri": "https://w3id.org/linkml/abstract",
+   "curie": "linkml:abstract",
+   "kind": "annotation_property",
+   "label": "abstract"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+   "curie": "skos:altLabel",
+   "kind": "annotation_property",
+   "label": "altLabel"
+  },
+  {
+   "iri": "https://w3id.org/linkml/attribute_of",
+   "curie": "linkml:attribute_of",
+   "kind": "annotation_property",
+   "label": "attribute_of"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/contributor",
+   "curie": "dcterms:contributor",
+   "kind": "annotation_property",
+   "label": "contributor"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/created",
+   "curie": "dcterms:created",
+   "kind": "annotation_property",
+   "label": "created"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/creator",
+   "curie": "dcterms:creator",
+   "kind": "annotation_property",
+   "label": "creator"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#definition",
+   "curie": "skos:definition",
+   "kind": "annotation_property",
+   "label": "definition"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#deprecated",
+   "curie": "owl:deprecated",
+   "kind": "annotation_property",
+   "label": "deprecated"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/description",
+   "curie": "dcterms:description",
+   "kind": "annotation_property",
+   "label": "description"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#exactMatch",
+   "curie": "skos:exactMatch",
+   "kind": "annotation_property",
+   "label": "exactMatch"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#example",
+   "curie": "skos:example",
+   "kind": "annotation_property",
+   "label": "example"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#historyNote",
+   "curie": "skos:historyNote",
+   "kind": "annotation_property",
+   "label": "historyNote"
+  },
+  {
+   "iri": "https://w3id.org/linkml/identifier",
+   "curie": "linkml:identifier",
+   "kind": "annotation_property",
+   "label": "identifier"
+  },
+  {
+   "iri": "https://w3id.org/linkml/inlined_as_list",
+   "curie": "linkml:inlined_as_list",
+   "kind": "annotation_property",
+   "label": "inlined_as_list"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "https://schema.org/keywords",
+   "kind": "annotation_property",
+   "label": "keywords"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/license",
+   "curie": "dcterms:license",
+   "kind": "annotation_property",
+   "label": "license"
+  },
+  {
+   "iri": "https://w3id.org/linkml/maximum_value",
+   "curie": "linkml:maximum_value",
+   "kind": "annotation_property",
+   "label": "maximum_value"
+  },
+  {
+   "iri": "https://w3id.org/linkml/minimum_value",
+   "curie": "linkml:minimum_value",
+   "kind": "annotation_property",
+   "label": "minimum_value"
+  },
+  {
+   "iri": "https://w3id.org/linkml/mixin",
+   "curie": "linkml:mixin",
+   "kind": "annotation_property",
+   "label": "mixin"
+  },
+  {
+   "iri": "https://w3id.org/linkml/mixins",
+   "curie": "linkml:mixins",
+   "kind": "annotation_property",
+   "label": "mixins"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/modified",
+   "curie": "dcterms:modified",
+   "kind": "annotation_property",
+   "label": "modified"
+  },
+  {
+   "iri": "https://w3id.org/linkml/multivalued",
+   "curie": "linkml:multivalued",
+   "kind": "annotation_property",
+   "label": "multivalued"
+  },
+  {
+   "iri": "https://w3id.org/linkml/pattern",
+   "curie": "linkml:pattern",
+   "kind": "annotation_property",
+   "label": "pattern"
+  },
+  {
+   "iri": "https://w3id.org/linkml/permissible_value",
+   "curie": "linkml:permissible_value",
+   "kind": "annotation_property",
+   "label": "permissible_value"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+   "kind": "annotation_property",
+   "label": "preferredNamespacePrefix"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+   "kind": "annotation_property",
+   "label": "preferredNamespaceUri"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dcterms:title",
+   "kind": "annotation_property",
+   "label": "title"
+  },
+  {
+   "iri": "https://w3id.org/linkml/tree_root",
+   "curie": "linkml:tree_root",
+   "kind": "annotation_property",
+   "label": "tree_root"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/PhoneNumberType",
+   "curie": "personinfo:PhoneNumberType",
+   "kind": "datatype",
+   "label": "PhoneNumberType",
+   "definition": "A phone number."
+  },
+  {
+   "iri": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
+   "kind": "individual",
+   "label": "cisgender man",
+   "definition": "A man whose gender matches the sex assigned at birth.",
+   "types": [
+    "personinfo:GenderType"
+   ]
+  },
+  {
+   "iri": "http://purl.obolibrary.org/obo/GSSO_009254",
+   "curie": "GSSO:009254",
+   "kind": "individual",
+   "label": "nonbinary man",
+   "types": [
+    "personinfo:GenderType"
+   ]
+  },
+  {
+   "iri": "http://purl.obolibrary.org/obo/GSSO_009253",
+   "curie": "GSSO:009253",
+   "kind": "individual",
+   "label": "nonbinary woman",
+   "types": [
+    "personinfo:GenderType"
+   ]
+  },
+  {
+   "iri": "http://purl.obolibrary.org/obo/GSSO_000384",
+   "curie": "GSSO:000384",
+   "kind": "individual",
+   "label": "transgender woman",
+   "types": [
+    "personinfo:GenderType"
+   ]
+  }
+ ],
+ "competency_questions": []
+}

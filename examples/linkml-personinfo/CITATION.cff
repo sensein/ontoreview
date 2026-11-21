@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+type: dataset
+title: "Person Information Model"
+version: "0.3.0"
+url: "https://w3id.org/example/personinfo"
+date-released: 2026-10-15
+authors:
+  - name: "https://orcid.org/0000-0000-0000-0002"
+    orcid: "https://orcid.org/0000-0000-0000-0002"
+keywords:
+  - "organizations"
+  - "people"
