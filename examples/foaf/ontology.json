@@ -1,0 +1,1148 @@
+{
+ "title": "Friend of a Friend (FOAF) vocabulary",
+ "iri": "http://xmlns.com/foaf/0.1/",
+ "version": null,
+ "namespace": "http://xmlns.com/foaf/0.1/",
+ "prefix": "foaf",
+ "description": "The Friend of a Friend (FOAF) RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language.",
+ "license": null,
+ "creators": [],
+ "prefixes": {
+  "dc": "http://purl.org/dc/elements/1.1/",
+  "dcterms": "http://purl.org/dc/terms/",
+  "foaf": "http://xmlns.com/foaf/0.1/",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "skos": "http://www.w3.org/2004/02/skos/core#",
+  "vs": "http://www.w3.org/2003/06/sw-vocab-status/ns#",
+  "wot": "http://xmlns.com/wot/0.1/"
+ },
+ "counts": {
+  "class": 14,
+  "object_property": 34,
+  "datatype_property": 27,
+  "annotation_property": 10,
+  "triples": 631
+ },
+ "terms": [
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Agent",
+   "curie": "foaf:Agent",
+   "kind": "class",
+   "label": "Agent",
+   "definition": "An agent (eg. person, group, software or physical artifact).",
+   "subclasses": [
+    "foaf:Group",
+    "foaf:Organization",
+    "foaf:Person"
+   ],
+   "equivalent_to": [
+    "dcterms:Agent"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Document",
+   "curie": "foaf:Document",
+   "kind": "class",
+   "label": "Document",
+   "definition": "A document.",
+   "subclasses": [
+    "foaf:Image",
+    "foaf:PersonalProfileDocument"
+   ],
+   "equivalent_to": [
+    "CreativeWork"
+   ],
+   "disjoint_with": [
+    "foaf:Organization",
+    "foaf:Project"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Group",
+   "curie": "foaf:Group",
+   "kind": "class",
+   "label": "Group",
+   "definition": "A class of Agents.",
+   "superclasses": [
+    "foaf:Agent"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Image",
+   "curie": "foaf:Image",
+   "kind": "class",
+   "label": "Image",
+   "definition": "An image.",
+   "superclasses": [
+    "foaf:Document"
+   ],
+   "equivalent_to": [
+    "ImageObject"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/LabelProperty",
+   "curie": "foaf:LabelProperty",
+   "kind": "class",
+   "label": "Label Property",
+   "definition": "A foaf:LabelProperty is any RDF property with texual values that serve as labels."
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/OnlineAccount",
+   "curie": "foaf:OnlineAccount",
+   "kind": "class",
+   "label": "Online Account",
+   "definition": "An online account.",
+   "subclasses": [
+    "foaf:OnlineChatAccount",
+    "foaf:OnlineEcommerceAccount",
+    "foaf:OnlineGamingAccount"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/OnlineChatAccount",
+   "curie": "foaf:OnlineChatAccount",
+   "kind": "class",
+   "label": "Online Chat Account",
+   "definition": "An online chat account.",
+   "superclasses": [
+    "foaf:OnlineAccount"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/OnlineEcommerceAccount",
+   "curie": "foaf:OnlineEcommerceAccount",
+   "kind": "class",
+   "label": "Online E-commerce Account",
+   "definition": "An online e-commerce account.",
+   "superclasses": [
+    "foaf:OnlineAccount"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/OnlineGamingAccount",
+   "curie": "foaf:OnlineGamingAccount",
+   "kind": "class",
+   "label": "Online Gaming Account",
+   "definition": "An online gaming account.",
+   "superclasses": [
+    "foaf:OnlineAccount"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Organization",
+   "curie": "foaf:Organization",
+   "kind": "class",
+   "label": "Organization",
+   "definition": "An organization.",
+   "superclasses": [
+    "foaf:Agent"
+   ],
+   "disjoint_with": [
+    "foaf:Document",
+    "foaf:Person"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Person",
+   "curie": "foaf:Person",
+   "kind": "class",
+   "label": "Person",
+   "definition": "A person.",
+   "superclasses": [
+    "foaf:Agent",
+    "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"
+   ],
+   "equivalent_to": [
+    "Person",
+    "Person"
+   ],
+   "disjoint_with": [
+    "foaf:Organization",
+    "foaf:Project"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
+   "curie": "foaf:PersonalProfileDocument",
+   "kind": "class",
+   "label": "PersonalProfileDocument",
+   "definition": "A personal profile RDF document.",
+   "superclasses": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/Project",
+   "curie": "foaf:Project",
+   "kind": "class",
+   "label": "Project",
+   "definition": "A project (a collective endeavour of some kind).",
+   "disjoint_with": [
+    "foaf:Document",
+    "foaf:Person"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+   "kind": "class",
+   "label": "Spatial Thing",
+   "subclasses": [
+    "foaf:Person"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/account",
+   "curie": "foaf:account",
+   "kind": "object_property",
+   "label": "account",
+   "definition": "Indicates an account held by this agent.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "foaf:OnlineAccount"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/holdsAccount",
+   "curie": "foaf:holdsAccount",
+   "kind": "object_property",
+   "label": "account",
+   "definition": "Indicates an account held by this agent.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "foaf:OnlineAccount"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/accountServiceHomepage",
+   "curie": "foaf:accountServiceHomepage",
+   "kind": "object_property",
+   "label": "account service homepage",
+   "definition": "Indicates a homepage of the service provide for this online account.",
+   "domain": [
+    "foaf:OnlineAccount"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/based_near",
+   "curie": "foaf:based_near",
+   "kind": "object_property",
+   "label": "based near",
+   "definition": "A location that something is based near, for some broadly human notion of near.",
+   "domain": [
+    "Spatial Thing"
+   ],
+   "range": [
+    "Spatial Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/currentProject",
+   "curie": "foaf:currentProject",
+   "kind": "object_property",
+   "label": "current project",
+   "definition": "A current project this person works on.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "owl:Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/depiction",
+   "curie": "foaf:depiction",
+   "kind": "object_property",
+   "label": "depiction",
+   "definition": "A depiction of some thing.",
+   "sub_properties": [
+    "foaf:img"
+   ],
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "foaf:Image"
+   ],
+   "inverse_of": [
+    "foaf:depicts"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/depicts",
+   "curie": "foaf:depicts",
+   "kind": "object_property",
+   "label": "depicts",
+   "definition": "A thing depicted in this representation.",
+   "domain": [
+    "foaf:Image"
+   ],
+   "range": [
+    "owl:Thing"
+   ],
+   "inverse_of": [
+    "foaf:depiction"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/focus",
+   "curie": "foaf:focus",
+   "kind": "object_property",
+   "label": "focus",
+   "definition": "The underlying or 'focal' entity associated with some SKOS-described concept.",
+   "domain": [
+    "skos:Concept"
+   ],
+   "range": [
+    "owl:Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/fundedBy",
+   "curie": "foaf:fundedBy",
+   "kind": "object_property",
+   "label": "funded by",
+   "definition": "An organization funding a project or person.",
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "owl:Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/homepage",
+   "curie": "foaf:homepage",
+   "kind": "object_property",
+   "label": "homepage",
+   "definition": "A homepage for some thing.",
+   "super_properties": [
+    "foaf:isPrimaryTopicOf",
+    "foaf:page"
+   ],
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "foaf:Document"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/img",
+   "curie": "foaf:img",
+   "kind": "object_property",
+   "label": "image",
+   "definition": "An image that can be used to represent some thing (ie. those depictions which are particularly representative of something, eg. one's photo on a homepage).",
+   "super_properties": [
+    "foaf:depiction"
+   ],
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "foaf:Image"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/interest",
+   "curie": "foaf:interest",
+   "kind": "object_property",
+   "label": "interest",
+   "definition": "A page about a topic of interest to this person.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
+   "curie": "foaf:isPrimaryTopicOf",
+   "kind": "object_property",
+   "label": "is primary topic of",
+   "definition": "A document that this thing is the primary topic of.",
+   "super_properties": [
+    "foaf:page"
+   ],
+   "sub_properties": [
+    "foaf:homepage",
+    "foaf:openid"
+   ],
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "foaf:Document"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ],
+   "inverse_of": [
+    "foaf:primaryTopic"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/knows",
+   "curie": "foaf:knows",
+   "kind": "object_property",
+   "label": "knows",
+   "definition": "A person known by this person (indicating some level of reciprocated interaction between the parties).",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "foaf:Person"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/logo",
+   "curie": "foaf:logo",
+   "kind": "object_property",
+   "label": "logo",
+   "definition": "A logo representing some thing.",
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "owl:Thing"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/made",
+   "curie": "foaf:made",
+   "kind": "object_property",
+   "label": "made",
+   "definition": "Something that was made by this agent.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "owl:Thing"
+   ],
+   "inverse_of": [
+    "foaf:maker"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/maker",
+   "curie": "foaf:maker",
+   "kind": "object_property",
+   "label": "maker",
+   "definition": "An agent that  made this thing.",
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "foaf:Agent"
+   ],
+   "inverse_of": [
+    "foaf:made"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/member",
+   "curie": "foaf:member",
+   "kind": "object_property",
+   "label": "member",
+   "definition": "Indicates a member of a Group",
+   "domain": [
+    "foaf:Group"
+   ],
+   "range": [
+    "foaf:Agent"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/openid",
+   "curie": "foaf:openid",
+   "kind": "object_property",
+   "label": "openid",
+   "definition": "An OpenID for an Agent.",
+   "super_properties": [
+    "foaf:isPrimaryTopicOf"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "foaf:Document"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/page",
+   "curie": "foaf:page",
+   "kind": "object_property",
+   "label": "page",
+   "definition": "A page or document about this thing.",
+   "sub_properties": [
+    "foaf:homepage",
+    "foaf:isPrimaryTopicOf",
+    "foaf:tipjar",
+    "foaf:weblog"
+   ],
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "foaf:Document"
+   ],
+   "inverse_of": [
+    "foaf:topic"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/pastProject",
+   "curie": "foaf:pastProject",
+   "kind": "object_property",
+   "label": "past project",
+   "definition": "A project this person has previously worked on.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "owl:Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/mbox",
+   "curie": "foaf:mbox",
+   "kind": "object_property",
+   "label": "personal mailbox",
+   "definition": "A  personal mailbox, ie. an Internet mailbox associated with exactly one owner, the first owner of this mailbox. This is a 'static inverse functional property', in that  there is (across time and change) at most one individual that ever has any particular value for foaf:mbox.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "owl:Thing"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/phone",
+   "curie": "foaf:phone",
+   "kind": "object_property",
+   "label": "phone",
+   "definition": "A phone,  specified using fully qualified tel: URI scheme (refs: http://www.w3.org/Addressing/schemes.html#tel)."
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/primaryTopic",
+   "curie": "foaf:primaryTopic",
+   "kind": "object_property",
+   "label": "primary topic",
+   "definition": "The primary topic of some page or document.",
+   "domain": [
+    "foaf:Document"
+   ],
+   "range": [
+    "owl:Thing"
+   ],
+   "characteristics": [
+    "Functional"
+   ],
+   "inverse_of": [
+    "foaf:isPrimaryTopicOf"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/publications",
+   "curie": "foaf:publications",
+   "kind": "object_property",
+   "label": "publications",
+   "definition": "A link to the publications of this person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/schoolHomepage",
+   "curie": "foaf:schoolHomepage",
+   "kind": "object_property",
+   "label": "schoolHomepage",
+   "definition": "A homepage of a school attended by the person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/theme",
+   "curie": "foaf:theme",
+   "kind": "object_property",
+   "label": "theme",
+   "definition": "A theme.",
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "owl:Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/thumbnail",
+   "curie": "foaf:thumbnail",
+   "kind": "object_property",
+   "label": "thumbnail",
+   "definition": "A derived thumbnail image.",
+   "domain": [
+    "foaf:Image"
+   ],
+   "range": [
+    "foaf:Image"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/tipjar",
+   "curie": "foaf:tipjar",
+   "kind": "object_property",
+   "label": "tipjar",
+   "definition": "A tipjar document for this agent, describing means for payment and reward.",
+   "super_properties": [
+    "foaf:page"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/topic",
+   "curie": "foaf:topic",
+   "kind": "object_property",
+   "label": "topic",
+   "definition": "A topic of some page or document.",
+   "domain": [
+    "foaf:Document"
+   ],
+   "range": [
+    "owl:Thing"
+   ],
+   "inverse_of": [
+    "foaf:page"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/topic_interest",
+   "curie": "foaf:topic_interest",
+   "kind": "object_property",
+   "label": "topic_interest",
+   "definition": "A thing of interest to this person.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "owl:Thing"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/weblog",
+   "curie": "foaf:weblog",
+   "kind": "object_property",
+   "label": "weblog",
+   "definition": "A weblog of some thing (whether person, group, company etc.).",
+   "super_properties": [
+    "foaf:page"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "foaf:Document"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/workInfoHomepage",
+   "curie": "foaf:workInfoHomepage",
+   "kind": "object_property",
+   "label": "work info homepage",
+   "definition": "A work info homepage of some person; a page about their work for some organization.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/workplaceHomepage",
+   "curie": "foaf:workplaceHomepage",
+   "kind": "object_property",
+   "label": "workplace homepage",
+   "definition": "A workplace homepage of some person; the homepage of an organization they work for.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/accountName",
+   "curie": "foaf:accountName",
+   "kind": "datatype_property",
+   "label": "account name",
+   "definition": "Indicates the name (identifier) associated with this online account.",
+   "domain": [
+    "foaf:OnlineAccount"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/age",
+   "curie": "foaf:age",
+   "kind": "datatype_property",
+   "label": "age",
+   "definition": "The age in years of some agent.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/aimChatID",
+   "curie": "foaf:aimChatID",
+   "kind": "datatype_property",
+   "label": "AIM chat ID",
+   "definition": "An AIM chat ID",
+   "super_properties": [
+    "foaf:nick"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/birthday",
+   "curie": "foaf:birthday",
+   "kind": "datatype_property",
+   "label": "birthday",
+   "definition": "The birthday of this Agent, represented in mm-dd string form, eg. '12-31'.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/dnaChecksum",
+   "curie": "foaf:dnaChecksum",
+   "kind": "datatype_property",
+   "label": "DNA checksum",
+   "definition": "A checksum for the DNA of some thing. Joke.",
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/family_name",
+   "curie": "foaf:family_name",
+   "kind": "datatype_property",
+   "label": "family_name",
+   "definition": "The family name of some person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/familyName",
+   "curie": "foaf:familyName",
+   "kind": "datatype_property",
+   "label": "familyName",
+   "definition": "The family name of some person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/firstName",
+   "curie": "foaf:firstName",
+   "kind": "datatype_property",
+   "label": "firstName",
+   "definition": "The first name of a person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/geekcode",
+   "curie": "foaf:geekcode",
+   "kind": "datatype_property",
+   "label": "geekcode",
+   "definition": "A textual geekcode for this person, see http://www.geekcode.com/geek.html",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/gender",
+   "curie": "foaf:gender",
+   "kind": "datatype_property",
+   "label": "gender",
+   "definition": "The gender of this Agent (typically but not necessarily 'male' or 'female').",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/givenName",
+   "curie": "foaf:givenName",
+   "kind": "datatype_property",
+   "label": "Given name",
+   "definition": "The given name of some person."
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/givenname",
+   "curie": "foaf:givenname",
+   "kind": "datatype_property",
+   "label": "Given name",
+   "definition": "The given name of some person."
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/icqChatID",
+   "curie": "foaf:icqChatID",
+   "kind": "datatype_property",
+   "label": "ICQ chat ID",
+   "definition": "An ICQ chat ID",
+   "super_properties": [
+    "foaf:nick"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/jabberID",
+   "curie": "foaf:jabberID",
+   "kind": "datatype_property",
+   "label": "jabber ID",
+   "definition": "A jabber ID for something.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/lastName",
+   "curie": "foaf:lastName",
+   "kind": "datatype_property",
+   "label": "lastName",
+   "definition": "The last name of a person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/msnChatID",
+   "curie": "foaf:msnChatID",
+   "kind": "datatype_property",
+   "label": "MSN chat ID",
+   "definition": "An MSN chat ID",
+   "super_properties": [
+    "foaf:nick"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/myersBriggs",
+   "curie": "foaf:myersBriggs",
+   "kind": "datatype_property",
+   "label": "myersBriggs",
+   "definition": "A Myers Briggs (MBTI) personality classification.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/name",
+   "curie": "foaf:name",
+   "kind": "datatype_property",
+   "label": "name",
+   "definition": "A name for some thing.",
+   "super_properties": [
+    "rdfs:label"
+   ],
+   "domain": [
+    "owl:Thing"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/nick",
+   "curie": "foaf:nick",
+   "kind": "datatype_property",
+   "label": "nickname",
+   "definition": "A short informal nickname characterising an agent (includes login identifiers, IRC and other chat nicknames).",
+   "sub_properties": [
+    "foaf:aimChatID",
+    "foaf:icqChatID",
+    "foaf:msnChatID",
+    "foaf:skypeID",
+    "foaf:yahooChatID"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/plan",
+   "curie": "foaf:plan",
+   "kind": "datatype_property",
+   "label": "plan",
+   "definition": "A .plan comment, in the tradition of finger and '.plan' files.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/sha1",
+   "curie": "foaf:sha1",
+   "kind": "datatype_property",
+   "label": "sha1sum (hex)",
+   "definition": "A sha1sum hash, in hex.",
+   "domain": [
+    "foaf:Document"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/mbox_sha1sum",
+   "curie": "foaf:mbox_sha1sum",
+   "kind": "datatype_property",
+   "label": "sha1sum of a personal mailbox URI name",
+   "definition": "The sha1sum of the URI of an Internet mailbox associated with exactly one owner, the  first owner of the mailbox.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/skypeID",
+   "curie": "foaf:skypeID",
+   "kind": "datatype_property",
+   "label": "Skype ID",
+   "definition": "A Skype ID",
+   "super_properties": [
+    "foaf:nick"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/status",
+   "curie": "foaf:status",
+   "kind": "datatype_property",
+   "label": "status",
+   "definition": "A string expressing what the user is happy for the general public (normally) to know about their current activity.",
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/surname",
+   "curie": "foaf:surname",
+   "kind": "datatype_property",
+   "label": "Surname",
+   "definition": "The surname of some person.",
+   "domain": [
+    "foaf:Person"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/title",
+   "curie": "foaf:title",
+   "kind": "datatype_property",
+   "label": "title",
+   "definition": "Title (Mr, Mrs, Ms, Dr. etc)"
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/yahooChatID",
+   "curie": "foaf:yahooChatID",
+   "kind": "datatype_property",
+   "label": "Yahoo chat ID",
+   "definition": "A Yahoo chat ID",
+   "super_properties": [
+    "foaf:nick"
+   ],
+   "domain": [
+    "foaf:Agent"
+   ],
+   "range": [
+    "rdfs:Literal"
+   ],
+   "characteristics": [
+    "Inverse functional"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/wot/0.1/assurance",
+   "curie": "wot:assurance",
+   "kind": "annotation_property",
+   "label": "assurance"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
+   "iri": "http://purl.org/dc/elements/1.1/date",
+   "curie": "dc:date",
+   "kind": "annotation_property",
+   "label": "date"
+  },
+  {
+   "iri": "http://purl.org/dc/elements/1.1/description",
+   "curie": "dc:description",
+   "kind": "annotation_property",
+   "label": "description"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label",
+   "sub_properties": [
+    "foaf:name"
+   ]
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/membershipClass",
+   "curie": "foaf:membershipClass",
+   "kind": "annotation_property",
+   "label": "membershipClass",
+   "definition": "Indicates the class of individuals that are a member of a Group"
+  },
+  {
+   "iri": "http://xmlns.com/wot/0.1/src_assurance",
+   "curie": "wot:src_assurance",
+   "kind": "annotation_property",
+   "label": "src_assurance"
+  },
+  {
+   "iri": "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
+   "curie": "vs:term_status",
+   "kind": "annotation_property",
+   "label": "term_status"
+  },
+  {
+   "iri": "http://purl.org/dc/elements/1.1/title",
+   "curie": "dc:title",
+   "kind": "annotation_property",
+   "label": "title"
+  }
+ ],
+ "competency_questions": []
+}

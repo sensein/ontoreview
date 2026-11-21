@@ -1,0 +1,1367 @@
+<!doctype html>
+<html lang="en" data-font="serif" data-width="wide">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKOS Vocabulary</title>
+<meta name="description" content="An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, &#39;folksonomies&#39;,..."><meta name="generator" content="OntoReview 0.1.0">
+<link rel="alternate" type="text/turtle" href="ontology.ttl" title="Turtle">
+<link rel="alternate" type="application/rdf+xml" href="ontology.owl" title="RDF/XML">
+<link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
+<link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
+<link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e40d">
+<script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org/",
+ "@type": "DefinedTermSet",
+ "@id": "http://www.w3.org/2004/02/skos/core",
+ "name": "SKOS Vocabulary",
+ "description": "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies.",
+ "url": "http://www.w3.org/2004/02/skos/core",
+ "creator": [
+  {
+   "@type": "Person",
+   "name": "Alistair Miles"
+  },
+  {
+   "@type": "Person",
+   "name": "Sean Bechhofer"
+  }
+ ],
+ "contributor": [
+  {
+   "@type": "Person",
+   "name": "Dave Beckett"
+  },
+  {
+   "@type": "Person",
+   "name": "Nikki Rogers"
+  },
+  {
+   "@type": "Person",
+   "name": "Participants in W3C's Semantic Web Deployment Working Group."
+  }
+ ],
+ "hasDefinedTerm": [
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#altLabel",
+   "name": "alternative label",
+   "description": "An alternative lexical label for a resource.",
+   "termCode": "skos:altLabel"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#member",
+   "name": "has member",
+   "description": "Relates a collection to one of its members.",
+   "termCode": "skos:member"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
+   "name": "hidden label",
+   "description": "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.",
+   "termCode": "skos:hiddenLabel"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#relatedMatch",
+   "name": "has related match",
+   "description": "skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:relatedMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#inScheme",
+   "name": "is in scheme",
+   "description": "Relates a resource (for example a concept) to a concept scheme in which it is included.",
+   "termCode": "skos:inScheme"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#semanticRelation",
+   "name": "is in semantic relation with",
+   "description": "Links a concept to a concept related by meaning.",
+   "termCode": "skos:semanticRelation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+   "name": "has broader transitive",
+   "description": "skos:broaderTransitive is a transitive superproperty of skos:broader.",
+   "termCode": "skos:broaderTransitive"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+   "name": "has top concept",
+   "description": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
+   "termCode": "skos:hasTopConcept"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#notation",
+   "name": "notation",
+   "description": "A notation, also known as classification code, is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.",
+   "termCode": "skos:notation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broader",
+   "name": "has broader",
+   "description": "Relates a concept to a concept that is more general in meaning.",
+   "termCode": "skos:broader"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#scopeNote",
+   "name": "scope note",
+   "description": "A note that helps to clarify the meaning and/or the use of a concept.",
+   "termCode": "skos:scopeNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+   "name": "Concept Scheme",
+   "description": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
+   "termCode": "skos:ConceptScheme"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#memberList",
+   "name": "has member list",
+   "description": "Relates an ordered collection to the RDF list containing its members.",
+   "termCode": "skos:memberList"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrower",
+   "name": "has narrower",
+   "description": "Relates a concept to a concept that is more specific in meaning.",
+   "termCode": "skos:narrower"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+   "name": "has narrower transitive",
+   "description": "skos:narrowerTransitive is a transitive superproperty of skos:narrower.",
+   "termCode": "skos:narrowerTransitive"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#mappingRelation",
+   "name": "is in mapping relation with",
+   "description": "Relates two concepts coming, by convention, from different schemes, and that have comparable meanings",
+   "termCode": "skos:mappingRelation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#exactMatch",
+   "name": "has exact match",
+   "description": "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch.",
+   "termCode": "skos:exactMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#example",
+   "name": "example",
+   "description": "An example of the use of a concept.",
+   "termCode": "skos:example"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
+   "name": "preferred label",
+   "description": "The preferred lexical label for a resource, in a given language.",
+   "termCode": "skos:prefLabel"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#historyNote",
+   "name": "history note",
+   "description": "A note about the past state/use/meaning of a concept.",
+   "termCode": "skos:historyNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+   "name": "Ordered Collection",
+   "description": "An ordered collection of concepts, where both the grouping and the ordering are meaningful.",
+   "termCode": "skos:OrderedCollection"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#Collection",
+   "name": "Collection",
+   "description": "A meaningful collection of concepts.",
+   "termCode": "skos:Collection"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#note",
+   "name": "note",
+   "description": "A general note, for any purpose.",
+   "termCode": "skos:note"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#editorialNote",
+   "name": "editorial note",
+   "description": "A note for an editor, translator or maintainer of the vocabulary.",
+   "termCode": "skos:editorialNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrowMatch",
+   "name": "has narrower match",
+   "description": "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:narrowMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#related",
+   "name": "has related",
+   "description": "Relates a concept to a concept with which there is an associative semantic relationship.",
+   "termCode": "skos:related"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+   "name": "is top concept in scheme",
+   "description": "Relates a concept to the concept scheme that it is a top level concept of.",
+   "termCode": "skos:topConceptOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#changeNote",
+   "name": "change note",
+   "description": "A note about a modification to a concept.",
+   "termCode": "skos:changeNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#closeMatch",
+   "name": "has close match",
+   "description": "skos:closeMatch is used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of \"compound errors\" when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property.",
+   "termCode": "skos:closeMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broadMatch",
+   "name": "has broader match",
+   "description": "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:broadMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#Concept",
+   "name": "Concept",
+   "description": "An idea or notion; a unit of thought.",
+   "termCode": "skos:Concept"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#definition",
+   "name": "definition",
+   "description": "A statement or formal explanation of the meaning of a concept.",
+   "termCode": "skos:definition"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+   "name": "label",
+   "termCode": "rdfs:label"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "name": "isDefinedBy",
+   "termCode": "rdfs:isDefinedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "name": "comment",
+   "termCode": "rdfs:comment"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/title",
+   "name": "title",
+   "termCode": "dcterms:title"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/contributor",
+   "name": "contributor",
+   "termCode": "dcterms:contributor"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/description",
+   "name": "description",
+   "termCode": "dcterms:description"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/creator",
+   "name": "creator",
+   "termCode": "dcterms:creator"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+   "name": "seeAlso",
+   "termCode": "rdfs:seeAlso"
+  }
+ ]
+}</script></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="a11y-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<header class="mobilebar">
+  <button class="textbtn" data-action="menu" aria-controls="sidebar" aria-expanded="false">Contents</button>
+  <a class="mobilebar-title" href="index.html">SKOS Vocabulary</a>
+  <button class="textbtn" data-action="search">Search</button>
+</header>
+
+<div class="layout">
+  <aside class="toc" id="sidebar">
+<div class="toc-inner">
+  <a class="toc-title" href="index.html">SKOS Vocabulary</a>
+
+  <button class="toc-search" data-action="search" aria-label="Search">
+    <span>Search…</span><span class="toc-key">/</span>
+  </button>
+
+  <nav aria-label="Contents">
+    <ol class="toc-list">
+      <li>
+        <a href="#overview" data-section="overview"><span class="secno">1</span><span class="toc-label">Overview</span></a>
+      </li>
+      <li>
+        <a href="#graph" data-section="graph"><span class="secno">2</span><span class="toc-label">Visualization</span></a>
+      </li>
+      <li>
+        <a href="#namespaces" data-section="namespaces"><span class="secno">3</span><span class="toc-label">Namespaces</span></a>
+      </li>
+      <li>
+        <a href="#classes" data-section="classes"><span class="secno">4</span><span class="toc-label">Terms</span></a>
+        <ol>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#classes" data-section="classes"><span class="secno">4.1</span><span class="toc-label">Classes</span><span class="toc-count">4</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><details><summary><a href="#Collection" class="ref" title="skos:Collection">Collection</a></summary><ul class="tree"><li><span class="leaf"><a href="#OrderedCollection" class="ref" title="skos:OrderedCollection">Ordered Collection</a></span></li></ul></details></li><li><span class="leaf"><a href="#Concept" class="ref" title="skos:Concept">Concept</a></span></li><li><span class="leaf"><a href="#ConceptScheme" class="ref" title="skos:ConceptScheme">Concept Scheme</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#object-properties" data-section="object-properties"><span class="secno">4.2</span><span class="toc-label">Object properties</span><span class="toc-count">17</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#member" class="ref" title="skos:member">has member</a></span></li><li><span class="leaf"><a href="#memberList" class="ref" title="skos:memberList">has member list</a></span></li><li><span class="leaf"><a href="#hasTopConcept" class="ref" title="skos:hasTopConcept">has top concept</a></span></li><li><details><summary><a href="#inScheme" class="ref" title="skos:inScheme">is in scheme</a></summary><ul class="tree"><li><span class="leaf"><a href="#topConceptOf" class="ref" title="skos:topConceptOf">is top concept in scheme</a></span></li></ul></details></li><li><details><summary><a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a></summary><ul class="tree"><li><details><summary><a href="#broaderTransitive" class="ref" title="skos:broaderTransitive">has broader transitive</a></summary><ul class="tree"><li><details><summary><a href="#broader" class="ref" title="skos:broader">has broader</a></summary><ul class="tree"><li><span class="leaf"><a href="#broadMatch" class="ref" title="skos:broadMatch">has broader match</a></span></li></ul></details></li></ul></details></li><li><details><summary><a href="#narrowerTransitive" class="ref" title="skos:narrowerTransitive">has narrower transitive</a></summary><ul class="tree"><li><details><summary><a href="#narrower" class="ref" title="skos:narrower">has narrower</a></summary><ul class="tree"><li><span class="leaf"><a href="#narrowMatch" class="ref" title="skos:narrowMatch">has narrower match</a></span></li></ul></details></li></ul></details></li><li><details><summary><a href="#related" class="ref" title="skos:related">has related</a></summary><ul class="tree"><li><span class="leaf"><a href="#relatedMatch" class="ref" title="skos:relatedMatch">has related match</a></span></li></ul></details></li><li><details><summary><a href="#mappingRelation" class="ref" title="skos:mappingRelation">is in mapping relation with</a></summary><ul class="tree"><li><span class="leaf"><a href="#broadMatch" class="ref" title="skos:broadMatch">has broader match</a></span></li><li><details><summary><a href="#closeMatch" class="ref" title="skos:closeMatch">has close match</a></summary><ul class="tree"><li><span class="leaf"><a href="#exactMatch" class="ref" title="skos:exactMatch">has exact match</a></span></li></ul></details></li><li><span class="leaf"><a href="#narrowMatch" class="ref" title="skos:narrowMatch">has narrower match</a></span></li><li><span class="leaf"><a href="#relatedMatch" class="ref" title="skos:relatedMatch">has related match</a></span></li></ul></details></li></ul></details></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#datatype-properties" data-section="datatype-properties"><span class="secno">4.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#notation" class="ref" title="skos:notation">notation</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="#annotation-properties" data-section="annotation-properties"><span class="secno">4.4</span><span class="toc-label">Annotation properties</span><span class="toc-count">18</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#comment" class="ref" title="rdfs:comment">comment</a></span></li><li><span class="leaf"><a href="#contributor" class="ref" title="dcterms:contributor">contributor</a></span></li><li><span class="leaf"><a href="#creator" class="ref" title="dcterms:creator">creator</a></span></li><li><span class="leaf"><a href="#description" class="ref" title="dcterms:description">description</a></span></li><li><span class="leaf"><a href="#isDefinedBy" class="ref" title="rdfs:isDefinedBy">isDefinedBy</a></span></li><li><details><summary><a href="#label" class="ref" title="rdfs:label">label</a></summary><ul class="tree"><li><span class="leaf"><a href="#altLabel" class="ref" title="skos:altLabel">alternative label</a></span></li><li><span class="leaf"><a href="#hiddenLabel" class="ref" title="skos:hiddenLabel">hidden label</a></span></li><li><span class="leaf"><a href="#prefLabel" class="ref" title="skos:prefLabel">preferred label</a></span></li></ul></details></li><li><details><summary><a href="#note" class="ref" title="skos:note">note</a></summary><ul class="tree"><li><span class="leaf"><a href="#changeNote" class="ref" title="skos:changeNote">change note</a></span></li><li><span class="leaf"><a href="#definition" class="ref" title="skos:definition">definition</a></span></li><li><span class="leaf"><a href="#editorialNote" class="ref" title="skos:editorialNote">editorial note</a></span></li><li><span class="leaf"><a href="#example" class="ref" title="skos:example">example</a></span></li><li><span class="leaf"><a href="#historyNote" class="ref" title="skos:historyNote">history note</a></span></li><li><span class="leaf"><a href="#scopeNote" class="ref" title="skos:scopeNote">scope note</a></span></li></ul></details></li><li><span class="leaf"><a href="#seeAlso" class="ref" title="rdfs:seeAlso">seeAlso</a></span></li><li><span class="leaf"><a href="#title" class="ref" title="dcterms:title">title</a></span></li></ul></div>
+            </details>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#quality" data-section="quality"><span class="secno">5</span><span class="toc-label">Quality report</span></a>
+        <ol class="toc-quality">
+          <li><a href="#quality-builtin"><span class="secno">5.1</span><span class="toc-label">OntoReview checks</span><span class="toc-count">6</span></a></li>
+          <li><a href="#quality-robot"><span class="secno">5.2</span><span class="toc-label">ROBOT</span><span class="toc-count">36</span></a></li>
+          <li><a href="#quality-logical-consistency"><span class="secno">5.3</span><span class="toc-label">Logical consistency</span></a></li>
+          <li><a href="#quality-iri-checks"><span class="secno">5.4</span><span class="toc-label">IRI checks</span></a></li>
+          <li><a href="#quality-ontocheck"><span class="secno">5.5</span><span class="toc-label">OntoCheck</span><span class="toc-count">30</span></a></li>
+          <li><a href="#quality-cross-domain-interoperability"><span class="secno">5.6</span><span class="toc-label">Cross-domain interoperability</span><span class="toc-count">7</span></a></li>
+          <li><a href="#quality-scientific-interoperability"><span class="secno">5.7</span><span class="toc-label">Scientific interoperability</span><span class="toc-count">2</span></a></li>
+          <li><a href="#quality-oops"><span class="secno">5.8</span><span class="toc-label">OOPS!</span><span class="toc-count">15</span></a></li>
+        </ol>
+      </li>
+      <li>
+        <a href="#downloads" data-section="downloads"><span class="secno">6</span><span class="toc-label">Download</span></a>
+      </li>
+      <li>
+        <a href="#llm" data-section="llm"><span class="secno">7</span><span class="toc-label">For LLMs and agents</span></a>
+      </li>
+      <li>
+        <a href="#citation" data-section="citation"><span class="secno">8</span><span class="toc-label">How to cite</span></a>
+      </li>
+      <li>
+        <a href="#provenance" data-section="provenance"><span class="secno">9</span><span class="toc-label">Provenance</span></a>
+      </li>
+    </ol>
+  </nav>
+
+  <div class="toc-foot">
+    <button class="textbtn" data-action="theme" data-dark="Dark" data-light="Light" aria-pressed="false">Dark</button>
+    <button class="textbtn" data-action="textsize" aria-label="Text size" title="Text size"><span aria-hidden="true">A</span><span class="textsize-val">100%</span></button>
+  </div>
+</div>  </aside>
+  <main class="main" id="main" tabindex="-1">
+<header class="doc-header" id="top">
+  <p class="kicker">Ontology specification</p>
+  <h1 class="doc-title">SKOS Vocabulary</h1>
+<div class="lede"><p>An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies.</p>
+</div>
+  <div class="doc-meta">
+    <dl class="meta-table">
+<div><dt>IRI</dt><dd><code>http://www.w3.org/2004/02/skos/core</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core">copy</button></dd></div><div><dt>Namespace</dt><dd><code>http://www.w3.org/2004/02/skos/core#</code> &nbsp;<span class="muted">Prefix</span> <code>skos:</code></dd></div><div><dt>Authors</dt><dd><span class="agent">Alistair Miles</span>; <span class="agent">Sean Bechhofer</span></dd></div><div><dt>Contributors</dt><dd><span class="agent">Dave Beckett</span>; <span class="agent">Nikki Rogers</span>; <span class="agent">Participants in W3C&#39;s Semantic Web Deployment Working Group.</span></dd></div>    </dl>
+    <aside class="doc-downloads">
+      <h2 class="label">Download</h2>
+      <ul>
+<li><a href="ontology.ttl" download="ontology.ttl">Turtle</a> <span class="muted">ttl, 15.8 KB</span></li><li><a href="ontology.owl" download="ontology.owl">RDF/XML</a> <span class="muted">owl, 27.8 KB</span></li><li><a href="ontology.jsonld" download="ontology.jsonld">JSON-LD</a> <span class="muted">jsonld, 36.3 KB</span></li><li><a href="ontology.nt" download="ontology.nt">N-Triples</a> <span class="muted">nt, 39.4 KB</span></li>      </ul>
+<p><a href="#citation">Cite →</a></p><p><a href="#llm">For LLMs and agents →</a></p>    </aside>
+  </div>
+
+  <details class="more-meta">
+    <summary>More metadata</summary>
+    <dl class="meta-table">
+<div><dt>See also</dt><dd><a href="http://www.w3.org/TR/skos-reference/">http://www.w3.org/TR/skos-reference/</a></dd></div>    </dl>
+  </details>
+</header><section class="section" id="overview">
+  <h2><span class="secno">1</span> Overview</h2>
+  <ul class="stats">
+    <li class="stat"><a class="stat-body" href="#classes"><span class="stat-num">4</span><span class="stat-label">Classes</span></a></li>
+    <li class="stat"><a class="stat-body" href="#object-properties"><span class="stat-num">17</span><span class="stat-label">Object properties</span></a></li>
+    <li class="stat"><a class="stat-body" href="#datatype-properties"><span class="stat-num">1</span><span class="stat-label">Datatype properties</span></a></li>
+    <li class="stat"><a class="stat-body" href="#annotation-properties"><span class="stat-num">18</span><span class="stat-label">Annotation properties</span></a></li>
+    <li class="stat stat-quality"><a class="stat-body" href="#quality"><span class="stat-num">8</span><span class="stat-label">quality checks run</span></a></li>
+    <li class="stat stat-score stat-ok"><a class="stat-body" href="#quality-cross-domain-interoperability"><span class="stat-num">0.51</span><span class="stat-label">Cross-domain interoperability</span><span class="stat-sub">meets θ = 0.5</span></a></li>
+    <li class="stat stat-score stat-ok"><a class="stat-body" href="#quality-scientific-interoperability"><span class="stat-num">1</span><span class="stat-label">Scientific interoperability</span><span class="stat-sub">of 41 domains (θ_s = 0.3)</span></a></li>
+  </ul>
+
+</section><section class="section section-wide" id="graph">
+  <h2><span class="secno">2</span> Visualization</h2>
+  <figure class="figure" id="figure-graph" data-notation="vowl">
+    <div class="figure-tools">
+      <input id="g-focus" type="search" placeholder="Focus on term…" list="g-terms" aria-label="Focus on term…">
+      <datalist id="g-terms"></datalist>
+      <label class="check"><input type="checkbox" id="g-prop"> Property edges</label>
+      <select id="g-notation" aria-label="Notation">
+        <option value="vowl">VOWL</option>
+        <option value="uml">UML</option>
+      </select>
+      <select id="g-layout" aria-label="Layout">
+        <option value="hierarchy">Hierarchy</option>
+        <option value="cose">Force</option>
+        <option value="concentric">Concentric</option>
+      </select>
+      <button class="textbtn" id="g-reset">Reset</button>
+      <button class="textbtn" id="g-png">PNG</button>
+      <button class="textbtn" id="g-expand" data-expand="Expand" data-collapse="Close">Expand</button>
+    </div>
+    <div id="cy" class="graph" role="img" aria-label="Classes of SKOS Vocabulary. Hover over a class to highlight its superclasses and subclasses; select it to show only its neighbourhood, and double-click to open its entry. The same hierarchy is available as text in the term index and the sidebar."></div>
+    <div class="legend legend-uml" aria-hidden="true">
+      <span><svg width="44" height="12"><line x1="10" y1="6" x2="44" y2="6" stroke="currentColor" stroke-width="1.4"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/></svg> subclass of</span>
+      <span><svg width="44" height="12"><line x1="10" y1="6" x2="44" y2="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.5 2.5"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/></svg> part of an equivalence definition</span>
+      <span class="legend-prop"><svg width="44" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 3"/><path d="M34 2 L43 6 L34 10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg> object property (domain to range)</span>
+      <span><svg width="30" height="14"><rect x="1" y="1" width="28" height="12" fill="none" stroke="currentColor"/></svg> class; datatype properties listed inside</span>
+    </div>
+    <div class="legend legend-vowl" aria-hidden="true">
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-class)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> class</span>
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-class)" stroke="var(--vowl-stroke)" stroke-width="1"/><circle cx="9" cy="9" r="5.8" fill="none" stroke="var(--vowl-stroke)" stroke-width="1"/></svg> defined (equivalent) class</span>
+      <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-external)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> external class</span>
+      <span><svg width="46" height="12"><line x1="10" y1="6" x2="46" y2="6" stroke="var(--vowl-stroke)" stroke-width="1.3" stroke-dasharray="5 3"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> subclass of</span>
+      <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" rx="3" fill="var(--vowl-oprop)"/></svg> object property</span>
+      <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" rx="3" fill="var(--vowl-dprop)"/></svg> datatype property</span>
+      <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" fill="var(--vowl-literal)" stroke="var(--vowl-stroke)" stroke-dasharray="3 2"/></svg> datatype / literal</span>
+    </div>
+    <figcaption><span class="fig-label">Figure 1.</span> Classes of SKOS Vocabulary. Hover over a class to highlight its superclasses and subclasses; select it to show only its neighbourhood, and double-click to open its entry. <span id="g-status" class="muted" role="status" aria-live="polite"></span></figcaption>
+  </figure>
+</section><section class="section" id="namespaces">
+  <h2><span class="secno">3</span> Namespaces</h2>
+  <table class="plain">
+    <thead><tr><th>Prefix</th><th>Namespace</th></tr></thead>
+    <tbody>
+<tr><td><code>dcterms</code></td><td><code>http://purl.org/dc/terms/</code></td></tr><tr><td><code>owl</code></td><td><code>http://www.w3.org/2002/07/owl#</code></td></tr><tr><td><code>rdf</code></td><td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td></tr><tr><td><code>rdfs</code></td><td><code>http://www.w3.org/2000/01/rdf-schema#</code></td></tr><tr><td><code>skos</code></td><td><code>http://www.w3.org/2004/02/skos/core#</code></td></tr>    </tbody>
+  </table>
+</section><h2 class="group-title" id="reference"><span class="secno">4</span> Terms</h2>
+<section class="section section-terms" id="classes">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.1</span> Classes</h2>
+  </div>
+<article class="term" id="Collection" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Collection">Collection</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#Collection</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#Collection" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A meaningful collection of concepts.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:Collection</code></td></tr><tr><th scope="row">Subclasses</th><td><a href="#OrderedCollection" class="ref" title="skos:OrderedCollection">Ordered Collection</a></td></tr><tr><th scope="row">Disjoint with</th><td><a href="#Concept" class="ref" title="skos:Concept">Concept</a>, <a href="#ConceptScheme" class="ref" title="skos:ConceptScheme">Concept Scheme</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#member" class="ref" title="skos:member">has member</a></div><div class="usage"><span class="muted">in range of</span> <a href="#member" class="ref" title="skos:member">has member</a></div></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>Labelled collections can be used where you would like a set of concepts to be displayed under a 'node label' in the hierarchy.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/2004/02/skos/core#Collection">Show in figure</a></p></article>
+<article class="term" id="Concept" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#Concept">Concept</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#Concept</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#Concept" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>An idea or notion; a unit of thought.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:Concept</code></td></tr><tr><th scope="row">Disjoint with</th><td><a href="#Collection" class="ref" title="skos:Collection">Collection</a>, <a href="#ConceptScheme" class="ref" title="skos:ConceptScheme">Concept Scheme</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a>, <a href="#topConceptOf" class="ref" title="skos:topConceptOf">is top concept in scheme</a></div><div class="usage"><span class="muted">in range of</span> <a href="#member" class="ref" title="skos:member">has member</a>, <a href="#hasTopConcept" class="ref" title="skos:hasTopConcept">has top concept</a>, <a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/2004/02/skos/core#Concept">Show in figure</a></p></article>
+<article class="term" id="ConceptScheme" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#ConceptScheme">Concept Scheme</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#ConceptScheme</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#ConceptScheme" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A set of concepts, optionally including statements about semantic relationships between those concepts.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:ConceptScheme</code></td></tr><tr><th scope="row">Disjoint with</th><td><a href="#Collection" class="ref" title="skos:Collection">Collection</a>, <a href="#Concept" class="ref" title="skos:Concept">Concept</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasTopConcept" class="ref" title="skos:hasTopConcept">has top concept</a></div><div class="usage"><span class="muted">in range of</span> <a href="#inScheme" class="ref" title="skos:inScheme">is in scheme</a>, <a href="#topConceptOf" class="ref" title="skos:topConceptOf">is top concept in scheme</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Thesauri, classification schemes, subject heading lists, taxonomies, &#39;folksonomies&#39;, and other types of controlled vocabulary are all examples of concept schemes. Concept schemes are also embedded in glossaries and terminologies.</code></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>A concept scheme may be defined to include concepts from different sources.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/2004/02/skos/core#ConceptScheme">Show in figure</a></p></article>
+<article class="term" id="OrderedCollection" data-kind="class">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#OrderedCollection">Ordered Collection</a></h3>
+    <span class="term-kind">Class</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#OrderedCollection</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#OrderedCollection" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>An ordered collection of concepts, where both the grouping and the ordering are meaningful.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:OrderedCollection</code></td></tr><tr><th scope="row">Superclasses</th><td><a href="#Collection" class="ref" title="skos:Collection">Collection</a></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#memberList" class="ref" title="skos:memberList">has member list</a></div></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>Ordered collections can be used where you would like a set of concepts to be displayed in a specific order, and optionally under a 'node label'.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+<p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/2004/02/skos/core#OrderedCollection">Show in figure</a></p></article>
+</section><section class="section section-terms" id="object-properties">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.2</span> Object properties</h2>
+<input class="term-filter" type="search" placeholder="Filter…" aria-label="Filter object properties">  </div>
+<article class="term" id="broader" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#broader">has broader</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#broader</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#broader" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates a concept to a concept that is more general in meaning.</p>
+</div><div class="comment"><p>Broader concepts are typically rendered as parents in a concept hierarchy (tree).</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:broader</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#broaderTransitive" class="ref" title="skos:broaderTransitive">has broader transitive</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#broadMatch" class="ref" title="skos:broadMatch">has broader match</a></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#narrower" class="ref" title="skos:narrower">has narrower</a></span></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="broadMatch" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#broadMatch">has broader match</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#broadMatch</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#broadMatch" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:broadMatch</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#broader" class="ref" title="skos:broader">has broader</a>, <a href="#mappingRelation" class="ref" title="skos:mappingRelation">is in mapping relation with</a></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#narrowMatch" class="ref" title="skos:narrowMatch">has narrower match</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="broaderTransitive" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#broaderTransitive">has broader transitive</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#broaderTransitive</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#broaderTransitive" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:broaderTransitive is a transitive superproperty of skos:broader.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:broaderTransitive</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#broader" class="ref" title="skos:broader">has broader</a></td></tr><tr><th scope="row">Characteristics</th><td>Transitive</td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#narrowerTransitive" class="ref" title="skos:narrowerTransitive">has narrower transitive</a></span></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>By convention, skos:broaderTransitive is not used to make assertions. Rather, the properties can be used to draw inferences about the transitive closure of the hierarchical relation, which is useful e.g. when implementing a simple query expansion algorithm in a search application.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="closeMatch" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#closeMatch">has close match</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#closeMatch</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#closeMatch" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:closeMatch is used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of &quot;compound errors&quot; when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:closeMatch</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#mappingRelation" class="ref" title="skos:mappingRelation">is in mapping relation with</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#exactMatch" class="ref" title="skos:exactMatch">has exact match</a></td></tr><tr><th scope="row">Characteristics</th><td>Symmetric</td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="exactMatch" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#exactMatch">has exact match</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#exactMatch</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#exactMatch" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch.</p>
+</div><div class="comment"><p>skos:exactMatch is disjoint with each of the properties skos:broadMatch and skos:relatedMatch.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:exactMatch</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#closeMatch" class="ref" title="skos:closeMatch">has close match</a></td></tr><tr><th scope="row">Characteristics</th><td>Transitive, Symmetric</td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="member" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#member">has member</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#member</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#member" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates a collection to one of its members.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:member</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Collection" class="ref" title="skos:Collection">Collection</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Concept" class="ref" title="skos:Concept">Concept</a> <span class="kw">or</span> <a href="#Collection" class="ref" title="skos:Collection">Collection</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="memberList" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#memberList">has member list</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#memberList</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#memberList" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates an ordered collection to the RDF list containing its members.</p>
+</div><div class="comment"><p>For any resource, every item in the list given as the value of the
+skos:memberList property is also a value of the skos:member property.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:memberList</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#OrderedCollection" class="ref" title="skos:OrderedCollection">Ordered Collection</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#List" class="ref ext" title="rdf:List">rdf:List</a></span></td></tr><tr><th scope="row">Characteristics</th><td>Functional</td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="narrower" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#narrower">has narrower</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#narrower</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#narrower" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates a concept to a concept that is more specific in meaning.</p>
+</div><div class="comment"><p>Narrower concepts are typically rendered as children in a concept hierarchy (tree).</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:narrower</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#narrowerTransitive" class="ref" title="skos:narrowerTransitive">has narrower transitive</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#narrowMatch" class="ref" title="skos:narrowMatch">has narrower match</a></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#broader" class="ref" title="skos:broader">has broader</a></span></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>By convention, skos:broader is only used to assert an immediate (i.e. direct) hierarchical link between two conceptual resources.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="narrowMatch" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#narrowMatch">has narrower match</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#narrowMatch</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#narrowMatch" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:narrowMatch</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#narrower" class="ref" title="skos:narrower">has narrower</a>, <a href="#mappingRelation" class="ref" title="skos:mappingRelation">is in mapping relation with</a></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#broadMatch" class="ref" title="skos:broadMatch">has broader match</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="narrowerTransitive" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#narrowerTransitive">has narrower transitive</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#narrowerTransitive</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#narrowerTransitive" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:narrowerTransitive is a transitive superproperty of skos:narrower.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:narrowerTransitive</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#narrower" class="ref" title="skos:narrower">has narrower</a></td></tr><tr><th scope="row">Characteristics</th><td>Transitive</td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#broaderTransitive" class="ref" title="skos:broaderTransitive">has broader transitive</a></span></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>By convention, skos:narrowerTransitive is not used to make assertions. Rather, the properties can be used to draw inferences about the transitive closure of the hierarchical relation, which is useful e.g. when implementing a simple query expansion algorithm in a search application.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="related" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#related">has related</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#related</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#related" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates a concept to a concept with which there is an associative semantic relationship.</p>
+</div><div class="comment"><p>skos:related is disjoint with skos:broaderTransitive</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:related</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#relatedMatch" class="ref" title="skos:relatedMatch">has related match</a></td></tr><tr><th scope="row">Characteristics</th><td>Symmetric</td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="relatedMatch" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#relatedMatch">has related match</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#relatedMatch</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#relatedMatch" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>skos:relatedMatch is used to state an associative mapping link between two conceptual resources in different concept schemes.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:relatedMatch</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#related" class="ref" title="skos:related">has related</a>, <a href="#mappingRelation" class="ref" title="skos:mappingRelation">is in mapping relation with</a></td></tr><tr><th scope="row">Characteristics</th><td>Symmetric</td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="hasTopConcept" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#hasTopConcept">has top concept</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#hasTopConcept</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#hasTopConcept" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:hasTopConcept</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#ConceptScheme" class="ref" title="skos:ConceptScheme">Concept Scheme</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Concept" class="ref" title="skos:Concept">Concept</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#topConceptOf" class="ref" title="skos:topConceptOf">is top concept in scheme</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="mappingRelation" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#mappingRelation">is in mapping relation with</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#mappingRelation</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#mappingRelation" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates two concepts coming, by convention, from different schemes, and that have comparable meanings</p>
+</div><div class="comment"><p>These concept mapping relations mirror semantic relations, and the data model defined below is similar (with the exception of skos:exactMatch) to the data model defined for semantic relations. A distinct vocabulary is provided for concept mapping relations, to provide a convenient way to differentiate links within a concept scheme from links between concept schemes. However, this pattern of usage is not a formal requirement of the SKOS data model, and relies on informal definitions of best practice.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:mappingRelation</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#semanticRelation" class="ref" title="skos:semanticRelation">is in semantic relation with</a></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#broadMatch" class="ref" title="skos:broadMatch">has broader match</a>, <a href="#closeMatch" class="ref" title="skos:closeMatch">has close match</a>, <a href="#narrowMatch" class="ref" title="skos:narrowMatch">has narrower match</a>, <a href="#relatedMatch" class="ref" title="skos:relatedMatch">has related match</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="inScheme" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#inScheme">is in scheme</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#inScheme</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#inScheme" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates a resource (for example a concept) to a concept scheme in which it is included.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:inScheme</code></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#topConceptOf" class="ref" title="skos:topConceptOf">is top concept in scheme</a></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#ConceptScheme" class="ref" title="skos:ConceptScheme">Concept Scheme</a></span></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>A concept may be a member of more than one concept scheme.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="semanticRelation" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#semanticRelation">is in semantic relation with</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#semanticRelation</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#semanticRelation" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Links a concept to a concept related by meaning.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:semanticRelation</code></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#broaderTransitive" class="ref" title="skos:broaderTransitive">has broader transitive</a>, <a href="#narrowerTransitive" class="ref" title="skos:narrowerTransitive">has narrower transitive</a>, <a href="#related" class="ref" title="skos:related">has related</a>, <a href="#mappingRelation" class="ref" title="skos:mappingRelation">is in mapping relation with</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Concept" class="ref" title="skos:Concept">Concept</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Concept" class="ref" title="skos:Concept">Concept</a></span></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>This property should not be used directly, but as a super-property for all properties denoting a relationship of meaning between concepts.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="topConceptOf" data-kind="object_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#topConceptOf">is top concept in scheme</a></h3>
+    <span class="term-kind">Object property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#topConceptOf</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#topConceptOf" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>Relates a concept to the concept scheme that it is a top level concept of.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:topConceptOf</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#inScheme" class="ref" title="skos:inScheme">is in scheme</a></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Concept" class="ref" title="skos:Concept">Concept</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#ConceptScheme" class="ref" title="skos:ConceptScheme">Concept Scheme</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hasTopConcept" class="ref" title="skos:hasTopConcept">has top concept</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+</section><section class="section section-terms" id="datatype-properties">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.3</span> Datatype properties</h2>
+  </div>
+<article class="term" id="notation" data-kind="datatype_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#notation">notation</a></h3>
+    <span class="term-kind">Datatype property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#notation</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#notation" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A notation, also known as classification code, is a string of characters such as &quot;T58.5&quot; or &quot;303.4833&quot; used to uniquely identify a concept within the scope of a given concept scheme.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:notation</code></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>By convention, skos:notation is used with a typed literal in the object position of the triple.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+</section><section class="section section-terms" id="annotation-properties">
+  <div class="section-head">
+    <h2 class="sub"><span class="secno">4.4</span> Annotation properties</h2>
+<input class="term-filter" type="search" placeholder="Filter…" aria-label="Filter annotation properties">  </div>
+<article class="term" id="altLabel" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#altLabel">alternative label</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#altLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#altLabel" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>An alternative lexical label for a resource.</p>
+</div><div class="comment"><p>skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.</p>
+</div><div class="comment"><p>The range of skos:altLabel is the class of RDF plain literals.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:altLabel</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#label" class="ref" title="rdfs:label">label</a></td></tr><tr><th scope="row">Examples</th><td><code class="example">Acronyms, abbreviations, spelling variants, and irregular plural/singular forms may be included among the alternative labels for a concept. Mis-spelled terms are normally included as hidden labels (see skos:hiddenLabel).</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="changeNote" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#changeNote">change note</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#changeNote</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#changeNote" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A note about a modification to a concept.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:changeNote</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#note" class="ref" title="skos:note">note</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="comment" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#comment">comment</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#comment</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#comment" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:comment</code></td></tr><tr><th scope="row">Used on</th><td>9 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="contributor" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#contributor">contributor</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/contributor</code> <button class="copy" data-copy="http://purl.org/dc/terms/contributor" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dcterms:contributor</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="creator" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#creator">creator</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/creator</code> <button class="copy" data-copy="http://purl.org/dc/terms/creator" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dcterms:creator</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="definition" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#definition">definition</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#definition</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#definition" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A statement or formal explanation of the meaning of a concept.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:definition</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#note" class="ref" title="skos:note">note</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="description" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#description">description</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/description</code> <button class="copy" data-copy="http://purl.org/dc/terms/description" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dcterms:description</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="editorialNote" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#editorialNote">editorial note</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#editorialNote</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#editorialNote" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A note for an editor, translator or maintainer of the vocabulary.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:editorialNote</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#note" class="ref" title="skos:note">note</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="example" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#example">example</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#example</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#example" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>An example of the use of a concept.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:example</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#note" class="ref" title="skos:note">note</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="hiddenLabel" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#hiddenLabel">hidden label</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#hiddenLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#hiddenLabel" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.</p>
+</div><div class="comment"><p>The range of skos:hiddenLabel is the class of RDF plain literals.</p>
+</div><div class="comment"><p>skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:hiddenLabel</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#label" class="ref" title="rdfs:label">label</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="historyNote" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#historyNote">history note</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#historyNote</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#historyNote" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A note about the past state/use/meaning of a concept.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:historyNote</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#note" class="ref" title="skos:note">note</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="isDefinedBy" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#isDefinedBy">isDefinedBy</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#isDefinedBy</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:isDefinedBy</code></td></tr><tr><th scope="row">Used on</th><td>32 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="label" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#label">label</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#label</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#label" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:label</code></td></tr><tr><th scope="row">Used on</th><td>32 resource(s) in this ontology</td></tr><tr><th scope="row">Sub-properties</th><td><a href="#altLabel" class="ref" title="skos:altLabel">alternative label</a>, <a href="#hiddenLabel" class="ref" title="skos:hiddenLabel">hidden label</a>, <a href="#prefLabel" class="ref" title="skos:prefLabel">preferred label</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="note" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#note">note</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#note</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#note" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A general note, for any purpose.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:note</code></td></tr><tr><th scope="row">Sub-properties</th><td><a href="#changeNote" class="ref" title="skos:changeNote">change note</a>, <a href="#definition" class="ref" title="skos:definition">definition</a>, <a href="#editorialNote" class="ref" title="skos:editorialNote">editorial note</a>, <a href="#example" class="ref" title="skos:example">example</a>, <a href="#historyNote" class="ref" title="skos:historyNote">history note</a>, <a href="#scopeNote" class="ref" title="skos:scopeNote">scope note</a></td></tr><tr><th scope="row">Scope note</th><td><div class="note"><p>This property may be used directly, or as a super-property for more specific note types.</p>
+</div></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="prefLabel" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#prefLabel">preferred label</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#prefLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#prefLabel" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>The preferred lexical label for a resource, in a given language.</p>
+</div><div class="comment"><p>A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.</p>
+</div><div class="comment"><p>The range of skos:prefLabel is the class of RDF plain literals.</p>
+</div><div class="comment"><p>skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise
+disjoint properties.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:prefLabel</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#label" class="ref" title="rdfs:label">label</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="scopeNote" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#scopeNote">scope note</a></h3>
+    <span class="term-kind">Annotation property</span>
+  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#scopeNote</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#scopeNote" aria-label="Copy IRI">copy</button></p>
+<div class="definition"><p>A note that helps to clarify the meaning and/or the use of a concept.</p>
+</div>  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:scopeNote</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#note" class="ref" title="skos:note">note</a></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="seeAlso" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#seeAlso">seeAlso</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#seeAlso</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#seeAlso" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:seeAlso</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="title" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#title">title</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/title</code> <button class="copy" data-copy="http://purl.org/dc/terms/title" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dcterms:title</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+</section><section class="section" id="quality">
+  <h2><span class="secno">5</span> Quality report</h2>
+  <p class="prose">Findings from the checks run on this version. Each row opens the full list.</p>
+  <table class="plain check-summary">
+    <caption class="sr-only">Quality report</caption>
+    <thead><tr><th scope="col">Check</th><th scope="col">Findings</th><th scope="col" class="check-bar-col">Compared with the largest</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#quality-builtin">OntoReview checks</a></td>
+      <td class="check-count">6</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:16.7%"></span></span></td></tr>
+      <tr><td><a href="#quality-robot">ROBOT</a></td>
+      <td class="check-count">36</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:100.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-logical-consistency">Logical consistency</a></td>
+      <td class="check-count"><a href="#quality-logical-consistency">See report</a></td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:0.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-iri-checks">IRI checks</a></td>
+      <td class="check-count"><a href="#quality-iri-checks">See report</a></td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:0.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-ontocheck">OntoCheck</a></td>
+      <td class="check-count">30</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:83.3%"></span></span></td></tr>
+      <tr><td><a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a></td>
+      <td class="check-count">7</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:19.4%"></span></span></td></tr>
+      <tr><td><a href="#quality-scientific-interoperability">Scientific interoperability</a></td>
+      <td class="check-count">2</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:5.6%"></span></span></td></tr>
+      <tr><td><a href="#quality-oops">OOPS!</a></td>
+      <td class="check-count">15</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:41.7%"></span></span></td></tr>
+    </tbody>
+  </table>
+
+<h3 class="subhead" id="quality-builtin">OntoReview checks</h3>  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> No license declared <span class="muted">(1) OB003</span></summary>
+    <p class="muted rule-desc">Declare a license with dcterms:license so others know how they may reuse the ontology.</p>
+    <ul class="findings">
+<li>No license is declared (dcterms:license).</li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> No version information <span class="muted">(2) OB004</span></summary>
+    <p class="muted rule-desc">Add owl:versionInfo and owl:versionIRI to make releases citable and comparable.</p>
+    <ul class="findings">
+<li>No owl:versionInfo.</li><li>No owl:versionIRI.</li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Property without domain <span class="muted">(2) OB012</span></summary>
+    <p class="muted rule-desc">Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms.</p>
+    <ul class="findings">
+<li>Property “is in scheme” has no domain. <a href="#inScheme">§</a></li><li>Property “notation” has no domain. <a href="#notation">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Property without range <span class="muted">(1) OB013</span></summary>
+    <p class="muted rule-desc">Consider declaring rdfs:range (OOPS! P11).</p>
+    <ul class="findings">
+<li>Property “notation” has no range. <a href="#notation">§</a></li>    </ul>
+  </details>
+
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing ontology license <span class="muted">(1) missing_ontology_license</span></summary>
+    <ul class="findings">
+<li><code>http://www.w3.org/2004/02/skos/core</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing definition <span class="muted">(32) missing_definition</span></summary>
+    <ul class="findings">
+<li><code>skos:Collection</code></li><li><code>skos:Concept</code></li><li><code>skos:ConceptScheme</code></li><li><code>skos:OrderedCollection</code></li><li><code>skos:altLabel</code></li><li><code>skos:broadMatch</code></li><li><code>skos:broader</code></li><li><code>skos:broaderTransitive</code></li><li><code>skos:changeNote</code></li><li><code>skos:closeMatch</code></li><li><code>skos:definition</code></li><li><code>skos:editorialNote</code></li><li><code>skos:exactMatch</code></li><li><code>skos:example</code></li><li><code>skos:hasTopConcept</code></li><li><code>skos:hiddenLabel</code></li><li><code>skos:historyNote</code></li><li><code>skos:inScheme</code></li><li><code>skos:mappingRelation</code></li><li><code>skos:member</code></li><li><code>skos:memberList</code></li><li><code>skos:narrowMatch</code></li><li><code>skos:narrower</code></li><li><code>skos:narrowerTransitive</code></li><li><code>skos:notation</code></li><li><code>skos:note</code></li><li><code>skos:prefLabel</code></li><li><code>skos:related</code></li><li><code>skos:relatedMatch</code></li><li><code>skos:scopeNote</code></li><li><code>skos:semanticRelation</code></li><li><code>skos:topConceptOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing superclass <span class="muted">(3) missing_superclass</span></summary>
+    <ul class="findings">
+<li><code>skos:Collection</code></li><li><code>skos:Concept</code></li><li><code>skos:ConceptScheme</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
+<p class="muted small">0.3s. Own namespaces (not checked as external): http://www.w3.org/2004/02/skos/core#, http://www.w3.org/2004/02/skos/core/. Run #145 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+    <caption class="sr-only">IRI checks metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">IRI</th></tr>      <tr class="metric-ok"><td>IRI syntax <code class="muted small">syntax</code></td><td><span class="mstat" aria-hidden="true"></span> No malformed IRIs<span class="sr-only"> (ok)</span></td><td class="muted small">All 63 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host</td></tr>
+      <tr class="metric-ok"><td>Ontology header <code class="muted small">header</code></td><td><span class="mstat" aria-hidden="true"></span> http://www.w3.org/2004/02/skos/core<span class="sr-only"> (ok)</span></td><td class="muted small">Exactly one named owl:Ontology</td></tr>
+      <tr class="metric-info"><td>Version IRI <code class="muted small">version</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (info)</span></td><td class="muted small">owl:versionIRI, distinct from the ontology IRI</td></tr>
+      <tr class="metric-ok"><td>Ontology IRI resolves <code class="muted small">resolves</code></td><td><span class="mstat" aria-hidden="true"></span> Yes (xml, HTTP 200)<span class="sr-only"> (ok)</span></td><td class="muted small">The ontology IRI returns RDF (content negotiation) whose header matches it</td></tr>
+      <tr class="metric-ok"><td>External terms <code class="muted small">external</code></td><td><span class="mstat" aria-hidden="true"></span> 4 checked: 4 valid<span class="sr-only"> (ok)</span></td><td class="muted small">Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated</td></tr>
+      <tr class="metric-info"><td>Lookup sources <code class="muted small">sources</code></td><td><span class="mstat" aria-hidden="true"></span> cache 4<span class="sr-only"> (info)</span></td><td class="muted small">Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download</td></tr>
+      <tr class="metric-ok"><td>Freshness <code class="muted small">freshness</code></td><td><span class="mstat" aria-hidden="true"></span> All lookups current<span class="sr-only"> (ok)</span></td><td class="muted small">Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged</td></tr>
+    </tbody>
+  </table>
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:33:31 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <tbody>
+      <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
+      <td class="small">cache<br><span class="muted">https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl</span></td>
+      <td class="small">2026-11-18</td><td>4</td></tr>
+    </tbody>
+  </table>
+<p>No issues found.</p>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-ok"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 4 of 4 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 4 classes (0%)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-ok"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 4 of 4 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-warn"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 0 classes, 3 properties<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-ok"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 1 group<span class="sr-only"> (ok)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-warn"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 13 without domain, 12 without range<span class="sr-only"> (warn)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 4 of 4 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 3 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-warn"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Not found<span class="sr-only"> (warn)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 3.0% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 4 of 4 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-skipped"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: needs the original Turtle (.ttl) file; it reads the file text<span class="sr-only"> (skipped)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-info"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 46 possible misspellings in 778 words (5.9%)<span class="sr-only"> (info)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-ok"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> No human-readable license <span class="muted">humanLicense</span></summary>
+<p class="muted rule-desc">No license or copyright text was found in the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Isolated classes and properties <span class="muted">(3) isolatedElements</span></summary>
+<p class="muted rule-desc">OntoCheck isolatedElements: not related to any other class or property.</p>    <ul class="findings">
+<li><a href="#member">has member</a> <code class="muted">skos:member</code></li><li><a href="#memberList">has member list</a> <code class="muted">skos:memberList</code></li><li><a href="#notation">notation</a> <code class="muted">skos:notation</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Properties without domain or range <span class="muted">(13) missingDomainRange</span></summary>
+<p class="muted rule-desc">13 without rdfs:domain, 12 without rdfs:range.</p>    <ul class="findings">
+<li><a href="#broadMatch">has broader match</a> <code class="muted">skos:broadMatch</code></li><li><a href="#broader">has broader</a> <code class="muted">skos:broader</code></li><li><a href="#broaderTransitive">has broader transitive</a> <code class="muted">skos:broaderTransitive</code></li><li><a href="#closeMatch">has close match</a> <code class="muted">skos:closeMatch</code></li><li><a href="#exactMatch">has exact match</a> <code class="muted">skos:exactMatch</code></li><li><a href="#inScheme">is in scheme</a> <code class="muted">skos:inScheme</code></li><li><a href="#mappingRelation">is in mapping relation with</a> <code class="muted">skos:mappingRelation</code></li><li><a href="#narrowMatch">has narrower match</a> <code class="muted">skos:narrowMatch</code></li><li><a href="#narrower">has narrower</a> <code class="muted">skos:narrower</code></li><li><a href="#narrowerTransitive">has narrower transitive</a> <code class="muted">skos:narrowerTransitive</code></li><li><a href="#notation">notation</a> <code class="muted">skos:notation</code></li><li><a href="#related">has related</a> <code class="muted">skos:related</code></li><li><a href="#relatedMatch">has related match</a> <code class="muted">skos:relatedMatch</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Possible misspellings <span class="muted">(13) spellCheck</span></summary>
+<p class="muted rule-desc">OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.</p><p class="rule-desc">alt → all, pref → prep, skos → skis, superproperty</p>    <ul class="findings">
+<li><a href="#altLabel">alternative label</a> <code class="muted">skos:altLabel</code></li><li><a href="#broadMatch">has broader match</a> <code class="muted">skos:broadMatch</code></li><li><a href="#broaderTransitive">has broader transitive</a> <code class="muted">skos:broaderTransitive</code></li><li><a href="#closeMatch">has close match</a> <code class="muted">skos:closeMatch</code></li><li><a href="#exactMatch">has exact match</a> <code class="muted">skos:exactMatch</code></li><li><a href="#hiddenLabel">hidden label</a> <code class="muted">skos:hiddenLabel</code></li><li><a href="#mappingRelation">is in mapping relation with</a> <code class="muted">skos:mappingRelation</code></li><li><a href="#memberList">has member list</a> <code class="muted">skos:memberList</code></li><li><a href="#narrowMatch">has narrower match</a> <code class="muted">skos:narrowMatch</code></li><li><a href="#narrowerTransitive">has narrower transitive</a> <code class="muted">skos:narrowerTransitive</code></li><li><a href="#prefLabel">preferred label</a> <code class="muted">skos:prefLabel</code></li><li><a href="#related">has related</a> <code class="muted">skos:related</code></li><li><a href="#relatedMatch">has related match</a> <code class="muted">skos:relatedMatch</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 117 in the term database. Details of 17 repository ontologies came from the term database.</p>  <table class="plain metrics">
+    <caption class="sr-only">Cross-domain interoperability metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Cross-domain interoperability</th></tr>      <tr class="metric-ok"><td>CDI score <code class="muted small">CDI</code></td><td><span class="mstat" aria-hidden="true"></span> 0.51, interoperable (θ = 0.5, β = 1.0)<span class="sr-only"> (ok)</span></td><td class="muted small">Weighted harmonic mean of Align and Gen; low when either is low</td></tr>
+      <tr class="metric-ok"><td>Alignment <code class="muted small">Align</code></td><td><span class="mstat" aria-hidden="true"></span> 0.62; 15 of 22 entities aligned<span class="sr-only"> (ok)</span></td><td class="muted small">Mean best correspondence strength per entity into ontologies of other domains (counted from τ = 0.5)</td></tr>
+      <tr class="metric-warn"><td>Generality <code class="muted small">Gen</code></td><td><span class="mstat" aria-hidden="true"></span> 0.44 = definition coverage 1.00 (4/4) × mean generality 0.44<span class="sr-only"> (warn)</span></td><td class="muted small">How domain-neutral the class definitions are (zero-shot language model)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Alignment by reference ontology</th></tr>      <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.33, coverage 0.32, 9 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</td></tr>
+      <tr class="metric-info"><td>http://www.w3.org/ns/odrl/2/ <code class="muted small">db:http://www.w3.org/ns/odrl/2/</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.33, coverage 0.27, 6 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:http://www.w3.org/ns/odrl/2/; version not reported (identified by content hash)</td></tr>
+      <tr class="metric-info"><td>The DataCite Ontology (DataCite) <code class="muted small">db:http://purl.org/spar/datacite/identifier</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.28, coverage 0.23, 5 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:http://purl.org/spar/datacite/identifier; release http://purl.org/spar/datacite/2026-10-05</td></tr>
+      <tr class="metric-info"><td>ols:dcat <code class="muted small">ols:dcat</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.18, coverage 0.18, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:dcat; release http://www.w3.org/ns/dcat3</td></tr>
+      <tr class="metric-info"><td>The Earth Metabolome Initiative (EMI) ontology <code class="muted small">ols:emi</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.18, coverage 0.18, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:emi; release https://w3id.org/emi/version/1.0</td></tr>
+      <tr class="metric-info"><td>Model Card Report Ontology <code class="muted small">ols:mcro</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.18, coverage 0.18, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:mcro; domain: information technology; release http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl</td></tr>
+      <tr class="metric-info"><td>Semanticscience Integrated Ontology <code class="muted small">ols:sio</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.19, coverage 0.18, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:sio; release http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</td></tr>
+      <tr class="metric-info"><td>ols:uniprotrdfs <code class="muted small">ols:uniprotrdfs</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.18, coverage 0.18, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:uniprotrdfs; release 2026_03</td></tr>
+      <tr class="metric-info"><td>NCI Thesaurus OBO Edition <code class="muted small">ols:ncit</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.15, coverage 0.14, 8 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</td></tr>
+      <tr class="metric-info"><td>Ontology for vCard <code class="muted small">db:http://www.w3.org/2006/vcard/ns</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.11, coverage 0.09, 2 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:http://www.w3.org/2006/vcard/ns; version not reported (identified by content hash)</td></tr>
+    </tbody>
+  </table>
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:33:32 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
+    <tbody>
+      <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>9</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>http://www.w3.org/ns/odrl/2/<br><code class="small">http://www.w3.org/ns/odrl/2/</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 7895765e80d86d1d…</span></td>
+      <td class="small">term database (bundled)<br><span class="muted">https://www.w3.org/ns/odrl/2/ODRL22.ttl</span></td>
+      <td class="small">2026-11-18</td><td>6</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>The DataCite Ontology (DataCite)<br><code class="small">http://purl.org/spar/datacite/2026-10-05</code><br><span class="muted small">sha256 129a4981e894ff69…</span></td>
+      <td class="small">term database (cache)<br><span class="muted">https://sparontologies.github.io/datacite/current/datacite.xml</span></td>
+      <td class="small">2026-11-21</td><td>5</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>ols:dcat<br><code class="small">http://www.w3.org/ns/dcat3</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>The Earth Metabolome Initiative (EMI) ontology<br><code class="small">https://w3id.org/emi/version/1.0</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Model Card Report Ontology<br><code class="small">http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Semanticscience Integrated Ontology<br><code class="small">http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>ols:uniprotrdfs<br><code class="small">uniprotrdfs 2026_03</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>8</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Ontology for vCard<br><code class="small">http://www.w3.org/2006/vcard/ns</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 2442baf3d07d6609…</span></td>
+      <td class="small">term database (cache)<br><span class="muted">https://www.w3.org/2006/vcard/ns</span></td>
+      <td class="small">2026-11-19</td><td>2</td><td class="small">Cross-domain, Scientific</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> No correspondence in another domain <span class="muted">(7) CDI-A</span></summary>
+<p class="muted rule-desc">No direct, lexical or inherited correspondence of sufficient strength into the reference ontologies. Mapping these (e.g. SSSOM, owl:equivalentClass, rdfs:subClassOf) raises Align.</p>    <ul class="findings">
+<li><a href="#broaderTransitive">has broader transitive</a> <code class="muted">skos:broaderTransitive</code></li><li><a href="#mappingRelation">is in mapping relation with</a> <code class="muted">skos:mappingRelation</code></li><li><a href="#memberList">has member list</a> <code class="muted">skos:memberList</code></li><li><a href="#narrowMatch">has narrower match</a> <code class="muted">skos:narrowMatch</code></li><li><a href="#narrower">has narrower</a> <code class="muted">skos:narrower</code></li><li><a href="#narrowerTransitive">has narrower transitive</a> <code class="muted">skos:narrowerTransitive</code></li><li><a href="#semanticRelation">is in semantic relation with</a> <code class="muted">skos:semanticRelation</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 117 in the term database.</p>  <table class="plain metrics">
+    <caption class="sr-only">Scientific interoperability metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Scientific interoperability</th></tr>      <tr class="metric-ok"><td>Scientific interoperability <code class="muted small">SI</code></td><td><span class="mstat" aria-hidden="true"></span> 1 of 41 domains covered (1.2 Computer and information sciences); θ_s = 0.3<span class="sr-only"> (ok)</span></td><td class="muted small">Scientific domains other than the ontology&#39;s own whose CDI reaches θ_s</td></tr>
+      <tr class="metric-info"><td>Share of domains <code class="muted small">SI^</code></td><td><span class="mstat" aria-hidden="true"></span> 0.024<span class="sr-only"> (info)</span></td><td class="muted small">SI divided by the 41 possible domains (OECD fields of science)</td></tr>
+      <tr class="metric-info"><td>Own domain <code class="muted small">D</code></td><td><span class="mstat" aria-hidden="true"></span> 5.8 Media and communications (classifier (p = 0.06))<span class="sr-only"> (info)</span></td><td class="muted small">Not counted; set evaluation.si_home_domain to fix it</td></tr>
+      <tr class="metric-info"><td>Generality ceiling <code class="muted small">Ceiling</code></td><td><span class="mstat" aria-hidden="true"></span> 0.61, from Gen = 0.44<span class="sr-only"> (info)</span></td><td class="muted small">The highest CDI any one domain can reach, even fully aligned; more general class definitions raise it</td></tr>
+      <tr class="metric-info"><td>Upper-level ontologies ignored <code class="muted small">Upper</code></td><td><span class="mstat" aria-hidden="true"></span> 0 correspondences removed; 0 upper-level and 5 reference ontologies without a domain ignored, of 10<span class="sr-only"> (info)</span></td><td class="muted small">BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO (by ontology and IRI namespace)</td></tr>
+      <tr class="metric-ok"><td>Consistency with CDI <code class="muted small">CDI ≥ CDI_δ</code></td><td><span class="mstat" aria-hidden="true"></span> holds: every CDI_δ ≤ CDI = 0.51<span class="sr-only"> (ok)</span></td><td class="muted small">A domain&#39;s CDI can never exceed the cross-domain score</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Interoperability per scientific domain</th></tr>      <tr class="metric-ok"><td>Computer and information sciences <code class="muted small">1.2</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.36 (covered); Align_δ 0.30, 7 entities aligned<span class="sr-only"> (ok)</span></td><td class="muted small">via db:http://purl.org/spar/datacite/identifier, ols:mcro</td></tr>
+      <tr class="metric-warn"><td>Earth and related environmental sciences <code class="muted small">1.5</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.26 (below θ_s = 0.3); Align_δ 0.18, 4 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via ols:emi</td></tr>
+      <tr class="metric-warn"><td>Clinical medicine <code class="muted small">3.2</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.22 (below θ_s = 0.3); Align_δ 0.15, 4 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via ols:ncit</td></tr>
+      <tr class="metric-warn"><td>Veterinary science <code class="muted small">4.3</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.17 (below θ_s = 0.3); Align_δ 0.11, 3 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via db:http://www.w3.org/2006/vcard/ns</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Domain of each reference ontology</th></tr>      <tr class="metric-info"><td>The DataCite Ontology (DataCite) <code class="muted small">db:http://purl.org/spar/datacite/identifier</code></td><td><span class="mstat" aria-hidden="true"></span> 1.2 Computer and information sciences<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.27</td></tr>
+      <tr class="metric-info"><td>Ontology for vCard <code class="muted small">db:http://www.w3.org/2006/vcard/ns</code></td><td><span class="mstat" aria-hidden="true"></span> 4.3 Veterinary science<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.50</td></tr>
+      <tr class="metric-info"><td>The Earth Metabolome Initiative (EMI) ontology <code class="muted small">ols:emi</code></td><td><span class="mstat" aria-hidden="true"></span> 1.5 Earth and related environmental sciences<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.32</td></tr>
+      <tr class="metric-info"><td>Model Card Report Ontology <code class="muted small">ols:mcro</code></td><td><span class="mstat" aria-hidden="true"></span> 1.2 Computer and information sciences<span class="sr-only"> (info)</span></td><td class="muted small">repository metadata; repository domain: information technology</td></tr>
+      <tr class="metric-info"><td>NCI Thesaurus OBO Edition <code class="muted small">ols:ncit</code></td><td><span class="mstat" aria-hidden="true"></span> 3.2 Clinical medicine<span class="sr-only"> (info)</span></td><td class="muted small">repository metadata; repository domain: health</td></tr>
+      <tr class="metric-info"><td>http://www.w3.org/ns/odrl/2/ <code class="muted small">db:http://www.w3.org/ns/odrl/2/</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
+      <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
+      <tr class="metric-info"><td>ols:dcat <code class="muted small">ols:dcat</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
+      <tr class="metric-info"><td>Semanticscience Integrated Ontology <code class="muted small">ols:sio</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
+      <tr class="metric-info"><td>ols:uniprotrdfs <code class="muted small">ols:uniprotrdfs</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
+    </tbody>
+  </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
+<p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:afo&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:afo, db:http://www.w3.org/ns/odrl/2/, ols:dcat, ols:sio, ols:uniprotrdfs</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Own domain guessed by the classifier <span class="muted">SI-H</span></summary>
+<p class="muted rule-desc">D = 5.8 Media and communications was inferred from the ontology&#39;s title and description (classifier (p = 0.06)). Set evaluation.si_home_domain if it is wrong: that domain is never counted.</p><p class="rule-desc">5.8 Media and communications</p>  </details>
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+<p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(13) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="#broadMatch">has broader match</a> <code class="muted">skos:broadMatch</code></li><li><a href="#broader">has broader</a> <code class="muted">skos:broader</code></li><li><a href="#broaderTransitive">has broader transitive</a> <code class="muted">skos:broaderTransitive</code></li><li><a href="#closeMatch">has close match</a> <code class="muted">skos:closeMatch</code></li><li><a href="#exactMatch">has exact match</a> <code class="muted">skos:exactMatch</code></li><li><a href="#inScheme">is in scheme</a> <code class="muted">skos:inScheme</code></li><li><a href="#mappingRelation">is in mapping relation with</a> <code class="muted">skos:mappingRelation</code></li><li><a href="#narrowMatch">has narrower match</a> <code class="muted">skos:narrowMatch</code></li><li><a href="#narrower">has narrower</a> <code class="muted">skos:narrower</code></li><li><a href="#narrowerTransitive">has narrower transitive</a> <code class="muted">skos:narrowerTransitive</code></li><li><a href="#notation">notation</a> <code class="muted">skos:notation</code></li><li><a href="#related">has related</a> <code class="muted">skos:related</code></li><li><a href="#relatedMatch">has related match</a> <code class="muted">skos:relatedMatch</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> SUGGESTION: symmetric or transitive object properties. <span class="muted">(1) SUGGESTION: symmetric or transitive object properties.</span></summary>
+<p class="muted rule-desc">The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?</p>    <ul class="findings">
+<li><a href="#semanticRelation">is in semantic relation with</a> <code class="muted">skos:semanticRelation</code></li>    </ul>
+  </details>
+</section><section class="section" id="downloads">
+  <h2><span class="secno">6</span> Download</h2>
+  <p class="prose">Download the ontology in your preferred format:</p>
+  <table class="plain">
+    <thead><tr><th>Format</th><th>File</th><th>Media type</th><th class="num">Size</th><th></th></tr></thead>
+    <tbody>
+    <tr><td><a href="ontology.ttl" download="ontology.ttl">Turtle</a></td><td><code>ontology.ttl</code></td><td><code>text/turtle</code></td><td class="num">15.8 KB</td><td><button class="copy" data-copy-href="ontology.ttl">copy link</button></td></tr>
+    <tr><td><a href="ontology.owl" download="ontology.owl">RDF/XML</a></td><td><code>ontology.owl</code></td><td><code>application/rdf+xml</code></td><td class="num">27.8 KB</td><td><button class="copy" data-copy-href="ontology.owl">copy link</button></td></tr>
+    <tr><td><a href="ontology.jsonld" download="ontology.jsonld">JSON-LD</a></td><td><code>ontology.jsonld</code></td><td><code>application/ld+json</code></td><td class="num">36.3 KB</td><td><button class="copy" data-copy-href="ontology.jsonld">copy link</button></td></tr>
+    <tr><td><a href="ontology.nt" download="ontology.nt">N-Triples</a></td><td><code>ontology.nt</code></td><td><code>application/n-triples</code></td><td class="num">39.4 KB</td><td><button class="copy" data-copy-href="ontology.nt">copy link</button></td></tr>
+    </tbody>
+  </table>
+<p class="small muted">The ontology IRI supports content negotiation when deployed with the generated server configuration.</p></section><section class="section" id="llm">
+  <h2><span class="secno">7</span> For LLMs and agents</h2>
+  <p class="prose">Plain-text and JSON versions of this document, generated with it, for language models, agents and other tools. They contain the same terms, definitions and axioms as the pages above.</p>
+  <table class="plain">
+    <thead><tr><th>File</th><th>Purpose</th><th class="num">Size</th><th></th></tr></thead>
+    <tbody>
+    <tr><td><a href="llms.txt">llms.txt</a></td><td>Index for language models (llmstxt.org): summary and links to the Markdown pages</td><td class="num">1.5 KB</td><td><button class="copy" data-copy-href="llms.txt">copy link</button></td></tr>
+    <tr><td><a href="llms-full.txt">llms-full.txt</a></td><td>The complete documentation as a single Markdown file</td><td class="num">15.8 KB</td><td><button class="copy" data-copy-href="llms-full.txt">copy link</button></td></tr>
+    <tr><td><a href="ontology.json">ontology.json</a></td><td>Every term as JSON: IRI, CURIE, label, definition, hierarchy, domain and range</td><td class="num">16.6 KB</td><td><button class="copy" data-copy-href="ontology.json">copy link</button></td></tr>
+    </tbody>
+  </table>
+  <h3 class="subhead">Markdown pages</h3>
+  <ul class="index-cols">
+<li><a href="index.md">index.md</a> <span class="muted small">594 B</span></li><li><a href="classes.md">classes.md</a> <span class="muted small">2.2 KB</span></li><li><a href="object-properties.md">object-properties.md</a> <span class="muted small">8.5 KB</span></li><li><a href="datatype-properties.md">datatype-properties.md</a> <span class="muted small">297 B</span></li><li><a href="annotation-properties.md">annotation-properties.md</a> <span class="muted small">4.3 KB</span></li>  </ul>
+  <h3 class="subhead">Using these files with an agent</h3>
+  <div class="prose">
+    <p>Give the agent the address of llms.txt; it links to everything else. For code that needs exact identifiers, ontology.json lists every term with its IRI and relations. The instruction below can be pasted into a prompt or a system message.</p>
+  </div>
+  <pre id="llm-prompt"><code>Read llms.txt for SKOS Vocabulary (prefix skos:). Use only terms defined there; look up IRIs, definitions, domains and ranges in ontology.json before writing SPARQL or RDF.</code></pre>
+  <p class="small"><button class="copy" data-copy-target="llm-prompt">copy instruction</button></p>
+</section><section class="section" id="citation">
+  <h2><span class="secno">8</span> How to cite</h2>
+  <p>Please cite this ontology as:</p>
+  <blockquote class="cite" id="cite-text">Alistair Miles, Sean Bechhofer (2026). SKOS Vocabulary. http://www.w3.org/2004/02/skos/core</blockquote>
+  <p class="small"><button class="copy" data-copy-target="cite-text">copy</button> &middot; <a href="CITATION.cff">CITATION.cff</a></p>
+  <pre id="cite-bib"><code>@misc{skos2026,
+  title = {SKOS Vocabulary},
+  author = {Alistair Miles and Sean Bechhofer},
+  year = {2026},
+  url = {http://www.w3.org/2004/02/skos/core},
+  note = {Ontology}
+}</code></pre>
+  <p class="small"><button class="copy" data-copy-target="cite-bib">copy BibTeX</button></p>
+</section><section class="section" id="provenance">
+  <h2><span class="secno">9</span> Provenance</h2>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">Authors</th><td><span class="agent">Alistair Miles</span>; <span class="agent">Sean Bechhofer</span></td></tr><tr><th scope="row">Contributors</th><td><span class="agent">Dave Beckett</span>; <span class="agent">Nikki Rogers</span>; <span class="agent">Participants in W3C&#39;s Semantic Web Deployment Working Group.</span></td></tr>    </tbody>
+  </table>
+
+  <h3 class="subhead" id="provenance-timeline">Timeline</h3>
+  <ol class="prov-timeline">
+    <li class="prov-ev prov-build">
+      <time datetime="2026-11-21T18:33:26+00:00">2026-11-21 18:33:26 UTC</time>
+      <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From skos.rdf</span></div>
+    </li>
+    <li class="prov-ev prov-check">
+      <time datetime="2026-11-21T18:33:31+00:00">2026-11-21 18:33:31 UTC</time>
+      <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 1 reference release</span></div>
+    </li>
+    <li class="prov-ev prov-check">
+      <time datetime="2026-11-21T18:33:32+00:00">2026-11-21 18:33:32 UTC</time>
+      <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.51; verified against 10 reference releases</span></div>
+    </li>
+    <li class="prov-ev prov-check">
+      <time datetime="2026-11-21T18:33:32+00:00">2026-11-21 18:33:32 UTC</time>
+      <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 1 of 41 scientific domains</span></div>
+    </li>
+    <li class="prov-ev prov-build">
+      <time datetime="2026-11-21T18:33:49+00:00">2026-11-21 18:33:49 UTC</time>
+      <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
+    </li>
+  </ol>
+
+  <h3 class="subhead" id="provenance-build">This build</h3>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">Source file</th><td>skos.rdf (28.3 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:33:26+00:00">2026-11-21 18:33:26 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:33:49+00:00">2026-11-21 18:33:49 UTC</time> <span class="muted">(23.4 s)</span></td></tr>
+<tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
+  </table>
+  <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
+</section>    <footer class="colophon">
+      Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0.
+    </footer>
+  </main>
+</div>
+
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-backdrop" data-action="close-search"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search classes, properties, individuals…"
+      role="combobox" aria-label="Search" aria-autocomplete="list" aria-controls="search-results" aria-expanded="false">
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search"></ul>
+    <p id="search-count" class="sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<script src="ontoreview-data.js?v=6b01e40d"></script>
+<script src="assets/vendor/minisearch.min.js"></script>
+<script src="assets/vendor/cytoscape.min.js"></script>
+<script src="assets/vendor/dagre.min.js"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01e40d"></script>
+</body>
+</html>

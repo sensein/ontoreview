@@ -207,7 +207,7 @@ Every website folder includes a deployment kit, described in its `DEPLOY.md`:
 - `Dockerfile` and `docker-compose.yml`: an nginx image with content negotiation; `docker compose up -d` serves it on port 8080.
 - `deploy/nginx.conf` (nginx without Docker), `.htaccess` (Apache), `deploy/serve.sh` / `serve.bat` (local preview).
 
-In the app, **Deploy** on a website result or in Run history pushes the website to a GitHub repository (create it first; it can be empty) and, with the GitHub CLI installed, turns on Pages. Later deploys update the same site and keep the history; each deploy is listed on the run. Pushing uses your own git login. Turn the kit off with `deploy_files = false` (or `deploy_branch = "gh-pages"` to publish from another branch).
+In the app, **Deploy** on a website result or in Run history pushes the website to a GitHub repository (create it first; it can be empty) and, with the GitHub CLI installed, turns on Pages. Later deploys update the same site and keep the history; each deploy is listed on the run. Pushing uses your own git login, or a GitHub token set in Settings › General › Publishing; with a token OntoReview also turns on Pages and can create the repository. You choose what the token reaches: a fine-grained token limited to selected repositories (create the repository first) or to all repositories (lets OntoReview create it). Turn the kit off with `deploy_files = false` (or `deploy_branch = "gh-pages"` to publish from another branch).
 
 ## Studio and single-file export
 

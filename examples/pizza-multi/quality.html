@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en" data-font="serif" data-width="wide">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quality report · Pizza Ontology</title>
+<meta name="description" content="Pizzas, bases and toppings."><meta name="generator" content="OntoReview 0.1.0">
+<link rel="alternate" type="text/turtle" href="ontology.ttl" title="Turtle">
+<link rel="alternate" type="application/rdf+xml" href="ontology.owl" title="RDF/XML">
+<link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
+<link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
+<link rel="alternate" type="text/markdown" href="quality.md" title="Markdown">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e239">
+<script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="a11y-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<header class="mobilebar">
+  <button class="textbtn" data-action="menu" aria-controls="sidebar" aria-expanded="false">Contents</button>
+  <a class="mobilebar-title" href="index.html">Pizza Ontology</a>
+  <button class="textbtn" data-action="search">Search</button>
+</header>
+
+<div class="layout">
+  <aside class="toc" id="sidebar">
+<div class="toc-inner">
+  <a class="toc-title" href="index.html">Pizza Ontology</a>
+<div class="toc-version">Version 1.3.0</div>
+  <button class="toc-search" data-action="search" aria-label="Search">
+    <span>Search…</span><span class="toc-key">/</span>
+  </button>
+
+  <nav aria-label="Contents">
+    <ol class="toc-list">
+      <li>
+        <a href="index.html#introduction" data-section="introduction"><span class="secno">1</span><span class="toc-label">Introduction</span></a>
+      </li>
+      <li>
+        <a href="index.html#overview" data-section="overview"><span class="secno">2</span><span class="toc-label">Overview</span></a>
+      </li>
+      <li>
+        <a href="graph.html#graph" data-section="graph"><span class="secno">3</span><span class="toc-label">Visualization</span></a>
+      </li>
+      <li>
+        <a href="index.html#namespaces" data-section="namespaces"><span class="secno">4</span><span class="toc-label">Namespaces</span></a>
+      </li>
+      <li>
+        <a href="classes.html#classes" data-section="classes"><span class="secno">5</span><span class="toc-label">Terms</span></a>
+        <ol>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="classes.html#classes" data-section="classes"><span class="secno">5.1</span><span class="toc-label">Classes</span><span class="toc-count">8</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><details><summary><a href="classes.html#Food" class="ref" title="pizza:Food">Food</a></summary><ul class="tree"><li><details><summary><a href="classes.html#Pizza" class="ref" title="pizza:Pizza">Pizza</a></summary><ul class="tree"><li><span class="leaf"><a href="classes.html#Calzone" class="ref" title="pizza:Calzone">Calzone</a></span></li></ul></details></li><li><span class="leaf"><a href="classes.html#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li><li><details><summary><a href="classes.html#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></summary><ul class="tree"><li><span class="leaf"><a href="classes.html#CheeseTopping" class="ref" title="pizza:CheeseTopping">Cheese topping</a></span></li><li><span class="leaf"><a href="classes.html#MeatTopping" class="ref" title="pizza:MeatTopping">Meat topping</a></span></li></ul></details></li></ul></details></li><li><span class="leaf"><a href="classes.html#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="object-properties.html#object-properties" data-section="object-properties"><span class="secno">5.2</span><span class="toc-label">Object properties</span><span class="toc-count">4</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><details><summary><a href="object-properties.html#hasIngredient" class="ref" title="pizza:hasIngredient">has ingredient</a></summary><ul class="tree"><li><span class="leaf"><a href="object-properties.html#hasBase" class="ref" title="pizza:hasBase">has base</a></span></li></ul></details></li><li><span class="leaf"><a href="object-properties.html#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></span></li><li><span class="leaf"><a href="object-properties.html#isToppingOf" class="ref" title="pizza:isToppingOf">is topping of</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="datatype-properties.html#datatype-properties" data-section="datatype-properties"><span class="secno">5.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">2</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="datatype-properties.html#hasCalories" class="ref" title="pizza:hasCalories">has calories</a></span></li><li><span class="leaf"><a href="datatype-properties.html#Name" class="ref" title="pizza:Name">Pizza</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="annotation-properties.html#annotation-properties" data-section="annotation-properties"><span class="secno">5.4</span><span class="toc-label">Annotation properties</span><span class="toc-count">17</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="annotation-properties.html#abstract" class="ref" title="dcterms:abstract">abstract</a></span></li><li><span class="leaf"><a href="annotation-properties.html#contributor" class="ref" title="dcterms:contributor">contributor</a></span></li><li><span class="leaf"><a href="annotation-properties.html#created" class="ref" title="dcterms:created">created</a></span></li><li><span class="leaf"><a href="annotation-properties.html#creator" class="ref" title="dcterms:creator">creator</a></span></li><li><span class="leaf"><a href="annotation-properties.html#definition" class="ref" title="skos:definition">definition</a></span></li><li><span class="leaf"><a href="annotation-properties.html#deprecated" class="ref" title="owl:deprecated">deprecated</a></span></li><li><span class="leaf"><a href="annotation-properties.html#description" class="ref" title="dcterms:description">description</a></span></li><li><span class="leaf"><a href="annotation-properties.html#example" class="ref" title="skos:example">example</a></span></li><li><span class="leaf"><a href="annotation-properties.html#keywords" class="ref" title="schema:keywords">keywords</a></span></li><li><span class="leaf"><a href="annotation-properties.html#label" class="ref" title="rdfs:label">label</a></span></li><li><span class="leaf"><a href="annotation-properties.html#license" class="ref" title="dcterms:license">license</a></span></li><li><span class="leaf"><a href="annotation-properties.html#modified" class="ref" title="dcterms:modified">modified</a></span></li><li><span class="leaf"><a href="annotation-properties.html#preferredNamespacePrefix" class="ref" title="vann:preferredNamespacePrefix">preferredNamespacePrefix</a></span></li><li><span class="leaf"><a href="annotation-properties.html#preferredNamespaceUri" class="ref" title="vann:preferredNamespaceUri">preferredNamespaceUri</a></span></li><li><span class="leaf"><a href="annotation-properties.html#priorVersion" class="ref" title="owl:priorVersion">priorVersion</a></span></li><li><span class="leaf"><a href="annotation-properties.html#title" class="ref" title="dcterms:title">title</a></span></li><li><span class="leaf"><a href="annotation-properties.html#versionInfo" class="ref" title="owl:versionInfo">versionInfo</a></span></li></ul></div>
+            </details>
+          </li>
+          <li class="toc-kind">
+            <details>
+              <summary><a href="individuals.html#individuals" data-section="individuals"><span class="secno">5.5</span><span class="toc-label">Named individuals</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="individuals.html#Margherita" class="ref" title="pizza:Margherita">Margherita</a></span></li></ul></div>
+            </details>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="changelog.html#changelog" data-section="changelog"><span class="secno">6</span><span class="toc-label">Changelog</span></a>
+      </li>
+      <li>
+        <a href="#quality" data-section="quality" class="active"><span class="secno">7</span><span class="toc-label">Quality report</span></a>
+        <ol class="toc-quality">
+          <li><a href="#quality-builtin"><span class="secno">7.1</span><span class="toc-label">OntoReview checks</span><span class="toc-count">12</span></a></li>
+          <li><a href="#quality-robot"><span class="secno">7.2</span><span class="toc-label">ROBOT</span><span class="toc-count">23</span></a></li>
+          <li><a href="#quality-logical-consistency"><span class="secno">7.3</span><span class="toc-label">Logical consistency</span></a></li>
+          <li><a href="#quality-iri-checks"><span class="secno">7.4</span><span class="toc-label">IRI checks</span><span class="toc-count">1</span></a></li>
+          <li><a href="#quality-ontocheck"><span class="secno">7.5</span><span class="toc-label">OntoCheck</span><span class="toc-count">10</span></a></li>
+          <li><a href="#quality-cross-domain-interoperability"><span class="secno">7.6</span><span class="toc-label">Cross-domain interoperability</span><span class="toc-count">5</span></a></li>
+          <li><a href="#quality-scientific-interoperability"><span class="secno">7.7</span><span class="toc-label">Scientific interoperability</span><span class="toc-count">2</span></a></li>
+          <li><a href="#quality-oops"><span class="secno">7.8</span><span class="toc-label">OOPS!</span><span class="toc-count">5</span></a></li>
+        </ol>
+      </li>
+      <li>
+        <a href="index.html#downloads" data-section="downloads"><span class="secno">8</span><span class="toc-label">Download</span></a>
+      </li>
+      <li>
+        <a href="index.html#llm" data-section="llm"><span class="secno">9</span><span class="toc-label">For LLMs and agents</span></a>
+      </li>
+      <li>
+        <a href="index.html#citation" data-section="citation"><span class="secno">10</span><span class="toc-label">How to cite</span></a>
+      </li>
+      <li>
+        <a href="index.html#provenance" data-section="provenance"><span class="secno">11</span><span class="toc-label">Provenance</span></a>
+      </li>
+    </ol>
+  </nav>
+
+  <div class="toc-foot">
+    <button class="textbtn" data-action="theme" data-dark="Dark" data-light="Light" aria-pressed="false">Dark</button>
+    <button class="textbtn" data-action="textsize" aria-label="Text size" title="Text size"><span aria-hidden="true">A</span><span class="textsize-val">100%</span></button>
+  </div>
+</div>  </aside>
+  <main class="main" id="main" tabindex="-1">
+<section class="section" id="quality">
+  <h2><span class="secno">7</span> Quality report</h2>
+  <p class="prose">Findings from the checks run on this version. Each row opens the full list.</p>
+  <table class="plain check-summary">
+    <caption class="sr-only">Quality report</caption>
+    <thead><tr><th scope="col">Check</th><th scope="col">Findings</th><th scope="col" class="check-bar-col">Compared with the largest</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#quality-builtin">OntoReview checks</a></td>
+      <td class="check-count">12</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:52.2%"></span></span></td></tr>
+      <tr><td><a href="#quality-robot">ROBOT</a></td>
+      <td class="check-count">23</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:100.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-logical-consistency">Logical consistency</a></td>
+      <td class="check-count"><a href="#quality-logical-consistency">See report</a></td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:0.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-iri-checks">IRI checks</a></td>
+      <td class="check-count">1</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:4.3%"></span></span></td></tr>
+      <tr><td><a href="#quality-ontocheck">OntoCheck</a></td>
+      <td class="check-count">10</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:43.5%"></span></span></td></tr>
+      <tr><td><a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a></td>
+      <td class="check-count">5</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:21.7%"></span></span></td></tr>
+      <tr><td><a href="#quality-scientific-interoperability">Scientific interoperability</a></td>
+      <td class="check-count">2</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:8.7%"></span></span></td></tr>
+      <tr><td><a href="#quality-oops">OOPS!</a></td>
+      <td class="check-count">5</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:21.7%"></span></span></td></tr>
+    </tbody>
+  </table>
+
+<h3 class="subhead" id="quality-builtin">OntoReview checks</h3>  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Wrong kind of range <span class="muted">(1) OB024</span></summary>
+    <p class="muted rule-desc">Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like).</p>
+    <ul class="findings">
+<li>Datatype property “Pizza” has class range “Pizza base”. <a href="datatype-properties.html#Name">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Term without a definition <span class="muted">(5) OB011</span></summary>
+    <p class="muted rule-desc">Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08).</p>
+    <ul class="findings">
+<li>Class “Meat topping” has no definition. <a href="classes.html#MeatTopping">§</a></li><li>Datatype property “Pizza” has no definition. <a href="datatype-properties.html#Name">§</a></li><li>Object property “has base” has no definition. <a href="object-properties.html#hasBase">§</a></li><li>Datatype property “has calories” has no definition. <a href="datatype-properties.html#hasCalories">§</a></li><li>Object property “is topping of” has no definition. <a href="object-properties.html#isToppingOf">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Duplicate labels <span class="muted">(1) OB016</span></summary>
+    <p class="muted rule-desc">Two or more terms share the same label, which confuses readers and tools.</p>
+    <ul class="findings">
+<li>Label “pizza” @en is used by <code>pizza:Name</code>, <code>pizza:Pizza</code>. <a href="datatype-properties.html#Name">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Property without domain <span class="muted">(2) OB012</span></summary>
+    <p class="muted rule-desc">Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms.</p>
+    <ul class="findings">
+<li>Property “Pizza” has no domain. <a href="datatype-properties.html#Name">§</a></li><li>Property “has ingredient” has no domain. <a href="object-properties.html#hasIngredient">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Property without range <span class="muted">(1) OB013</span></summary>
+    <p class="muted rule-desc">Consider declaring rdfs:range (OOPS! P11).</p>
+    <ul class="findings">
+<li>Property “has ingredient” has no range. <a href="object-properties.html#hasIngredient">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Deprecated term without replacement <span class="muted">(1) OB018</span></summary>
+    <p class="muted rule-desc">Deprecated terms should point to their replacement with dcterms:isReplacedBy.</p>
+    <ul class="findings">
+<li>“Cheese topping” is deprecated but has no replacement. <a href="classes.html#CheeseTopping">§</a></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inconsistent naming convention <span class="muted">(1) OB019</span></summary>
+    <p class="muted rule-desc">Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22).</p>
+    <ul class="findings">
+<li>Property name <code>Name</code> is not lowerCamelCase. <a href="datatype-properties.html#Name">§</a></li>    </ul>
+  </details>
+
+  <h3 class="subhead" id="quality-robot">ROBOT <a class="muted small" href="http://robot.obolibrary.org/report">http://robot.obolibrary.org/report</a></h3>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Deprecated class reference <span class="muted">(1) deprecated_class_reference</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Duplicate label <span class="muted">(2) duplicate_label</span></summary>
+    <ul class="findings">
+<li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Missing label <span class="muted">(1) missing_label</span></summary>
+    <ul class="findings">
+<li><code>https://orcid.org/0000-0000-0000-0001</code></li>    </ul>
+  </details>
+  <details class="finding sev-error" open>
+    <summary><span class="sev">error</span> Multiple labels <span class="muted">(2) multiple_labels</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing definition <span class="muted">(14) missing_definition</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#Calzone">Calzone</a> <code class="muted">pizza:Calzone</code></li><li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li><li><a href="classes.html#PizzaBase">Pizza base</a> <code class="muted">pizza:PizzaBase</code></li><li><a href="classes.html#PizzaTopping">Pizza topping</a> <code class="muted">pizza:PizzaTopping</code></li><li><a href="classes.html#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li><li><a href="object-properties.html#hasBase">has base</a> <code class="muted">pizza:hasBase</code></li><li><a href="datatype-properties.html#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#hasTopping">has topping</a> <code class="muted">pizza:hasTopping</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li><li><code>https://orcid.org/0000-0000-0000-0001</code></li>    </ul>
+  </details>
+  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing obsolete label <span class="muted">(1) missing_obsolete_label</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing superclass <span class="muted">(2) missing_superclass</span></summary>
+    <ul class="findings">
+<li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="classes.html#VegetarianPizza">Vegetarian pizza</a> <code class="muted">pizza:VegetarianPizza</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
+<p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
+<p class="muted small">0.1s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #129 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+    <caption class="sr-only">IRI checks metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">IRI</th></tr>      <tr class="metric-ok"><td>IRI syntax <code class="muted small">syntax</code></td><td><span class="mstat" aria-hidden="true"></span> No malformed IRIs<span class="sr-only"> (ok)</span></td><td class="muted small">All 70 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host</td></tr>
+      <tr class="metric-ok"><td>Ontology header <code class="muted small">header</code></td><td><span class="mstat" aria-hidden="true"></span> https://example.org/pizza<span class="sr-only"> (ok)</span></td><td class="muted small">Exactly one named owl:Ontology</td></tr>
+      <tr class="metric-ok"><td>Version IRI <code class="muted small">version</code></td><td><span class="mstat" aria-hidden="true"></span> https://example.org/pizza/1.2.0<span class="sr-only"> (ok)</span></td><td class="muted small">owl:versionIRI, distinct from the ontology IRI</td></tr>
+      <tr class="metric-warn"><td>Ontology IRI resolves <code class="muted small">resolves</code></td><td><span class="mstat" aria-hidden="true"></span> Not reachable<span class="sr-only"> (warn)</span></td><td class="muted small">The ontology IRI returns RDF (content negotiation) whose header matches it</td></tr>
+      <tr class="metric-ok"><td>External terms <code class="muted small">external</code></td><td><span class="mstat" aria-hidden="true"></span> 16 checked: 16 valid<span class="sr-only"> (ok)</span></td><td class="muted small">Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated</td></tr>
+      <tr class="metric-info"><td>Lookup sources <code class="muted small">sources</code></td><td><span class="mstat" aria-hidden="true"></span> bundled 2, cache 14<span class="sr-only"> (info)</span></td><td class="muted small">Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download</td></tr>
+      <tr class="metric-ok"><td>Freshness <code class="muted small">freshness</code></td><td><span class="mstat" aria-hidden="true"></span> All lookups current<span class="sr-only"> (ok)</span></td><td class="muted small">Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged</td></tr>
+      <tr class="metric-info"><td>Releases verified against <code class="muted small">releases</code></td><td><span class="mstat" aria-hidden="true"></span> http://purl.org/spar/datacite/2026-10-05 (3)<span class="sr-only"> (info)</span></td><td class="muted small">The vocabulary release (version IRI / version) each external term was checked against</td></tr>
+    </tbody>
+  </table>
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:25:32 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <tbody>
+      <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
+      <td class="small">cache<br><span class="muted">https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl</span></td>
+      <td class="small">2026-11-18</td><td>6</td></tr>
+      <tr><td>The DataCite Ontology (DataCite)<br><code class="small">http://purl.org/spar/datacite/2026-10-05</code><br><span class="muted small">sha256 129a4981e894ff69…</span></td>
+      <td class="small">cache<br><span class="muted">https://sparontologies.github.io/datacite/current/datacite.xml</span></td>
+      <td class="small">2026-11-21</td><td>3</td></tr>
+      <tr><td><code class="small">schemaorg_https</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-19</td><td>3</td></tr>
+      <tr><td>Simple Knowledge Organization System<br><code class="small">http://www.w3.org/2004/02/skos/core</code><br><span class="muted small">sha256 e79633b8d0564816…</span></td>
+      <td class="small">bundle<br><span class="muted">https://www.w3.org/2009/08/skos-reference/skos.rdf</span></td>
+      <td class="small">2026-11-18</td><td>2</td></tr>
+      <tr><td>The GoodRelations Vocabulary for Semantic Web-based E-Commerce<br><code class="small">http://purl.org/goodrelations/v1</code><br><span class="muted small">sha256 4eeecc843408390f…</span></td>
+      <td class="small">cache<br><span class="muted">http://www.heppnetz.de/ontologies/goodrelations/v1.owl</span></td>
+      <td class="small">2026-11-19</td><td>1</td></tr>
+      <tr><td><code class="small">dcterms</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-19</td><td>1</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Ontology IRI does not resolve to this ontology <span class="muted">(1) ontology_iri_not_resolvable</span></summary>
+<p class="muted rule-desc">Published ontologies should return RDF for their IRI (content negotiation). Expected for unpublished or in-development ontologies.</p><p class="rule-desc">HTTPError: 404 Client Error: Not Found for url: https://example.org/pizza</p>    <ul class="findings">
+<li><code>https://example.org/pizza</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
+  <table class="plain metrics">
+    <caption class="sr-only">OntoCheck metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Labeling</th></tr>      <tr class="metric-ok"><td>Labels <code class="muted small">checkLabel</code></td><td><span class="mstat" aria-hidden="true"></span> 8 of 8 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Named classes with an rdfs:label</td></tr>
+      <tr class="metric-info"><td>Alternative labels <code class="muted small">altLabelCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 8 classes (0%)<span class="sr-only"> (info)</span></td><td class="muted small">Named classes with a skos:altLabel</td></tr>
+      <tr class="metric-warn"><td>Definitions <code class="muted small">definitionCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 7 of 8 classes (88%)<span class="sr-only"> (warn)</span></td><td class="muted small">Named classes with a skos:definition</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Structural</th></tr>      <tr class="metric-warn"><td>Isolated elements <code class="muted small">isolatedElements</code></td><td><span class="mstat" aria-hidden="true"></span> 1 class, 2 properties<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties not connected to anything else</td></tr>
+      <tr class="metric-info"><td>Class connections <code class="muted small">classConnections</code></td><td><span class="mstat" aria-hidden="true"></span> 2 groups<span class="sr-only"> (info)</span></td><td class="muted small">Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected</td></tr>
+      <tr class="metric-warn"><td>Domain and range <code class="muted small">missingDomainRange</code></td><td><span class="mstat" aria-hidden="true"></span> 3 without domain, 2 without range<span class="sr-only"> (warn)</span></td><td class="muted small">Object and datatype properties without rdfs:domain / rdfs:range</td></tr>
+      <tr class="metric-info"><td>Leaf classes <code class="muted small">leafNodeCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 6 of 8 classes<span class="sr-only"> (info)</span></td><td class="muted small">Classes with no subclasses</td></tr>
+      <tr class="metric-info"><td>Upper-ontology links <code class="muted small">semanticConnection</code></td><td><span class="mstat" aria-hidden="true"></span> 0 of 2 top-level classes<span class="sr-only"> (info)</span></td><td class="muted small">Top-level classes connected to BFO or CCO</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Accessibility</th></tr>      <tr class="metric-info"><td>SPARQL endpoint <code class="muted small">sparqlEndpoint</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared SPARQL endpoints that answer a query</td></tr>
+      <tr class="metric-info"><td>RDF dump <code class="muted small">rdfDump</code></td><td><span class="mstat" aria-hidden="true"></span> None declared<span class="sr-only"> (info)</span></td><td class="muted small">Declared RDF dump URLs that can be downloaded</td></tr>
+      <tr class="metric-ok"><td>Human-readable license <code class="muted small">humanLicense</code></td><td><span class="mstat" aria-hidden="true"></span> Found<span class="sr-only"> (ok)</span></td><td class="muted small">License or copyright text in the ontology</td></tr>
+      <tr class="metric-info"><td>External links <code class="muted small">externalLinks</code></td><td><span class="mstat" aria-hidden="true"></span> 0.0% of entities<span class="sr-only"> (info)</span></td><td class="muted small">Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Naming convention</th></tr>      <tr class="metric-ok"><td>Capitalised class names <code class="muted small">classCapitalCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 8 of 8 classes (100%)<span class="sr-only"> (ok)</span></td><td class="muted small">Class names that start with a capital letter</td></tr>
+      <tr class="metric-ok"><td>Spaces in class names <code class="muted small">classSpaceCheck</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (ok)</span></td><td class="muted small">Class names containing spaces in the Turtle source</td></tr>
+      <tr class="metric-ok"><td>Spelling <code class="muted small">spellCheck</code></td><td><span class="mstat" aria-hidden="true"></span> 0 possible misspellings in 61 words (0.0%)<span class="sr-only"> (ok)</span></td><td class="muted small">Words in English (or untagged) labels, definitions and comments not found in an English dictionary</td></tr>
+      <tr class="metric-warn"><td>Duplicate labels <code class="muted small">duplicateLabels</code></td><td><span class="mstat" aria-hidden="true"></span> 2 labels shared<span class="sr-only"> (warn)</span></td><td class="muted small">Classes and properties sharing an rdfs:label (case-insensitive)</td></tr>
+      <tr class="metric-skipped"><td>Class search <code class="muted small">searchClass</code></td><td><span class="mstat" aria-hidden="true"></span> Skipped: no search term set (evaluation.ontocheck_search)<span class="sr-only"> (skipped)</span></td><td class="muted small">Classes whose name contains the configured search term</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Classes without skos:definition <span class="muted">(1) definitionCheck</span></summary>
+<p class="muted rule-desc">OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).</p>    <ul class="findings">
+<li><a href="classes.html#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Shared labels <span class="muted">(3) duplicateLabels</span></summary>
+<p class="muted rule-desc">OntoCheck duplicateLabels (case-insensitive rdfs:label).</p><p class="rule-desc">“pizza”: 3 entities; “food”: 2 entities</p>    <ul class="findings">
+<li><a href="classes.html#Food">Food</a> <code class="muted">pizza:Food</code></li><li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="classes.html#Pizza">Pizza</a> <code class="muted">pizza:Pizza</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Isolated classes and properties <span class="muted">(3) isolatedElements</span></summary>
+<p class="muted rule-desc">OntoCheck isolatedElements: not related to any other class or property.</p>    <ul class="findings">
+<li><a href="classes.html#Calzone">Calzone</a> <code class="muted">pizza:Calzone</code></li><li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="datatype-properties.html#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Properties without domain or range <span class="muted">(3) missingDomainRange</span></summary>
+<p class="muted rule-desc">3 without rdfs:domain, 2 without rdfs:range.</p>    <ul class="findings">
+<li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 102 in the term database. Details of 12 repository ontologies came from the term database.</p>  <table class="plain metrics">
+    <caption class="sr-only">Cross-domain interoperability metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Cross-domain interoperability</th></tr>      <tr class="metric-warn"><td>CDI score <code class="muted small">CDI</code></td><td><span class="mstat" aria-hidden="true"></span> 0.44, not interoperable (θ = 0.5, β = 1.0)<span class="sr-only"> (warn)</span></td><td class="muted small">Weighted harmonic mean of Align and Gen; low when either is low</td></tr>
+      <tr class="metric-ok"><td>Alignment <code class="muted small">Align</code></td><td><span class="mstat" aria-hidden="true"></span> 0.51; 9 of 14 entities aligned<span class="sr-only"> (ok)</span></td><td class="muted small">Mean best correspondence strength per entity into ontologies of other domains (counted from τ = 0.5)</td></tr>
+      <tr class="metric-warn"><td>Generality <code class="muted small">Gen</code></td><td><span class="mstat" aria-hidden="true"></span> 0.39 = definition coverage 0.88 (7/8) × mean generality 0.44<span class="sr-only"> (warn)</span></td><td class="muted small">How domain-neutral the class definitions are (zero-shot language model)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Alignment by reference ontology</th></tr>      <tr class="metric-info"><td>Food Ontology <code class="muted small">ols:foodon</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.42, coverage 0.29, 6 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:foodon; domain: diet, metabolomics, and nutrition; release http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl</td></tr>
+      <tr class="metric-info"><td>SNOMED CT (International Edition) <code class="muted small">ols:snomed</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.42, coverage 0.29, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:snomed; release http://snomed.info/sct/900000000000207008/version/20251017</td></tr>
+      <tr class="metric-info"><td>NCI Thesaurus OBO Edition <code class="muted small">ols:ncit</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.32, coverage 0.21, 5 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</td></tr>
+      <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.11, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</td></tr>
+      <tr class="metric-info"><td>Chemical Entities of Biological Interest <code class="muted small">ols:chebi</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.19, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:chebi; domain: chemistry and biochemistry; release http://purl.obolibrary.org/obo/chebi/257/chebi.owl</td></tr>
+      <tr class="metric-info"><td>Food-Biomarker Ontology <code class="muted small">ols:fobi</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.06, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:fobi; domain: diet, metabolomics, and nutrition; release http://purl.obolibrary.org/obo/fobi/fobi.owl</td></tr>
+      <tr class="metric-info"><td>Medical Subject Headings <code class="muted small">ols:mesh</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.19, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:mesh; release https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</td></tr>
+      <tr class="metric-info"><td>Ontology of Prokaryotic Phenotypic and Metabolic Characters <code class="muted small">ols:micro</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.11, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:micro; domain: phenotype; release MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.
+
+Includes terms and term synonyms extracted from &gt; 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.
+
+The ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).
+
+Descriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.
+https://github.com/biosemantics/micropie2
+
+The most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.</td></tr>
+      <tr class="metric-info"><td>Ontology of units of Measure (OM) <code class="muted small">ols:om</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.06, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:om; release 2.0.60</td></tr>
+      <tr class="metric-info"><td>Ontology for MIRNA Target <code class="muted small">ols:omit</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.19, coverage 0.07, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:omit; domain: chemistry and biochemistry; release http://purl.obolibrary.org/obo/omit/dev/omit.owl</td></tr>
+    </tbody>
+  </table>
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:25:32 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
+    <tbody>
+      <tr><td>Food Ontology<br><code class="small">http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>6</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>5</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Chemical Entities of Biological Interest<br><code class="small">http://purl.obolibrary.org/obo/chebi/257/chebi.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Food-Biomarker Ontology<br><code class="small">http://purl.obolibrary.org/obo/fobi/fobi.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Medical Subject Headings<br><code class="small">https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Ontology of Prokaryotic Phenotypic and Metabolic Characters<br><code class="small">micro MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.
+
+Includes terms and term synonyms extracted from &gt; 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.
+
+The ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).
+
+Descriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.
+https://github.com/biosemantics/micropie2
+
+The most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Ontology of units of Measure (OM)<br><code class="small">om 2.0.60</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+      <tr><td>Ontology for MIRNA Target<br><code class="small">http://purl.obolibrary.org/obo/omit/dev/omit.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> No correspondence in another domain <span class="muted">(5) CDI-A</span></summary>
+<p class="muted rule-desc">No direct, lexical or inherited correspondence of sufficient strength into the reference ontologies. Mapping these (e.g. SSSOM, owl:equivalentClass, rdfs:subClassOf) raises Align.</p>    <ul class="findings">
+<li><a href="classes.html#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li><li><a href="classes.html#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="datatype-properties.html#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="object-properties.html#hasTopping">has topping</a> <code class="muted">pizza:hasTopping</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 102 in the term database.</p>  <table class="plain metrics">
+    <caption class="sr-only">Scientific interoperability metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Scientific interoperability</th></tr>      <tr class="metric-ok"><td>Scientific interoperability <code class="muted small">SI</code></td><td><span class="mstat" aria-hidden="true"></span> 2 of 41 domains covered (1.5 Earth and related environmental sciences, 3.2 Clinical medicine); θ_s = 0.3<span class="sr-only"> (ok)</span></td><td class="muted small">Scientific domains other than the ontology&#39;s own whose CDI reaches θ_s</td></tr>
+      <tr class="metric-info"><td>Share of domains <code class="muted small">SI^</code></td><td><span class="mstat" aria-hidden="true"></span> 0.049<span class="sr-only"> (info)</span></td><td class="muted small">SI divided by the 41 possible domains (OECD fields of science)</td></tr>
+      <tr class="metric-info"><td>Own domain <code class="muted small">D</code></td><td><span class="mstat" aria-hidden="true"></span> 3.1 Basic medicine (classifier (p = 0.04))<span class="sr-only"> (info)</span></td><td class="muted small">Not counted; set evaluation.si_home_domain to fix it</td></tr>
+      <tr class="metric-info"><td>Generality ceiling <code class="muted small">Ceiling</code></td><td><span class="mstat" aria-hidden="true"></span> 0.56, from Gen = 0.39<span class="sr-only"> (info)</span></td><td class="muted small">The highest CDI any one domain can reach, even fully aligned; more general class definitions raise it</td></tr>
+      <tr class="metric-info"><td>Upper-level ontologies ignored <code class="muted small">Upper</code></td><td><span class="mstat" aria-hidden="true"></span> 0 correspondences removed; 0 upper-level and 1 reference ontologies without a domain ignored, of 10<span class="sr-only"> (info)</span></td><td class="muted small">BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO (by ontology and IRI namespace)</td></tr>
+      <tr class="metric-ok"><td>Consistency with CDI <code class="muted small">CDI ≥ CDI_δ</code></td><td><span class="mstat" aria-hidden="true"></span> holds: every CDI_δ ≤ CDI = 0.44<span class="sr-only"> (ok)</span></td><td class="muted small">A domain&#39;s CDI can never exceed the cross-domain score</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Interoperability per scientific domain</th></tr>      <tr class="metric-ok"><td>Earth and related environmental sciences <code class="muted small">1.5</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.40 (covered); Align_δ 0.42, 8 entities aligned<span class="sr-only"> (ok)</span></td><td class="muted small">via ols:foodon</td></tr>
+      <tr class="metric-ok"><td>Clinical medicine <code class="muted small">3.2</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.40 (covered); Align_δ 0.42, 8 entities aligned<span class="sr-only"> (ok)</span></td><td class="muted small">via ols:ncit, ols:snomed</td></tr>
+      <tr class="metric-warn"><td>Chemical sciences <code class="muted small">1.4</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.25 (below θ_s = 0.3); Align_δ 0.19, 4 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via ols:chebi, ols:omit</td></tr>
+      <tr class="metric-warn"><td>Health sciences <code class="muted small">3.3</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.25 (below θ_s = 0.3); Align_δ 0.19, 4 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via ols:mesh</td></tr>
+      <tr class="metric-warn"><td>Biological sciences <code class="muted small">1.6</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.24 (below θ_s = 0.3); Align_δ 0.17, 3 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via ols:fobi, ols:micro</td></tr>
+      <tr class="metric-warn"><td>Physical sciences <code class="muted small">1.3</code></td><td><span class="mstat" aria-hidden="true"></span> CDI_δ 0.11 (below θ_s = 0.3); Align_δ 0.06, 1 entities aligned<span class="sr-only"> (warn)</span></td><td class="muted small">via ols:om</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Domain of each reference ontology</th></tr>      <tr class="metric-info"><td>Chemical Entities of Biological Interest <code class="muted small">ols:chebi</code></td><td><span class="mstat" aria-hidden="true"></span> 1.4 Chemical sciences<span class="sr-only"> (info)</span></td><td class="muted small">repository metadata; repository domain: chemistry and biochemistry</td></tr>
+      <tr class="metric-info"><td>Food-Biomarker Ontology <code class="muted small">ols:fobi</code></td><td><span class="mstat" aria-hidden="true"></span> 1.6 Biological sciences<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.20; repository domain: diet, metabolomics, and nutrition</td></tr>
+      <tr class="metric-info"><td>Food Ontology <code class="muted small">ols:foodon</code></td><td><span class="mstat" aria-hidden="true"></span> 1.5 Earth and related environmental sciences<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.24; repository domain: diet, metabolomics, and nutrition</td></tr>
+      <tr class="metric-info"><td>Medical Subject Headings <code class="muted small">ols:mesh</code></td><td><span class="mstat" aria-hidden="true"></span> 3.3 Health sciences<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.54</td></tr>
+      <tr class="metric-info"><td>Ontology of Prokaryotic Phenotypic and Metabolic Characters <code class="muted small">ols:micro</code></td><td><span class="mstat" aria-hidden="true"></span> 1.6 Biological sciences<span class="sr-only"> (info)</span></td><td class="muted small">repository metadata; repository domain: phenotype</td></tr>
+      <tr class="metric-info"><td>NCI Thesaurus OBO Edition <code class="muted small">ols:ncit</code></td><td><span class="mstat" aria-hidden="true"></span> 3.2 Clinical medicine<span class="sr-only"> (info)</span></td><td class="muted small">repository metadata; repository domain: health</td></tr>
+      <tr class="metric-info"><td>Ontology of units of Measure (OM) <code class="muted small">ols:om</code></td><td><span class="mstat" aria-hidden="true"></span> 1.3 Physical sciences<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.19</td></tr>
+      <tr class="metric-info"><td>Ontology for MIRNA Target <code class="muted small">ols:omit</code></td><td><span class="mstat" aria-hidden="true"></span> 1.4 Chemical sciences<span class="sr-only"> (info)</span></td><td class="muted small">repository metadata; repository domain: chemistry and biochemistry</td></tr>
+      <tr class="metric-info"><td>SNOMED CT (International Edition) <code class="muted small">ols:snomed</code></td><td><span class="mstat" aria-hidden="true"></span> 3.2 Clinical medicine<span class="sr-only"> (info)</span></td><td class="muted small">classifier, p = 0.59</td></tr>
+      <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
+    </tbody>
+  </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
+<p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:afo&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:afo</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Own domain guessed by the classifier <span class="muted">SI-H</span></summary>
+<p class="muted rule-desc">D = 3.1 Basic medicine was inferred from the ontology&#39;s title and description (classifier (p = 0.04)). Set evaluation.si_home_domain if it is wrong: that domain is never counted.</p><p class="rule-desc">3.1 Basic medicine</p>  </details>
+  <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
+<p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(3) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Using different naming conventions in the ontology <span class="muted">P22</span></summary>
+<p class="muted rule-desc">The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &amp;quot;-&amp;quot; or &amp;quot;_&amp;quot;) . Some notions about naming conventions are provided in [2].</p><p class="rule-desc">There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name</p>  </details>
+</section>    <footer class="colophon">
+      Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+    </footer>
+  </main>
+</div>
+
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-backdrop" data-action="close-search"></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search classes, properties, individuals…"
+      role="combobox" aria-label="Search" aria-autocomplete="list" aria-controls="search-results" aria-expanded="false">
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search"></ul>
+    <p id="search-count" class="sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<script src="ontoreview-data.js?v=6b01e239"></script>
+<script src="assets/vendor/minisearch.min.js"></script>
+<script src="assets/ontoreview.js?v=6b01e239"></script>
+</body>
+</html>

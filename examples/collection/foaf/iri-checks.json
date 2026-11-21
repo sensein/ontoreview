@@ -1,0 +1,327 @@
+{
+  "checked_at": "2026-11-21T18:31:55.904502+00:00",
+  "run_id": 142,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "settings": {
+    "offline": false,
+    "refresh": false,
+    "repositories": true,
+    "resolve": true,
+    "local_namespaces": [
+      "http://xmlns.com/foaf/0.1/",
+      "http://xmlns.com/foaf/0.1#",
+      "http://xmlns.com/wot/0.1/"
+    ],
+    "budget": 120,
+    "cache_days": 30
+  },
+  "own_namespaces": [
+    "http://xmlns.com/foaf/0.1/",
+    "http://xmlns.com/foaf/0.1#",
+    "http://xmlns.com/wot/0.1/"
+  ],
+  "releases": [
+    {
+      "title": "Friend of a Friend (FOAF) vocabulary",
+      "source": "cache",
+      "ontology_iri": "http://xmlns.com/foaf/0.1/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:14.061750+00:00",
+      "terms": 3,
+      "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+      "source_url": "https://xmlns.com/foaf/spec/"
+    },
+    {
+      "title": "bibo (purl.org)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/ontology/bibo/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T03:50:03.244033+00:00",
+      "terms": 3,
+      "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+      "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+    },
+    {
+      "title": null,
+      "source": "ols",
+      "ontology_iri": "schemaorg_http",
+      "ontology": "schemaorg_http",
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-21T00:09:03.193403165",
+      "terms": 2
+    },
+    {
+      "title": "Simple Knowledge Organization System",
+      "source": "bundle",
+      "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T01:08:31.108081+00:00",
+      "terms": 1,
+      "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+      "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+    },
+    {
+      "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/goodrelations/v1",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:34.665699+00:00",
+      "terms": 1,
+      "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+      "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+    },
+    {
+      "title": "pim (www.w3.org)",
+      "source": "download",
+      "ontology_iri": "http://www.w3.org/2000/10/swap/pim/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-21T18:31:57.026803+00:00",
+      "terms": 1,
+      "sha256": "57ea4c540cb432a58aaa09f0d982d0aaae6294e370847cb09f7ed732bdb257f3",
+      "source_url": "https://www.w3.org/2000/10/swap/pim/contact"
+    }
+  ],
+  "terms": [
+    {
+      "iri": "http://purl.org/dc/elements/1.1/description",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://xmlns.com/foaf/0.1/",
+        "namespace": "http://xmlns.com/foaf/0.1/",
+        "title": "Friend of a Friend (FOAF) vocabulary",
+        "document": "http://xmlns.com/foaf/0.1/page",
+        "version_iri": null,
+        "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+        "fetched_at": "2026-11-19T17:47:14.061750+00:00",
+        "source_url": "https://xmlns.com/foaf/spec/"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/elements/1.1/title",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://xmlns.com/foaf/0.1/",
+        "namespace": "http://xmlns.com/foaf/0.1/",
+        "title": "Friend of a Friend (FOAF) vocabulary",
+        "document": "http://xmlns.com/foaf/0.1/page",
+        "version_iri": null,
+        "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+        "fetched_at": "2026-11-19T17:47:14.061750+00:00",
+        "source_url": "https://xmlns.com/foaf/spec/"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/Agent",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/creator",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://schema.org/CreativeWork",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "schemaorg_http",
+        "ontology_iri": "schemaorg_http",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-21T00:09:03.193403165"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://schema.org/ImageObject",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "schemaorg_http",
+        "ontology_iri": "schemaorg_http",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-21T00:09:03.193403165"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://schema.org/Person",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2000/10/swap/pim/contact#Person",
+      "roles": [
+        "class"
+      ],
+      "status": "unverified",
+      "snapshot": "download",
+      "detail": "No declaration in the checked sources; coverage is incomplete",
+      "release": {
+        "source": "download",
+        "ontology_iri": null,
+        "namespace": "http://www.w3.org/2000/10/swap/pim/",
+        "title": "pim (www.w3.org)",
+        "document": "http://www.w3.org/2000/10/swap/pim/contact",
+        "version_iri": null,
+        "sha256": "57ea4c540cb432a58aaa09f0d982d0aaae6294e370847cb09f7ed732bdb257f3",
+        "fetched_at": "2026-11-21T18:31:57.026803+00:00",
+        "source_url": "https://www.w3.org/2000/10/swap/pim/contact"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "not_declared_in_snapshot"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+      "roles": [
+        "class",
+        "class_or_datatype"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://xmlns.com/foaf/0.1/",
+        "namespace": "http://xmlns.com/foaf/0.1/",
+        "title": "Friend of a Friend (FOAF) vocabulary",
+        "document": "http://xmlns.com/foaf/0.1/page",
+        "version_iri": null,
+        "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+        "fetched_at": "2026-11-19T17:47:14.061750+00:00",
+        "source_url": "https://xmlns.com/foaf/spec/"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2003/06/sw-vocab-status/ns#term_status",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#Concept",
+      "roles": [
+        "class_or_datatype"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    }
+  ]
+}

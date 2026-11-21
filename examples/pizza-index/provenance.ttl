@@ -1,0 +1,161 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:ontoreview:documentation> a prov:Entity ;
+    prov:generatedAtTime "2026-11-21T18:25:28+00:00"^^xsd:dateTime ;
+    prov:wasDerivedFrom <https://example.org/pizza/1.2.0> ;
+    prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<http://purl.obolibrary.org/obo/chebi/257/chebi.owl> a prov:Entity ;
+    dcterms:date "2026-11-21T17:30:14Z"^^xsd:string ;
+    dcterms:hasVersion "257" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/chebi.owl> ;
+    dcterms:title "Chemical Entities of Biological Interest" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+
+<http://purl.obolibrary.org/obo/fobi/fobi.owl> a prov:Entity ;
+    dcterms:date "2026-11-21T17:32:35Z"^^xsd:string ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/fobi.owl> ;
+    dcterms:title "Food-Biomarker Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+
+<http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl> a prov:Entity ;
+    dcterms:date "2026-11-21T17:32:34Z"^^xsd:string ;
+    dcterms:hasVersion "2026-02-02" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/foodon.owl> ;
+    dcterms:title "Food Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (6 correspondence(s), via ols)." .
+
+<http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl> a prov:Entity ;
+    dcterms:date "2026-11-21T17:30:07Z"^^xsd:string ;
+    dcterms:hasVersion "26.02d" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/ncit.owl> ;
+    dcterms:title "NCI Thesaurus OBO Edition" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (5 correspondence(s), via ols)." .
+
+<http://purl.obolibrary.org/obo/omit/dev/omit.owl> a prov:Entity ;
+    dcterms:date "2026-11-21T17:30:11Z"^^xsd:string ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/omit.owl> ;
+    dcterms:title "Ontology for MIRNA Target" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+
+<http://purl.org/spar/datacite/2026-10-05> a prov:Entity ;
+    dcterms:date "2026-11-21T17:40:46.656861+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f" ;
+    dcterms:isVersionOf <http://purl.org/spar/datacite> ;
+    dcterms:source <https://sparontologies.github.io/datacite/current/datacite.xml> ;
+    dcterms:title "The DataCite Ontology (DataCite)" ;
+    rdfs:comment "Release used to verify 3 external term(s) (via cache)." .
+
+<http://snomed.info/sct/900000000000207008/version/20251017> a prov:Entity ;
+    dcterms:date "2026-11-21T17:30:09Z"^^xsd:string ;
+    dcterms:isVersionOf <http://snomed.info/sct/9000000000002070081231> ;
+    dcterms:title "SNOMED CT (International Edition)" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (4 correspondence(s), via ols)." .
+
+<https://example.org/pizza/1.2.0> a prov:Entity ;
+    dcterms:modified "2026-11-01" ;
+    dcterms:title "Pizza Ontology" ;
+    prov:wasAttributedTo <https://orcid.org/0000-0000-0000-0001> ;
+    prov:wasRevisionOf <https://example.org/pizza/1.1.0> .
+
+<https://orcid.org/0000-0000-0000-0001> a prov:Agent .
+
+<https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn> a prov:Entity ;
+    dcterms:date "2026-11-21T17:30:13Z"^^xsd:string ;
+    dcterms:hasVersion "2025" ;
+    dcterms:isVersionOf <https://w3id.org/biopragmatics/resources/mesh/mesh.ofn> ;
+    dcterms:title "Medical Subject Headings" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+
+<urn:ontoreview:build> a prov:Activity ;
+    prov:endedAtTime "2026-11-21T18:25:28+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:24:55+00:00"^^xsd:dateTime ;
+    prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
+        <http://purl.obolibrary.org/obo/chebi/257/chebi.owl>,
+        <http://purl.obolibrary.org/obo/fobi/fobi.owl>,
+        <http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl>,
+        <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
+        <http://purl.obolibrary.org/obo/omit/dev/omit.owl>,
+        <http://purl.org/spar/datacite/2026-10-05>,
+        <http://snomed.info/sct/900000000000207008/version/20251017>,
+        <https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn>,
+        <urn:ontoreview:release:84c03dd5abe7db92>,
+        <urn:ontoreview:release:d210957a6449a574>,
+        <urn:sha256:24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3>,
+        <urn:sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310>,
+        <urn:sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e>,
+        <urn:sha256:94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59>,
+        <urn:sha256:c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89>,
+        <urn:sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6>,
+        "pizza-v2.ttl" ;
+    prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+
+<urn:ontoreview:release:84c03dd5abe7db92> a prov:Entity ;
+    dcterms:date "2026-11-19T00:09:02.226879785"^^xsd:string ;
+    rdfs:comment "Release used to verify 3 external term(s) (via ols)." .
+
+<urn:ontoreview:release:d210957a6449a574> a prov:Entity ;
+    dcterms:date "2026-11-19T00:08:58.760281588"^^xsd:string ;
+    rdfs:comment "Release used to verify 1 external term(s) (via ols)." .
+
+<urn:sha256:24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3> a prov:Entity ;
+    dcterms:date "2026-11-21T17:32:35Z"^^xsd:string ;
+    dcterms:hasVersion """MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.
+
+Includes terms and term synonyms extracted from > 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.
+
+The ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).
+
+Descriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.
+https://github.com/biosemantics/micropie2
+
+The most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.""" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/MicrO.owl> ;
+    dcterms:title "Ontology of Prokaryotic Phenotypic and Metabolic Characters" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+
+<urn:sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310> a prov:Entity ;
+    dcterms:date "2026-11-18T03:50:03.244033+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310" ;
+    dcterms:isVersionOf <http://purl.org/ontology/bibo/> ;
+    dcterms:source <https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl> ;
+    dcterms:title "bibo (purl.org)" ;
+    rdfs:comment "Release used to verify 6 external term(s) (via cache)." .
+
+<urn:sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e> a prov:Entity ;
+    dcterms:date "2026-11-19T17:47:34.665699+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e" ;
+    dcterms:isVersionOf <http://purl.org/goodrelations/v1> ;
+    dcterms:source <http://www.heppnetz.de/ontologies/goodrelations/v1.owl> ;
+    dcterms:title "The GoodRelations Vocabulary for Semantic Web-based E-Commerce" ;
+    rdfs:comment "Release used to verify 1 external term(s) (via cache)." .
+
+<urn:sha256:94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59> a prov:Entity ;
+    dcterms:date "2026-11-21T17:32:34Z"^^xsd:string ;
+    dcterms:hasVersion "2.0.60" ;
+    dcterms:isVersionOf <http://www.ontology-of-units-of-measure.org/resource/om-2> ;
+    dcterms:title "Ontology of units of Measure (OM)" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+
+<urn:sha256:c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89> a prov:Entity ;
+    dcterms:identifier "sha256:c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89" ;
+    dcterms:title "pizza-v2.ttl" .
+
+<urn:sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6> a prov:Entity ;
+    dcterms:date "2026-11-18T01:08:31.108081+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6" ;
+    dcterms:isVersionOf <http://www.w3.org/2004/02/skos/core> ;
+    dcterms:source <https://www.w3.org/2009/08/skos-reference/skos.rdf> ;
+    dcterms:title "Simple Knowledge Organization System" ;
+    rdfs:comment "Release used to verify 2 external term(s) (via bundle)." .
+
+<http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> a prov:Entity ;
+    dcterms:date "2026-11-21T17:30:08Z"^^xsd:string ;
+    dcterms:hasVersion "REC/2026/09" ;
+    dcterms:isVersionOf <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> ;
+    dcterms:title "Allotrope Merged Ontology Suite" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
+

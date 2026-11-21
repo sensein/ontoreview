@@ -97,3 +97,80 @@ def _with_identity(real):
             args = ["-c", "user.email=test@example.org", *args]
         return real(args, cwd, git, check)
     return wrapped
+
+
+def _bare_and_site(fixtures, tmp_path, monkeypatch):
+    bare = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "--bare", "-b", "main", str(bare)], check=True, capture_output=True)
+    site = tmp_path / "site"
+    ontoreview.build(fixtures / "pizza.ttl", out=site, evaluation={"oops": "off"})
+    (site / ".DS_Store").write_bytes(b"junk")
+    monkeypatch.setattr(github, "_git", _with_identity(github._git))
+    return bare, site
+
+
+def test_failed_push_is_retried_not_reported_up_to_date(fixtures, tmp_path, monkeypatch):
+    """The bug seen live: the first push failed after the local commit; the retry said "up to date"."""
+    bare, site = _bare_and_site(fixtures, tmp_path, monkeypatch)
+    real = github._git
+    state = {"fail": True}
+
+    def flaky(args, cwd, git="git", check=True):
+        if args and args[0] == "push" and state.pop("fail", False):
+            raise github.DeployError(github.LOGIN_HELP)
+        return real(args, cwd, git, check)
+    monkeypatch.setattr(github, "_git", flaky)
+    kw = dict(enable_pages=False, root=tmp_path / "deploy", push_to=str(bare))
+    with pytest.raises(github.DeployError, match="could not log in"):
+        github.deploy_site(site, "https://github.com/you/onto-docs", **kw)
+    assert not _git("for-each-ref", cwd=bare).strip()                       # nothing on the remote
+    r = github.deploy_site(site, "https://github.com/you/onto-docs", **kw)
+    assert r.changed and r.commit                                          # pushed now, not "up to date"
+    files = _git("ls-tree", "-r", "--name-only", "main", cwd=bare).split()
+    assert "index.html" in files and ".DS_Store" not in files
+    assert not github.deploy_site(site, "https://github.com/you/onto-docs", **kw).changed   # truly up to date
+
+
+def test_token_sent_as_header_never_stored(fixtures, tmp_path, monkeypatch):
+    bare, site = _bare_and_site(fixtures, tmp_path, monkeypatch)
+    seen = []
+    real = github.subprocess.run
+
+    def spy(cmd, *a, **k):
+        if cmd and cmd[0] == "git":
+            seen.append(cmd)
+        return real(cmd, *a, **k)
+    monkeypatch.setattr(github.subprocess, "run", spy)
+    github.deploy_site(site, "https://github.com/you/onto-docs", enable_pages=False, root=tmp_path / "deploy",
+                       push_to=str(bare), token="ghp_secret")
+    pushes = [c for c in seen if "push" in c]
+    assert pushes and all(any("extraheader=AUTHORIZATION: basic" in x for x in c) for c in pushes)
+    assert not any("ghp_secret" in x for c in seen for x in c)               # only base64 in the header
+    cfg = (tmp_path / "deploy" / "you-onto-docs" / ".git" / "config").read_text()
+    assert "extraheader" not in cfg and "ghp_secret" not in cfg               # nothing persisted
+    assert getattr(github._auth, "header", None) is None
+
+
+@pytest.mark.parametrize("login, path", [("you", "/user/repos"), ("someone-else", "/orgs/you/repos")])
+def test_ensure_repo_creates_when_missing(monkeypatch, login, path):
+    calls = []
+
+    def api(method, p, token, body=None):
+        calls.append((method, p, body))
+        return {("GET", "/repos/you/docs"): (404, {}), ("GET", "/user"): (200, {"login": login})}.get(
+            (method, p), (201, {}))
+    monkeypatch.setattr(github, "_api", api)
+    assert github.ensure_repo("you", "docs", "t", private=True) is True
+    assert calls[-1][:2] == ("POST", path) and calls[-1][2]["private"] is True and calls[-1][2]["name"] == "docs"
+
+
+def test_ensure_repo_existing_and_refused(monkeypatch):
+    monkeypatch.setattr(github, "_api", lambda m, p, t, b=None: (200, {}))
+    assert github.ensure_repo("you", "docs", "t") is False
+    monkeypatch.setattr(github, "_api", lambda m, p, t, b=None: (401, {}))
+    with pytest.raises(github.DeployError, match="refused"):
+        github.ensure_repo("you", "docs", "t")
+    replies = {("GET", "/repos/you/docs"): (404, {}), ("GET", "/user"): (200, {"login": "you"})}
+    monkeypatch.setattr(github, "_api", lambda m, p, t, b=None: replies.get((m, p), (403, {"message": "Resource not accessible"})))
+    with pytest.raises(github.DeployError, match="selected repositories"):
+        github.ensure_repo("you", "docs", "t")

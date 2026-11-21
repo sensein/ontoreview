@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+type: dataset
+title: "Pizza Ontology"
+version: "1.3.0"
+url: "https://example.org/pizza"
+date-released: 2026-11-01
+authors:
+  - given-names: "Alice"
+    family-names: "Example"
+    orcid: "https://orcid.org/0000-0000-0000-0001"
+    affiliation: "Example University"
+  - given-names: "Jane"
+    family-names: "Doe"
+keywords:
+  - "food"
+  - "pizza"

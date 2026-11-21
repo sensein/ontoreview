@@ -413,3 +413,17 @@ async def test_deploy_dialog_from_results(isolated, fixtures, monkeypatch):
     assert calls == [(str(res.output), "https://github.com/you/onto-docs", "main")]
     assert ui_core.load_history()[0].deploys[0]["pages_url"] == "https://you.github.io/onto-docs/"
     assert ui_core.Prefs.load().deploy_remote == "https://github.com/you/onto-docs"
+
+
+@pytest.mark.anyio
+async def test_help_search(isolated):
+    async with user_simulation(root=build_page) as user:
+        await user.open("/help")
+        await user.should_see("Getting started")
+        user.find(marker="help-search").type("github pages")
+        await user.should_see("Deploy: GitHub Pages, Docker, any server")
+        await user.should_not_see("How the comparison works")
+        user.find(marker="help-search").clear().type("θ_s")
+        await user.should_see("Scientific interoperability")
+        user.find(marker="help-search").clear().type("zzzz-nothing")
+        await user.should_see("No help topic mentions")

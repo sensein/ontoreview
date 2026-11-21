@@ -1094,6 +1094,9 @@ class Prefs:
     deploy_remote: str = ""         # GitHub repository for "Deploy to GitHub Pages"
     deploy_branch: str = "main"
     deploy_enable_pages: bool = True
+    deploy_token: str = field(default="", repr=False)   # optional GitHub token; kept like the API keys
+    deploy_create: bool = True      # create the repository when it does not exist (needs the token)
+    deploy_private: bool = False
     cdi_bioportal_key: str = field(default="", repr=False)
     cdi_ontoportal_key: str = field(default="", repr=False)
     hf_token: str = field(default="", repr=False)
@@ -1120,7 +1123,7 @@ class Prefs:
             self.path().parent.mkdir(parents=True, exist_ok=True)
             path = self.path()
             path.touch(mode=0o600, exist_ok=True)
-            if self.cdi_bioportal_key or self.cdi_ontoportal_key or self.hf_token:
+            if self.cdi_bioportal_key or self.cdi_ontoportal_key or self.hf_token or self.deploy_token:
                 path.chmod(0o600)                       # optional API keys: readable by this user only
             path.write_text(json.dumps(asdict(self), indent=2), "utf-8")
         except OSError as e:

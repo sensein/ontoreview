@@ -1,0 +1,1199 @@
+{
+  "checked_at": "2026-11-21T18:31:14.923858+00:00",
+  "run_id": 141,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "settings": {
+    "offline": false,
+    "refresh": false,
+    "repositories": true,
+    "resolve": true,
+    "local_namespaces": [
+      "http://www.w3.org/ns/dcat#",
+      "http://www.w3.org/ns/dcat/"
+    ],
+    "budget": 120,
+    "cache_days": 30
+  },
+  "own_namespaces": [
+    "http://www.w3.org/ns/dcat#",
+    "http://www.w3.org/ns/dcat/"
+  ],
+  "releases": [
+    {
+      "title": "bibo (purl.org)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/ontology/bibo/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T03:50:03.244033+00:00",
+      "terms": 18,
+      "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+      "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+    },
+    {
+      "title": "Simple Knowledge Organization System",
+      "source": "bundle",
+      "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T01:08:31.108081+00:00",
+      "terms": 6,
+      "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+      "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+    },
+    {
+      "title": "The DataCite Ontology (DataCite)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/spar/datacite",
+      "ontology": null,
+      "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+      "version": null,
+      "retrieved": "2026-11-21T17:40:46.656861+00:00",
+      "terms": 4,
+      "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+      "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+    },
+    {
+      "title": "Friend of a Friend (FOAF) vocabulary",
+      "source": "cache",
+      "ontology_iri": "http://xmlns.com/foaf/0.1/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:14.061750+00:00",
+      "terms": 3,
+      "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+      "source_url": "https://xmlns.com/foaf/spec/"
+    },
+    {
+      "title": null,
+      "source": "ols",
+      "ontology_iri": "dcterms",
+      "ontology": "dcterms",
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T00:08:58.760281588",
+      "terms": 3
+    },
+    {
+      "title": "Organization Ontology",
+      "source": "bundle",
+      "ontology_iri": "http://www.w3.org/ns/org#",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T01:08:31.280728+00:00",
+      "terms": 2,
+      "sha256": "3e01f89a17475a88f8b1606ca0fae04800d34dbbf93adc6db12dc30929848729",
+      "source_url": "https://www.w3.org/ns/org.ttl"
+    },
+    {
+      "title": "Ontology for vCard",
+      "source": "cache",
+      "ontology_iri": "http://www.w3.org/2006/vcard/ns",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:10.604768+00:00",
+      "terms": 1,
+      "sha256": "2442baf3d07d660910a0e24dd96b1efe1ec22cb26d12cdfd415195da91b43a0c",
+      "source_url": "https://www.w3.org/2006/vcard/ns"
+    },
+    {
+      "title": "Sensor, Observation, Sample, and Actuator",
+      "source": "bundle",
+      "ontology_iri": "http://www.w3.org/ns/sosa/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T01:08:30.672748+00:00",
+      "terms": 1,
+      "sha256": "c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392",
+      "source_url": "https://www.w3.org/ns/sosa/sosa.ttl"
+    },
+    {
+      "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/goodrelations/v1",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:34.665699+00:00",
+      "terms": 1,
+      "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+      "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+    },
+    {
+      "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+      "source": "download",
+      "ontology_iri": "http://www.w3.org/ns/prov#",
+      "ontology": null,
+      "version_iri": "http://www.w3.org/ns/prov-o-20130430",
+      "version": null,
+      "retrieved": "2026-11-21T18:31:21.194786+00:00",
+      "terms": 1,
+      "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+      "source_url": "https://www.w3.org/ns/prov-o.ttl"
+    },
+    {
+      "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+      "source": "cache",
+      "ontology_iri": "http://www.w3.org/ns/prov#",
+      "ontology": null,
+      "version_iri": "http://www.w3.org/ns/prov-o-20130430",
+      "version": null,
+      "retrieved": "2026-11-21T18:31:21.194786+00:00",
+      "terms": 1,
+      "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+      "source_url": "https://www.w3.org/ns/prov-o.ttl"
+    },
+    {
+      "title": "dcmitype (purl.org)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/dc/dcmitype/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:01.268280+00:00",
+      "terms": 1,
+      "sha256": "f987b11d556e556fef95d7e9410c1c561fc1b7ac05ccd457128dc8962641b01e",
+      "source_url": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_type.ttl#Service"
+    }
+  ],
+  "terms": [
+    {
+      "iri": "http://purl.org/dc/dcmitype/Service",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": null,
+        "namespace": "http://purl.org/dc/dcmitype/",
+        "title": "dcmitype (purl.org)",
+        "document": "http://purl.org/dc/dcmitype/Service",
+        "version_iri": null,
+        "sha256": "f987b11d556e556fef95d7e9410c1c561fc1b7ac05ccd457128dc8962641b01e",
+        "fetched_at": "2026-11-19T17:47:01.268280+00:00",
+        "source_url": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_type.ttl#Service"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/Location",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "dcterms",
+        "ontology_iri": "dcterms",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-19T00:08:58.760281588"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/dc/terms/MediaType",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "dcterms",
+        "ontology_iri": "dcterms",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-19T00:08:58.760281588"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/dc/terms/PeriodOfTime",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "dcterms",
+        "ontology_iri": "dcterms",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-19T00:08:58.760281588"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/dc/terms/contributor",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/created",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/creator",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/description",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/format",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/hasPart",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/hasVersion",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/isPartOf",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/license",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/modified",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/publisher",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/relation",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/subject",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/title",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/ontology/bibo/editor",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/ontology/bibo/translator",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/pav/hasCurrentVersion",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://purl.org/pav/hasCurrentVersion: InvalidURL: No host specified.",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://purl.org/pav/hasCurrentVersion: InvalidURL: No host specified."
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/pav/hasVersion",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://purl.org/pav/hasVersion: host unreachable earlier in this run",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://purl.org/pav/hasVersion: host unreachable earlier in this run"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/pav/previousVersion",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://purl.org/pav/previousVersion: host unreachable earlier in this run",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://purl.org/pav/previousVersion: host unreachable earlier in this run"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/pav/version",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://schema.org/rangeIncludes",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/ns/sosa/",
+        "namespace": "http://www.w3.org/ns/sosa/",
+        "title": "Sensor, Observation, Sample, and Actuator",
+        "document": "http://www.w3.org/ns/sosa/",
+        "version_iri": null,
+        "sha256": "c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392",
+        "fetched_at": "2026-11-18T01:08:30.672748+00:00",
+        "source_url": "https://www.w3.org/ns/sosa/sosa.ttl"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/1999/xhtml/vocab#first",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://www.w3.org/1999/xhtml/vocab: HTTPError: 406 Client Error: Not Acceptable for url: https://www.w3.org/1999/xhtml/vocab",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://www.w3.org/1999/xhtml/vocab: HTTPError: 406 Client Error: Not Acceptable for url: https://www.w3.org/1999/xhtml/vocab"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/1999/xhtml/vocab#last",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://www.w3.org/1999/xhtml/vocab: HTTPError: 406 Client Error: Not Acceptable for url: https://www.w3.org/1999/xhtml/vocab",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://www.w3.org/1999/xhtml/vocab: HTTPError: 406 Client Error: Not Acceptable for url: https://www.w3.org/1999/xhtml/vocab"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/1999/xhtml/vocab#prev",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://www.w3.org/1999/xhtml/vocab: HTTPError: 406 Client Error: Not Acceptable for url: https://www.w3.org/1999/xhtml/vocab",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://www.w3.org/1999/xhtml/vocab: HTTPError: 406 Client Error: Not Acceptable for url: https://www.w3.org/1999/xhtml/vocab"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#Concept",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#changeNote",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#definition",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#editorialNote",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#scopeNote",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2006/vcard/ns#Kind",
+      "roles": [
+        "class_or_datatype"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://www.w3.org/2006/vcard/ns",
+        "namespace": "http://www.w3.org/2006/vcard/",
+        "title": "Ontology for vCard",
+        "document": "http://www.w3.org/2006/vcard/ns",
+        "version_iri": null,
+        "sha256": "2442baf3d07d660910a0e24dd96b1efe1ec22cb26d12cdfd415195da91b43a0c",
+        "fetched_at": "2026-11-19T17:47:10.604768+00:00",
+        "source_url": "https://www.w3.org/2006/vcard/ns"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/ns/adms#versionNotes",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "http://www.w3.org/ns/adms: HTML landing page returned instead of RDF",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "http://www.w3.org/ns/adms: HTML landing page returned instead of RDF"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/ns/org#Organization",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/ns/org#",
+        "namespace": "http://www.w3.org/ns/org#",
+        "title": "Organization Ontology",
+        "document": "http://www.w3.org/ns/org#",
+        "version_iri": null,
+        "sha256": "3e01f89a17475a88f8b1606ca0fae04800d34dbbf93adc6db12dc30929848729",
+        "fetched_at": "2026-11-18T01:08:31.280728+00:00",
+        "source_url": "https://www.w3.org/ns/org.ttl"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/ns/org#memberOf",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/ns/org#",
+        "namespace": "http://www.w3.org/ns/org#",
+        "title": "Organization Ontology",
+        "document": "http://www.w3.org/ns/org#",
+        "version_iri": null,
+        "sha256": "3e01f89a17475a88f8b1606ca0fae04800d34dbbf93adc6db12dc30929848729",
+        "fetched_at": "2026-11-18T01:08:31.280728+00:00",
+        "source_url": "https://www.w3.org/ns/org.ttl"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/ns/prov#generalizationOf",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "snapshot": "download",
+      "detail": "No declaration in the checked sources; coverage is incomplete",
+      "release": {
+        "source": "download",
+        "ontology_iri": "http://www.w3.org/ns/prov#",
+        "namespace": "http://www.w3.org/ns/prov-o#",
+        "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+        "document": "http://www.w3.org/ns/prov-o#",
+        "version_iri": "http://www.w3.org/ns/prov-o-20130430",
+        "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+        "fetched_at": "2026-11-21T18:31:21.194786+00:00",
+        "source_url": "https://www.w3.org/ns/prov-o.ttl"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "not_declared_in_snapshot"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/ns/prov#wasRevisionOf",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://www.w3.org/ns/prov#",
+        "namespace": "http://www.w3.org/ns/prov-o#",
+        "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+        "document": "http://www.w3.org/ns/prov-o#",
+        "version_iri": "http://www.w3.org/ns/prov-o-20130430",
+        "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+        "fetched_at": "2026-11-21T18:31:21.194786+00:00",
+        "source_url": "https://www.w3.org/ns/prov-o.ttl"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/Document",
+      "roles": [
+        "class_or_datatype"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/Person",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/depiction",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/homepage",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/name",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/page",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://xmlns.com/foaf/0.1/",
+        "namespace": "http://xmlns.com/foaf/0.1/",
+        "title": "Friend of a Friend (FOAF) vocabulary",
+        "document": "http://xmlns.com/foaf/0.1/page",
+        "version_iri": null,
+        "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+        "fetched_at": "2026-11-19T17:47:14.061750+00:00",
+        "source_url": "https://xmlns.com/foaf/spec/"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/primaryTopic",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://xmlns.com/foaf/0.1/",
+        "namespace": "http://xmlns.com/foaf/0.1/",
+        "title": "Friend of a Friend (FOAF) vocabulary",
+        "document": "http://xmlns.com/foaf/0.1/page",
+        "version_iri": null,
+        "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+        "fetched_at": "2026-11-19T17:47:14.061750+00:00",
+        "source_url": "https://xmlns.com/foaf/spec/"
+      }
+    },
+    {
+      "iri": "http://xmlns.com/foaf/0.1/workInfoHomepage",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://xmlns.com/foaf/0.1/",
+        "namespace": "http://xmlns.com/foaf/0.1/",
+        "title": "Friend of a Friend (FOAF) vocabulary",
+        "document": "http://xmlns.com/foaf/0.1/page",
+        "version_iri": null,
+        "sha256": "3d859b5d92a2c3d041545d014fa826f682ca06d056af8c7b31e32d930abf2bc5",
+        "fetched_at": "2026-11-19T17:47:14.061750+00:00",
+        "source_url": "https://xmlns.com/foaf/spec/"
+      }
+    }
+  ]
+}

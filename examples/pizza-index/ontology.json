@@ -1,0 +1,391 @@
+{
+ "title": "Pizza Ontology",
+ "iri": "https://example.org/pizza",
+ "version": "1.3.0",
+ "namespace": "https://example.org/pizza#",
+ "prefix": "pizza",
+ "description": "Pizzas, bases and toppings.",
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "creators": [
+  "Alice Example",
+  "Jane Doe"
+ ],
+ "prefixes": {
+  "dcterms": "http://purl.org/dc/terms/",
+  "foaf": "http://xmlns.com/foaf/0.1/",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "pizza": "https://example.org/pizza#",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "schema": "https://schema.org/",
+  "skos": "http://www.w3.org/2004/02/skos/core#",
+  "vann": "http://purl.org/vocab/vann/",
+  "xsd": "http://www.w3.org/2001/XMLSchema#"
+ },
+ "counts": {
+  "class": 8,
+  "object_property": 4,
+  "datatype_property": 2,
+  "annotation_property": 17,
+  "individual": 1,
+  "triples": 111
+ },
+ "terms": [
+  {
+   "iri": "https://example.org/pizza#Calzone",
+   "curie": "pizza:Calzone",
+   "kind": "class",
+   "label": "Calzone",
+   "definition": "A folded pizza.",
+   "superclasses": [
+    "pizza:Pizza"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#CheeseTopping",
+   "curie": "pizza:CheeseTopping",
+   "kind": "class",
+   "label": "Cheese topping",
+   "definition": "Cheese.",
+   "deprecated": true,
+   "superclasses": [
+    "pizza:PizzaTopping"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#Food",
+   "curie": "pizza:Food",
+   "kind": "class",
+   "label": "Food",
+   "definition": "Anything that can be eaten.",
+   "subclasses": [
+    "pizza:Pizza",
+    "pizza:PizzaBase",
+    "pizza:PizzaTopping"
+   ],
+   "competency_questions": [
+    "CQ4"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#MeatTopping",
+   "curie": "pizza:MeatTopping",
+   "kind": "class",
+   "label": "Meat topping",
+   "superclasses": [
+    "pizza:PizzaTopping"
+   ],
+   "competency_questions": [
+    "CQ1"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#Pizza",
+   "curie": "pizza:Pizza",
+   "kind": "class",
+   "label": "Pizza",
+   "definition": "A flat **baked** dish topped with ingredients.",
+   "examples": [
+    "Margherita"
+   ],
+   "superclasses": [
+    "pizza:Food"
+   ],
+   "subclasses": [
+    "pizza:Calzone"
+   ],
+   "restrictions": [
+    "pizza:hasBase some pizza:PizzaBase",
+    "pizza:hasCalories max 1"
+   ],
+   "disjoint_with": [
+    "pizza:PizzaTopping"
+   ],
+   "competency_questions": [
+    "CQ4"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#PizzaBase",
+   "curie": "pizza:PizzaBase",
+   "kind": "class",
+   "label": "Pizza base",
+   "definition": "The bread base of a pizza.",
+   "superclasses": [
+    "pizza:Food"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#PizzaTopping",
+   "curie": "pizza:PizzaTopping",
+   "kind": "class",
+   "label": "Pizza topping",
+   "definition": "Something placed on a pizza.",
+   "superclasses": [
+    "pizza:Food"
+   ],
+   "subclasses": [
+    "pizza:CheeseTopping",
+    "pizza:MeatTopping"
+   ],
+   "disjoint_with": [
+    "pizza:Pizza"
+   ],
+   "competency_questions": [
+    "CQ1"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#VegetarianPizza",
+   "curie": "pizza:VegetarianPizza",
+   "kind": "class",
+   "label": "Vegetarian pizza",
+   "definition": "A pizza with no meat toppings.",
+   "equivalent_to": [
+    "pizza:Pizza and (not (pizza:hasTopping some pizza:MeatTopping))"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#hasBase",
+   "curie": "pizza:hasBase",
+   "kind": "object_property",
+   "label": "has base",
+   "super_properties": [
+    "pizza:hasIngredient"
+   ],
+   "domain": [
+    "pizza:Pizza"
+   ],
+   "range": [
+    "pizza:PizzaBase"
+   ],
+   "characteristics": [
+    "Functional"
+   ],
+   "competency_questions": [
+    "CQ2"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#hasIngredient",
+   "curie": "pizza:hasIngredient",
+   "kind": "object_property",
+   "label": "has ingredient",
+   "definition": "Any ingredient.",
+   "sub_properties": [
+    "pizza:hasBase"
+   ],
+   "characteristics": [
+    "Transitive"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#hasTopping",
+   "curie": "pizza:hasTopping",
+   "kind": "object_property",
+   "label": "has topping",
+   "definition": "Relates a pizza to its toppings.",
+   "domain": [
+    "pizza:Pizza"
+   ],
+   "range": [
+    "pizza:PizzaTopping"
+   ],
+   "inverse_of": [
+    "pizza:isToppingOf"
+   ],
+   "competency_questions": [
+    "CQ1",
+    "CQ3"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#isToppingOf",
+   "curie": "pizza:isToppingOf",
+   "kind": "object_property",
+   "label": "is topping of",
+   "inverse_of": [
+    "pizza:hasTopping"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#hasCalories",
+   "curie": "pizza:hasCalories",
+   "kind": "datatype_property",
+   "label": "has calories",
+   "domain": [
+    "pizza:Food"
+   ],
+   "range": [
+    "xsd:integer[>= 0]"
+   ],
+   "competency_questions": [
+    "CQ5"
+   ]
+  },
+  {
+   "iri": "https://example.org/pizza#Name",
+   "curie": "pizza:Name",
+   "kind": "datatype_property",
+   "label": "Pizza",
+   "range": [
+    "pizza:PizzaBase"
+   ]
+  },
+  {
+   "iri": "http://purl.org/dc/terms/abstract",
+   "curie": "dcterms:abstract",
+   "kind": "annotation_property",
+   "label": "abstract"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/contributor",
+   "curie": "dcterms:contributor",
+   "kind": "annotation_property",
+   "label": "contributor"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/created",
+   "curie": "dcterms:created",
+   "kind": "annotation_property",
+   "label": "created"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/creator",
+   "curie": "dcterms:creator",
+   "kind": "annotation_property",
+   "label": "creator"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#definition",
+   "curie": "skos:definition",
+   "kind": "annotation_property",
+   "label": "definition"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#deprecated",
+   "curie": "owl:deprecated",
+   "kind": "annotation_property",
+   "label": "deprecated"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/description",
+   "curie": "dcterms:description",
+   "kind": "annotation_property",
+   "label": "description"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#example",
+   "curie": "skos:example",
+   "kind": "annotation_property",
+   "label": "example"
+  },
+  {
+   "iri": "https://schema.org/keywords",
+   "curie": "schema:keywords",
+   "kind": "annotation_property",
+   "label": "keywords"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/license",
+   "curie": "dcterms:license",
+   "kind": "annotation_property",
+   "label": "license"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/modified",
+   "curie": "dcterms:modified",
+   "kind": "annotation_property",
+   "label": "modified"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+   "curie": "vann:preferredNamespacePrefix",
+   "kind": "annotation_property",
+   "label": "preferredNamespacePrefix"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+   "curie": "vann:preferredNamespaceUri",
+   "kind": "annotation_property",
+   "label": "preferredNamespaceUri"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#priorVersion",
+   "curie": "owl:priorVersion",
+   "kind": "annotation_property",
+   "label": "priorVersion"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dcterms:title",
+   "kind": "annotation_property",
+   "label": "title"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
+  },
+  {
+   "iri": "https://example.org/pizza#Margherita",
+   "curie": "pizza:Margherita",
+   "kind": "individual",
+   "label": "Margherita",
+   "types": [
+    "pizza:Pizza"
+   ]
+  }
+ ],
+ "competency_questions": [
+  {
+   "id": "CQ1",
+   "question": "Which pizzas have a meat topping?",
+   "sparql": "SELECT ?pizza WHERE { ?pizza pizza:hasTopping ?t . ?t a pizza:MeatTopping . }",
+   "status": "passed"
+  },
+  {
+   "id": "CQ2",
+   "question": "What kinds of base can a pizza have?",
+   "sparql": "SELECT DISTINCT ?base WHERE { ?p pizza:hasBase ?base . }",
+   "status": "passed"
+  },
+  {
+   "id": "CQ3",
+   "question": "Which pizzas contain fish?",
+   "sparql": "SELECT ?pizza WHERE { ?pizza pizza:hasTopping ?t . ?t a pizza:FishTopping . }",
+   "status": "failed"
+  },
+  {
+   "id": "CQ4",
+   "question": "Is every pizza made of food?",
+   "sparql": "ASK { pizza:Pizza rdfs:subClassOf pizza:Food }",
+   "status": "passed"
+  },
+  {
+   "id": "CQ5",
+   "question": "How many calories does a pizza have?",
+   "sparql": null,
+   "status": "untested"
+  },
+  {
+   "id": "CQ1",
+   "question": "Which toppings exist?",
+   "sparql": "SELECT ?t WHERE { ?t rdfs:subClassOf pizza:PizzaTopping }",
+   "status": "passed"
+  },
+  {
+   "id": "CQ2",
+   "question": "Broken query?",
+   "sparql": "SELECT WHERE {",
+   "status": "error"
+  }
+ ]
+}

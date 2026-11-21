@@ -1,0 +1,73 @@
+{
+  "old_version": "1.2.0",
+  "new_version": "1.3.0",
+  "added": [
+    {
+      "iri": "https://example.org/pizza#Calzone",
+      "label": "Calzone",
+      "kind": "class",
+      "curie": "pizza:Calzone",
+      "anchor": "Calzone",
+      "added": [],
+      "removed": []
+    }
+  ],
+  "removed": [
+    {
+      "iri": "https://example.org/pizza#spicy_thing",
+      "label": "spicy_thing",
+      "kind": "class",
+      "curie": "pizza:spicy_thing",
+      "anchor": "spicy_thing",
+      "added": [],
+      "removed": []
+    }
+  ],
+  "modified": [
+    {
+      "iri": "https://example.org/pizza#Food",
+      "label": "Food",
+      "kind": "class",
+      "curie": "pizza:Food",
+      "anchor": "Food",
+      "added": [
+        [
+          "skos:definition",
+          "\"Anything that can be eaten.\"@en"
+        ]
+      ],
+      "removed": [
+        [
+          "skos:definition",
+          "\"Anything edible.\"@en"
+        ]
+      ]
+    }
+  ],
+  "metadata_changes": [
+    {
+      "iri": "https://example.org/pizza",
+      "label": "Ontology metadata",
+      "kind": "ontology",
+      "curie": null,
+      "anchor": null,
+      "added": [
+        [
+          "owl:versionInfo",
+          "\"1.3.0\""
+        ]
+      ],
+      "removed": [
+        [
+          "owl:versionInfo",
+          "\"1.2.0\""
+        ]
+      ]
+    }
+  ],
+  "summary": {
+    "added": 1,
+    "removed": 1,
+    "modified": 1
+  }
+}
