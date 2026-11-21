@@ -596,3 +596,27 @@ def test_saved_review_is_restored_with_its_decisions(isolated, fixtures):
     assert e["session"] is None and e["status"] == "open"
     restore_review(e)
     assert title.id in e["session"].accepted
+
+
+@pytest.mark.anyio
+async def test_picking_another_ontology_clears_the_previous_result(isolated, fixtures):
+    """The result panel belongs to the ontology that was built: picking another one empties it."""
+    from ontoreview.ui import SESSION
+    a, b = isolated / "pizza.ttl", isolated / "colors.ttl"
+    shutil.copy(fixtures / "pizza.ttl", a)
+    shutil.copy(fixtures / "colors-skos.ttl", b)
+    ui_core.Settings(source=str(a), output=str(isolated / "site"), oops="off", cdi=False, si=False).save()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("pizza.ttl")
+        user.find(marker="run").click()
+        for _ in range(150):
+            if SESSION.build["last"] is not None and not SESSION.build["running"]:
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Terms documented", retries=20)
+        user.find(marker="source-clear").click()                       # pick another ontology
+        user.find(marker="source").type(str(b)).trigger("keydown.enter")
+        await user.should_see("colors.ttl")
+        await user.should_see("No build yet", retries=10)
+        await user.should_not_see("Terms documented")

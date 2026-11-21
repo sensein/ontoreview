@@ -1624,7 +1624,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             if not is_url:
                                 ui.label(str(p.parent) + "/").classes("or-hint or-mono ellipsis w-full")
                         ui.button(icon="close", on_click=lambda: set_source("")) \
-                            .props('flat round dense aria-label="Clear source"')
+                            .props('flat round dense aria-label="Clear source"').mark("source-clear")
                 else:
                     src_in = ui.input(placeholder="Type a path or URL and press Enter, or drop files here") \
                         .props('borderless dense aria-label="Ontology path or URL"').classes("w-full or-mono").mark("source")
