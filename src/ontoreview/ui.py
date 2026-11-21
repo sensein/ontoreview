@@ -24,8 +24,8 @@ from pathlib import Path
 
 from . import __version__
 from .ui_core import (
-    DOCS_TASKS,
     MAX_UPLOAD_BYTES,
+    RUN_FOLDER_TASKS,
     TASKS,
     Prefs,
     Settings,
@@ -217,16 +217,23 @@ HELP = [
        "Settings › Quality checks.", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
         "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, IRI checks, OntoCheck, "
-        "cross-domain interoperability, OOPS!, render.",
+        "cross-domain and scientific interoperability, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
         "<b>Quality metrics</b> is a scorecard: OntoCheck's labeling, structure, accessibility and naming metrics, "
-        "and the cross-domain interoperability scores (CDI, Align, Gen, and Align per reference ontology). Hover a "
-        "metric to see what it measures.",
+        "and the cross-domain and scientific interoperability scores (CDI, Align, Gen, SI, per reference ontology "
+        "and per scientific domain). Hover a metric to see what it measures.",
         "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner, OntoCheck and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
         "<b>Logical consistency</b> errors come from an OWL reasoner (HermiT by default): an inconsistent ontology, "
         "or classes that can never have members. Use Protégé's explanations to find the axioms responsible.",
-        "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
+        "<b>Open docs</b> opens the website in a new tab; <b>Export</b> downloads the run (a docs folder as one "
+        ".zip); <b>Show in folder</b> opens it in Finder / Explorer.",
+        "<b>New build</b> clears the result so the next run starts from an empty panel. Your settings stay, and the "
+        "run stays in Run history.",
+        "Each docs or check run goes into its own dated folder (<code>docs-YYYYMMDD-HHMMSS</code>) with everything it "
+        "needs: the docs or report, <code>standalone.html</code>, the records of what each check was verified "
+        "against (<code>cdi.json</code>, <code>si.json</code>, <code>iri-checks.json</code>) and "
+        "<code>provenance.ttl</code>. Turn this off under <b>Save to</b> with <b>Each run in its own folder</b>.",
     ], "", [("Open Build", "/")]),
     ("compare", "Comparing two versions", "compare.png", [
         "Open <b>Compare</b> in the sidebar. Add the <b>Previous version</b> (A) and the <b>Current version</b> (B): "
@@ -356,12 +363,58 @@ HELP = [
         "ontoreview.toml, which is the quickest way to share your setup. <b>Open another config…</b> loads any "
         "ontoreview.toml.",
     ], "In CI, <code>ontoreview build</code> and <code>ontoreview check</code> find ontoreview.toml automatically.", [("Build › Project config", "/"), ("Settings", "settings:general")]),
-    ("history", "Run history", "history.png", [
-        "Every build and check is listed with its status, issues and time.",
-        "Search by ontology or output path, filter documentation vs. checks, and hide runs whose output was deleted.",
-        "Use the row buttons to open the output, show it in its folder, load its settings to run again, or remove it "
-        "from the list (files are kept).",
+    ("history", "Run history: re-run, change, export", ("history.png", "history-config.png"), [
+        "Every build and check is listed with its status, issues and time. Search by ontology or output path, "
+        "filter documentation vs. checks, and hide runs whose output was deleted.",
+        "<b>Click a run</b> (or its settings icon) to see the configuration it ran with (task, ontology, output, "
+        "layout, languages, every check and its options, including the reference ontologies) and the equivalent "
+        "command line.",
+        "<b>Run again</b> runs it now with exactly that configuration, into a new folder; the earlier output is kept.",
+        "<b>Edit and run</b> loads that configuration into Build: change what you need (another reference "
+        "ontology, a different own domain, a check turned off) and press Build docs or Run checks. The modified "
+        "run is recorded as a new entry, so both configurations stay side by side.",
+        "<b>Export</b> downloads the run's output: a docs or check folder as one .zip (docs, standalone.html, "
+        "reports, cdi.json, si.json, provenance.ttl), a single file as it is. The row's download icon does the same.",
+        "The other row buttons open the output, show it in its folder, or remove the entry (files are kept). API keys "
+        "are never stored in the history, so re-runs use the keys currently set in Settings.",
     ], "", [("Open Run history", "/history")]),
+    ("si", "Scientific interoperability", ("si-settings.png", "si-results.png"), [
+        "<b>What it measures:</b> in how many scientific domains, other than the ontology's own, it is interoperable. "
+        "Domains are the 41 OECD Fields of Science (Frascati Manual), e.g. 1.2 Computer and information sciences, "
+        "1.5 Earth and related environmental sciences, 3.2 Clinical medicine.",
+        "<b>How:</b> each reference ontology gets a domain (your domain map, else repository metadata such as OLS "
+        "domains, else the language model reading its title and description). For each domain, CDI is computed with "
+        "only that domain's reference ontologies; the domain counts as <b>covered</b> when it reaches θ_s (0.3). "
+        "<b>SI</b> is the number of covered domains; SI ≥ 1 counts as scientifically interoperable.",
+        "<b>Upper-level ontologies</b> (BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO) are ignored, so SI counts links to "
+        "scientific fields, not shared foundations. Gen caps every domain: vague or missing class definitions limit "
+        "SI however well the ontology is aligned (the review shows this ceiling).",
+        "<b>Reference ontologies:</b> by default the cross-domain ones, from the same run (nothing is fetched twice). "
+        "Untick <b>Use the cross-domain reference ontologies</b> to give SI its own: type them, browse files, or "
+        "<b>Find on OLS or BioPortal</b> by name and click Add (e.g. ols:envo); nothing to upload.",
+        "<b>Own scientific domain:</b> detected from the ontology's title and description, or set it; it is never "
+        "counted. <b>Domain of a reference ontology:</b> one row per ontology (id and field), a new row appears as "
+        "you fill the last; the review lists reference ontologies left without a domain.",
+        "<b>Where to see it:</b> the Overview tile and the quality report of the docs (per-domain scores, the domain "
+        "of each reference ontology), <code>si.json</code>, and the Interoperability page. Each reference release is "
+        "recorded once, with a <b>Used in</b> column (cross-domain, scientific), and in provenance.ttl.",
+    ], "SI needs the generality model (pip install 'ontoreview[cdi]'); without it the review says so. Repositories "
+       "receive labels and IRIs, never the ontology file.",
+     [("Settings › Quality checks", "settings:checks"), ("Open Interoperability", "/interoperability")]),
+    ("interop", "Interoperability page", ("interop.png", "interop-results.png"), [
+        "Checks only cross-domain (CDI) and scientific (SI) interoperability of one ontology, without building docs; "
+        "like Compare, it runs in place and in the background.",
+        "Choose the ontology (drop, File or URL). Add reference ontologies: drop or browse files and SSSOM mappings, "
+        "<b>Find on OLS or BioPortal</b> by name, or keep <code>ols</code> / <code>bioportal</code> to let OntoReview "
+        "discover the ontologies with matching terms (top 10).",
+        "Set SI's options (own references, own domain, θ_s, domain of a reference ontology) and press <b>Run checks</b>.",
+        "The result shows the CDI and SI tiles and every metric. <b>Open report (JSON)</b>, <b>Export</b> (the run "
+        "folder as .zip, with cdi.json, si.json and provenance.ttl), <b>Show in folder</b>, <b>New check</b>. The run "
+        "is kept in Run history, where it can be re-run as is or changed.",
+        "The same check is <b>Interoperability check only</b> on Build, and <code>ontoreview check my.ttl "
+        "--interop-only</code> on the command line.",
+    ], "BioPortal search needs your BioPortal API key (Settings › Quality checks); OLS needs none.",
+     [("Open Interoperability", "/interoperability")]),
     ("settings", "Settings", "settings.png", [
         "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
         "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
@@ -1187,14 +1240,14 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             render_formats()
             describe_later()
             output.props(f'placeholder="{s.default_output()}"')
-            per_run = s.separate_runs and s.task in DOCS_TASKS
+            per_run = s.separate_runs and s.task in RUN_FOLDER_TASKS
             op = s.output_path().resolve()
-            out_txt = (op.parent / f"{op.stem if op.suffix.lower() == '.html' else op.name}-<date>-<time>"
-                       / (op.name if op.suffix.lower() == ".html" else ""))
+            is_file = op.suffix.lower() in (".html", ".json", ".md")
+            out_txt = (op.parent / f"{op.stem if is_file else op.name}-<date>-<time>" / (op.name if is_file else ""))
             output_info.text = (f"Writes to: {out_txt}  (a new folder each run)"
                                 if per_run else
                                 f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)"))
-            separate_cb.set_visibility(s.task in DOCS_TASKS)
+            separate_cb.set_visibility(s.task in RUN_FOLDER_TASKS)
             prior = None if per_run else existing_output(s.output_path())
             state["prior"] = prior["index"] if prior else None
             existing_row.set_visibility(prior is not None)
@@ -1424,7 +1477,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.button("Open full quality report", on_click=lambda: open_result(res.index, "#quality")) \
                                 .props("flat dense no-caps")
                         elif res.task in ("check", "interop"):
-                            ui.button("Open report (JSON)", on_click=lambda: open_result(str(res.output))) \
+                            ui.button("Open report (JSON)", on_click=lambda: open_result(res.index or str(res.output))) \
                                 .props("flat dense no-caps")
 
         def signature() -> tuple:
@@ -2604,7 +2657,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         def summaries(res) -> dict[str, dict]:
             """{tool: provenance summary or {"error": …}} from the written report."""
             try:
-                data = json.loads(Path(res.output).read_text("utf-8"))
+                data = json.loads(Path(res.index or res.output).read_text("utf-8"))
             except (OSError, ValueError):
                 return {}
             entry = next(iter(data.values()), {}) if isinstance(data, dict) else {}
@@ -2666,7 +2719,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 ui.button("New check", icon="add", on_click=new_check).props("flat no-caps") \
                                     .mark("iop-new")
                                 ui.button("Open report (JSON)", icon="open_in_new",
-                                          on_click=lambda: open_result(str(res.output))).props("unelevated no-caps")
+                                          on_click=lambda: open_result(res.index or str(res.output))).props("unelevated no-caps")
                                 ui.button("Export", icon="download", on_click=lambda: export(str(res.output))) \
                                     .props("outline no-caps")
                                 ui.button("Show in folder", icon="folder_open",

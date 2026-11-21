@@ -1,0 +1,28 @@
+<http://example.org/toy/Process> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/SoilSample> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/Tractor> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.org/toy/Machine> .
+<http://example.org/toy/SoilPHReading> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.org/toy/PHReading> .
+<http://example.org/toy/PHReading> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/Measurement> <http://purl.obolibrary.org/obo/IAO_0000115> "An act of determining the value of a quantity."@en .
+<http://example.org/toy/Sensor> <http://www.w3.org/2000/01/rdf-schema#label> "sensor"@en .
+<http://example.org/toy/PHReading> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.org/toy/Measurement> .
+<http://example.org/toy/Tractor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/PHReading> <http://www.w3.org/2000/01/rdf-schema#label> "pH reading"@en .
+<http://example.org/toy/SoilPHReading> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/Machine> <http://www.w3.org/2000/01/rdf-schema#label> "farm machine"@en .
+<http://example.org/toy/Measurement> <http://www.w3.org/2000/01/rdf-schema#label> "measurement"@en .
+<http://example.org/toy/Sensor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/Sensor> <http://www.w3.org/2004/02/skos/core#definition> "A device that detects a physical property and produces an output signal."@en .
+<http://example.org/toy/SoilSample> <http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym> "sample" .
+<http://example.org/toy/Process> <http://www.w3.org/2004/02/skos/core#definition> "Something that happens over time and has participants."@en .
+<http://example.org/toy/SoilSample> <http://www.w3.org/2004/02/skos/core#definition> "A sample of topsoil collected for agronomic analysis of a field."@en .
+<http://example.org/toy/Tractor> <http://www.w3.org/2000/01/rdf-schema#label> "tractor"@en .
+<http://example.org/toy/hasParticipant> <http://www.w3.org/2000/01/rdf-schema#label> "has participant"@en .
+<http://example.org/toy/Measurement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://example.org/toy/SoilSample> <http://www.w3.org/2000/01/rdf-schema#label> "soil sample"@en .
+<http://example.org/toy/Machine> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.org/ref/Device> .
+<http://example.org/toy/PHReading> <http://www.w3.org/2000/01/rdf-schema#comment> "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units."@en .
+<http://example.org/toy/hasParticipant> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://example.org/toy/Process> <http://www.w3.org/2000/01/rdf-schema#label> "process"@en .
+<http://example.org/toy/SoilPHReading> <http://www.w3.org/2000/01/rdf-schema#label> "soil pH reading"@en .
+<http://example.org/toy/Machine> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .

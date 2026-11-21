@@ -107,7 +107,8 @@ def _scope(record: dict) -> str:
             if record.get("own_references") else
             "the same reference ontologies and correspondences as the cross-domain score")
     text = (f"Δ = OECD fields of science ({s['taxonomy_size']} fields; the ontology's own is not counted); "
-            f"θ_s = {s['theta_s']}; {refs}, without upper-level ontologies. Full record in si.json.")
+            f"θ_s = {s['theta_s']}; {refs}, without upper-level ontologies. Full record in si.json"
+            + (f", and as run {record['run_id']} in the term database." if record.get("run_id") else "."))
     return " ".join([text, *record.get("notes", [])])
 
 

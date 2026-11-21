@@ -499,10 +499,16 @@ def check(
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
+        import datetime as _dt
+        started = _dt.datetime.now(_dt.timezone.utc)
         onto, report = do_check(source, config=config, **extra)
         if interop_only:
             from .ui_core import interop_only as keep_interop
             keep_interop(report)
+        if output:      # self-contained: cdi.json, si.json, iri-checks.json, provenance.ttl next to the report
+            from .build import check_records
+            check_records(output.parent / f"{output.stem}-records", source or Path(config or ".").name,
+                          onto, report, started)
     except (ValueError, FileNotFoundError) as e:
         err.print(f"[bold red]Error:[/] {e}")
         raise typer.Exit(2) from e
@@ -550,10 +556,16 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
     for f in files:
         rel = f.relative_to(folder.resolve()).as_posix()
         try:
+            import datetime as _dt
+            started = _dt.datetime.now(_dt.timezone.utc)
             onto, report = do_check(f, config=_config_for(f, folder, config), **extra)
             if interop_only:
                 from .ui_core import interop_only as keep_interop
                 keep_interop(report)
+            if output:
+                from .build import check_records
+                check_records(output.parent / f"{output.stem}-records" / Path(rel).with_suffix(""), f, onto,
+                              report, started)
         except Exception as e:  # noqa: BLE001
             broken = True
             results[rel] = {"error": str(e)}

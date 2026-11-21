@@ -222,3 +222,53 @@ def test_repository_search(monkeypatch):
     monkeypatch.undo()
     with pytest.raises(ValueError, match="API key"):
         repos.ontology_list("bioportal", api_key="")
+
+
+@pytest.mark.real_cdi
+def test_releases_listed_once_with_used_in(toy, monkeypatch, tmp_path):
+    """Shared run: releases live in cdi.json marked used by both; si.json points there. Own SI list:
+    a release both used is listed once (cdi.json, both), the rest stay in si.json. Each run folder
+    holds cdi.json, si.json and provenance.ttl with one node per release."""
+    from rdflib import URIRef
+    from rdflib.namespace import PROV, RDFS
+
+    from ontoreview.build import check, check_records
+    onto_path, ref, sssom = toy
+    monkeypatch.setattr(cdi, "generality_backend", lambda ev: (core.CallableBackend(fake_levels), ""))
+    g = Graph().parse(onto_path)
+    c, s_ = cdi.check_cdi(g, _ev(cdi_references=[str(ref), str(sssom)], si_home_domain="4.1"), str(onto_path))
+    assert {tuple(r["used_in"]) for r in c.provenance["releases"]} == {("cdi", "si")}
+    assert s_.provenance["releases"] == [] and s_.provenance["releases_in"] == "cdi.json"
+    c, s_ = cdi.check_cdi(g, _ev(cdi_references=[str(ref)], si_references=[str(ref), str(sssom)],
+                                 si_home_domain="4.1"), str(onto_path))
+    assert [tuple(r["used_in"]) for r in c.provenance["releases"]] == [("cdi", "si")]
+    assert [(r["id"], tuple(r["used_in"])) for r in s_.provenance["releases"]] == [("sssom:toy_to_bfo.sssom.tsv", ("si",))]
+    only_si = cdi.check_cdi(g, _ev(cdi="off", cdi_references=[str(ref)], si_home_domain="4.1"), str(onto_path))
+    assert only_si[0].provenance["releases"] and "releases_in" not in only_si[0].provenance   # SI alone: all its own
+    # a quality / interoperability run writes its own records and PROV-O
+    import datetime as dt
+    onto, rep = check(onto_path, evaluation={"cdi_references": [str(ref)], "si_home_domain": "4.1",
+                                             "cdi_ontoaligner": "off", "cdi_term_db": False, "oops": "off",
+                                             "robot": "off", "iri_checks": "off", "ontocheck": "off"})
+    files = {p.name for p in check_records(tmp_path, onto_path, onto, rep, dt.datetime.now(dt.timezone.utc))}
+    assert {"cdi.json", "si.json", "provenance.ttl"} <= files
+    pg = Graph().parse(tmp_path / "provenance.ttl")
+    used = set(pg.objects(URIRef("urn:ontoreview:build"), PROV.used))
+    rel = next(n for n in used if any("scientific" in str(c_) for c_ in pg.objects(n, RDFS.comment)))
+    assert [str(x) for x in pg.objects(rel, RDFS.comment)] == [
+        "Reference release used for the cross-domain interoperability score and the scientific interoperability "
+        "degree (3 correspondence(s), via file)."]                      # one node, one note naming both
+
+
+def test_si_own_run_recorded_in_term_database(toy, monkeypatch, tmp_path):
+    onto_path, ref, sssom = toy
+    monkeypatch.setattr(cdi, "generality_backend", lambda ev: (core.CallableBackend(fake_levels), ""))
+    ev = EvaluationConfig(cdi_ontoaligner="off", iri_db=str(tmp_path / "db.sqlite3"), cdi_references=[str(sssom)],
+                          si_references=[str(ref)], si_home_domain="4.1")
+    _, si_rep = cdi.run_interoperability(Graph().parse(onto_path), ev, str(onto_path))
+    from ontoreview.quality_checks.iri import open_stores
+    _, cache = open_stores(tmp_path / "db.sqlite3")
+    runs = cache.recent_cdi_runs()
+    purposes = [r["settings"].get("purpose") or "+".join(r["settings"].get("used_for", [])) for r in runs]
+    assert purposes == ["scientific interoperability", "cdi"]           # newest first: SI's own run, then CDI
+    assert si_rep.provenance["run_id"] == runs[0]["id"] and "as run" in si_rep.scope

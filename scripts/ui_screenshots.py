@@ -1,7 +1,7 @@
 """Regenerate the screenshots on the app's Help page (src/ontoreview/ui_assets/help/*.png).
 
     uv run --extra ui --with playwright python scripts/ui_screenshots.py            # all
-    uv run --extra ui --extra cdi --with playwright python scripts/ui_screenshots.py --only cdi
+    uv run --extra ui --extra cdi --with playwright python scripts/ui_screenshots.py --only cdi   # or --only si
 
 Uses Playwright with the Chrome already installed on this machine (no browser download) and demo
 ontologies copied to a temporary folder, so no personal paths end up in the images. Docker should be
@@ -73,7 +73,8 @@ def shoot(page: Page, name: str) -> None:
 
 def serve(settings: Path, demo: Path) -> tuple[subprocess.Popen, str]:
     port = free_port()
-    env = {**os.environ, "ONTOREVIEW_UI_SETTINGS": str(settings)}
+    # a term database of its own: no personal paths or earlier runs in the images
+    env = {**os.environ, "ONTOREVIEW_UI_SETTINGS": str(settings), "ONTOREVIEW_IRI_DB": str(demo / "iri.sqlite3")}
     server = subprocess.Popen([sys.executable, "-m", "ontoreview.ui", "--port", str(port), "--no-browser"],
                               env=env, cwd=demo, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for _ in range(150):
@@ -118,16 +119,72 @@ def cdi_shots(browser, demo: Path, paths: dict) -> None:
         server.wait(timeout=10)
 
 
+def si_shots(browser, demo: Path, paths: dict) -> None:
+    """Scientific interoperability: Settings card, the Interoperability page before and after a run, the SI
+    metrics, and the Run history configuration dialog (soil toy ontology, file references, offline)."""
+    cfg = demo / "config-si"
+    cfg.mkdir()
+    refs = "\n".join(map(str, paths["soil_refs"]))
+    (cfg / "prefs.json").write_text(json.dumps({
+        "open_when_done": False, "oops": "off", "robot_enabled": False, "cdi": True, "si": True,
+        "cdi_references": refs, "cdi_ontoaligner": "off", "si_home_domain": "4.1", "si_theta_s": 0.25,
+        "si_domain_map": "file:toy_ref.ttl = 1.5\nsssom:toy_to_bfo.sssom.tsv = 1.6"}))
+    server, url = serve(cfg / "ui.json", demo)
+    try:
+        page = browser.new_page(viewport=VIEW, color_scheme="light")
+        page.goto(url + "/settings")
+        wait_text(page, "Default output folder")
+        page.get_by_role("tab", name="Quality checks").click()
+        page.get_by_text("Score scientific interoperability").first.wait_for()
+        page.get_by_text("Scientific interoperability", exact=True).first.evaluate(
+            "e => e.scrollIntoView({block: 'start'})")
+        page.mouse.wheel(0, -60)
+        shoot(page, "si-settings.png")
+
+        page.goto(url + "/interoperability")
+        wait_text(page, "No interoperability check yet")
+        box = page.get_by_label("Ontology path or URL")
+        box.fill(str(paths["soil"]))
+        box.press("Enter")
+        page.get_by_label("Find an ontology").first.fill("environment")
+        page.get_by_label("Find an ontology").first.press("Enter")
+        try:
+            wait_text(page, "Environment Ontology", timeout=30_000)        # live OLS search; skipped offline
+        except Exception:  # noqa: BLE001
+            pass
+        page.evaluate("window.scrollTo(0, 0)")
+        shoot(page, "interop.png")
+        page.get_by_role("button", name="Run checks").click()
+        page.get_by_role("button", name="New check").first.wait_for(timeout=900_000)   # the finished result
+        page.get_by_role("button", name="New check").first.evaluate("e => e.scrollIntoView({block: 'start'})")
+        page.mouse.wheel(0, -120)
+        shoot(page, "interop-results.png")
+        page.get_by_text("Scientific interoperability", exact=True).last.evaluate(
+            "e => e.scrollIntoView({block: 'start'})")
+        page.mouse.wheel(0, -40)
+        shoot(page, "si-results.png")
+
+        page.goto(url + "/history")
+        wait_text(page, "runs shown")
+        page.locator("tbody tr").first.click()
+        wait_text(page, "Edit and run")
+        shoot(page, "history-config.png")
+        page.close()
+    finally:
+        server.terminate()
+        server.wait(timeout=10)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
     demo = Path(tempfile.mkdtemp(prefix="ontoreview-demo-", dir="/tmp" if os.name != "nt" else None))
     paths = prepare(demo)
-    if only == "cdi":
+    if only in ("cdi", "si"):
         try:
             with sync_playwright() as pw:
                 browser = pw.chromium.launch(channel="chrome")
-                cdi_shots(browser, demo, paths)
+                (cdi_shots if only == "cdi" else si_shots)(browser, demo, paths)
                 browser.close()
         finally:
             shutil.rmtree(demo, ignore_errors=True)
@@ -194,6 +251,7 @@ def main() -> None:
             page.wait_for_timeout(1500)
             shoot(page, "settings.png")
             cdi_shots(browser, demo, paths)
+            si_shots(browser, demo, paths)
             browser.close()
     finally:
         server.terminate()

@@ -282,38 +282,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             (out_dir / "w3id.htaccess").write_text(w3id_htaccess(cfg.base_url, downloads), "utf-8")
     if cfg.sections.citation:
         (out_dir / "CITATION.cff").write_text(citation_cff(onto.metadata, cfg.base_url), "utf-8")
-    from .report.models import TOOLS
-
-    externals = report.external if report else []
-    iri_prov = next((x.provenance for x in externals if x.tool == TOOLS["iri"].name and x.provenance), None)
-    cdi_rec = next((x.provenance for x in externals if x.tool == TOOLS["cdi"].name and x.provenance), None)
-    si_rec = next((x.provenance for x in externals if x.tool == TOOLS["si"].name and x.provenance), None)
-    if si_rec:
-        # degree, covered domains, per-domain scores and the domain of each reference ontology
-        (out_dir / "si.json").write_text(json.dumps(si_rec, indent=2, ensure_ascii=False), "utf-8")
-    if cdi_rec:
-        # scores, per-entity and per-reference results, and every correspondence
-        (out_dir / "cdi.json").write_text(json.dumps(cdi_rec, indent=2, ensure_ascii=False), "utf-8")
-    if iri_prov:
-        # frozen at build time: which release each external term was verified against
-        (out_dir / "iri-checks.json").write_text(json.dumps(iri_prov, indent=2, ensure_ascii=False), "utf-8")
-    if cfg.sections.provenance:
-        pg = provenance_graph(onto, Path(cfg.source or "").name, __version__, prov)
-        if iri_prov or cdi_rec or (si_rec and si_rec.get("releases")):
-            from rdflib import URIRef
-
-            from .report.iri import add_iri_provenance
-            if iri_prov:
-                add_iri_provenance(pg, iri_prov, URIRef("urn:ontoreview:build"))
-            if si_rec and si_rec.get("releases"):   # SI with its own reference ontologies
-                add_iri_provenance(pg, si_rec, URIRef("urn:ontoreview:build"),
-                                   purpose="Reference release used for the scientific interoperability degree "
-                                           "({terms} correspondence(s), via {source}).")
-            if cdi_rec:     # the reference ontology releases the CDI score was computed against
-                add_iri_provenance(pg, cdi_rec, URIRef("urn:ontoreview:build"),
-                                   purpose="Reference release used for the cross-domain interoperability score "
-                                           "({terms} correspondence(s), via {source}).")
-        pg.serialize(destination=str(out_dir / "provenance.ttl"), format="turtle")
+    write_records(out_dir, onto, report, prov, Path(cfg.source or "").name, provenance=cfg.sections.provenance)
     if report is not None:
         (out_dir / "quality.json").write_text(report.to_json(), "utf-8")
     if changelog is not None:
@@ -332,6 +301,56 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
                                             "total_rows", "columns", "rows")} for q in cqset.questions]},
             indent=2, ensure_ascii=False), "utf-8")
     return BuildResult(out_dir, onto, report, changelog, files, time.perf_counter() - t0, cqset)
+
+
+def write_records(out_dir: Path, onto: Ontology, report: Report | None, prov: dict | None, source_name: str,
+                  provenance: bool = True) -> list[Path]:
+    """The frozen records of a run, next to its docs or report: ``iri-checks.json``, ``cdi.json``,
+    ``si.json`` (each with the releases it was checked against) and ``provenance.ttl`` (PROV-O,
+    the same times and releases). Used by docs builds and by quality / interoperability runs, so
+    any single run is self-contained."""
+    from .report.models import TOOLS
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    externals = report.external if report else []
+
+    def rec(tool: str):
+        return next((x.provenance for x in externals if x.tool == TOOLS[tool].name and x.provenance), None)
+
+    iri_prov, cdi_rec, si_rec = rec("iri"), rec("cdi"), rec("si")
+    for name, record in (("iri-checks.json", iri_prov), ("cdi.json", cdi_rec), ("si.json", si_rec)):
+        if record:      # frozen at run time: what each check verified against, and its results
+            path = out_dir / name
+            path.write_text(json.dumps(record, indent=2, ensure_ascii=False), "utf-8")
+            written.append(path)
+    if provenance:
+        pg = provenance_graph(onto, source_name, __version__, prov)
+        from rdflib import URIRef
+
+        from .report.iri import add_iri_provenance
+        act = URIRef("urn:ontoreview:build")
+        if iri_prov:
+            add_iri_provenance(pg, iri_prov, act)
+        # each reference release once (tag_releases), with the checks that used it
+        what = {("cdi",): "the cross-domain interoperability score", ("si",): "the scientific interoperability degree",
+                ("cdi", "si"): "the cross-domain interoperability score and the scientific interoperability degree"}
+        for rels in ((cdi_rec or {}).get("releases") or [], (si_rec or {}).get("releases") or []):
+            for used in what:
+                group = [r for r in rels if tuple(r.get("used_in") or ()) == used]
+                if group:
+                    add_iri_provenance(pg, {"releases": group}, act, purpose=f"Reference release used for {what[used]} "
+                                                                             "({terms} correspondence(s), via {source}).")
+        path = out_dir / "provenance.ttl"
+        pg.serialize(destination=str(path), format="turtle")
+        written.append(path)
+    return written
+
+
+def check_records(out_dir: Path, source: str | Path, onto: Ontology, report: Report, started) -> list[Path]:
+    """Records and PROV-O for a quality or interoperability run (no docs): see :func:`write_records`."""
+    prov = provenance_record(onto, source, __version__, started, report)
+    return write_records(out_dir, onto, report, prov, Path(str(source)).name)
 
 
 def check(source: str | Path | None = None, config: Config | str | Path | None = None,

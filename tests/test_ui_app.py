@@ -101,6 +101,9 @@ async def test_pages_render(isolated, fixtures):
         await user.should_see("Getting started")
         await user.should_see("Project config (ontoreview.toml)")
         await user.should_see("How the comparison works")
+        await user.should_see("Scientific interoperability")
+        await user.should_see("Run history: re-run, change, export")
+        await user.should_see("Interoperability page")
         await user.should_see("System info")
     assert ui_core.Prefs.path().is_file()
 
@@ -342,7 +345,9 @@ async def test_interoperability_page(isolated, fixtures, monkeypatch):
         await user.should_see("of 41 domains: 1.5 Earth and related environmental sciences")
         user.find(marker="iop-new").click()
         await user.should_see("No interoperability check yet")
-    rep = json.loads((isolated / "iop.json").read_text())["toy_onto.ttl"]
+    (run_dir,) = isolated.glob("iop-*")                          # each run in its own folder, self-contained
+    assert {"iop.json", "cdi.json", "si.json", "provenance.ttl"} <= {f.name for f in run_dir.iterdir()}
+    rep = json.loads((run_dir / "iop.json").read_text())["toy_onto.ttl"]
     assert [x["tool"] for x in rep["external"]] == ["Cross-domain interoperability", "Scientific interoperability"]
     assert rep["findings"] == []                                  # interoperability only: no built-in rules
     assert json.loads(ui_core.HISTORY_FILE.read_text())[0]["task"] == "interop"
@@ -369,3 +374,10 @@ def test_interop_task_settings(fixtures):
     assert ui_core.task_kind("interop") == "check"
     off = ui_core.Settings(source=str(fixtures / "pizza.ttl"), task="interop", cdi=False, si=False)
     assert any("cross-domain or scientific" in p for p in off.validate())
+
+
+def test_help_screenshots_exist():
+    from ontoreview.ui import ASSETS, HELP
+    for _, _, shot, *_ in HELP:
+        for name in [n for n in ((shot,) if isinstance(shot, str) else shot) if n]:
+            assert (ASSETS / "help" / name).is_file(), name

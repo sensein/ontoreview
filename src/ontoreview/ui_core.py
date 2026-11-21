@@ -528,6 +528,8 @@ def _external_text(reports) -> str:
 
 
 DOCS_TASKS = ("site", "single", "markdown", "myst")
+RUN_FOLDER_TASKS = DOCS_TASKS + ("check", "interop")   # each run in its own folder (Settings.separate_runs)
+FILE_SUFFIXES = (".html", ".json", ".md")
 
 
 def run_folder(out: Path, now: float | None = None) -> Path:
@@ -535,7 +537,7 @@ def run_folder(out: Path, now: float | None = None) -> Path:
     ``docs-20261121-153012``; a single-file target ``pizza.html`` becomes
     ``pizza-20261121-153012/pizza.html``. A clash within the same second gets ``-2``, ``-3``…"""
     stamp = time.strftime("%Y%m%d-%H%M%S", time.localtime(now))
-    is_file = out.suffix.lower() == ".html"
+    is_file = out.suffix.lower() in FILE_SUFFIXES
     base = out.parent / f"{out.stem if is_file else out.name}-{stamp}"
     folder, n = base, 1
     while folder.exists():
@@ -555,7 +557,9 @@ def interop_only(report) -> None:
 
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
-    from .build import build, build_single_file, check, load, resolve_config
+    from datetime import datetime, timezone
+
+    from .build import build, build_single_file, check, check_records, load, resolve_config
     from .collection import build_collection, export_collection
     from .export import export_markdown
     from .model.extract import extract
@@ -567,8 +571,10 @@ def run_task(settings: Settings) -> TaskResult:
     t0 = time.perf_counter()
     s = settings
     out = s.output_path()
-    if s.separate_runs and s.task in DOCS_TASKS:
-        out = run_folder(out)
+    separate = s.separate_runs and s.task in RUN_FOLDER_TASKS
+    if separate:
+        out = run_folder(out if s.task not in ("check", "interop") or out.suffix.lower() == ".json"
+                         else out / ("interoperability.json" if s.task == "interop" else "quality.json"))
     src = s.source.strip()
     src = src if src.startswith(("http://", "https://")) else str(Path(src).expanduser().resolve())
     ov = s.overrides()
@@ -603,14 +609,22 @@ def run_task(settings: Settings) -> TaskResult:
     elif s.task in ("check", "interop"):
         files = [Path(src)] if not s.is_folder else find_ontologies(src)[0]
         report_json: dict[str, Any] = {}
+        if out.suffix.lower() != ".json":
+            out = out / ("interoperability.json" if s.task == "interop" else "quality.json")
+        # records (cdi.json, si.json, iri-checks.json, provenance.ttl) go with the report: in the run's
+        # own folder, or in <report>-records/ next to a report written to a shared folder
+        records = out.parent if separate else out.parent / f"{out.stem}-records"
         for f in files:
             name = f.name if not s.is_folder else f.relative_to(Path(src)).as_posix()
             try:
+                started = datetime.now(timezone.utc)
                 onto, rep = check(f, **{k: v for k, v in ov.items()
                                         if k in ("evaluation", "competency_questions", "load_imports",
                                                  "include_individuals", "reason")})
                 if s.task == "interop":
                     interop_only(rep)
+                check_records(records / (f.relative_to(Path(src)).with_suffix("").as_posix() if s.is_folder else ""),
+                              f, onto, rep, started)
                 sm = rep.totals
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
                                     sm["warning"], sm["info"], _external_text(rep.external),
@@ -620,13 +634,11 @@ def run_task(settings: Settings) -> TaskResult:
             except Exception as e:  # noqa: BLE001
                 res.rows.append(Row(name, problem=str(e)))
                 report_json[name] = {"error": str(e)}
-        if out.suffix.lower() != ".json":
-            out = out / ("interoperability.json" if s.task == "interop" else "quality.json")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(report_json, indent=2, ensure_ascii=False), "utf-8")
         for r in res.rows:
             r.output = str(out)
-        res.output = out
+        res.output, res.index = (out.parent if separate else out), str(out)
     elif s.task in ("markdown", "myst"):
         log.info("Exporting %s → %s", "MyST" if s.task == "myst" else "Markdown", out)
         cfg = resolve_config(src)
