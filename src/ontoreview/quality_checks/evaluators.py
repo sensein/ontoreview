@@ -42,9 +42,8 @@ def run_evaluations(graph: Graph, config, source: str | None = None,
     oc = ontocheck.check_ontocheck(graph, ev, source)       # local, in-process (network: declared endpoints)
     if oc is not None:
         out.append(oc)
-    cd = cdi.check_cdi(graph, ev, source, namespace)        # on by default; references per cdi_references
-    if cd is not None:
-        out.append(cd)
+    # cross-domain and scientific interoperability: one run, on by default; references per cdi_references
+    out += cdi.check_cdi(graph, ev, source, namespace)
     if ev.oops != "off":
         # auto: complement ROBOT (skip what its report covers); full catalogue when ROBOT did not run
         skip = oops.ROBOT_COVERED if ev.oops == "auto" and robot_state == "ok" else None

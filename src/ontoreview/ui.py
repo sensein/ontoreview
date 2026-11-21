@@ -10,10 +10,12 @@ Pages: Build, Run history, Settings, About; a sidebar shows whether ROBOT and OO
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 import secrets
 import sys
+import time
 import uuid
 import webbrowser
 from dataclasses import asdict
@@ -23,6 +25,7 @@ from pathlib import Path
 from . import __version__
 from .ui_core import (
     MAX_UPLOAD_BYTES,
+    RUN_FOLDER_TASKS,
     TASKS,
     Prefs,
     Settings,
@@ -31,6 +34,7 @@ from .ui_core import (
     clear_history,
     describe_source,
     existing_output,
+    export_output,
     forget_run,
     issues_text,
     load_history,
@@ -38,6 +42,7 @@ from .ui_core import (
     open_in_file_manager,
     record_run,
     robot_status,
+    run_config_rows,
     run_name,
     run_task,
     system_info,
@@ -57,17 +62,21 @@ FORMATS = [  # id, name, description, tag
     ("myst", "MyST / Sphinx", "Pages for a Sphinx docs project you extend and build", "MyST"),
     ("check", "Quality check only", "Run the checks, ROBOT, the reasoner, IRI checks, OntoCheck, cross-domain "
      "interoperability and OOPS! without docs", "report"),
+    ("interop", "Interoperability check only", "Cross-domain and scientific interoperability against reference "
+     "ontologies you upload, name on OLS/BioPortal, or that are found there; nothing else", "report"),
     ("diff", "Compare versions", "What changed since a previous release of this ontology", "changes.md"),
 ]
 RECOMMENDED = "site"
 INCLUDES = {
     "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, "
             "cross-domain interoperability, OOPS!), "
-            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
+            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt, and standalone.html (all in one file)",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
     "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
     "check": "Includes: built-in checks, ROBOT, reasoner, IRI, OntoCheck and OOPS! results as JSON; no documentation",
+    "interop": "Includes: CDI (Align, Gen), SI (covered scientific domains, per-domain scores, domain of each "
+               "reference ontology) as JSON; references and options in Settings › Quality checks",
     "diff": "Includes: added, removed and modified terms with the exact statements that changed, as Markdown "
             "and JSON. To put a changelog inside the website instead, set Previous version in Settings › Documentation",
 }
@@ -182,6 +191,8 @@ NAV = [  # key, path, label, svg path data
     ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
     ("history", "/history", "Run history", '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>'),
     ("compare", "/compare", "Compare", '<path d="M8 3v18M16 3v18"/><path d="m4 8 4-4 4 4M12 16l4 4 4-4"/>'),
+    ("interop", "/interoperability", "Interoperability", '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/>'
+     '<circle cx="18" cy="18" r="3"/><path d="m8.6 10.6 6.8-3.2M8.6 13.4l6.8 3.2"/>'),
     ("terms", "/terms", "Term database", '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/>'
      '<path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>'),
     ("settings", "/settings", "Settings", '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/>'
@@ -206,16 +217,23 @@ HELP = [
        "Settings › Quality checks.", [("Open Build", "/")]),
     ("results", "Reading the results", "results.png", [
         "While it runs you see each step: parse, built-in checks, ROBOT, logical consistency, IRI checks, OntoCheck, "
-        "cross-domain interoperability, OOPS!, render.",
+        "cross-domain and scientific interoperability, OOPS!, render.",
         "When it finishes, the tiles show how many terms were documented and how many errors and warnings were found.",
         "<b>Quality metrics</b> is a scorecard: OntoCheck's labeling, structure, accessibility and naming metrics, "
-        "and the cross-domain interoperability scores (CDI, Align, Gen, and Align per reference ontology). Hover a "
-        "metric to see what it measures.",
+        "and the cross-domain and scientific interoperability scores (CDI, Align, Gen, SI, per reference ontology "
+        "and per scientific domain). Hover a metric to see what it measures.",
         "<b>Issues</b> lists every problem: filter by errors or warnings. ROBOT, reasoner, OntoCheck and OOPS! findings are merged with "
         "OntoReview's own checks; <b>Affected</b> names the term, or how many elements share the problem.",
         "<b>Logical consistency</b> errors come from an OWL reasoner (HermiT by default): an inconsistent ontology, "
         "or classes that can never have members. Use Protégé's explanations to find the axioms responsible.",
-        "<b>Open docs</b> opens the website in a new tab; <b>Show in folder</b> opens it in Finder / Explorer.",
+        "<b>Open docs</b> opens the website in a new tab; <b>Export</b> downloads the run (a docs folder as one "
+        ".zip); <b>Show in folder</b> opens it in Finder / Explorer.",
+        "<b>New build</b> clears the result so the next run starts from an empty panel. Your settings stay, and the "
+        "run stays in Run history.",
+        "Each docs or check run goes into its own dated folder (<code>docs-YYYYMMDD-HHMMSS</code>) with everything it "
+        "needs: the docs or report, <code>standalone.html</code>, the records of what each check was verified "
+        "against (<code>cdi.json</code>, <code>si.json</code>, <code>iri-checks.json</code>) and "
+        "<code>provenance.ttl</code>. Turn this off under <b>Save to</b> with <b>Each run in its own folder</b>.",
     ], "", [("Open Build", "/")]),
     ("compare", "Comparing two versions", "compare.png", [
         "Open <b>Compare</b> in the sidebar. Add the <b>Previous version</b> (A) and the <b>Current version</b> (B): "
@@ -295,6 +313,13 @@ HELP = [
         "mappings; other services as <code>ols@https://…/api</code> or <code>ontoportal@https://…</code>. Drop "
         "several files on the drop area at once.",
         "<b>Own domain(s)</b> leave out discovered ontologies from your own field, so only cross-domain links count.",
+        "<b>Scientific interoperability (SI)</b> counts in how many scientific domains (the 41 OECD fields of science "
+        "besides the ontology's own) it is interoperable. It reuses this run: the same reference ontologies (uploaded, "
+        "named on OLS/BioPortal, or found there) and correspondences. Each reference ontology gets a domain from "
+        "repository metadata, else from the language model reading its title and description, or from your domain "
+        "map; then CDI is computed per domain, and a domain counts when it reaches θ_s (0.3). Upper-level ontologies "
+        "(BFO, DOLCE, …) are ignored, so SI counts links to scientific fields. Gen caps every domain's CDI, so vague "
+        "or missing definitions limit SI too. Set your own domain in Settings if the detected one is wrong.",
         "<b>Term database first:</b> every vocabulary stored on the Term database page (the bundled W3C ones and "
         "everything you or the IRI checks added) is matched first, offline. Details of OLS and BioPortal ontologies "
         "(title, domain, release) are read from the database before asking the service, and saved when fetched. "
@@ -338,12 +363,58 @@ HELP = [
         "ontoreview.toml, which is the quickest way to share your setup. <b>Open another config…</b> loads any "
         "ontoreview.toml.",
     ], "In CI, <code>ontoreview build</code> and <code>ontoreview check</code> find ontoreview.toml automatically.", [("Build › Project config", "/"), ("Settings", "settings:general")]),
-    ("history", "Run history", "history.png", [
-        "Every build and check is listed with its status, issues and time.",
-        "Search by ontology or output path, filter documentation vs. checks, and hide runs whose output was deleted.",
-        "Use the row buttons to open the output, show it in its folder, load its settings to run again, or remove it "
-        "from the list (files are kept).",
+    ("history", "Run history: re-run, change, export", ("history.png", "history-config.png"), [
+        "Every build and check is listed with its status, issues and time. Search by ontology or output path, "
+        "filter documentation vs. checks, and hide runs whose output was deleted.",
+        "<b>Click a run</b> (or its settings icon) to see the configuration it ran with (task, ontology, output, "
+        "layout, languages, every check and its options, including the reference ontologies) and the equivalent "
+        "command line.",
+        "<b>Run again</b> runs it now with exactly that configuration, into a new folder; the earlier output is kept.",
+        "<b>Edit and run</b> loads that configuration into Build: change what you need (another reference "
+        "ontology, a different own domain, a check turned off) and press Build docs or Run checks. The modified "
+        "run is recorded as a new entry, so both configurations stay side by side.",
+        "<b>Export</b> downloads the run's output: a docs or check folder as one .zip (docs, standalone.html, "
+        "reports, cdi.json, si.json, provenance.ttl), a single file as it is. The row's download icon does the same.",
+        "The other row buttons open the output, show it in its folder, or remove the entry (files are kept). API keys "
+        "are never stored in the history, so re-runs use the keys currently set in Settings.",
     ], "", [("Open Run history", "/history")]),
+    ("si", "Scientific interoperability", ("si-settings.png", "si-results.png"), [
+        "<b>What it measures:</b> in how many scientific domains, other than the ontology's own, it is interoperable. "
+        "Domains are the 41 OECD Fields of Science (Frascati Manual), e.g. 1.2 Computer and information sciences, "
+        "1.5 Earth and related environmental sciences, 3.2 Clinical medicine.",
+        "<b>How:</b> each reference ontology gets a domain (your domain map, else repository metadata such as OLS "
+        "domains, else the language model reading its title and description). For each domain, CDI is computed with "
+        "only that domain's reference ontologies; the domain counts as <b>covered</b> when it reaches θ_s (0.3). "
+        "<b>SI</b> is the number of covered domains; SI ≥ 1 counts as scientifically interoperable.",
+        "<b>Upper-level ontologies</b> (BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO) are ignored, so SI counts links to "
+        "scientific fields, not shared foundations. Gen caps every domain: vague or missing class definitions limit "
+        "SI however well the ontology is aligned (the review shows this ceiling).",
+        "<b>Reference ontologies:</b> by default the cross-domain ones, from the same run (nothing is fetched twice). "
+        "Untick <b>Use the cross-domain reference ontologies</b> to give SI its own: type them, browse files, or "
+        "<b>Find on OLS or BioPortal</b> by name and click Add (e.g. ols:envo); nothing to upload.",
+        "<b>Own scientific domain:</b> detected from the ontology's title and description, or set it; it is never "
+        "counted. <b>Domain of a reference ontology:</b> one row per ontology (id and field), a new row appears as "
+        "you fill the last; the review lists reference ontologies left without a domain.",
+        "<b>Where to see it:</b> the Overview tile and the quality report of the docs (per-domain scores, the domain "
+        "of each reference ontology), <code>si.json</code>, and the Interoperability page. Each reference release is "
+        "recorded once, with a <b>Used in</b> column (cross-domain, scientific), and in provenance.ttl.",
+    ], "SI needs the generality model (pip install 'ontoreview[cdi]'); without it the review says so. Repositories "
+       "receive labels and IRIs, never the ontology file.",
+     [("Settings › Quality checks", "settings:checks"), ("Open Interoperability", "/interoperability")]),
+    ("interop", "Interoperability page", ("interop.png", "interop-results.png"), [
+        "Checks only cross-domain (CDI) and scientific (SI) interoperability of one ontology, without building docs; "
+        "like Compare, it runs in place and in the background.",
+        "Choose the ontology (drop, File or URL). Add reference ontologies: drop or browse files and SSSOM mappings, "
+        "<b>Find on OLS or BioPortal</b> by name, or keep <code>ols</code> / <code>bioportal</code> to let OntoReview "
+        "discover the ontologies with matching terms (top 10).",
+        "Set SI's options (own references, own domain, θ_s, domain of a reference ontology) and press <b>Run checks</b>.",
+        "The result shows the CDI and SI tiles and every metric. <b>Open report (JSON)</b>, <b>Export</b> (the run "
+        "folder as .zip, with cdi.json, si.json and provenance.ttl), <b>Show in folder</b>, <b>New check</b>. The run "
+        "is kept in Run history, where it can be re-run as is or changed.",
+        "The same check is <b>Interoperability check only</b> on Build, and <code>ontoreview check my.ttl "
+        "--interop-only</code> on the command line.",
+    ], "BioPortal search needs your BioPortal API key (Settings › Quality checks); OLS needs none.",
+     [("Open Interoperability", "/interoperability")]),
     ("settings", "Settings", "settings.png", [
         "<b>General:</b> default output folder and format, opening docs when a build finishes, and history.",
         "<b>Documentation:</b> layout, languages, public URL, imports, individuals, reasoning, competency "
@@ -443,6 +514,7 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 /* tables */
 .or-table { width: 100%; background: transparent !important; color: var(--or-ink) !important; }
 .or-table thead tr th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--or-muted); font-weight: 600; background: var(--or-line-2); }
+.or-clickable-rows tbody tr { cursor: pointer; }
 .or-table tbody td { font-size: 13px; border-color: var(--or-line-2) !important; }
 .or-cli { font-family: var(--or-mono); font-size: 12px; white-space: pre-wrap; word-break: break-all; background: var(--or-line-2);
   border-radius: 8px; padding: 10px 12px; width: 100%; }
@@ -457,7 +529,6 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-hero { background: #0F1724; color: #fff; border-radius: 14px; padding: 32px; }
 .or-feature .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
   display: flex; align-items: center; justify-content: center; }
-.or-logo-panel { background: #fff; border-radius: 10px; padding: 10px 14px; display: inline-flex; border: 1px solid var(--or-line); }
 .or-notice { padding: 10px 12px; background: var(--or-warn-bg); color: var(--or-warn); border-radius: 8px; font-size: 12.5px; }
 .or-themeprev { display: block; height: 64px; border-radius: 8px; border: 1px solid var(--or-line); width: 100%; }
 @media (prefers-reduced-motion: reduce) { .ob-dropzone { transition: none; } }
@@ -485,6 +556,7 @@ class _Session:
     def reset(self) -> None:
         self.build: dict = {"last": None, "running": False, "steps": [], "active": None, "done": frozenset(),
                             "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
+        self.interop: dict = {"s": None, "last": None, "running": False, "started": 0.0}
         self.cmp: dict = {"old": "", "new": "", "output": "", "last": None, "running": False, "filter": "all",
                           "done": None}
         self.verbose = False
@@ -545,6 +617,9 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
     """Steps shown while a task runs: (key, label)."""
     if s.task == "diff":
         return [("parse", "Parse both versions"), ("render", "Compare and write the report")]
+    if s.task == "interop":
+        what = " and ".join(x for x, on in (("Cross-domain", s.cdi), ("scientific", s.si)) if on).capitalize()
+        return [("parse", "Parse ontology"), ("cdi", f"{what} interoperability"), ("render", "Write report")]
     steps = [("parse", "Parse ontology"), ("checks", "Built-in quality checks")]
     if s.task in ("site", "single", "check"):
         if s.robot != "off":
@@ -555,8 +630,9 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
             steps.append(("iri", "IRI checks" + ("" if s.iri_network else " (offline)")))
         if s.ontocheck:
             steps.append(("ontocheck", "OntoCheck metrics"))
-        if s.cdi:
-            steps.append(("cdi", "Cross-domain interoperability"))
+        if s.cdi or s.si:
+            steps.append(("cdi", " and ".join(x for x, on in (("Cross-domain", s.cdi), ("scientific", s.si)) if on)
+                          .capitalize() + " interoperability"))
         if s.oops != "off":
             steps.append(("oops", "OOPS! pitfall scan"))
     steps.append(("render", {"site": "Render website", "single": "Render single HTML file", "markdown": "Write Markdown",
@@ -680,6 +756,16 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         except Exception as e:  # noqa: BLE001
             notify(str(e), "warning")
 
+    def export(path: str) -> None:
+        """Download a run's output: a folder as <folder>.zip, a single file as it is."""
+        try:
+            f = export_output(path)
+        except OSError as e:
+            notify(f"Could not export: {e}", "negative")
+            return
+        ui.download.file(str(f), f.name)
+        notify(f"Exported {f.name}")
+
     def link_for(path: str) -> str | None:
         """Serve a result through this app so it opens in a browser tab."""
         if not path:
@@ -752,7 +838,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 b.on("click", lambda key=key: on_pick(key))
         return seg
 
-    def render_changes(res, store: dict, rerender) -> None:
+    def render_changes(res, store: dict, rerender, on_new=None) -> None:
         """Comparison result: summary tiles and the filterable Changes table (Build and Compare pages)."""
         ch = res.changes
         sm = change_counts(ch)
@@ -770,6 +856,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.label(f"Compare versions · {res.seconds:.1f} s · {res.index}  (also .md and .json)") \
                             .classes("or-hint or-mono")
                     with ui.row().classes("gap-2"):
+                        if on_new is not None:
+                            ui.button("New build", icon="add", on_click=on_new).props("flat no-caps").mark("new-build")
                         ui.button("Open HTML report", icon="open_in_new", on_click=lambda: open_result(res.index)) \
                             .props("unelevated no-caps")
                         ui.button("Download HTML", icon="download", on_click=lambda: ui.download.file(res.index)) \
@@ -850,6 +938,126 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         info.text = f"Copied {a['ok']} file(s){extra} into a local workspace."
         return target
 
+    # ------------------------------------------------------------------ shared form parts
+    def repo_picker(on_add, hint: str = "") -> None:
+        """Find an ontology on OLS or BioPortal by name or id and add it as a reference (ols:envo)."""
+        from .quality_checks.cdi.repos import search_ontologies
+
+        with ui.column().classes("w-full gap-1"):
+            ui.label("Find on OLS or BioPortal").classes("or-label")
+            with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                repo = ui.select({"ols": "OLS", "bioportal": "BioPortal"}, value="ols") \
+                    .props('outlined dense aria-label="Repository"').classes("w-36")
+                q = ui.input(placeholder="Name or id, e.g. envo, environment, NCIT") \
+                    .props('outlined dense clearable aria-label="Find an ontology"').classes("grow").mark("repo-query")
+                btn = ui.button("Search", icon="search").props("outline no-caps no-wrap") \
+                    .classes("shrink-0").mark("repo-search")
+            ui.label(hint or "Adds the ontology by its repository id, e.g. ols:envo or bioportal:NCIT, so it "
+                             "is fetched from there; nothing to upload.").classes("or-hint")
+            box = ui.column().classes("w-full gap-1")
+
+        async def search() -> None:
+            box.clear()
+            text = (q.value or "").strip()
+            if not text:
+                return
+            key = prefs.cdi_bioportal_key.strip() or os.environ.get("BIOPORTAL_API_KEY", "")
+            with box:
+                ui.spinner(size="18px")
+            try:
+                hits = await run.io_bound(search_ontologies, text, repo.value, key)
+            except Exception as e:  # noqa: BLE001
+                box.clear()
+                with box:
+                    ui.label(f"Search failed: {e}").classes("or-hint text-negative")
+                return
+            box.clear()
+            with box:
+                if not hits:
+                    ui.label(f"No ontology on {repo.value.upper() if repo.value == 'ols' else 'BioPortal'} "
+                             f"matches “{text}”.").classes("or-hint")
+                for h in hits:
+                    with ui.row().classes("w-full items-center no-wrap gap-2 q-py-xs") \
+                            .style("border-bottom:1px solid var(--or-line-2)"):
+                        with ui.column().classes("gap-0 grow min-w-0"):
+                            ui.label(h.title).classes("text-weight-medium ellipsis w-full")
+                            ui.label(h.spec).classes("or-hint or-mono")
+                        if h.description:
+                            ui.icon("info", size="16px").classes("or-muted").tooltip(h.description)
+                        b = ui.button("Add", icon="add").props("flat dense no-caps no-wrap").classes("shrink-0") \
+                            .mark(f"repo-add-{h.id}")
+                        b.on_click(lambda _, h=h, b=b: (on_add([h.spec]), b.set_text("Added"), b.disable()))
+
+        q.on("keydown.enter", search)
+        btn.on_click(search)
+
+    def domain_rows(get, put) -> None:
+        """The SI domain map as a form: reference ontology id + OECD fields per row. A new empty row
+        appears as soon as the last one is used; the value is kept as text ("ols:emi = 1.5; 1.6")."""
+        from .quality_checks.cdi.si import OECD_FOS
+
+        options = {c: f"{c} {n}" for c, n in OECD_FOS.items()}
+        rows: list[dict] = []
+        for line in (get() or "").splitlines():
+            oid, sep, doms = line.partition("=")
+            if sep and oid.strip():
+                rows.append({"id": oid.strip(),
+                             "doms": [d.strip() for d in doms.replace(",", ";").split(";") if d.strip() in options]})
+        box = ui.column().classes("w-full gap-2").mark("si-domain-rows")
+
+        def save() -> None:
+            put("\n".join(f"{r['id']} = {'; '.join(r['doms'])}" for r in rows if r["id"].strip() and r["doms"]))
+
+        def changed(r: dict) -> None:
+            save()
+            if rows and rows[-1] is r and r["id"].strip():
+                add({"id": "", "doms": []})          # keep one empty row at the end
+
+        def remove(r: dict, el) -> None:
+            if r in rows:
+                rows.remove(r)
+            el.delete()
+            save()
+            if not rows or rows[-1]["id"].strip():
+                add({"id": "", "doms": []})
+
+        def add(r: dict) -> None:
+            rows.append(r)
+            with box:
+                with ui.row().classes("w-full no-wrap gap-2 items-center") as el:
+                    ui.input(placeholder="ols:emi, bioportal:NCIT or file:mine.ttl", value=r["id"],
+                             on_change=lambda e, r=r: (r.__setitem__("id", e.value or ""), changed(r))) \
+                        .props('outlined dense aria-label="Reference ontology id"').classes("or-mono") \
+                        .style("flex: 1 1 12rem; min-width: 9rem").mark("si-domain-id")
+                    ui.select(options, multiple=True, value=list(r["doms"]),
+                              on_change=lambda e, r=r: (r.__setitem__("doms", list(e.value or [])), changed(r))) \
+                        .props('outlined dense use-chips aria-label="Scientific domains" label="Domain(s)"') \
+                        .style("flex: 1 1 14rem; min-width: 10rem")
+                    ui.button(icon="close", on_click=lambda r=r, el=el: remove(r, el)) \
+                        .props('flat round dense aria-label="Remove row"')
+
+        for r in list(rows):
+            rows.remove(r)
+            add(r)
+        add({"id": "", "doms": []})
+
+    def metrics_grid(metrics: list[dict], title: str = "Quality metrics", mark: str = "ontocheck-metrics") -> None:
+        dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
+        with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
+            ui.label(title).classes("or-h2").mark(mark)
+            with ui.element("div").classes("w-full").style(
+                    "display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 28px"):
+                for group in dict.fromkeys(m["group"] for m in metrics):
+                    with ui.column().classes("gap-2 q-mb-sm min-w-0"):
+                        ui.label(group).classes("or-hint text-uppercase").style("letter-spacing:.6px")
+                        for m in (m for m in metrics if m["group"] == group):
+                            with ui.row().classes("items-start gap-2 no-wrap min-w-0").tooltip(m["about"]):
+                                ui.element("span").classes(f"or-dot {dot.get(m['status'], 'off')}") \
+                                    .style("margin-top:6px")
+                                with ui.column().classes("gap-0 min-w-0"):
+                                    ui.label(m["title"]).classes("text-weight-medium")
+                                    ui.label(m["value"]).classes("or-hint").style("word-break:break-word")
+
     # ------------------------------------------------------------------ Build
     def build_view() -> None:  # noqa: C901
         set_active("build")
@@ -922,6 +1130,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                     title="Choose the output folder")).props("outline no-caps")
                             output_info = ui.label().classes("or-hint or-mono w-full").style("word-break: break-all") \
                                 .props('aria-live="polite"')
+                            separate_cb = ui.checkbox("Each run in its own folder (self-contained, never overwritten)",
+                                                      on_change=changed).bind_value(s, "separate_runs") \
+                                .mark("separate-runs").tooltip(
+                                    "Adds the date and time to the folder name, so every run keeps its own docs "
+                                    "and Run history can open, export or re-run each one")
                             with ui.column().classes("w-full gap-1 q-mt-sm") as prev_box:
                                 ui.label("Previous version").classes("or-label")
                                 with ui.row().classes("w-full no-wrap gap-2 items-center"):
@@ -1027,14 +1240,21 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             render_formats()
             describe_later()
             output.props(f'placeholder="{s.default_output()}"')
-            output_info.text = f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)")
-            prior = existing_output(s.output_path())
+            per_run = s.separate_runs and s.task in RUN_FOLDER_TASKS
+            op = s.output_path().resolve()
+            is_file = op.suffix.lower() in (".html", ".json", ".md")
+            out_txt = (op.parent / f"{op.stem if is_file else op.name}-<date>-<time>" / (op.name if is_file else ""))
+            output_info.text = (f"Writes to: {out_txt}  (a new folder each run)"
+                                if per_run else
+                                f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)"))
+            separate_cb.set_visibility(s.task in RUN_FOLDER_TASKS)
+            prior = None if per_run else existing_output(s.output_path())
             state["prior"] = prior["index"] if prior else None
             existing_row.set_visibility(prior is not None)
             if prior:
                 what = f"{prior['count']} ontologies" if prior["kind"] == "folder" else "output"
                 existing_info.text = f"Previous {what} here from {when_text(prior['when'])}; building again updates it."
-            checks_row.set_visibility(s.task in ("site", "single", "check"))
+            checks_row.set_visibility(s.task in ("site", "single", "check", "interop"))
             prev_box.set_visibility(s.task == "diff")
             robot_txt = ("ROBOT off" if s.robot == "off" else
                          f"ROBOT ({'local' if s.robot_path else 'Docker'})")
@@ -1043,7 +1263,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             reasoner_txt = ("" if s.robot == "off" or s.reasoner == "off" else
                             f" · {'HermiT' if s.reasoner == 'hermit' else 'ELK'} consistency")
             cdi_txt = f" · cross-domain interoperability ({len(s.cdi_reference_list())} references)" if s.cdi else ""
-            checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}{cdi_txt}"
+            si_n = len(s.si_reference_list()) or len(s.cdi_reference_list())
+            si_txt = f" · scientific interoperability ({si_n} references)" if s.si else ""
+            if s.task == "interop":
+                checks_info.text = ("Interoperability only: " + (cdi_txt + si_txt).lstrip(" ·")
+                                    if s.cdi or s.si else "Turn on cross-domain or scientific interoperability.")
+            else:
+                checks_info.text = f"Quality checks: built-in · {robot_txt}{reasoner_txt} · {oops_txt}{cdi_txt}{si_txt}"
             cli.text = s.cli()
             show_running()
             s.save()
@@ -1066,8 +1292,24 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 source_info.text = text
 
         def show_running() -> None:
-            run_btn.text = "Running…" if state["running"] else {"check": "Run checks", "diff": "Compare"}.get(s.task, "Build docs")
+            run_btn.text = "Running…" if state["running"] else {"check": "Run checks", "interop": "Run checks",
+                                                                 "diff": "Compare"}.get(s.task, "Build docs")
             run_btn.set_enabled(not state["running"])
+
+        def new_build() -> None:
+            """Clear the shown result and the log so the next run starts from an empty panel.
+            The form keeps its settings; the run stays in Run history."""
+            if state["running"]:
+                return
+            state["last"] = None
+            state["log"].clear()
+            log_view.clear()
+            seen["log"] = 0
+            render_results()
+
+        def new_build_button() -> None:
+            ui.button("New build", icon="add", on_click=new_build).props("flat no-caps").mark("new-build") \
+                .tooltip("Clear this result and start a new build (it stays in Run history)")
 
         def render_results() -> None:  # noqa: C901
             results.clear()
@@ -1078,7 +1320,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             name = Path(s.source).name or s.source
                             done_n, total = len(state["done"]), len(state["steps"])
                             with ui.row().classes("w-full items-center justify-between"):
-                                ui.label({"check": f"Checking {name}…", "diff": f"Comparing {name}…"}.get(
+                                ui.label({"check": f"Checking {name}…", "interop": f"Checking {name}…",
+                                          "diff": f"Comparing {name}…"}.get(
                                     s.task, f"Building {name}…")).classes("or-h2")
                                 ui.label(state["folder_pos"] or f"Step {min(done_n + 1, total)} of {total}").classes("or-hint")
                             ui.linear_progress(value=done_n / max(total, 1), show_value=False).props("rounded size=6px")
@@ -1107,13 +1350,15 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 if isinstance(res, Exception):
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-2"):
-                            with ui.row().classes("items-center gap-2"):
-                                ui.label("Build failed").classes("or-h2")
-                                badge("err", "Failed")
+                            with ui.row().classes("w-full items-center justify-between"):
+                                with ui.row().classes("items-center gap-2"):
+                                    ui.label("Build failed").classes("or-h2")
+                                    badge("err", "Failed")
+                                new_build_button()
                             ui.label(str(res)).classes("or-mono or-hint")
                     return
                 if res.task == "diff" and res.changes:
-                    render_changes(res, state, render_results)
+                    render_changes(res, state, render_results, on_new=new_build)
                     return
                 t = res.totals
                 failed = len(res.rows) - res.ok
@@ -1136,9 +1381,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 ui.label(f"{TASKS[res.task]} · {res.seconds:.1f} s · {res.index or res.output}") \
                                     .classes("or-hint or-mono")
                             with ui.row().classes("gap-2"):
-                                if res.index and res.task != "check":
+                                new_build_button()
+                                if res.index and res.task not in ("check", "interop"):
                                     ui.button("Open docs", icon="open_in_new", on_click=lambda: open_result(res.index)) \
                                         .props("unelevated no-caps")
+                                ui.button("Export", icon="download", on_click=lambda: export(str(res.output))) \
+                                    .props("outline no-caps").mark("export-output") \
+                                    .tooltip("Download the output" + (" as a .zip" if Path(res.output).is_dir() else ""))
                                 ui.button("Show in folder", icon="folder_open",
                                           on_click=lambda: reveal(str(res.output))).props("outline no-caps")
                         with ui.row().classes("w-full gap-3"):
@@ -1186,21 +1435,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     tbl.on("reveal", lambda e: reveal(e.args))
 
         def metrics_card(metrics: list[dict]) -> None:
-            dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
-            with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
-                ui.label("Quality metrics").classes("or-h2").mark("ontocheck-metrics")
-                with ui.element("div").classes("w-full").style(
-                        "display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 28px"):
-                    for group in dict.fromkeys(m["group"] for m in metrics):
-                        with ui.column().classes("gap-2 q-mb-sm min-w-0"):
-                            ui.label(group).classes("or-hint text-uppercase").style("letter-spacing:.6px")
-                            for m in (m for m in metrics if m["group"] == group):
-                                with ui.row().classes("items-start gap-2 no-wrap min-w-0").tooltip(m["about"]):
-                                    ui.element("span").classes(f"or-dot {dot.get(m['status'], 'off')}") \
-                                        .style("margin-top:6px")
-                                    with ui.column().classes("gap-0 min-w-0"):
-                                        ui.label(m["title"]).classes("text-weight-medium")
-                                        ui.label(m["value"]).classes("or-hint").style("word-break:break-word")
+            metrics_grid(metrics)
 
         def issues_card(res, many: bool) -> None:
             all_issues = res.issues
@@ -1241,8 +1476,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         if res.task == "site" and res.index and not many:
                             ui.button("Open full quality report", on_click=lambda: open_result(res.index, "#quality")) \
                                 .props("flat dense no-caps")
-                        elif res.task == "check":
-                            ui.button("Open report (JSON)", on_click=lambda: open_result(str(res.output))) \
+                        elif res.task in ("check", "interop"):
+                            ui.button("Open report (JSON)", on_click=lambda: open_result(res.index or str(res.output))) \
                                 .props("flat dense no-caps")
 
         def signature() -> tuple:
@@ -1309,7 +1544,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 state["log"].append(f"DONE  {res.ok} of {len(res.rows)} succeeded · {res.seconds:.1f}s")
                 notify(f"{res.ok} of {len(res.rows)} succeeded" + (f", {failed} failed" if failed else ""),
                        "positive" if not failed else "warning")
-                if (prefs.open_when_done and res.index and res.task != "check" and res.ok
+                if (prefs.open_when_done and res.index and res.task not in ("check", "interop") and res.ok
                         and not os.environ.get("NICEGUI_USER_SIMULATION")):
                     webbrowser.open(Path(res.index).resolve().as_uri())
             finally:
@@ -1423,6 +1658,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         ready.append(True)
         refresh()
         render_results()
+        if state.pop("autostart", False):      # "Run again" from Run history
+            ui.timer(0.2, start, once=True)
 
     # ------------------------------------------------------------------ Run history
     def history_view() -> None:
@@ -1481,24 +1718,30 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             tbl.add_slot("body-cell-name", r'''<q-td :props="props"><div class="text-weight-medium">{{ props.value }}</div>
                 <div class="or-hint or-mono">→ {{ props.row.out }}</div></q-td>''')
             tbl.add_slot("body-cell-act", r'''<q-td :props="props" class="text-no-wrap">
+                <q-btn flat round dense size="sm" icon="tune"
+                  aria-label="View configuration" @click.stop="() => $parent.$emit('details', props.row)"><q-tooltip>View configuration, edit and re-run</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="open_in_new" :disable="!props.row.index || !props.row.exists"
-                  aria-label="Open output" @click="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
+                  aria-label="Open output" @click.stop="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
+                <q-btn flat round dense size="sm" icon="download" :disable="!props.row.exists"
+                  aria-label="Export output" @click.stop="() => $parent.$emit('export', props.row)"><q-tooltip>Export output (folders as .zip)</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="folder_open" :disable="!props.row.exists"
-                  aria-label="Show in folder" @click="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
-                <q-btn flat round dense size="sm" icon="replay"
-                  aria-label="Load settings and re-run" @click="() => $parent.$emit('rerun', props.row)"><q-tooltip>Load settings and re-run</q-tooltip></q-btn>
+                  aria-label="Show in folder" @click.stop="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="delete_outline" color="negative"
-                  aria-label="Remove from history" @click="() => $parent.$emit('forget', props.row)"><q-tooltip>Remove from history (files are kept)</q-tooltip></q-btn>
+                  aria-label="Remove from history" @click.stop="() => $parent.$emit('forget', props.row)"><q-tooltip>Remove from history (files are kept)</q-tooltip></q-btn>
                 </q-td>''')
             by_id = {e.id: e for e in shown}
             tbl.on("open", lambda e: open_result(e.args.get("index")))
             tbl.on("reveal", lambda e: reveal(e.args.get("out")))
-            tbl.on("rerun", lambda e: rerun(by_id[e.args["id"]]))
+            tbl.on("details", lambda e: details(by_id[e.args["id"]]))
+            tbl.on("export", lambda e: export(by_id[e.args["id"]].output))
+            tbl.on("rowClick", lambda e: details(by_id[e.args[1]["id"]]))
+            tbl.props("row-click-cursor").classes("or-clickable-rows")
             tbl.on("forget", lambda e: (forget_run(e.args["id"]), table.refresh()))
             with ui.row().classes("w-full justify-between q-px-md q-py-sm"):
                 ui.label(f"{len(shown)} of {len(entries)} runs shown").classes("or-hint")
 
-        def rerun(entry) -> None:
+        def rerun(entry, now: bool = False) -> None:
+            """Load a run's settings into the form: to edit them (``now`` False) or to run at once."""
             if entry.task == "diff":
                 cmp.update(old=entry.settings.get("previous_version", ""), new=entry.settings.get("source", ""),
                            output=entry.settings.get("output", ""), last=None, done=None)
@@ -1511,8 +1754,46 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     setattr(s, k, v)
             prefs.apply(s)
             s.save()
+            if now:
+                state["autostart"] = True
             ui.navigate.to("/")
-            notify("Settings from that run loaded. Press Build docs to run it again.")
+            notify("Running again with the settings of that run." if now else
+                   "Settings from that run loaded. Change what you need, then press "
+                   + {"check": "Run checks", "interop": "Run checks"}.get(entry.task, "Build docs") + ".")
+
+        def details(entry) -> None:
+            known = set(vars(Settings()))
+            cli = Settings(**{k: v for k, v in entry.settings.items() if k in known}).cli()
+            with ui.dialog() as d, ui.card().classes("or-card").style(
+                    "width:min(46rem,94vw);max-width:94vw;max-height:90vh;overflow-y:auto"):
+                with ui.row().classes("w-full items-start justify-between no-wrap"):
+                    with ui.column().classes("gap-0"):
+                        ui.label(run_name(entry)).classes("or-h2")
+                        ui.label(f"{TASKS.get(entry.task, entry.task)} · {when_text(entry.when)} · "
+                                 + ("failed" if entry.failed else issues_text(entry))).classes("or-hint")
+                    ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
+                if entry.failed:
+                    ui.label(entry.failed).classes("or-hint text-negative")
+                ui.label("Configuration").classes("or-hint text-uppercase q-mt-sm").style("letter-spacing:.6px")
+                with ui.element("dl").classes("or-config w-full"):
+                    for k, v in run_config_rows(entry.settings):
+                        with ui.element("div").classes("row no-wrap gap-3 q-py-xs"):
+                            with ui.element("dt").classes("or-hint").style("min-width:12rem"):
+                                ui.label(k)
+                            with ui.element("dd").classes("q-ma-none or-mono").style("word-break:break-all"):
+                                ui.label(str(v))
+                ui.label("Command line").classes("or-hint text-uppercase q-mt-sm").style("letter-spacing:.6px")
+                ui.code(cli, language="bash").classes("w-full")
+                ui.label("This run's output: " + entry.output + ("" if entry.exists else " (deleted)")) \
+                    .classes("or-hint or-mono").style("word-break:break-all")
+                with ui.row().classes("w-full justify-end gap-2 q-mt-sm"):
+                    ui.button("Export", icon="download", on_click=lambda: export(entry.output)) \
+                        .props("outline no-caps").set_enabled(entry.exists)
+                    ui.button("Edit and run", icon="edit", on_click=lambda: (d.close(), rerun(entry))) \
+                        .props("outline no-caps").tooltip("Load this configuration into the form to change it")
+                    ui.button("Run again", icon="replay", on_click=lambda: (d.close(), rerun(entry, now=True))) \
+                        .props("unelevated no-caps")
+            d.open()
 
         def confirm_clear() -> None:
             with ui.dialog() as d, ui.card().classes("or-card"):
@@ -1713,6 +1994,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                     ui.button("Browse…", on_click=lambda: pick(
                                         "any", lambda p: add_refs([p]), False,
                                         title="Choose a reference ontology or SSSOM file")).props("outline no-caps")
+                            repo_picker(add_refs)
                             ui.label("ols / bioportal: find ontologies with matching terms and keep the top N. "
                                      "ols:envo,chebi or bioportal:NCIT: use those. Other OLS or OntoPortal services: "
                                      "ols@URL or ontoportal@URL. Files and URLs: RDF ontologies or SSSOM .tsv. "
@@ -1773,6 +2055,62 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 cdi_drop.text = f"Added {len(files)} reference file(s)."
 
                             drop_targets["cdi"] = (lambda a: setattr(cdi_drop, "text", "Copying…"), cdi_dropped)
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-3"):
+                            ui.label("Scientific interoperability").classes("or-h2")
+                            ui.label("Counts the scientific domains (OECD fields of science), other than the "
+                                     "ontology's own, in which it is interoperable: for each domain, CDI computed "
+                                     "with only that domain's reference ontologies must reach θ_s. Upper-level "
+                                     "ontologies (BFO, DOLCE, …) are ignored.").classes("or-hint")
+                            ui.checkbox("Score scientific interoperability").bind_value(work, "si").mark("si")
+                            si_same = ui.checkbox("Use the cross-domain reference ontologies",
+                                                  value=not work.si_references.strip()).mark("si-same-refs")
+                            ui.label("Reuses that run, so nothing is fetched twice. Needs the generality model.") \
+                                .classes("or-hint")
+                            with ui.column().classes("w-full gap-2") as si_refs_box:
+                                ui.label("Reference ontologies for scientific interoperability, one per line") \
+                                    .classes("or-label")
+                                si_refs = ui.textarea(placeholder="ols:envo,chebi\nbioportal:NCIT\n/path/to/ref.owl") \
+                                    .bind_value(work, "si_references").mark("si-references") \
+                                    .props('outlined dense autogrow aria-label="SI reference ontologies"') \
+                                    .classes("w-full or-mono")
+
+                                def add_si_refs(paths: list[str]) -> None:
+                                    lines = [x for x in work.si_references.splitlines() if x.strip()]
+                                    si_refs.set_value("\n".join(lines + [p for p in paths if p not in lines]))
+
+                                with ui.row().classes("gap-2"):
+                                    ui.button("Browse…", icon="upload_file", on_click=lambda: pick(
+                                        "any", lambda p: add_si_refs([p]), False,
+                                        title="Choose a reference ontology or SSSOM file")).props("outline no-caps")
+                                repo_picker(add_si_refs)
+
+                            def si_same_changed(e) -> None:
+                                si_refs_box.set_visibility(not e.value)
+                                if e.value:
+                                    si_refs.set_value("")
+                            si_same.on_value_change(si_same_changed)
+                            si_refs_box.set_visibility(not si_same.value)
+                            from .quality_checks.cdi.si import OECD_FOS
+                            with ui.row().classes("gap-6 items-end"):
+                                with ui.column().classes("gap-1"):
+                                    ui.label("Own scientific domain").classes("or-label")
+                                    ui.select({"": "Detect from title and description",
+                                               **{c: f"{c} {n}" for c, n in OECD_FOS.items()}}) \
+                                        .bind_value(work, "si_home_domain").mark("si-home-domain") \
+                                        .props('outlined dense aria-label="Own scientific domain"').classes("w-96")
+                                with ui.column().classes("gap-1"):
+                                    ui.label("θ_s").classes("or-label")
+                                    ui.number(min=0, max=1, step=0.05, format="%.2f").bind_value(
+                                        work, "si_theta_s", forward=lambda v: float(0.3 if v is None else v)) \
+                                        .props('outlined dense aria-label="Threshold theta s"').classes("w-28")
+                            ui.label("Your own domain is never counted. θ_s: a domain counts as covered when its "
+                                     "CDI reaches this (default 0.3).").classes("or-hint")
+                            ui.label("Domain of a reference ontology (optional)").classes("or-label")
+                            domain_rows(lambda: work.si_domain_map, lambda v: setattr(work, "si_domain_map", v))
+                            ui.label("Reference ontologies get a domain from repository metadata, else from a "
+                                     "classifier reading their title and description. A line here overrides both; "
+                                     "the review lists ontologies left without one.").classes("or-hint")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
@@ -1906,7 +2244,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                              "OOPS! — from one window or the command line.").style(
                         "font-size:15px;line-height:1.55;color:#C9D1DB;max-width:560px")
                     with ui.row().classes("gap-2 q-mt-sm"):
-                        for chip in (f"Version {__version__}", "Apache License 2.0", "CAIR-Nepal"):
+                        for chip in (f"Version {__version__}", "MIT License", "CAIR-Nepal"):
                             ui.label(chip).style("background:#1E293B;padding:4px 10px;border-radius:20px;font-size:12px")
                 with ui.column().classes("gap-2"):
                     ui.button("View on GitHub", on_click=lambda: ui.navigate.to(REPO, new_tab=True)) \
@@ -1952,16 +2290,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.label("Please cite ROBOT, OntoCheck and OOPS! when publishing their results.").classes("or-hint q-mt-sm")
             with ui.element("footer").classes("w-full row items-center justify-between gap-4 q-mt-md q-pt-md").style(
                     "border-top: 1px solid var(--or-line)"):
-                with ui.row().classes("items-center gap-4"):
-                    with ui.link(target="https://cair-nepal.org", new_tab=True).classes("or-logo-panel") \
-                            .props('aria-label="CAIR-Nepal website"'):
-                        ui.image(f"{STATIC_URL}/cair-nepal-logo.png") \
-                            .props('alt="CAIR-Nepal — Shaping the Future with AI" fit=contain no-spinner') \
-                            .style("width: 220px; height: 54px")
-                    with ui.column().classes("gap-0"):
-                        ui.label("Developed by CAIR-Nepal").classes("or-label")
-                        ui.link("cair-nepal.org", "https://cair-nepal.org", new_tab=True).classes("or-hint")
-                ui.label(f"© CAIR-Nepal · Apache License 2.0 · OntoReview {__version__}").classes("or-hint")
+                with ui.column().classes("gap-0"):
+                    ui.label("Developed by CAIR-Nepal").classes("or-label")
+                    ui.link("cair-nepal.org", "https://cair-nepal.org", new_tab=True).classes("or-hint")
+                ui.label(f"MIT License · OntoReview {__version__}").classes("or-hint")
 
         async def fill() -> None:
             info = await run.io_bound(system_info)
@@ -2161,6 +2493,323 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     set_side(side, target)
             drop_targets[side] = (lambda a, side=side: setattr(infos[side], "text", "Copying…"), done)
             render_side(side)
+        show_out()
+        render()
+
+    # ------------------------------------------------------------------ Interoperability
+    def interop_view() -> None:  # noqa: C901
+        """Cross-domain and scientific interoperability of one ontology, on its own page (like Compare)."""
+        from .quality_checks.cdi.si import OECD_FOS
+
+        set_active("interop")
+        st = SESSION.interop
+        if st["s"] is None:
+            st["s"] = Settings(**{**asdict(s), "task": "interop", "output": ""})
+        iop: Settings = st["s"]
+        iop.task = "interop"
+        head = page_head("Interoperability", "How well an ontology connects to other domains (cross-domain, CDI) "
+                                             "and to how many scientific fields (scientific, SI).")
+        with head:
+            run_btn = ui.button("Run checks", icon="hub", on_click=lambda: run_iop()) \
+                .props("unelevated no-caps").mark("interop-run")
+        with ui.element("div").classes("or-body column gap-4"):
+            with ui.row().classes("w-full gap-4 no-wrap max-md:flex-wrap items-stretch"):
+                with ui.card().classes("or-card").props("flat").style("flex: 1 1 0; min-width: 0"):
+                    with ui.column().classes("or-sec gap-3"):
+                        ui.label("Ontology").classes("or-h2")
+                        with ui.element("div").props('data-zone="iop-source"').classes("ob-dropzone w-full"):
+                            src_box = ui.column().classes("w-full gap-2")
+                        with ui.row().classes("gap-2"):
+                            ui.button("File", icon="description", on_click=lambda: pick(
+                                "ontology", set_source, False, iop.source, title="Choose the ontology")) \
+                                .props("outline no-caps dense").classes("px-3")
+                            ui.button("URL", icon="link", on_click=lambda: ask_url()).props("outline no-caps dense") \
+                                .classes("px-3")
+                        src_info = ui.label("Drop an ontology file, choose one, or give a URL.").classes("or-hint")
+                with ui.card().classes("or-card").props("flat").style("flex: 1 1 0; min-width: 0"):
+                    with ui.column().classes("or-sec gap-2"):
+                        ui.label("Save report to").classes("or-h2")
+                        with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                            out_in = ui.input(on_change=lambda: show_out()).bind_value(iop, "output") \
+                                .props('outlined dense clearable aria-label="Save report to"').classes("grow or-mono")
+                            ui.button("Browse…", on_click=lambda: pick("any", lambda p: out_in.set_value(p), True,
+                                                                       iop.output, "Where to save the report")) \
+                                .props("outline no-caps")
+                        out_info = ui.label().classes("or-hint or-mono").style("word-break: break-all")
+                        ui.label("Runs in the background; you can switch pages. Each run is kept in Run history.") \
+                            .classes("or-hint")
+            with ui.row().classes("w-full gap-4 no-wrap max-md:flex-wrap items-stretch"):
+                with ui.card().classes("or-card").props("flat").style("flex: 1 1 0; min-width: 0"):
+                    with ui.column().classes("or-sec gap-3"):
+                        ui.label("Cross-domain interoperability").classes("or-h2")
+                        ui.checkbox("Score cross-domain interoperability (CDI)").bind_value(iop, "cdi").mark("iop-cdi")
+                        ui.label("Reference ontologies, one per line").classes("or-label")
+                        refs = ui.textarea(placeholder="ols\nols:envo,chebi\nbioportal:NCIT\n/path/to/ref.owl") \
+                            .bind_value(iop, "cdi_references").mark("iop-references") \
+                            .props('outlined dense autogrow aria-label="Reference ontologies"').classes("w-full or-mono")
+
+                        def add_refs(paths: list[str]) -> None:
+                            lines = [x for x in iop.cdi_references.splitlines() if x.strip()]
+                            refs.set_value("\n".join(lines + [p for p in paths if p not in lines]))
+
+                        with ui.element("div").props('data-zone="iop-refs"').classes("ob-dropzone w-full"):
+                            with ui.row().classes("w-full items-center no-wrap gap-2"):
+                                ui.icon("upload_file", size="20px").classes("text-primary")
+                                refs_drop = ui.label("Drop reference ontologies or SSSOM files here").classes("or-hint grow")
+                                ui.button("Browse…", on_click=lambda: pick(
+                                    "any", lambda p: add_refs([p]), False,
+                                    title="Choose a reference ontology or SSSOM file")).props("outline no-caps")
+                        repo_picker(add_refs)
+                        ui.label("ols / bioportal alone: find ontologies with matching terms and keep the top "
+                                 f"{iop.cdi_top_n or 10}. Repositories receive labels and IRIs, never the file.") \
+                            .classes("or-hint")
+                        ui.label("Own domain(s), left out of discovery").classes("or-label")
+                        ui.input(placeholder="e.g. agriculture").bind_value(iop, "cdi_domains") \
+                            .props('outlined dense clearable aria-label="Own domains"').classes("w-64")
+                with ui.card().classes("or-card").props("flat").style("flex: 1 1 0; min-width: 0"):
+                    with ui.column().classes("or-sec gap-3"):
+                        ui.label("Scientific interoperability").classes("or-h2")
+                        ui.checkbox("Score scientific interoperability (SI)").bind_value(iop, "si").mark("iop-si")
+                        same = ui.checkbox("Use the cross-domain reference ontologies",
+                                           value=not iop.si_references.strip())
+                        with ui.column().classes("w-full gap-2") as own_box:
+                            si_refs = ui.textarea(placeholder="ols:envo\nbioportal:NCIT\n/path/to/ref.owl") \
+                                .bind_value(iop, "si_references") \
+                                .props('outlined dense autogrow aria-label="SI reference ontologies"').classes("w-full or-mono")
+
+                            def add_si(paths: list[str]) -> None:
+                                lines = [x for x in iop.si_references.splitlines() if x.strip()]
+                                si_refs.set_value("\n".join(lines + [p for p in paths if p not in lines]))
+                            ui.button("Browse…", icon="upload_file", on_click=lambda: pick(
+                                "any", lambda p: add_si([p]), False, title="Choose a reference ontology")) \
+                                .props("outline no-caps")
+                            repo_picker(add_si)
+
+                        def same_changed(e) -> None:
+                            own_box.set_visibility(not e.value)
+                            if e.value:
+                                si_refs.set_value("")
+                        same.on_value_change(same_changed)
+                        own_box.set_visibility(not same.value)
+                        with ui.row().classes("gap-4 items-end"):
+                            with ui.column().classes("gap-1"):
+                                ui.label("Own scientific domain").classes("or-label")
+                                ui.select({"": "Detect from title and description",
+                                           **{c: f"{c} {n}" for c, n in OECD_FOS.items()}}) \
+                                    .bind_value(iop, "si_home_domain") \
+                                    .props('outlined dense aria-label="Own scientific domain"').classes("w-80")
+                            with ui.column().classes("gap-1"):
+                                ui.label("θ_s").classes("or-label")
+                                ui.number(min=0, max=1, step=0.05, format="%.2f").bind_value(
+                                    iop, "si_theta_s", forward=lambda v: float(0.3 if v is None else v)) \
+                                    .props('outlined dense aria-label="Threshold theta s"').classes("w-28")
+                        ui.label("Domain of a reference ontology (optional)").classes("or-label")
+                        domain_rows(lambda: iop.si_domain_map, lambda v: setattr(iop, "si_domain_map", v))
+            results = ui.column().classes("w-full gap-4")
+
+        def show_out() -> None:
+            out_info.text = (f"Writes {iop.output_path()}" + ("" if iop.output.strip() else "  (default)")
+                             if iop.source else "Choose the ontology first.")
+
+        def render_source() -> None:
+            src_box.clear()
+            with src_box:
+                val = iop.source
+                if val:
+                    is_url = val.startswith(("http://", "https://"))
+                    with ui.element("div").classes("or-chip"):
+                        with ui.element("div").classes("or-chipicon"):
+                            ui.icon("link" if is_url else "description", size="20px")
+                        with ui.column().classes("gap-0 grow min-w-0"):
+                            ui.label(val if is_url else Path(val).name).classes("or-label ellipsis w-full")
+                            if not is_url:
+                                ui.label(str(Path(val).parent) + "/").classes("or-hint or-mono ellipsis w-full")
+                        ui.button(icon="close", on_click=lambda: set_source("")) \
+                            .props('flat round dense aria-label="Clear the ontology"')
+                else:
+                    inp = ui.input(placeholder="Type a path or URL and press Enter, or drop a file here") \
+                        .props('borderless dense aria-label="Ontology path or URL"').classes("w-full or-mono") \
+                        .mark("iop-source")
+                    inp.on("keydown.enter", lambda: set_source((inp.value or "").strip()))
+
+        def set_source(value: str) -> None:
+            if value and not value.startswith(("http://", "https://")):
+                pth = Path(value).expanduser()
+                if not pth.exists():
+                    notify(f"Not found: {value}", "warning")
+                    return
+            iop.source = value
+            iop.output = iop.output if value else ""
+            render_source()
+            show_out()
+
+        def ask_url() -> None:
+            with ui.dialog() as dlg, ui.card().classes("or-card w-[36rem] max-w-full"):
+                ui.label("Ontology URL or path").classes("or-h2")
+                inp = ui.input(placeholder="https://… or /path/to/ontology.ttl", value=iop.source) \
+                    .props("outlined autofocus").classes("w-full or-mono")
+                with ui.row().classes("w-full justify-end"):
+                    ui.button("Cancel", on_click=dlg.close).props("flat no-caps")
+                    ui.button("Use", on_click=lambda: (set_source(inp.value.strip()), dlg.close())) \
+                        .props("unelevated no-caps")
+            dlg.open()
+
+        def summaries(res) -> dict[str, dict]:
+            """{tool: provenance summary or {"error": …}} from the written report."""
+            try:
+                data = json.loads(Path(res.index or res.output).read_text("utf-8"))
+            except (OSError, ValueError):
+                return {}
+            entry = next(iter(data.values()), {}) if isinstance(data, dict) else {}
+            out = {}
+            for ext in entry.get("external", []) if isinstance(entry, dict) else []:
+                out[ext["tool"]] = {"error": ext["error"]} if ext.get("error") else \
+                    (ext.get("provenance") or {}).get("summary", {})
+            return out
+
+        def new_check() -> None:
+            if not st["running"]:
+                st["last"] = None
+                render()
+
+        def render() -> None:
+            results.clear()
+            run_btn.set_enabled(not st["running"])
+            run_btn.text = "Running…" if st["running"] else "Run checks"
+            with results:
+                if st["running"]:
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.row().classes("or-sec items-center gap-3"):
+                            ui.spinner(size="22px")
+                            ui.label(f"Checking {Path(iop.source).name or iop.source}…").classes("or-h2")
+                            ui.label("Repository lookups and the language model can take a few minutes.") \
+                                .classes("or-hint")
+                    return
+                res = st["last"]
+                if res is None:
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2 items-center text-center q-py-xl"):
+                            ui.icon("hub", size="40px").classes("or-muted")
+                            ui.label("No interoperability check yet").classes("or-h2")
+                            ui.label("Choose the ontology and its reference ontologies (upload, name them on OLS or "
+                                     "BioPortal, or let OntoReview find them), then press Run checks.").classes("or-hint")
+                    return
+                if isinstance(res, Exception):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("or-sec gap-2"):
+                            with ui.row().classes("w-full items-center justify-between"):
+                                with ui.row().classes("items-center gap-2"):
+                                    ui.label("Check failed").classes("or-h2")
+                                    badge("err", "Failed")
+                                ui.button("New check", icon="add", on_click=new_check).props("flat no-caps")
+                            ui.label(str(res)).classes("or-mono or-hint")
+                    return
+                row = res.rows[0]
+                sm = summaries(res)
+                with ui.card().classes("or-card w-full").props("flat"):
+                    with ui.column().classes("or-sec gap-3"):
+                        with ui.row().classes("w-full items-start justify-between gap-3"):
+                            with ui.column().classes("gap-1 min-w-0"):
+                                with ui.row().classes("items-center gap-2"):
+                                    ui.label(row.title or row.name).classes("or-h2")
+                                    badge("err", "Failed") if row.problem else badge("ok", "Done")
+                                ui.label(f"Interoperability check · {res.seconds:.1f} s · {res.output}") \
+                                    .classes("or-hint or-mono")
+                            with ui.row().classes("gap-2"):
+                                ui.button("New check", icon="add", on_click=new_check).props("flat no-caps") \
+                                    .mark("iop-new")
+                                ui.button("Open report (JSON)", icon="open_in_new",
+                                          on_click=lambda: open_result(res.index or str(res.output))).props("unelevated no-caps")
+                                ui.button("Export", icon="download", on_click=lambda: export(str(res.output))) \
+                                    .props("outline no-caps")
+                                ui.button("Show in folder", icon="folder_open",
+                                          on_click=lambda: reveal(str(res.output))).props("outline no-caps")
+                        if row.problem:
+                            ui.label(row.problem).classes("or-mono or-hint")
+                        with ui.row().classes("w-full gap-3"):
+                            c = sm.get("Cross-domain interoperability")
+                            si_ = sm.get("Scientific interoperability")
+                            for label, val, sub_ in (
+                                    ("Cross-domain interoperability (CDI)",
+                                     None if not c or c.get("error") or c.get("cdi") is None else f"{c['cdi']:.2f}",
+                                     (c or {}).get("error") or (("interoperable" if c.get("interoperable") else
+                                                                 f"below θ = {c['params']['theta']}") if c and c.get("cdi") is not None else "")),
+                                    ("Scientific interoperability (SI)",
+                                     None if not si_ or si_.get("error") else str(si_["si"]),
+                                     (si_ or {}).get("error") or (f"of {si_['taxonomy_size'] - 1} domains: "
+                                                                  + (", ".join(si_["covered_domains"]) or "none covered")
+                                                                  if si_ else ""))):
+                                if val is None and not sub_:
+                                    continue
+                                with ui.element("div").classes("or-tile " + ("err" if val is None else "")):
+                                    ui.label(label).classes("k")
+                                    ui.label(val if val is not None else "–").classes("v")
+                                    ui.label(sub_).classes("or-hint").style("word-break:break-word")
+                if row.metrics:
+                    metrics_grid(row.metrics, "Interoperability", "iop-metrics")
+                for n in row.notes:
+                    ui.label(n).classes("or-hint")
+
+        async def run_iop() -> None:
+            if st["running"]:
+                return
+            job = Settings(**{**asdict(iop), "task": "interop"})
+            problems = job.validate()
+            if not job.source.strip():
+                problems = ["Choose the ontology first."] + problems
+            if problems:
+                for p_ in problems:
+                    notify(p_, "warning")
+                return
+            st.update(running=True, started=time.time())
+            background_tasks.create(iop_job(job), name="ontoreview-interop")
+            iop_sync()
+
+        async def iop_job(job: Settings) -> None:
+            """Runs independently of this view: switching pages does not stop or lose it."""
+            try:
+                res = await run.io_bound(run_task, job)
+            except Exception as e:  # noqa: BLE001
+                st["last"] = e
+                if prefs.keep_history:
+                    record_run(job, None, str(e), limit=prefs.history_limit)
+                notify(f"Interoperability check failed: {e}", "negative")
+            else:
+                st["last"] = res
+                if prefs.keep_history:
+                    record_run(job, res, limit=prefs.history_limit)
+                notify("Interoperability check done", "positive")
+            finally:
+                st["running"] = False
+
+        seen = {"sig": (st["running"], id(st["last"]))}
+
+        def iop_sync() -> None:
+            sig = (st["running"], id(st["last"]))
+            if results.is_deleted or sig == seen["sig"]:
+                return
+            seen["sig"] = sig
+            render()
+
+        ui.timer(0.3, iop_sync)
+        drop_targets.clear()
+
+        def src_dropped(a: dict) -> None:
+            target = dropped_path(a, src_info, files_only=True)
+            if target:
+                set_source(target)
+
+        def refs_dropped(a: dict) -> None:
+            files = upload_files(a.get("batch") or "") if a.get("ok") else []
+            if not files:
+                refs_drop.text = "Nothing usable was dropped: no ontology or .tsv files found."
+                return
+            add_refs(files)
+            refs_drop.text = f"Added {len(files)} reference file(s)."
+
+        drop_targets["iop-source"] = (lambda a: setattr(src_info, "text", "Copying…"), src_dropped)
+        drop_targets["iop-refs"] = (lambda a: setattr(refs_drop, "text", "Copying…"), refs_dropped)
+        render_source()
         show_out()
         render()
 
@@ -2613,6 +3262,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             d.open()
 
     ui.sub_pages({"/": build_view, "/history": history_view, "/compare": compare_view, "/terms": terms_view,
+                  "/interoperability": interop_view,
                   "/settings": settings_view,
                   "/about": about_view,
                   "/help": help_view}) \

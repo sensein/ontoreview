@@ -2,7 +2,7 @@
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
   <p>{{ t('cite_as') }}</p>
   <blockquote class="cite" id="cite-text">{{ s.context.cite }}</blockquote>
-  <p class="small"><button class="copy" data-copy-target="cite-text">copy</button> &middot; <a href="{{ root }}CITATION.cff">CITATION.cff</a></p>
+  <p class="small"><button class="copy" data-copy-target="cite-text">copy</button>{% if not inline %} &middot; <a href="{{ root }}CITATION.cff">CITATION.cff</a>{% endif %}</p>
   <pre id="cite-bib"><code>{{ s.context.bibtex }}</code></pre>
   <p class="small"><button class="copy" data-copy-target="cite-bib">copy BibTeX</button></p>
 </section>

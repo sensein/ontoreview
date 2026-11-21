@@ -61,28 +61,6 @@
     ]
   },
   {
-    "@id": "https://example.org/colors/darkred",
-    "@type": [
-      "http://www.w3.org/2004/02/skos/core#Concept"
-    ],
-    "http://www.w3.org/2004/02/skos/core#broader": [
-      {
-        "@id": "https://example.org/colors/red"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#prefLabel": [
-      {
-        "@language": "en",
-        "@value": "dark red"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#related": [
-      {
-        "@id": "https://example.org/colors/maroon"
-      }
-    ]
-  },
-  {
     "@id": "https://example.org/colors/maroon",
     "@type": [
       "http://www.w3.org/2004/02/skos/core#Concept"
@@ -119,6 +97,28 @@
       {
         "@language": "en",
         "@value": "colour"
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/colors/darkred",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://www.w3.org/2004/02/skos/core#broader": [
+      {
+        "@id": "https://example.org/colors/red"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en",
+        "@value": "dark red"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#related": [
+      {
+        "@id": "https://example.org/colors/maroon"
       }
     ]
   }

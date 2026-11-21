@@ -13,7 +13,7 @@ The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.
 | category | qualified |
 | component | entities-activities |
 | sharesDefinitionWith | prov:InstantaneousEvent |
-| unqualifiedForm | prov:generatedAtTime; prov:invalidatedAtTime; prov:startedAtTime; prov:endedAtTime |
+| unqualifiedForm | prov:generatedAtTime; prov:endedAtTime; prov:invalidatedAtTime; prov:startedAtTime |
 
 ### endedAtTime
 
@@ -58,7 +58,7 @@ The time at which an entity was invalidated (i.e., no longer usable).
 | category | expanded |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedInvalidation o prov:atTime) rdfs:subPropertyOf prov:invalidatedAtTime. |
-| qualifiedForm | prov:atTime; prov:Invalidation |
+| qualifiedForm | prov:Invalidation; prov:atTime |
 
 ### startedAtTime
 
@@ -73,7 +73,7 @@ The time at which an activity started. See also prov:endedAtTime.
 | category | starting-point |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedStart o prov:atTime) rdfs:subPropertyOf prov:startedAtTime. |
-| qualifiedForm | prov:atTime; prov:Start |
+| qualifiedForm | prov:Start; prov:atTime |
 
 ### value
 
@@ -87,5 +87,5 @@ Provides a value that is a direct representation of an entity.
 | category | expanded |
 | component | entities-activities |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-attribute-value |
-| editorialNote | The editor's definition comes from http://www.w3.org/TR/rdf-primer/#rdfvalue; This property serves the same purpose as rdf:value, but has been reintroduced to avoid some of the definitional ambiguity in the RDF specification (specifically, 'may be used in describing structured values'). |
+| editorialNote | This property serves the same purpose as rdf:value, but has been reintroduced to avoid some of the definitional ambiguity in the RDF specification (specifically, 'may be used in describing structured values').; The editor's definition comes from http://www.w3.org/TR/rdf-primer/#rdfvalue |
 

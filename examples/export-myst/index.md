@@ -17,6 +17,7 @@ A small ontology about **pizzas** and their toppings, used to test OntoReview.
 - [Classes](classes.md) (8)
 - [Object properties](object-properties.md) (4)
 - [Datatype properties](datatype-properties.md) (2)
+- [Annotation properties](annotation-properties.md) (17)
 - [Named individuals](individuals.md) (1)
 
 ```{toctree}
@@ -25,5 +26,6 @@ A small ontology about **pizzas** and their toppings, used to test OntoReview.
 classes
 object-properties
 datatype-properties
+annotation-properties
 individuals
 ```

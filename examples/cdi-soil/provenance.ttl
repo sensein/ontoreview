@@ -5,24 +5,25 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
+    prov:generatedAtTime "2026-11-21T18:06:06+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <urn:ontoreview:ontology> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
 <http://addictovocab.org/addicto.owl/2026-10-08> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:45Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:35:45Z"^^xsd:string ;
     dcterms:isVersionOf <http://addictovocab.org/addicto.owl> ;
     dcterms:title "Addiction Ontology" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
 
 <http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:40Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:35:01Z"^^xsd:string ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/bfo.owl> ;
     dcterms:title "Basic Formal Ontology" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
 
-<http://purl.obolibrary.org/obo/exo/releases/2025-08-29/exo.owl> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:44Z"^^xsd:string ;
-    dcterms:hasVersion "2025-08-29" ;
+<http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl> a prov:Entity ;
+    dcterms:date "2026-11-21T17:34:11Z"^^xsd:string ;
+    dcterms:hasVersion "2026-11-20" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/exo.owl> ;
     dcterms:title "Exposure ontology" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (2 correspondence(s), via ols)." .
@@ -33,37 +34,38 @@
     rdfs:comment "Release used to verify 1 external term(s) (via ols)." .
 
 <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:40Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:30:07Z"^^xsd:string ;
     dcterms:hasVersion "26.02d" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/ncit.owl> ;
     dcterms:title "NCI Thesaurus OBO Edition" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (8 correspondence(s), via ols)." .
 
 <http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:42Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:30:14Z"^^xsd:string ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/uberon.owl> ;
     dcterms:title "Uberon multi-species anatomy ontology" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (2 correspondence(s), via ols)." .
 
 <http://semanticscience.org/ontology/sio/v1.62/sio-release.owl> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:38Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:30:12Z"^^xsd:string ;
     dcterms:hasVersion "1.62" ;
     dcterms:isVersionOf <http://semanticscience.org/ontology/sio.owl> ;
     dcterms:title "Semanticscience Integrated Ontology" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
 
 <http://snomed.info/sct/900000000000207008/version/20251017> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:34Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:30:09Z"^^xsd:string ;
     dcterms:isVersionOf <http://snomed.info/sct/9000000000002070081231> ;
     dcterms:title "SNOMED CT (International Edition)" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-20T01:27:50+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:06:06+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:05:58+00:00"^^xsd:dateTime ;
     prov:used <http://addictovocab.org/addicto.owl/2026-10-08>,
         <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl>,
-        <http://purl.obolibrary.org/obo/exo/releases/2025-08-29/exo.owl>,
+        <http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl>,
         <http://purl.obolibrary.org/obo/iao/2026-03-30/iao.owl>,
         <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
         <http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl>,
@@ -71,6 +73,7 @@
         <http://snomed.info/sct/900000000000207008/version/20251017>,
         <http://www.bioassayontology.org/bao/bao_complete.owl>,
         <urn:ontoreview:release:29a4db7ef16ae4bf>,
+        <urn:sha256:57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3>,
         <urn:sha256:ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185>,
         <urn:sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392>,
         <urn:sha256:da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd>,
@@ -84,8 +87,12 @@
     dcterms:date "2026-11-19T00:08:58.696434276"^^xsd:string ;
     rdfs:comment "Release used to verify 1 external term(s) (via ols)." .
 
+<urn:sha256:57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3> a prov:Entity ;
+    dcterms:identifier "sha256:57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3" ;
+    dcterms:title "toy_onto.ttl" .
+
 <urn:sha256:ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185> a prov:Entity ;
-    dcterms:date "2026-11-20T01:27:42.410651+00:00"^^xsd:string ;
+    dcterms:date "2026-11-21T18:06:02.153117+00:00"^^xsd:string ;
     dcterms:identifier "sha256:ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185" ;
     dcterms:source <file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv> ;
     dcterms:title "toy_to_bfo.sssom.tsv" ;
@@ -100,8 +107,8 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (2 correspondence(s), via term database (bundled))." .
 
 <urn:sha256:da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd> a prov:Entity ;
-    dcterms:date "2026-11-20T01:26:46.852642+00:00"^^xsd:string,
-        "2026-11-20T01:27:42.410095+00:00"^^xsd:string ;
+    dcterms:date "2026-11-21T17:48:30.911309+00:00"^^xsd:string,
+        "2026-11-21T18:06:02.152004+00:00"^^xsd:string ;
     dcterms:identifier "sha256:da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd" ;
     dcterms:source <file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl> ;
     dcterms:title "cdi",
@@ -118,14 +125,14 @@
     rdfs:comment "Release used to verify 1 external term(s) (via bundle)." .
 
 <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:42Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:30:08Z"^^xsd:string ;
     dcterms:hasVersion "REC/2026/09" ;
     dcterms:isVersionOf <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> ;
     dcterms:title "Allotrope Merged Ontology Suite" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
 
 <http://www.bioassayontology.org/bao/bao_complete.owl> a prov:Entity ;
-    dcterms:date "2026-11-20T01:24:38Z"^^xsd:string ;
+    dcterms:date "2026-11-21T17:30:11Z"^^xsd:string ;
     dcterms:hasVersion "2.8.19" ;
     dcterms:isVersionOf <http://www.bioassayontology.org/bao/bao_complete.owl> ;
     dcterms:title "BioAssay Ontology" ;

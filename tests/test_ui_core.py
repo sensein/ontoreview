@@ -68,7 +68,7 @@ def test_toml_roundtrip(fixtures, tmp_path):
                                         ("myst", "index.md"), ("check", None)])
 def test_run_task_file(fixtures, tmp_path, task, page):
     out = tmp_path / ("out.json" if task == "check" else "out.html" if task == "single" else "out")
-    res = run_task(Settings(source=str(fixtures / "pizza.ttl"), output=str(out), task=task))
+    res = run_task(Settings(source=str(fixtures / "pizza.ttl"), output=str(out), task=task, separate_runs=False))
     assert res.ok == 1 and res.rows[0].terms > 0
     if page:
         assert (out / page).is_file()
@@ -82,7 +82,7 @@ def test_run_task_file(fixtures, tmp_path, task, page):
 @pytest.mark.parametrize("task, page", [("site", "index.html"), ("markdown", "index.md"), ("check", None)])
 def test_run_task_folder(folder, tmp_path, task, page):
     out = tmp_path / "out"
-    res = run_task(Settings(source=str(folder), output=str(out), task=task))
+    res = run_task(Settings(source=str(folder), output=str(out), task=task, separate_runs=False))
     assert res.ok == 2
     if page:
         assert (out / page).is_file() and (out / "vocab" / "colors" / page).is_file()
@@ -92,7 +92,7 @@ def test_run_task_folder(folder, tmp_path, task, page):
 
 def test_history(folder, tmp_path):
     hist = tmp_path / "history.json"
-    s = Settings(source=str(folder), output=str(tmp_path / "site"))
+    s = Settings(source=str(folder), output=str(tmp_path / "site"), separate_runs=False)
     res = run_task(s)
     e1 = record_run(s, res, path=hist)
     e2 = record_run(Settings(source="/gone.ttl", output=str(tmp_path / "missing"), task="markdown"), None,
@@ -110,10 +110,10 @@ def test_history(folder, tmp_path):
 def test_existing_output(folder, tmp_path):
     out = tmp_path / "site"
     assert existing_output(out) is None
-    run_task(Settings(source=str(folder), output=str(out)))
+    run_task(Settings(source=str(folder), output=str(out), separate_runs=False))
     info = existing_output(out)
     assert info["kind"] == "folder" and info["count"] == 2 and info["index"].endswith("index.html")
-    run_task(Settings(source=str(folder / "pizza.ttl"), output=str(tmp_path / "one")))
+    run_task(Settings(source=str(folder / "pizza.ttl"), output=str(tmp_path / "one"), separate_runs=False))
     assert existing_output(tmp_path / "one")["kind"] == "single"
 
 
@@ -195,3 +195,26 @@ def test_compare_versions(fixtures, tmp_path):
 def test_compare_versions_needs_a_previous_file(fixtures, folder):
     assert "Choose the previous version" in " ".join(Settings(source=str(fixtures / "pizza.ttl"), task="diff").validate())
     assert "not a folder" in " ".join(Settings(source=str(folder), task="diff", previous_version=str(fixtures / "pizza.ttl")).validate())
+
+
+def test_each_run_in_its_own_folder(fixtures, tmp_path):
+    from ontoreview.ui_core import export_output, run_config_rows, run_folder
+
+    assert run_folder(tmp_path / "docs", now=0).name.startswith("docs-19")
+    one = run_folder(tmp_path / "pizza.html")
+    assert one.name == "pizza.html" and one.parent.name.startswith("pizza-")
+    s = Settings(source=str(fixtures / "pizza.ttl"), output=str(tmp_path / "docs"), oops="off", cdi=False)
+    a, b = run_task(s), run_task(s)
+    assert a.output != b.output and a.output.parent == tmp_path           # never overwritten
+    for r in (a, b):                                                       # self-contained: standalone copy inside
+        assert (r.output / "index.html").is_file() and (r.output / "standalone.html").is_file()
+    z = export_output(a.output, tmp_path / "exports")
+    import zipfile
+    names = zipfile.ZipFile(z).namelist()
+    assert f"{a.output.name}/index.html" in names and f"{a.output.name}/standalone.html" in names
+    e = record_run(s, a, path=tmp_path / "h.json")
+    assert e.output == str(a.output)
+    rows = dict(run_config_rows(e.settings))
+    assert rows["Task"] == "Website"
+    assert rows["Each run in its own folder"] == "on" and rows["OOPS!"] == "off"
+    assert export_output(tmp_path / "h.json") == tmp_path / "h.json"        # a single file is exported as is

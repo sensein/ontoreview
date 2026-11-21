@@ -6,7 +6,7 @@
 - Namespace: https://w3id.org/example/personinfo/ (prefix `personinfo:`)
 - Version: 0.3.0
 - License: CC0 1.0 (Public Domain)
-- Contents: 6 classes, 5 object properties, 8 datatype properties, 1 datatype, 4 named individuals
+- Contents: 6 classes, 5 object properties, 8 datatype properties, 31 annotation properties, 1 datatype, 4 named individuals
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
@@ -16,6 +16,7 @@ Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL
 - [Classes](classes.md): 6 classes with definitions and axioms
 - [Object properties](object-properties.md): 5 object properties with definitions and axioms
 - [Datatype properties](datatype-properties.md): 8 datatype properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 31 annotation properties with definitions and axioms
 - [Datatypes](datatypes.md): 1 datatype with definitions and axioms
 - [Named individuals](individuals.md): 4 named individuals with definitions and axioms
 

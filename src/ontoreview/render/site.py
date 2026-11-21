@@ -21,7 +21,7 @@ from ..config import Config
 from ..diff import Changelog
 from ..model.entities import KIND_BADGES, KIND_SLUGS, Ontology, Ref
 from ..publish import bibtex, citation_text
-from ..report.models import Report
+from ..report.models import Report, tool_anchor
 from .data import graph_data, jsonld, search_index
 from .i18n import LANGUAGE_NAMES, Translator
 
@@ -39,6 +39,17 @@ def markdown(text: str | None, inline: bool = False) -> Markup:
     if inline:
         return Markup(_md.renderInline(text))
     return Markup(_md.render(text))
+
+
+def _prov_when(e: dict) -> str:
+    """A provenance timestamp for reading: ``2026-11-21 16:57:03 UTC``, or the date alone."""
+    import datetime as dt
+
+    try:
+        d = dt.datetime.fromisoformat(str(e["when"]).replace("Z", "+00:00"))
+    except ValueError:
+        return str(e["when"])
+    return d.strftime("%Y-%m-%d") if e.get("date_only") else d.strftime("%Y-%m-%d %H:%M:%S UTC")
 
 
 def codeticks(text: str) -> Markup:
@@ -100,7 +111,9 @@ class SiteRenderer:
         inline: bool = False,
         cqs=None,
         llm_files: list[dict] | None = None,
+        provenance: dict | None = None,
     ):
+        self.provenance = provenance
         self.cfg = config
         self.onto = ontology
         self.out = out_dir
@@ -145,6 +158,8 @@ class SiteRenderer:
         env.filters["slug"] = lambda k: KIND_SLUGS.get(k, k)
         env.filters["filesize"] = _filesize
         env.filters["badge"] = lambda k: KIND_BADGES.get(k, k)
+        env.filters["tool_anchor"] = tool_anchor
+        env.filters["prov_when"] = _prov_when
         env.globals.update(
             t=self.t,
             href=self.href,
@@ -206,10 +221,14 @@ class SiteRenderer:
             out.append(Section("competency-questions", t("competency_questions"), "cq.html",
                                page=page("competency-questions"), count=len(self.cqs.questions),
                                context={"cqs": self.cqs}))
-        if st.overview and onto.terms and cfg.ui.term_index in ("section", "both"):
-            out.append(Section("overview", t("term_index"), "overview.html", count=len(onto.terms)))
+        if st.overview and onto.terms:
+            out.append(Section("overview", t("overview"), "overview.html",
+                               context={"stats": self._stats(),
+                                        "index": cfg.ui.term_index in ("section", "both")}))
         if self.has_graph():
             out.append(Section("graph", t("graph"), "graph.html", page=page("graph")))
+        if st.namespaces and onto.prefixes:      # before the terms: readers meet the prefixes first
+            out.append(Section("namespaces", t("namespaces"), "namespaces.html"))
         if st.terms:
             kinds = onto.kinds_present()
             for i, kind in enumerate(kinds):
@@ -222,8 +241,6 @@ class SiteRenderer:
             if cs.position == "after-terms":
                 out.append(self._custom(cs))
         out += [s for s in self.plugin_sections if s.context.get("position") == "after-terms"]
-        if st.namespaces and onto.prefixes:
-            out.append(Section("namespaces", t("namespaces"), "namespaces.html"))
         if st.changelog and self.changelog is not None:
             out.append(Section("changelog", t("changelog"), "changelog.html", page=page("changelog"),
                                context={"log": self.changelog}))
@@ -239,7 +256,8 @@ class SiteRenderer:
                                context={"cite": citation_text(onto.metadata, cfg.base_url),
                                         "bibtex": bibtex(onto.metadata, cfg.base_url)}))
         if st.provenance:
-            out.append(Section("provenance", t("provenance"), "provenance.html"))
+            out.append(Section("provenance", t("provenance"), "provenance.html",
+                               context={"record": self.provenance}))
         out = self._order(out, cfg.ui.section_order)
         self._number(out)
         return out
@@ -248,7 +266,8 @@ class SiteRenderer:
     def _order(sections: list[Section], order: list[str]) -> list[Section]:
         if not order:
             return sections
-        rank = {sid: i for i, sid in enumerate(order)}
+        # 'terms' (the group's title) and 'reference' (its id) both name the term sections
+        rank = {("reference" if sid == "terms" else sid): i for i, sid in enumerate(order)}
 
         def key(item: tuple[int, Section]) -> tuple[int, int]:
             i, s = item
@@ -300,6 +319,16 @@ class SiteRenderer:
             else:
                 entries.append(TocEntry(s, s.title, s.number, s.id, s.page, s.count))
         return entries
+
+    def _stats(self) -> dict:
+        """Overview tiles: terms per kind, quality checks run, and interoperability scores."""
+        onto, r = self.onto, self.report
+        kinds = [{"kind": k, "count": len(onto.by_kind(k)), "section": KIND_SLUGS[k]}
+                 for k in onto.kinds_present()]
+        show_quality = r is not None and self.cfg.sections.quality
+        return {"kinds": kinds,
+                "checks_run": r.checks_run() if show_quality else None,
+                "scores": r.scores() if show_quality else []}
 
     def _custom(self, cs) -> Section:
         text = cs.content or ""

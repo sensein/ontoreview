@@ -384,5 +384,5 @@ The knowledge organization system (KOS) used to classify catalog's datasets.
 |---|---|
 | Domain | [Catalog](classes.md#catalog) |
 | Range | [rdfs:Resource](http://www.w3.org/2000/01/rdf-schema#Resource) |
-| sdo:rangeIncludes | skos:Collection; skos:ConceptScheme; owl:Ontology |
+| rangeIncludes | skos:ConceptScheme; owl:Ontology; skos:Collection |
 

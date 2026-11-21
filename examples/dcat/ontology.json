@@ -33,6 +33,7 @@
   "class": 9,
   "object_property": 30,
   "datatype_property": 9,
+  "annotation_property": 27,
   "triples": 1695
  },
  "terms": [
@@ -748,16 +749,6 @@
    ]
   },
   {
-   "iri": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
-   "curie": "dcat:spatialResolutionInMeters",
-   "kind": "datatype_property",
-   "label": "geografisk opløsning (meter)",
-   "definition": "mindste geografiske afstand som kan resolveres i et datasæt, målt i meter.",
-   "range": [
-    "xsd:decimal"
-   ]
-  },
-  {
    "iri": "http://www.w3.org/ns/dcat#keyword",
    "curie": "dcat:keyword",
    "kind": "datatype_property",
@@ -768,6 +759,16 @@
    ],
    "range": [
     "rdfs:Literal"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
+   "curie": "dcat:spatialResolutionInMeters",
+   "kind": "datatype_property",
+   "label": "resolución espacial (metros)",
+   "definition": "mínima separacíon espacial disponible en un conjunto de datos, medida en metros.",
+   "range": [
+    "xsd:decimal"
    ]
   },
   {
@@ -808,6 +809,168 @@
    "comments": [
     "The version indicator (name or identifier) of a resource."
    ]
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+   "curie": "skos:altLabel",
+   "kind": "annotation_property",
+   "label": "altLabel"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#backwardCompatibleWith",
+   "curie": "owl:backwardCompatibleWith",
+   "kind": "annotation_property",
+   "label": "backwardCompatibleWith"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#changeNote",
+   "curie": "skos:changeNote",
+   "kind": "annotation_property",
+   "label": "changeNote"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/contributor",
+   "curie": "dcterms:contributor",
+   "kind": "annotation_property",
+   "label": "contributor"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/created",
+   "curie": "dcterms:created",
+   "kind": "annotation_property",
+   "label": "created"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/creator",
+   "curie": "dcterms:creator",
+   "kind": "annotation_property",
+   "label": "creator"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#definition",
+   "curie": "skos:definition",
+   "kind": "annotation_property",
+   "label": "definition"
+  },
+  {
+   "iri": "http://xmlns.com/foaf/0.1/depiction",
+   "curie": "foaf:depiction",
+   "kind": "annotation_property",
+   "label": "depiction"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/description",
+   "curie": "dcterms:description",
+   "kind": "annotation_property",
+   "label": "description"
+  },
+  {
+   "iri": "http://purl.org/ontology/bibo/editor",
+   "curie": "bibo:editor",
+   "kind": "annotation_property",
+   "label": "editor"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#editorialNote",
+   "curie": "skos:editorialNote",
+   "kind": "annotation_property",
+   "label": "editorialNote"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/license",
+   "curie": "dcterms:license",
+   "kind": "annotation_property",
+   "label": "license"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/modified",
+   "curie": "dcterms:modified",
+   "kind": "annotation_property",
+   "label": "modified"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+   "curie": "vann:preferredNamespacePrefix",
+   "kind": "annotation_property",
+   "label": "preferredNamespacePrefix"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+   "curie": "vann:preferredNamespaceUri",
+   "kind": "annotation_property",
+   "label": "preferredNamespaceUri"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#priorVersion",
+   "curie": "owl:priorVersion",
+   "kind": "annotation_property",
+   "label": "priorVersion"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/publisher",
+   "curie": "dcterms:publisher",
+   "kind": "annotation_property",
+   "label": "publisher"
+  },
+  {
+   "iri": "http://schema.org/rangeIncludes",
+   "curie": "sdo:rangeIncludes",
+   "kind": "annotation_property",
+   "label": "rangeIncludes"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#scopeNote",
+   "curie": "skos:scopeNote",
+   "kind": "annotation_property",
+   "label": "scopeNote"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+   "curie": "rdfs:seeAlso",
+   "kind": "annotation_property",
+   "label": "seeAlso"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dcterms:title",
+   "kind": "annotation_property",
+   "label": "title"
+  },
+  {
+   "iri": "http://purl.org/ontology/bibo/translator",
+   "curie": "bibo:translator",
+   "kind": "annotation_property",
+   "label": "translator"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
+  },
+  {
+   "iri": "http://www.w3.org/ns/adms#versionNotes",
+   "curie": "adms:versionNotes",
+   "kind": "annotation_property",
+   "label": "versionNotes"
   }
  ],
  "competency_questions": []

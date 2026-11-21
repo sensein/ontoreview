@@ -7,7 +7,7 @@
   "totals": {
     "error": 1,
     "warning": 47,
-    "info": 39
+    "info": 48
   },
   "external": [
     {
@@ -82,6 +82,7 @@
       "note": "",
       "scope": "",
       "metrics": [],
+      "provenance": {},
       "summary": {
         "error": 1,
         "warning": 32,
@@ -96,6 +97,191 @@
       "note": "Consistent; all classes satisfiable (HermiT).",
       "scope": "",
       "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "IRI checks",
+      "url": "https://www.w3.org/TR/cooluris/",
+      "items": [],
+      "error": null,
+      "note": "",
+      "scope": "0.3s. Own namespaces (not checked as external): http://www.w3.org/2004/02/skos/core#, http://www.w3.org/2004/02/skos/core/. Run #114 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "metrics": [
+        {
+          "group": "IRI",
+          "metric": "syntax",
+          "title": "IRI syntax",
+          "value": "No malformed IRIs",
+          "status": "ok",
+          "about": "All 63 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host"
+        },
+        {
+          "group": "IRI",
+          "metric": "header",
+          "title": "Ontology header",
+          "value": "http://www.w3.org/2004/02/skos/core",
+          "status": "ok",
+          "about": "Exactly one named owl:Ontology"
+        },
+        {
+          "group": "IRI",
+          "metric": "version",
+          "title": "Version IRI",
+          "value": "None",
+          "status": "info",
+          "about": "owl:versionIRI, distinct from the ontology IRI"
+        },
+        {
+          "group": "IRI",
+          "metric": "resolves",
+          "title": "Ontology IRI resolves",
+          "value": "Yes (xml, HTTP 200)",
+          "status": "ok",
+          "about": "The ontology IRI returns RDF (content negotiation) whose header matches it"
+        },
+        {
+          "group": "IRI",
+          "metric": "external",
+          "title": "External terms",
+          "value": "4 checked: 4 valid",
+          "status": "ok",
+          "about": "Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated"
+        },
+        {
+          "group": "IRI",
+          "metric": "sources",
+          "title": "Lookup sources",
+          "value": "cache 4",
+          "status": "info",
+          "about": "Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download"
+        },
+        {
+          "group": "IRI",
+          "metric": "freshness",
+          "title": "Freshness",
+          "value": "All lookups current",
+          "status": "ok",
+          "about": "Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T18:03:34.123895+00:00",
+        "run_id": 114,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "offline": false,
+          "refresh": false,
+          "repositories": true,
+          "resolve": true,
+          "local_namespaces": [
+            "http://www.w3.org/2004/02/skos/core#",
+            "http://www.w3.org/2004/02/skos/core/"
+          ],
+          "budget": 120,
+          "cache_days": 30
+        },
+        "own_namespaces": [
+          "http://www.w3.org/2004/02/skos/core#",
+          "http://www.w3.org/2004/02/skos/core/"
+        ],
+        "releases": [
+          {
+            "title": "bibo (purl.org)",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/ontology/bibo/",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T03:50:03.244033+00:00",
+            "terms": 4,
+            "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+            "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+          }
+        ],
+        "terms": [
+          {
+            "iri": "http://purl.org/dc/terms/contributor",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/creator",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/description",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/title",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          }
+        ]
+      },
       "summary": {
         "error": 0,
         "warning": 0,
@@ -312,10 +498,2894 @@
           "status": "skipped"
         }
       ],
+      "provenance": {},
       "summary": {
         "error": 0,
         "warning": 1,
         "info": 29
+      }
+    },
+    {
+      "tool": "Cross-domain interoperability",
+      "url": "",
+      "items": [
+        {
+          "code": "CDI-A",
+          "name": "No correspondence in another domain",
+          "severity": "info",
+          "description": "No direct, lexical or inherited correspondence of sufficient strength into the reference ontologies. Mapping these (e.g. SSSOM, owl:equivalentClass, rdfs:subClassOf) raises Align.",
+          "affected": [
+            "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+            "http://www.w3.org/2004/02/skos/core#mappingRelation",
+            "http://www.w3.org/2004/02/skos/core#memberList",
+            "http://www.w3.org/2004/02/skos/core#narrowMatch",
+            "http://www.w3.org/2004/02/skos/core#narrower",
+            "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+            "http://www.w3.org/2004/02/skos/core#semanticRelation"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 87 in the term database. Details of 17 repository ontologies came from the term database.",
+      "metrics": [
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "CDI",
+          "title": "CDI score",
+          "status": "ok",
+          "value": "0.51, interoperable (θ = 0.5, β = 1.0)",
+          "about": "Weighted harmonic mean of Align and Gen; low when either is low"
+        },
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "Align",
+          "title": "Alignment",
+          "status": "ok",
+          "value": "0.62; 15 of 22 entities aligned",
+          "about": "Mean best correspondence strength per entity into ontologies of other domains (counted from τ = 0.5)"
+        },
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "Gen",
+          "title": "Generality",
+          "status": "warn",
+          "value": "0.44 = definition coverage 1.00 (4/4) × mean generality 0.44",
+          "about": "How domain-neutral the class definitions are (zero-shot language model)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:afo",
+          "title": "Allotrope Merged Ontology Suite",
+          "status": "info",
+          "value": "Align_d 0.33, coverage 0.32, 9 correspondences (discovered)",
+          "about": "ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "db:http://www.w3.org/ns/odrl/2/",
+          "title": "http://www.w3.org/ns/odrl/2/",
+          "status": "info",
+          "value": "Align_d 0.33, coverage 0.27, 6 correspondences (discovered)",
+          "about": "db:http://www.w3.org/ns/odrl/2/; version not reported (identified by content hash)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "db:http://purl.org/spar/datacite/identifier",
+          "title": "The DataCite Ontology (DataCite)",
+          "status": "info",
+          "value": "Align_d 0.28, coverage 0.23, 5 correspondences (discovered)",
+          "about": "db:http://purl.org/spar/datacite/identifier; release http://purl.org/spar/datacite/2026-10-05"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:dcat",
+          "title": "ols:dcat",
+          "status": "info",
+          "value": "Align_d 0.18, coverage 0.18, 4 correspondences (discovered)",
+          "about": "ols:dcat; release http://www.w3.org/ns/dcat3"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:emi",
+          "title": "The Earth Metabolome Initiative (EMI) ontology",
+          "status": "info",
+          "value": "Align_d 0.18, coverage 0.18, 4 correspondences (discovered)",
+          "about": "ols:emi; release https://w3id.org/emi/version/1.0"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:mcro",
+          "title": "Model Card Report Ontology",
+          "status": "info",
+          "value": "Align_d 0.18, coverage 0.18, 4 correspondences (discovered)",
+          "about": "ols:mcro; domain: information technology; release http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:sio",
+          "title": "Semanticscience Integrated Ontology",
+          "status": "info",
+          "value": "Align_d 0.19, coverage 0.18, 4 correspondences (discovered)",
+          "about": "ols:sio; release http://semanticscience.org/ontology/sio/v1.62/sio-release.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:uniprotrdfs",
+          "title": "ols:uniprotrdfs",
+          "status": "info",
+          "value": "Align_d 0.18, coverage 0.18, 4 correspondences (discovered)",
+          "about": "ols:uniprotrdfs; release 2026_03"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:ncit",
+          "title": "NCI Thesaurus OBO Edition",
+          "status": "info",
+          "value": "Align_d 0.15, coverage 0.14, 8 correspondences (discovered)",
+          "about": "ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "db:http://www.w3.org/2006/vcard/ns",
+          "title": "Ontology for vCard",
+          "status": "info",
+          "value": "Align_d 0.11, coverage 0.09, 2 correspondences (discovered)",
+          "about": "db:http://www.w3.org/2006/vcard/ns; version not reported (identified by content hash)"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T18:03:35.255985+00:00",
+        "references": [
+          "ols"
+        ],
+        "notes": [
+          "Details of 17 repository ontologies came from the term database."
+        ],
+        "run_id": 87,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "cdi": "on",
+          "cdi_references": [
+            "ols"
+          ],
+          "cdi_term_db": true,
+          "cdi_domains": [],
+          "cdi_exclude": [],
+          "cdi_namespace": [],
+          "cdi_classes_only": false,
+          "cdi_top_n": 10,
+          "cdi_tau": 0.5,
+          "cdi_c_lex": 0.9,
+          "cdi_rho_sub": 0.8,
+          "cdi_gamma": 0.8,
+          "cdi_k_max": 3,
+          "cdi_beta": 1.0,
+          "cdi_theta": 0.5,
+          "cdi_model": "facebook/bart-large-mnli",
+          "cdi_generality": true,
+          "cdi_ontoaligner": "sbert",
+          "cdi_sbert_model": "all-MiniLM-L6-v2",
+          "cdi_ontoaligner_threshold": 0.8,
+          "cdi_timeout": 30,
+          "cdi_budget": 600,
+          "si": "on",
+          "si_references": [],
+          "si_home_domain": null,
+          "si_theta_s": 0.3,
+          "si_classifier": true,
+          "si_p_min": 0.15,
+          "si_domain_map": {},
+          "si_upper_ontologies": [],
+          "si_upper_namespaces": []
+        },
+        "summary": {
+          "align": 0.6161818181818183,
+          "gen": 0.4378763605205398,
+          "cdi": 0.5119479311788009,
+          "interoperable": true,
+          "definition_coverage": 1.0,
+          "mean_definition_generality": 0.4378763605205398,
+          "n_entities": 22,
+          "n_aligned_entities": 15,
+          "n_classes": 4,
+          "n_defined_classes": 4,
+          "reference_ontologies": [
+            "db:http://purl.org/spar/datacite/identifier",
+            "db:http://www.w3.org/2006/vcard/ns",
+            "db:http://www.w3.org/ns/odrl/2/",
+            "ols:afo",
+            "ols:dcat",
+            "ols:emi",
+            "ols:mcro",
+            "ols:ncit",
+            "ols:sio",
+            "ols:uniprotrdfs"
+          ],
+          "params": {
+            "tau": 0.5,
+            "c_lex": 0.9,
+            "rho_sub": 0.8,
+            "gamma": 0.8,
+            "k_max": 3,
+            "top_n": 10,
+            "beta": 1.0,
+            "theta": 0.5,
+            "domains": [],
+            "namespace": [
+              "http://www.w3.org/2004/02/skos/core#"
+            ]
+          }
+        },
+        "per_ontology": [
+          {
+            "id": "ols:afo",
+            "source": "ols",
+            "title": "Allotrope Merged Ontology Suite",
+            "domain": "",
+            "given": false,
+            "description": "Allotrope Merged Ontology Suite",
+            "coverage": 0.3181818181818182,
+            "n_correspondences": 9,
+            "status": "selected",
+            "align_d": 0.3307272727272727,
+            "release": {
+              "source": "ols",
+              "ontology": "afo",
+              "title": "Allotrope Merged Ontology Suite",
+              "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+              "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+              "version": "REC/2026/09",
+              "released": "2026-11-21T00:09:10.933549934",
+              "retrieved": "2026-11-21T17:30:08Z",
+              "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:08.826386+00:00"
+            }
+          },
+          {
+            "id": "db:http://www.w3.org/ns/odrl/2/",
+            "source": "termdb",
+            "title": "http://www.w3.org/ns/odrl/2/",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.2727272727272727,
+            "n_correspondences": 6,
+            "status": "selected",
+            "align_d": 0.33090909090909093,
+            "release": {
+              "source": "term database (bundled)",
+              "document": "http://www.w3.org/ns/odrl/2/",
+              "ontology_iri": "http://www.w3.org/ns/odrl/2/",
+              "sha256": "7895765e80d86d1d0349d945a28b8a2479f03169572345080a5b3e561ef31457",
+              "source_url": "https://www.w3.org/ns/odrl/2/ODRL22.ttl",
+              "retrieved": "2026-11-18T01:08:31.893066+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:http://purl.org/spar/datacite/identifier",
+            "source": "termdb",
+            "title": "The DataCite Ontology (DataCite)",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.22727272727272727,
+            "n_correspondences": 5,
+            "status": "selected",
+            "align_d": 0.278,
+            "release": {
+              "source": "term database (cache)",
+              "title": "The DataCite Ontology (DataCite)",
+              "document": "http://purl.org/spar/datacite/identifier",
+              "ontology_iri": "http://purl.org/spar/datacite",
+              "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+              "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+              "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
+              "retrieved": "2026-11-21T17:40:46.656861+00:00",
+              "identified_by": "version IRI"
+            }
+          },
+          {
+            "id": "ols:dcat",
+            "source": "ols",
+            "title": "",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.18181818181818182,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.18181818181818182,
+            "release": {
+              "source": "ols",
+              "ontology": "dcat",
+              "ontology_iri": "http://www.w3.org/ns/dcat",
+              "version_iri": "http://www.w3.org/ns/dcat3",
+              "version": "3",
+              "released": "2026-11-21T00:09:03.721660212",
+              "retrieved": "2026-11-21T17:35:04Z",
+              "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:04.727973+00:00"
+            }
+          },
+          {
+            "id": "ols:emi",
+            "source": "ols",
+            "title": "The Earth Metabolome Initiative (EMI) ontology",
+            "domain": "",
+            "given": false,
+            "description": "The Earth Metabolome Initiative (EMI) ontology is designed to capture and structure the metabolic content of all currently known species on our planet.",
+            "coverage": 0.18181818181818182,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.18181818181818182,
+            "release": {
+              "source": "ols",
+              "ontology": "emi",
+              "title": "The Earth Metabolome Initiative (EMI) ontology",
+              "ontology_iri": "https://w3id.org/emi",
+              "version_iri": "https://w3id.org/emi/version/1.0",
+              "version": "1.0",
+              "released": "2026-11-21T00:10:51.376172340",
+              "retrieved": "2026-11-21T17:30:04Z",
+              "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:04.922969+00:00"
+            }
+          },
+          {
+            "id": "ols:mcro",
+            "source": "ols",
+            "title": "Model Card Report Ontology",
+            "domain": "information technology",
+            "given": false,
+            "description": "An ontology representing the structure of model card reports - reports that describe basic characteristics of machine learning models for the public and consumers.",
+            "coverage": 0.18181818181818182,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.18181818181818182,
+            "release": {
+              "source": "ols",
+              "ontology": "mcro",
+              "title": "Model Card Report Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/mcro.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl",
+              "version": "2023-03-07",
+              "released": "2026-11-21T00:08:36.115248768",
+              "retrieved": "2026-11-21T17:35:02Z",
+              "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:02.266948+00:00"
+            }
+          },
+          {
+            "id": "ols:sio",
+            "source": "ols",
+            "title": "Semanticscience Integrated Ontology",
+            "domain": "",
+            "given": false,
+            "description": "The Semanticscience Integrated Ontology (SIO) provides a simple, integrated ontology of types and relations for rich description of objects, processes and their attributes.",
+            "coverage": 0.18181818181818182,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.18981818181818183,
+            "release": {
+              "source": "ols",
+              "ontology": "sio",
+              "title": "Semanticscience Integrated Ontology",
+              "ontology_iri": "http://semanticscience.org/ontology/sio.owl",
+              "version_iri": "http://semanticscience.org/ontology/sio/v1.62/sio-release.owl",
+              "version": "1.62",
+              "released": "2026-11-21T00:09:09.346259822",
+              "retrieved": "2026-11-21T17:30:12Z",
+              "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:12.699095+00:00"
+            }
+          },
+          {
+            "id": "ols:uniprotrdfs",
+            "source": "ols",
+            "title": "",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.18181818181818182,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.18181818181818182,
+            "release": {
+              "source": "ols",
+              "ontology": "uniprotrdfs",
+              "ontology_iri": "http://purl.uniprot.org/core/",
+              "version": "2026_03",
+              "released": "2026-11-21T00:09:03.629992578",
+              "retrieved": "2026-11-21T17:35:43Z",
+              "metadata_sha256": "e3c77e2341c216f7d72d1e8ee63f4997b63eb7ef66cdc7bea9bc57e8b903f969",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:35:43.198551+00:00"
+            }
+          },
+          {
+            "id": "ols:ncit",
+            "source": "ols",
+            "title": "NCI Thesaurus OBO Edition",
+            "domain": "health",
+            "given": false,
+            "description": "NCI Thesaurus (NCIt)is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. The NCIt OBO Edition aims to increase integration of the NCIt with OBO Library ontologies. NCIt OBO Edition releases should be considered experimental.",
+            "coverage": 0.13636363636363635,
+            "n_correspondences": 8,
+            "status": "selected",
+            "align_d": 0.1489090909090909,
+            "release": {
+              "source": "ols",
+              "ontology": "ncit",
+              "title": "NCI Thesaurus OBO Edition",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+              "version": "26.02d",
+              "released": "2026-11-21T00:09:04.346151993",
+              "retrieved": "2026-11-21T17:30:07Z",
+              "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:07.631597+00:00"
+            }
+          },
+          {
+            "id": "db:http://www.w3.org/2006/vcard/ns",
+            "source": "termdb",
+            "title": "Ontology for vCard",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.09090909090909091,
+            "n_correspondences": 2,
+            "status": "selected",
+            "align_d": 0.10800000000000001,
+            "release": {
+              "source": "term database (cache)",
+              "title": "Ontology for vCard",
+              "document": "http://www.w3.org/2006/vcard/ns",
+              "ontology_iri": "http://www.w3.org/2006/vcard/ns",
+              "sha256": "2442baf3d07d660910a0e24dd96b1efe1ec22cb26d12cdfd415195da91b43a0c",
+              "source_url": "https://www.w3.org/2006/vcard/ns",
+              "retrieved": "2026-11-19T17:47:10.604768+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
+            "source": "termdb",
+            "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (cache)",
+              "title": "W3C PROVenance Interchange Ontology (PROV-O)",
+              "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
+              "ontology_iri": "http://www.w3.org/ns/prov#",
+              "version_iri": "http://www.w3.org/ns/prov-o-20130430",
+              "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+              "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
+              "retrieved": "2026-11-21T17:47:58.239000+00:00",
+              "identified_by": "version IRI"
+            }
+          },
+          {
+            "id": "db:http://purl.org/dc/dcmitype/Service",
+            "source": "termdb",
+            "title": "http://purl.org/dc/dcmitype/Service",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (cache)",
+              "document": "http://purl.org/dc/dcmitype/Service",
+              "sha256": "f987b11d556e556fef95d7e9410c1c561fc1b7ac05ccd457128dc8962641b01e",
+              "source_url": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_type.ttl#Service",
+              "retrieved": "2026-11-19T17:47:01.268280+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:http://purl.org/linked-data/cube",
+            "source": "termdb",
+            "title": "http://purl.org/linked-data/cube",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (bundled)",
+              "document": "http://purl.org/linked-data/cube",
+              "ontology_iri": "http://purl.org/linked-data/cube",
+              "sha256": "f2d67d3811762fa7796008d225c9b1f891e8a9af8fdeeb3736188fe1bcdb7235",
+              "source_url": "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl",
+              "retrieved": "2026-11-18T01:08:32.846053+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:http://purl.org/ontology/bibo/doi",
+            "source": "termdb",
+            "title": "http://purl.org/ontology/bibo/doi",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (cache)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl",
+              "retrieved": "2026-11-18T03:50:03.244033+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:http://www.w3.org/ns/org#",
+            "source": "termdb",
+            "title": "http://www.w3.org/ns/org#",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (bundled)",
+              "document": "http://www.w3.org/ns/org#",
+              "ontology_iri": "http://www.w3.org/ns/org#",
+              "sha256": "3e01f89a17475a88f8b1606ca0fae04800d34dbbf93adc6db12dc30929848729",
+              "source_url": "https://www.w3.org/ns/org.ttl",
+              "retrieved": "2026-11-18T01:08:31.280728+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:http://www.w3.org/ns/prov-o#",
+            "source": "termdb",
+            "title": "http://www.w3.org/ns/prov-o#",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (bundled)",
+              "document": "http://www.w3.org/ns/prov-o#",
+              "ontology_iri": "http://www.w3.org/ns/prov#",
+              "version_iri": "http://www.w3.org/ns/prov-o-20130430",
+              "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+              "source_url": "https://www.w3.org/ns/prov-o.ttl",
+              "retrieved": "2026-11-18T01:08:30.540459+00:00",
+              "identified_by": "version IRI"
+            }
+          },
+          {
+            "id": "ols:cao",
+            "source": "ols",
+            "title": "The Chemical Analysis Ontology",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "cao",
+              "title": "The Chemical Analysis Ontology",
+              "ontology_iri": "http://champ-project.org/images/ontology/cao.owl",
+              "version": "0.2",
+              "released": "2026-11-21T00:09:03.195186071",
+              "retrieved": "2026-11-21T17:30:12Z",
+              "metadata_sha256": "9210d5f40a9efe3b9d21d131f92821dabb44814da125da63064def5e82c707e0",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:30:12.275808+00:00"
+            }
+          },
+          {
+            "id": "ols:evorao",
+            "source": "ols",
+            "title": "",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "evorao",
+              "ontology_iri": "https://w3id.org/evorao/",
+              "version_iri": "https://github.com/EVORA-project/evora-ontology/releases/tag/v1.2.0",
+              "version": "1.2.0",
+              "released": "2026-11-21T00:09:02.046575203",
+              "retrieved": "2026-11-21T17:34:58Z",
+              "metadata_sha256": "ebf61e8ff414d6b2aa4c14255c15722afdde3478ccfbc79c9729160a076874b2",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:34:58.496460+00:00"
+            }
+          },
+          {
+            "id": "ols:mesh",
+            "source": "ols",
+            "title": "Medical Subject Headings",
+            "domain": "",
+            "given": false,
+            "description": "MeSH (Medical Subject Headings) is the National Library of Medicine's controlled vocabulary thesaurus. It consists of sets of terms naming descriptors in a hierarchical structure that permits searching at various levels of specificity. This thesaurus is used by NLM for indexing articles from biomedical journals, cataloguing of books, documents, etc.",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "mesh",
+              "title": "Medical Subject Headings",
+              "ontology_iri": "https://w3id.org/biopragmatics/resources/mesh/mesh.ofn",
+              "version_iri": "https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn",
+              "version": "2025",
+              "released": "2026-11-21T00:09:41.663368724",
+              "retrieved": "2026-11-21T17:30:13Z",
+              "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:13.571879+00:00"
+            }
+          },
+          {
+            "id": "ols:ncbitaxon",
+            "source": "ols",
+            "title": "NCBI organismal classification",
+            "domain": "organisms",
+            "given": false,
+            "description": "An ontology representation of the NCBI organismal taxonomy",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "ncbitaxon",
+              "title": "NCBI organismal classification",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ncbitaxon.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ncbitaxon/2026-11-09/ncbitaxon.owl",
+              "version": "2026-11-09",
+              "released": "2026-11-21T00:09:44.906146626",
+              "retrieved": "2026-11-21T17:35:01Z",
+              "metadata_sha256": "78c69443bfccb5f86ea670b57bcf8d9439b645972d68609d77bc1996ceaab3cc",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:01.648543+00:00"
+            }
+          },
+          {
+            "id": "ols:ro",
+            "source": "ols",
+            "title": "Relation Ontology",
+            "domain": "upper",
+            "given": false,
+            "description": "Relationship types shared across multiple ontologies",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "ro",
+              "title": "Relation Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ro.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ro/releases/2026-09-04/ro.owl",
+              "version": "2026-09-04",
+              "released": "2026-11-21T00:08:42.341255549",
+              "retrieved": "2026-11-21T17:36:14Z",
+              "metadata_sha256": "a7b579fc6485c2043add8471a2913993e1e11c924b8febfc7225b94b33ef6fbc",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:36:14.600072+00:00"
+            }
+          },
+          {
+            "id": "ols:schemaorg_http",
+            "source": "ols",
+            "title": "",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "schemaorg_http",
+              "ontology_iri": "http://schema.org/",
+              "released": "2026-11-21T00:09:03.193403165",
+              "retrieved": "2026-11-21T17:30:03Z",
+              "metadata_sha256": "7b645a0e1b0379b6f24ed719797f26f0f2b7a8f6ece6861fa159ffbf70a9e904",
+              "identified_by": "release/load date",
+              "cached": "2026-11-21T17:30:03.583178+00:00"
+            }
+          },
+          {
+            "id": "ols:schemaorg_https",
+            "source": "ols",
+            "title": "",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "schemaorg_https",
+              "ontology_iri": "https://schema.org/",
+              "released": "2026-11-21T00:09:05.536558224",
+              "retrieved": "2026-11-21T17:30:08Z",
+              "metadata_sha256": "760ce2d80b346f979ce087c533c3850b05da09cc5f8a615d2afac2fadca7f6a8",
+              "identified_by": "release/load date",
+              "cached": "2026-11-21T17:30:08.026283+00:00"
+            }
+          },
+          {
+            "id": "ols:sepio",
+            "source": "ols",
+            "title": "Scientific Evidence and Provenance Information Ontology",
+            "domain": "investigations",
+            "given": false,
+            "description": "An ontology for representing the provenance of scientific claims and the evidence that supports them.",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "sepio",
+              "title": "Scientific Evidence and Provenance Information Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/sepio.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/sepio/releases/2023-06-13/sepio.owl",
+              "version": "2023-06-13",
+              "released": "2026-11-21T00:08:48.181391428",
+              "retrieved": "2026-11-21T17:35:02Z",
+              "metadata_sha256": "f74e04404ed7603e1094c3ebbb7d84db24e5dcaf3061d669e2ca59330157326d",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:02.792096+00:00"
+            }
+          },
+          {
+            "id": "ols:stato",
+            "source": "ols",
+            "title": "The Statistical Methods Ontology",
+            "domain": "information technology",
+            "given": false,
+            "description": "STATO is a general-purpose STATistics Ontology. Its aim is to provide coverage for processes such as statistical tests, their conditions of application, and information needed or resulting from statistical methods, such as probability distributions, variables, spread and variation metrics. STATO also covers aspects of experimental design and description of plots and graphical representations commonly used to provide visual cues of data distribution or layout and to assist review of the results.",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "stato",
+              "title": "The Statistical Methods Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/stato/stato.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/stato/releases/2026-04-20/stato.owl",
+              "version": "2026-04-20",
+              "released": "2026-11-21T00:08:48.206683070",
+              "retrieved": "2026-11-21T17:36:15Z",
+              "metadata_sha256": "47853830d467e9f13a31b86c6cfc49933a63b9559b409c931a1283d137471b99",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:36:15.136167+00:00"
+            }
+          },
+          {
+            "id": "ols:tfo",
+            "source": "ols",
+            "title": "TransformON",
+            "domain": "",
+            "given": false,
+            "description": "A domain ontology on food and bioproduct processing and characterization that is a specialization of the PO2 ontology (Process and Observation Ontology).",
+            "coverage": 0.045454545454545456,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "tfo",
+              "title": "TransformON",
+              "ontology_iri": "http://opendata.inrae.fr/PO2/Ontology/TransformON/",
+              "version": "33.0",
+              "released": "2026-11-21T00:09:21.120852308",
+              "retrieved": "2026-11-21T17:30:10Z",
+              "metadata_sha256": "2af2ead0b4260b62da6c8db1e53a706ae3fff083e2a4c6149084f2e83f3f851c",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:30:10.249891+00:00"
+            }
+          }
+        ],
+        "per_entity": [
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#Collection",
+            "label": "Collection",
+            "is_class": true,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": 0.3539,
+            "predicted_level": 3,
+            "p_l1": 0.0697,
+            "p_l2": 0.0652,
+            "p_l3": 0.4313,
+            "p_l4": 0.0786,
+            "p_l5": 0.3552,
+            "definition": "A meaningful collection of concepts."
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#Concept",
+            "label": "Concept",
+            "is_class": true,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": 0.5085,
+            "predicted_level": 3,
+            "p_l1": 0.0535,
+            "p_l2": 0.0513,
+            "p_l3": 0.7888,
+            "p_l4": 0.0883,
+            "p_l5": 0.0181,
+            "definition": "An idea or notion; a unit of thought."
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "label": "Concept Scheme",
+            "is_class": true,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": 0.5191,
+            "predicted_level": 3,
+            "p_l1": 0.0398,
+            "p_l2": 0.0803,
+            "p_l3": 0.8252,
+            "p_l4": 0.0257,
+            "p_l5": 0.0289,
+            "definition": "A set of concepts, optionally including statements about semantic relationships between those concepts."
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "label": "Ordered Collection",
+            "is_class": true,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:afo",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": 0.3701,
+            "predicted_level": 3,
+            "p_l1": 0.0229,
+            "p_l2": 0.0439,
+            "p_l3": 0.5785,
+            "p_l4": 0.1,
+            "p_l5": 0.2547,
+            "definition": "An ordered collection of concepts, where both the grouping and the ordering are meaningful."
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#broadMatch",
+            "label": "has broader match",
+            "is_class": false,
+            "a_e": 0.64,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#broader",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "http://www.w3.org/2004/02/skos/core#broader",
+            "best_strength": 0.64,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#broader",
+            "label": "has broader",
+            "is_class": false,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#broader",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+            "label": "has broader transitive",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#closeMatch",
+            "label": "has close match",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.allotrope.org/ontologies/property#AFX_0002808",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "label": "has exact match",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.allotrope.org/ontologies/property#AFX_0002809",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+            "label": "has top concept",
+            "is_class": false,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "label": "is in scheme",
+            "is_class": false,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#mappingRelation",
+            "label": "is in mapping relation with",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#member",
+            "label": "has member",
+            "is_class": false,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#member",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#memberList",
+            "label": "has member list",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#narrowMatch",
+            "label": "has narrower match",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#narrower",
+            "label": "has narrower",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+            "label": "has narrower transitive",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#notation",
+            "label": "notation",
+            "is_class": false,
+            "a_e": 1.0,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#notation",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": "",
+            "best_strength": 1.0,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#related",
+            "label": "has related",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2006/vcard/ns#hasRelated",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/2006/vcard/ns",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#relatedMatch",
+            "label": "has related match",
+            "is_class": false,
+            "a_e": 0.576,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2006/vcard/ns#hasRelated",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/2006/vcard/ns",
+            "via": "http://www.w3.org/2004/02/skos/core#related",
+            "best_strength": 0.576,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#semanticRelation",
+            "label": "is in semantic relation with",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+            "label": "is top concept in scheme",
+            "is_class": false,
+            "a_e": 0.64,
+            "aligned": true,
+            "best_target": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "best_strength": 0.64,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          }
+        ],
+        "correspondences": [
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#notation",
+            "target": "http://www.w3.org/2004/02/skos/core#notation",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#member",
+            "target": "http://www.w3.org/2004/02/skos/core#member",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+            "target": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#broader",
+            "target": "http://www.w3.org/2004/02/skos/core#broader",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://purl.org/dc/dcmitype/Collection",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#member",
+            "target": "http://www.w3.org/2006/vcard/ns#hasMember",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/2006/vcard/ns",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#related",
+            "target": "http://www.w3.org/2006/vcard/ns#hasRelated",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/2006/vcard/ns",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:uniprotrdfs",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://www.w3.org/2004/02/skos/core#Concept",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:uniprotrdfs",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "target": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:uniprotrdfs",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "relation": "≡",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "shared-iri",
+            "target_ontology": "ols:uniprotrdfs",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C25453",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://purl.allotrope.org/ontologies/common#AFC_0000166",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://semanticscience.org/resource/SIO_000616",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://purl.allotrope.org/ontologies/process#AFP_0003385",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C45261",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Collection",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C43446",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C45728",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://semanticscience.org/resource/SIO_000326",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C43821",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C42642",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#Concept",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C42695",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#closeMatch",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0002808",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0002809",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#member",
+            "target": "http://semanticscience.org/resource/SIO_000059",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#notation",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C52087",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#notation",
+            "target": "http://semanticscience.org/resource/SIO_001385",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#related",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0002811",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://purl.org/dc/dcmitype/Collection",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:afo",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://www.w3.org/2004/02/skos/core#Collection",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:uniprotrdfs",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C25453",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://purl.allotrope.org/ontologies/common#AFC_0000166",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://semanticscience.org/resource/SIO_000616",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://purl.allotrope.org/ontologies/process#AFP_0003385",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C45261",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C43446",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://www.w3.org/2004/02/skos/core#Collection"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#broadMatch",
+            "target": "http://www.w3.org/2004/02/skos/core#broader",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "via": "http://www.w3.org/2004/02/skos/core#broader"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0002808",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "http://www.w3.org/2004/02/skos/core#closeMatch"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#relatedMatch",
+            "target": "http://www.w3.org/2006/vcard/ns#hasRelated",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/2006/vcard/ns",
+            "via": "http://www.w3.org/2004/02/skos/core#related"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#relatedMatch",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0002811",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "http://www.w3.org/2004/02/skos/core#related"
+          },
+          {
+            "source": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+            "target": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+            "via": "http://www.w3.org/2004/02/skos/core#inScheme"
+          }
+        ],
+        "releases": [
+          {
+            "title": "Allotrope Merged Ontology Suite",
+            "id": "ols:afo",
+            "source": "ols",
+            "ontology": "afo",
+            "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+            "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+            "version": "REC/2026/09",
+            "released": "2026-11-21T00:09:10.933549934",
+            "retrieved": "2026-11-21T17:30:08Z",
+            "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
+            "identified_by": "version IRI",
+            "terms": 9
+          },
+          {
+            "title": "http://www.w3.org/ns/odrl/2/",
+            "id": "db:http://www.w3.org/ns/odrl/2/",
+            "source": "term database (bundled)",
+            "ontology_iri": "http://www.w3.org/ns/odrl/2/",
+            "retrieved": "2026-11-18T01:08:31.893066+00:00",
+            "sha256": "7895765e80d86d1d0349d945a28b8a2479f03169572345080a5b3e561ef31457",
+            "source_url": "https://www.w3.org/ns/odrl/2/ODRL22.ttl",
+            "identified_by": "content hash",
+            "terms": 6,
+            "note": "version not reported by the source; identified by content hash",
+            "release_recorded": true
+          },
+          {
+            "title": "The DataCite Ontology (DataCite)",
+            "id": "db:http://purl.org/spar/datacite/identifier",
+            "source": "term database (cache)",
+            "ontology_iri": "http://purl.org/spar/datacite",
+            "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+            "retrieved": "2026-11-21T17:40:46.656861+00:00",
+            "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+            "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
+            "identified_by": "version IRI",
+            "terms": 5
+          },
+          {
+            "title": "ols:dcat",
+            "id": "ols:dcat",
+            "source": "ols",
+            "ontology": "dcat",
+            "ontology_iri": "http://www.w3.org/ns/dcat",
+            "version_iri": "http://www.w3.org/ns/dcat3",
+            "version": "3",
+            "released": "2026-11-21T00:09:03.721660212",
+            "retrieved": "2026-11-21T17:35:04Z",
+            "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
+            "identified_by": "version IRI",
+            "terms": 4
+          },
+          {
+            "title": "The Earth Metabolome Initiative (EMI) ontology",
+            "id": "ols:emi",
+            "source": "ols",
+            "ontology": "emi",
+            "ontology_iri": "https://w3id.org/emi",
+            "version_iri": "https://w3id.org/emi/version/1.0",
+            "version": "1.0",
+            "released": "2026-11-21T00:10:51.376172340",
+            "retrieved": "2026-11-21T17:30:04Z",
+            "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
+            "identified_by": "version IRI",
+            "terms": 4
+          },
+          {
+            "title": "Model Card Report Ontology",
+            "id": "ols:mcro",
+            "source": "ols",
+            "ontology": "mcro",
+            "ontology_iri": "http://purl.obolibrary.org/obo/mcro.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl",
+            "version": "2023-03-07",
+            "released": "2026-11-21T00:08:36.115248768",
+            "retrieved": "2026-11-21T17:35:02Z",
+            "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
+            "identified_by": "version IRI",
+            "terms": 4
+          },
+          {
+            "title": "Semanticscience Integrated Ontology",
+            "id": "ols:sio",
+            "source": "ols",
+            "ontology": "sio",
+            "ontology_iri": "http://semanticscience.org/ontology/sio.owl",
+            "version_iri": "http://semanticscience.org/ontology/sio/v1.62/sio-release.owl",
+            "version": "1.62",
+            "released": "2026-11-21T00:09:09.346259822",
+            "retrieved": "2026-11-21T17:30:12Z",
+            "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
+            "identified_by": "version IRI",
+            "terms": 4
+          },
+          {
+            "title": "ols:uniprotrdfs",
+            "id": "ols:uniprotrdfs",
+            "source": "ols",
+            "ontology": "uniprotrdfs",
+            "ontology_iri": "http://purl.uniprot.org/core/",
+            "version": "2026_03",
+            "released": "2026-11-21T00:09:03.629992578",
+            "retrieved": "2026-11-21T17:35:43Z",
+            "metadata_sha256": "e3c77e2341c216f7d72d1e8ee63f4997b63eb7ef66cdc7bea9bc57e8b903f969",
+            "identified_by": "version",
+            "terms": 4
+          },
+          {
+            "title": "NCI Thesaurus OBO Edition",
+            "id": "ols:ncit",
+            "source": "ols",
+            "ontology": "ncit",
+            "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+            "version": "26.02d",
+            "released": "2026-11-21T00:09:04.346151993",
+            "retrieved": "2026-11-21T17:30:07Z",
+            "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
+            "identified_by": "version IRI",
+            "terms": 8
+          },
+          {
+            "title": "Ontology for vCard",
+            "id": "db:http://www.w3.org/2006/vcard/ns",
+            "source": "term database (cache)",
+            "ontology_iri": "http://www.w3.org/2006/vcard/ns",
+            "retrieved": "2026-11-19T17:47:10.604768+00:00",
+            "sha256": "2442baf3d07d660910a0e24dd96b1efe1ec22cb26d12cdfd415195da91b43a0c",
+            "source_url": "https://www.w3.org/2006/vcard/ns",
+            "identified_by": "content hash",
+            "terms": 2,
+            "note": "version not reported by the source; identified by content hash",
+            "release_recorded": true
+          }
+        ],
+        "record_file": "cdi.json",
+        "label": "Checked against"
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 7
+      }
+    },
+    {
+      "tool": "Scientific interoperability",
+      "url": "",
+      "items": [
+        {
+          "code": "SI-D",
+          "name": "Reference ontology without a scientific domain",
+          "severity": "info",
+          "description": "Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {\"ols:afo\" = [\"1.5\"]}.",
+          "affected": [],
+          "note": "ols:afo, db:http://www.w3.org/ns/odrl/2/, ols:dcat, ols:sio, ols:uniprotrdfs"
+        },
+        {
+          "code": "SI-H",
+          "name": "Own domain guessed by the classifier",
+          "severity": "info",
+          "description": "D = 5.8 Media and communications was inferred from the ontology's title and description (classifier (p = 0.06)). Set evaluation.si_home_domain if it is wrong: that domain is never counted.",
+          "affected": [],
+          "note": "5.8 Media and communications"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.",
+      "metrics": [
+        {
+          "group": "Scientific interoperability",
+          "metric": "SI",
+          "title": "Scientific interoperability",
+          "status": "ok",
+          "value": "1 of 41 domains covered (1.2 Computer and information sciences); θ_s = 0.3",
+          "about": "Scientific domains other than the ontology's own whose CDI reaches θ_s"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "SI^",
+          "title": "Share of domains",
+          "status": "info",
+          "value": "0.024",
+          "about": "SI divided by the 41 possible domains (OECD fields of science)"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "D",
+          "title": "Own domain",
+          "status": "info",
+          "value": "5.8 Media and communications (classifier (p = 0.06))",
+          "about": "Not counted; set evaluation.si_home_domain to fix it"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "Ceiling",
+          "title": "Generality ceiling",
+          "status": "info",
+          "value": "0.61, from Gen = 0.44",
+          "about": "The highest CDI any one domain can reach, even fully aligned; more general class definitions raise it"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "Upper",
+          "title": "Upper-level ontologies ignored",
+          "status": "info",
+          "value": "0 correspondences removed; 0 upper-level and 5 reference ontologies without a domain ignored, of 10",
+          "about": "BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO (by ontology and IRI namespace)"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "CDI ≥ CDI_δ",
+          "title": "Consistency with CDI",
+          "status": "ok",
+          "value": "holds: every CDI_δ ≤ CDI = 0.51",
+          "about": "A domain's CDI can never exceed the cross-domain score"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.2",
+          "title": "Computer and information sciences",
+          "status": "ok",
+          "value": "CDI_δ 0.36 (covered); Align_δ 0.30, 7 entities aligned",
+          "about": "via db:http://purl.org/spar/datacite/identifier, ols:mcro"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.5",
+          "title": "Earth and related environmental sciences",
+          "status": "warn",
+          "value": "CDI_δ 0.26 (below θ_s = 0.3); Align_δ 0.18, 4 entities aligned",
+          "about": "via ols:emi"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "3.2",
+          "title": "Clinical medicine",
+          "status": "warn",
+          "value": "CDI_δ 0.22 (below θ_s = 0.3); Align_δ 0.15, 4 entities aligned",
+          "about": "via ols:ncit"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "4.3",
+          "title": "Veterinary science",
+          "status": "warn",
+          "value": "CDI_δ 0.17 (below θ_s = 0.3); Align_δ 0.11, 3 entities aligned",
+          "about": "via db:http://www.w3.org/2006/vcard/ns"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "db:http://purl.org/spar/datacite/identifier",
+          "title": "The DataCite Ontology (DataCite)",
+          "status": "info",
+          "value": "1.2 Computer and information sciences",
+          "about": "classifier, p = 0.27"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "db:http://www.w3.org/2006/vcard/ns",
+          "title": "Ontology for vCard",
+          "status": "info",
+          "value": "4.3 Veterinary science",
+          "about": "classifier, p = 0.50"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:emi",
+          "title": "The Earth Metabolome Initiative (EMI) ontology",
+          "status": "info",
+          "value": "1.5 Earth and related environmental sciences",
+          "about": "classifier, p = 0.32"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:mcro",
+          "title": "Model Card Report Ontology",
+          "status": "info",
+          "value": "1.2 Computer and information sciences",
+          "about": "repository metadata; repository domain: information technology"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:ncit",
+          "title": "NCI Thesaurus OBO Edition",
+          "status": "info",
+          "value": "3.2 Clinical medicine",
+          "about": "repository metadata; repository domain: health"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "db:http://www.w3.org/ns/odrl/2/",
+          "title": "http://www.w3.org/ns/odrl/2/",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:afo",
+          "title": "Allotrope Merged Ontology Suite",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:dcat",
+          "title": "ols:dcat",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:sio",
+          "title": "Semanticscience Integrated Ontology",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:uniprotrdfs",
+          "title": "ols:uniprotrdfs",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T18:03:35.255985+00:00",
+        "references": [
+          "ols"
+        ],
+        "cdi_run_id": 87,
+        "settings": {
+          "si": "on",
+          "si_references": [],
+          "si_home_domain": null,
+          "si_theta_s": 0.3,
+          "si_classifier": true,
+          "si_p_min": 0.15,
+          "si_domain_map": {},
+          "si_upper_ontologies": [],
+          "si_upper_namespaces": []
+        },
+        "summary": {
+          "home_domain": "5.8 Media and communications",
+          "home_domain_source": "classifier (p = 0.06)",
+          "si": 1,
+          "si_normalised": 0.024390243902439025,
+          "covered_domains": [
+            "1.2 Computer and information sciences"
+          ],
+          "theta_s": 0.3,
+          "taxonomy_size": 42,
+          "generality": 0.4378763605205398,
+          "generality_ceiling": 0.6090598225872771,
+          "cdi": 0.5119479311788009,
+          "align": 0.6161818181818183,
+          "proposition_holds": true,
+          "n_reference_ontologies": 10,
+          "n_ignored_upper": 0,
+          "n_ignored_no_domain": 5,
+          "n_correspondences_removed_upper": 0,
+          "upper_namespaces": [
+            "http://purl.obolibrary.org/obo/BFO_",
+            "http://purl.obolibrary.org/obo/COB_",
+            "http://purl.obolibrary.org/obo/RO_",
+            "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#",
+            "http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#",
+            "http://www.loa.istc.cnr.it/ontologies/DOLCE-Lite.owl#",
+            "http://www.onto-med.de/ontologies/gfo.owl#",
+            "http://www.ontologyportal.org/SUMO.owl#",
+            "http://www.ontologyportal.org/SUMO#",
+            "http://purl.org/nemo/gufo#"
+          ],
+          "interoperable": true,
+          "display": "1",
+          "params": {
+            "theta": 0.3
+          },
+          "display_note": "of 41 domains (θ_s = 0.3)"
+        },
+        "per_domain": [
+          {
+            "domain": "1.2",
+            "name": "Computer and information sciences",
+            "reference_ontologies": [
+              "db:http://purl.org/spar/datacite/identifier",
+              "ols:mcro"
+            ],
+            "n_aligned_entities": 7,
+            "align_delta": 0.3018181818181818,
+            "cdi_delta": 0.35733411409423005,
+            "covered": true
+          },
+          {
+            "domain": "1.5",
+            "name": "Earth and related environmental sciences",
+            "reference_ontologies": [
+              "ols:emi"
+            ],
+            "n_aligned_entities": 4,
+            "align_delta": 0.18181818181818182,
+            "cdi_delta": 0.2569455700885961,
+            "covered": false
+          },
+          {
+            "domain": "3.2",
+            "name": "Clinical medicine",
+            "reference_ontologies": [
+              "ols:ncit"
+            ],
+            "n_aligned_entities": 4,
+            "align_delta": 0.1489090909090909,
+            "cdi_delta": 0.22224058424364115,
+            "covered": false
+          },
+          {
+            "domain": "4.3",
+            "name": "Veterinary science",
+            "reference_ontologies": [
+              "db:http://www.w3.org/2006/vcard/ns"
+            ],
+            "n_aligned_entities": 3,
+            "align_delta": 0.10800000000000001,
+            "cdi_delta": 0.17326504811867152,
+            "covered": false
+          },
+          {
+            "domain": "1.1",
+            "name": "Mathematics",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.3",
+            "name": "Physical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.4",
+            "name": "Chemical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.6",
+            "name": "Biological sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.7",
+            "name": "Other natural sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.1",
+            "name": "Civil engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.10",
+            "name": "Nano-technology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.11",
+            "name": "Other engineering and technologies",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.2",
+            "name": "Electrical engineering, electronic engineering, information engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.3",
+            "name": "Mechanical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.4",
+            "name": "Chemical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.5",
+            "name": "Materials engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.6",
+            "name": "Medical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.7",
+            "name": "Environmental engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.8",
+            "name": "Environmental biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.9",
+            "name": "Industrial biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.1",
+            "name": "Basic medicine",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.3",
+            "name": "Health sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.4",
+            "name": "Medical biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.5",
+            "name": "Other medical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.1",
+            "name": "Agriculture, forestry, and fisheries",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.2",
+            "name": "Animal and dairy science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.4",
+            "name": "Agricultural biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.5",
+            "name": "Other agricultural sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.1",
+            "name": "Psychology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.2",
+            "name": "Economics and business",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.3",
+            "name": "Educational sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.4",
+            "name": "Sociology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.5",
+            "name": "Law",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.6",
+            "name": "Political science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.7",
+            "name": "Social and economic geography",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.9",
+            "name": "Other social sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.1",
+            "name": "History and archaeology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.2",
+            "name": "Languages and literature",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.3",
+            "name": "Philosophy, ethics and religion",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.4",
+            "name": "Arts (arts, history of arts, performing arts, music)",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.5",
+            "name": "Other humanities",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          }
+        ],
+        "domain_assignments": [
+          {
+            "ontology": "ols:afo",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "Allotrope Merged Ontology Suite",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "db:http://www.w3.org/ns/odrl/2/",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "http://www.w3.org/ns/odrl/2/",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "db:http://purl.org/spar/datacite/identifier",
+            "domains": [
+              "1.2"
+            ],
+            "source": "classifier",
+            "score": 0.272125244140625,
+            "title": "The DataCite Ontology (DataCite)",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:dcat",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:emi",
+            "domains": [
+              "1.5"
+            ],
+            "source": "classifier",
+            "score": 0.31902727484703064,
+            "title": "The Earth Metabolome Initiative (EMI) ontology",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:mcro",
+            "domains": [
+              "1.2"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Model Card Report Ontology",
+            "raw_domain": "information technology"
+          },
+          {
+            "ontology": "ols:sio",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "Semanticscience Integrated Ontology",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:uniprotrdfs",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:ncit",
+            "domains": [
+              "3.2"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "NCI Thesaurus OBO Edition",
+            "raw_domain": "health"
+          },
+          {
+            "ontology": "db:http://www.w3.org/2006/vcard/ns",
+            "domains": [
+              "4.3"
+            ],
+            "source": "classifier",
+            "score": 0.4963951110839844,
+            "title": "Ontology for vCard",
+            "raw_domain": ""
+          }
+        ],
+        "n_correspondences_without_upper": 68,
+        "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
+        "record_file": "si.json",
+        "own_references": false,
+        "notes": []
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 2
       }
     },
     {
@@ -367,6 +3437,7 @@
       "note": "",
       "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
       "metrics": [],
+      "provenance": {},
       "summary": {
         "error": 0,
         "warning": 13,

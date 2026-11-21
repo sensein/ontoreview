@@ -5,7 +5,7 @@
 - Ontology IRI: http://www.w3.org/ns/prov-o#
 - Namespace: http://www.w3.org/ns/prov# (prefix `prov:`)
 - Version: Recommendation version 2013-04-30
-- Contents: 30 classes, 44 object properties, 6 datatype properties, 15 annotation properties
+- Contents: 30 classes, 44 object properties, 6 datatype properties, 20 annotation properties
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
@@ -15,7 +15,7 @@ Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL
 - [Classes](classes.md): 30 classes with definitions and axioms
 - [Object properties](object-properties.md): 44 object properties with definitions and axioms
 - [Datatype properties](datatype-properties.md): 6 datatype properties with definitions and axioms
-- [Annotation properties](annotation-properties.md): 15 annotation properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 20 annotation properties with definitions and axioms
 
 ## Machine-readable
 

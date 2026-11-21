@@ -203,6 +203,7 @@ class OntologyInfo:
     title: str = ""
     domain: str = ""             # dom(O_d)
     given: bool = False          # O_d ∈ 𝒪_giv
+    description: str = ""        # used to classify O_d into a scientific domain (SI)
     coverage: float = 0.0        # cov_D(O_d)            [eq:cov]
     n_correspondences: int = 0
     status: str = ""             # selected | excluded-self | excluded-same-domain | below-top-N | excluded-user
@@ -360,6 +361,35 @@ def _infer_namespace(g, classes: list[str]) -> tuple[str, ...]:
         return ()
     best = max(counts, key=counts.get)
     return (best,) if counts[best] >= 0.3 * len(classes) else ()
+
+
+def read_ontology_header(path: str | Path, lang: str = "en") -> dict[str, str]:
+    """IRI, title and description from the owl:Ontology header of a file (empty strings when the
+    file has no header or cannot be read). The description is used to classify O_d into a domain."""
+    from rdflib import Graph, Literal, URIRef
+    from rdflib.namespace import OWL, RDF
+    empty = {"iri": "", "title": "", "description": ""}
+    try:
+        g = Graph()
+        g.parse(str(path))
+    except Exception:  # noqa: BLE001 - SSSOM, unparsable or remote-only files
+        return empty
+    title_p = ("http://purl.org/dc/terms/title", "http://purl.org/dc/elements/1.1/title",
+               "http://www.w3.org/2000/01/rdf-schema#label")
+    desc_p = ("http://purl.org/dc/terms/description", "http://purl.org/dc/elements/1.1/description",
+              "http://www.w3.org/2000/01/rdf-schema#comment", "http://www.w3.org/2004/02/skos/core#definition")
+
+    def first(subj, props):
+        for prop in props:
+            vals = [o for o in g.objects(subj, URIRef(prop)) if isinstance(o, Literal)]
+            pref = [v for v in vals if v.language in (lang, None)] or vals
+            if pref:
+                return str(pref[0]).strip()
+        return ""
+
+    for subj in g.subjects(RDF.type, OWL.Ontology):
+        return {"iri": str(subj), "title": first(subj, title_p), "description": first(subj, desc_p)}
+    return empty
 
 
 def load_ontology(
@@ -564,7 +594,9 @@ class LocalFileSource(ReferenceSource):
                 for x in onto.external_iris() if x in self.ref.terms]
 
     def info(self):
-        return {self.id: OntologyInfo(self.id, "file", title=Path(self.path).name, given=True)}
+        h = read_ontology_header(self.path)
+        return {self.id: OntologyInfo(self.id, "file", title=h["title"] or Path(self.path).name, given=True,
+                                      description=h["description"])}
 
 
 class SSSOMSource(ReferenceSource):
@@ -701,7 +733,9 @@ class OntoAlignerSource(ReferenceSource):
                 for p in preds if p["source"] in ents and float(p["score"]) >= self.threshold]
 
     def info(self):
-        return {self.id: OntologyInfo(self.id, "file", title=Path(self.path).name, given=True)}
+        h = read_ontology_header(self.path)
+        return {self.id: OntologyInfo(self.id, "file", title=h["title"] or Path(self.path).name, given=True,
+                                      description=h["description"])}
 
 
 class OLSSource(ReferenceSource):
@@ -801,14 +835,16 @@ class OLSSource(ReferenceSource):
             dom = d.get("domain", "")
             dom = dom if isinstance(dom, str) else ", ".join(map(str, dom or []))
             title = _text(d.get("title"))
-            self._info[oid] = OntologyInfo(oid, self.prefix, title=title, domain=dom, given=self.given)
+            desc = _text(d.get("description"))
+            self._info[oid] = OntologyInfo(oid, self.prefix, title=title, domain=dom, given=self.given,
+                                           description=desc)
             if d:
                 rel = release_record(self.prefix, oid.split(":", 1)[1], d, title=title,
                                      ontology_iri=_text(d.get("iri")),
                                      version_iri=_text(d.get(OWL_VERSION_IRI) or d.get("versionIri")),
                                      version=_text(d.get(OWL_VERSION_INFO) or d.get("version")),
                                      released=_text(d.get("loaded") or d.get("updated") or d.get("sourceFileTimestamp")))
-                _to_cache(self, oid, dom, rel)
+                _to_cache(self, oid, dom, rel, self._info[oid].description)
         return self._info
 
     def info(self):
@@ -883,12 +919,13 @@ class BioPortalSource(ReferenceSource):
                                            domain=dom, given=self.given)
             if meta:
                 sub = self.http.get_json(f"{self.base}/ontologies/{acr}/latest_submission",
-                                         {"display": "version,released,URI,versionIRI"}) or {}
+                                         {"display": "version,released,URI,versionIRI,description"}) or {}
+                self._info[oid].description = _text(sub.get("description"))
                 rel = release_record(self.prefix, acr, {"ontology": meta, "latest_submission": sub},
                                      title=meta.get("name", ""), ontology_iri=_text(sub.get("URI")),
                                      version_iri=_text(sub.get("versionIRI")), version=_text(sub.get("version")),
                                      released=_text(sub.get("released")))
-                _to_cache(self, oid, dom, rel)
+                _to_cache(self, oid, dom, rel, self._info[oid].description)
         return self._info
 
     def info(self):
@@ -937,10 +974,10 @@ def _from_cache(src, oid: str) -> bool:
     """Fill info and release for ``oid`` from the term database; False when not there or expired."""
     cache = getattr(src, "info_cache", None)
     row = cache.get(oid) if cache else None
-    if not row:
-        return False
+    if not row or "description" not in (row.get("payload") or {}):
+        return False        # not cached, expired, or cached before descriptions were kept (SI needs them)
     src._info[oid] = OntologyInfo(oid, src.prefix, title=row.get("title") or "", domain=row.get("domain") or "",
-                                  given=src.given)
+                                  given=src.given, description=row["payload"].get("description") or "")
     rel = dict(row["payload"].get("release") or {})
     rel["cached"] = row["fetched_at"]
     rel.setdefault("identified_by", identified_by(rel))
@@ -948,13 +985,14 @@ def _from_cache(src, oid: str) -> bool:
     return True
 
 
-def _to_cache(src, oid: str, domain: str, rel: dict) -> None:
+def _to_cache(src, oid: str, domain: str, rel: dict, description: str = "") -> None:
     src.releases[oid] = rel
     cache = getattr(src, "info_cache", None)
     if cache:
         cache.put({"id": oid, "source": src.prefix, "title": rel.get("title"), "domain": domain,
                    "ontology_iri": rel.get("ontology_iri"), "version_iri": rel.get("version_iri"),
-                   "version": rel.get("version"), "released": rel.get("released"), "payload": {"release": rel}})
+                   "version": rel.get("version"), "released": rel.get("released"),
+                   "payload": {"release": rel, "description": description}})
 
 
 # ===========================================================================

@@ -70,6 +70,8 @@ class ExternalReport:
 class Tool:
     name: str  # shown as the section title in reports and in the app's Issues table
     url: str   # reference documentation, linked from the section title ("" = none)
+    score: str = ""    # key in provenance["summary"] holding a 0..1 score shown as an Overview tile
+    verdict: str = ""  # key in provenance["summary"] holding whether the score passes its threshold
 
 
 TOOLS: dict[str, Tool] = {
@@ -78,8 +80,15 @@ TOOLS: dict[str, Tool] = {
     "ontocheck": Tool("OntoCheck", "https://ontocheck.readthedocs.io"),
     "iri": Tool("IRI checks", "https://www.w3.org/TR/cooluris/"),
     "oops": Tool("OOPS!", "https://oops.linkeddata.es"),
-    "cdi": Tool("Cross-domain interoperability", ""),         # OntoReview's own check: no external reference
+    # OntoReview's own check: no external reference
+    "cdi": Tool("Cross-domain interoperability", "", score="cdi", verdict="interoperable"),
+    "si": Tool("Scientific interoperability", "", score="si", verdict="interoperable"),
 }
+
+
+def tool_anchor(name: str) -> str:
+    """Fragment id of a checker's section in the quality report, e.g. ``quality-oops``."""
+    return "quality-" + name.lower().replace("!", "").replace(" ", "-")
 REASONERS = {"hermit": "HermiT", "elk": "ELK"}
 
 
@@ -150,6 +159,40 @@ class Report:
         for r in self.external:
             for k, v in r.summary.items():
                 out[k] = out.get(k, 0) + v
+        return out
+
+    def check_rows(self) -> list[dict]:
+        """One row per check for the quality report's summary table. ``count`` is None when the
+        check did not run (``error``) or reports a verdict rather than findings; ``share`` is the
+        count relative to the largest, 0..1. The built-in row has ``tool`` None."""
+        rows = [{"tool": None, "anchor": "quality-builtin", "count": len(self.findings), "error": None}]
+        for r in self.external:
+            n = sum(r.summary.values())
+            rows.append({"tool": r.tool, "anchor": tool_anchor(r.tool), "error": r.error,
+                         "count": None if r.error or (not r.items and (r.note or r.metrics)) else n})
+        top = max((x["count"] or 0 for x in rows), default=0)
+        for x in rows:
+            x["share"] = (x["count"] or 0) / top if top else 0
+        return rows
+
+    def checks_run(self) -> int:
+        """Built-in rules plus every external check that ran (did not end in an error)."""
+        return 1 + sum(1 for r in self.external if not r.error)
+
+    def scores(self) -> list[dict]:
+        """Scores of checks whose :class:`Tool` declares one (CDI, …), for the Overview tiles."""
+        by_name = {t.name: t for t in TOOLS.values() if t.score}
+        out = []
+        for r in self.external:
+            tool = by_name.get(r.tool)
+            s = (r.provenance or {}).get("summary") or {}
+            if tool is None or r.error or s.get(tool.score) is None:
+                continue
+            out.append({"tool": r.tool, "anchor": tool_anchor(r.tool), "value": float(s[tool.score]),
+                        "passed": s.get(tool.verdict) if tool.verdict else None,
+                        "threshold": (s.get("params") or {}).get("theta"),
+                        # a count (SI) is shown as is, with its own note; a 0..1 score with two decimals
+                        "display": s.get("display"), "note": s.get("display_note")})
         return out
 
     def to_dict(self) -> dict:

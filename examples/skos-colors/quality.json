@@ -6,7 +6,7 @@
   },
   "totals": {
     "error": 9,
-    "warning": 7,
+    "warning": 8,
     "info": 2
   },
   "external": [
@@ -63,6 +63,7 @@
       "note": "",
       "scope": "",
       "metrics": [],
+      "provenance": {},
       "summary": {
         "error": 8,
         "warning": 0,
@@ -77,9 +78,388 @@
       "note": "Consistent; all classes satisfiable (HermiT).",
       "scope": "",
       "metrics": [],
+      "provenance": {},
       "summary": {
         "error": 0,
         "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "IRI checks",
+      "url": "https://www.w3.org/TR/cooluris/",
+      "items": [
+        {
+          "code": "no_ontology_header",
+          "name": "No owl:Ontology header",
+          "severity": "warning",
+          "description": "Without a named owl:Ontology the ontology has no identifier to cite, version or import.",
+          "affected": [],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "0.0s. Own namespaces (not checked as external): https://example.org/colors/. Run #110 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "metrics": [
+        {
+          "group": "IRI",
+          "metric": "syntax",
+          "title": "IRI syntax",
+          "value": "No malformed IRIs",
+          "status": "ok",
+          "about": "All 21 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host"
+        },
+        {
+          "group": "IRI",
+          "metric": "header",
+          "title": "Ontology header",
+          "value": "None",
+          "status": "warn",
+          "about": "Exactly one named owl:Ontology"
+        },
+        {
+          "group": "IRI",
+          "metric": "resolves",
+          "title": "Ontology IRI resolves",
+          "value": "Not checked (no single http(s) ontology IRI)",
+          "status": "skipped",
+          "about": "The ontology IRI returns RDF (content negotiation) whose header matches it"
+        },
+        {
+          "group": "IRI",
+          "metric": "external",
+          "title": "External terms",
+          "value": "13 checked: 13 valid",
+          "status": "ok",
+          "about": "Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated"
+        },
+        {
+          "group": "IRI",
+          "metric": "sources",
+          "title": "Lookup sources",
+          "value": "bundled 10, cache 3",
+          "status": "info",
+          "about": "Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download"
+        },
+        {
+          "group": "IRI",
+          "metric": "freshness",
+          "title": "Freshness",
+          "value": "All lookups current",
+          "status": "ok",
+          "about": "Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T18:02:04.353281+00:00",
+        "run_id": 110,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "offline": false,
+          "refresh": false,
+          "repositories": true,
+          "resolve": true,
+          "local_namespaces": [
+            "https://example.org/colors/"
+          ],
+          "budget": 120,
+          "cache_days": 30
+        },
+        "own_namespaces": [
+          "https://example.org/colors/"
+        ],
+        "releases": [
+          {
+            "title": "Simple Knowledge Organization System",
+            "source": "bundle",
+            "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T01:08:31.108081+00:00",
+            "terms": 10,
+            "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+            "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+          },
+          {
+            "title": "bibo (purl.org)",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/ontology/bibo/",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T03:50:03.244033+00:00",
+            "terms": 2,
+            "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+            "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+          },
+          {
+            "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/goodrelations/v1",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-19T17:47:34.665699+00:00",
+            "terms": 1,
+            "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+            "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+          }
+        ],
+        "terms": [
+          {
+            "iri": "http://purl.org/dc/terms/description",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/license",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/goodrelations/v1",
+              "namespace": "http://purl.org/goodrelations/",
+              "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+              "document": "http://purl.org/goodrelations/v1",
+              "version_iri": null,
+              "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+              "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+              "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/title",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#Concept",
+            "roles": [
+              "class"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+            "roles": [
+              "class"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#broader",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#definition",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#inScheme",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#prefLabel",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#related",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          }
+        ]
+      },
+      "summary": {
+        "error": 0,
+        "warning": 1,
         "info": 0
       }
     },
@@ -228,6 +608,37 @@
           "status": "skipped"
         }
       ],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "Cross-domain interoperability",
+      "url": "",
+      "items": [],
+      "error": "No classes or properties in the ontology's namespace to score.",
+      "note": "",
+      "scope": "",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "Scientific interoperability",
+      "url": "",
+      "items": [],
+      "error": "Not computed: No classes or properties in the ontology's namespace to score.",
+      "note": "",
+      "scope": "",
+      "metrics": [],
+      "provenance": {},
       "summary": {
         "error": 0,
         "warning": 0,
@@ -270,6 +681,7 @@
       "note": "",
       "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
       "metrics": [],
+      "provenance": {},
       "summary": {
         "error": 1,
         "warning": 3,

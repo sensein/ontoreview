@@ -1,4 +1,5 @@
 {% import "macros.html" as m with context %}
+{% set rec = s.context.record %}
 <section class="section" id="{{ s.id }}">
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
   <table class="rel">
@@ -12,5 +13,29 @@
     {% if meta.prior_version %}{{ m.row(t('prior_version'), m.link_or_text(meta.prior_version)) }}{% endif %}
     </tbody>
   </table>
-  <p class="small muted">{{ t('prov_generated', source=onto.source_kind == 'linkml' and 'a LinkML schema' or 'the ontology source', version=version) }} <a href="{{ root }}provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
+
+  {% if rec %}
+  <h3 class="subhead" id="provenance-timeline">{{ t('prov_timeline') }}</h3>
+  <ol class="prov-timeline">
+    {% for e in rec.events %}
+    <li class="prov-ev prov-{{ e.kind }}">
+      <time datetime="{{ e.when[:10] if e.date_only else e.when }}">{{ e|prov_when }}</time>
+      <div class="prov-what"><span class="prov-title">{{ e.title }}</span>{% if e.detail %}<span class="prov-detail">{{ e.detail }}</span>{% endif %}</div>
+    </li>
+    {% endfor %}
+  </ol>
+
+  <h3 class="subhead" id="provenance-build">{{ t('prov_build') }}</h3>
+  <table class="rel">
+    <tbody>
+    {% if rec.source.name %}{{ m.row(t('prov_source'), rec.source.name ~ (' (' ~ rec.source.size|filesize ~ ')' if rec.source.size else '')) }}{% endif %}
+    {% if rec.source.sha256 %}<tr><th scope="row">SHA-256</th><td><code class="small">{{ rec.source.sha256 }}</code></td></tr>{% endif %}
+    {{ m.row(t('prov_tool'), rec.tool.name ~ ' ' ~ rec.tool.version) }}
+    <tr><th scope="row">{{ t('prov_started') }}</th><td><time datetime="{{ rec.started }}">{{ {'when': rec.started}|prov_when }}</time></td></tr>
+    <tr><th scope="row">{{ t('prov_finished') }}</th><td><time datetime="{{ rec.generated }}">{{ {'when': rec.generated}|prov_when }}</time> <span class="muted">({{ rec.seconds }} s)</span></td></tr>
+    {% if rec.checks %}{{ m.row(t('prov_checks'), rec.checks|join(', ')) }}{% endif %}
+    </tbody>
+  </table>
+  {% endif %}
+  <p class="small muted">{{ t('prov_generated', source=onto.source_kind == 'linkml' and 'a LinkML schema' or 'the ontology source', version=version) }}{% if not inline %} Machine-readable: <a href="{{ root }}provenance.ttl">provenance.ttl</a> (W3C PROV-O).{% endif %}</p>
 </section>

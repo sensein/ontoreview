@@ -16,6 +16,7 @@ Used to test **OntoReview**'s LinkML support.
 - [Classes](classes.md) (6)
 - [Object properties](object-properties.md) (5)
 - [Datatype properties](datatype-properties.md) (8)
+- [Annotation properties](annotation-properties.md) (31)
 - [Datatypes](datatypes.md) (1)
 - [Named individuals](individuals.md) (4)
 
@@ -29,7 +30,7 @@ Used to test **OntoReview**'s LinkML support.
 
 | | |
 |---|---|
-| Restrictions | [persons](object-properties.md#persons) *only* [Person](classes.md#person); [organizations](object-properties.md#organizations) *only* [Organization](classes.md#organization) |
+| Restrictions | [organizations](object-properties.md#organizations) *only* [Organization](classes.md#organization); [persons](object-properties.md#persons) *only* [Person](classes.md#person) |
 | tree root (LinkML) | true |
 
 ### GenderType
@@ -77,7 +78,7 @@ An organization such as a company or university.
 | | |
 |---|---|
 | Superclasses | [NamedThing](classes.md#namedthing) |
-| Restrictions | [founding_date](datatype-properties.md#founding_date) *max* `1` [xsd:date](http://www.w3.org/2001/XMLSchema#date); [employees](object-properties.md#employees) *only* [Person](classes.md#person) |
+| Restrictions | [employees](object-properties.md#employees) *only* [Person](classes.md#person); [founding_date](datatype-properties.md#founding_date) *max* `1` [xsd:date](http://www.w3.org/2001/XMLSchema#date) |
 | Used in | in range of [employed_by](object-properties.md#employed_by); in range of [organizations](object-properties.md#organizations); used in axioms of [Container](classes.md#container); used in axioms of [Person](classes.md#person) |
 
 ### Person
@@ -89,7 +90,7 @@ A person (alive, dead, undead, or fictional).
 | | |
 |---|---|
 | Superclasses | [HasAliases](classes.md#hasaliases), [NamedThing](classes.md#namedthing) |
-| Restrictions | [primary_email](datatype-properties.md#email) *exactly* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string)[*pattern* `"^\S+@[\S+\.]+\S+"`]; [age_in_years](datatype-properties.md#age_in_years) *max* `1` [xsd:integer](http://www.w3.org/2001/XMLSchema#integer)[*>=* `0`, *<=* `999`]; [birth_date](datatype-properties.md#birthdate) *max* `1` [xsd:date](http://www.w3.org/2001/XMLSchema#date); [gender](object-properties.md#gender) *max* `1` [GenderType](classes.md#gendertype); [employed_by](object-properties.md#employed_by) *max* `1` [Organization](classes.md#organization) |
+| Restrictions | [gender](object-properties.md#gender) *max* `1` [GenderType](classes.md#gendertype); [primary_email](datatype-properties.md#email) *exactly* `1` [xsd:string](http://www.w3.org/2001/XMLSchema#string)[*pattern* `"^\S+@[\S+\.]+\S+"`]; [birth_date](datatype-properties.md#birthdate) *max* `1` [xsd:date](http://www.w3.org/2001/XMLSchema#date); [employed_by](object-properties.md#employed_by) *max* `1` [Organization](classes.md#organization); [age_in_years](datatype-properties.md#age_in_years) *max* `1` [xsd:integer](http://www.w3.org/2001/XMLSchema#integer)[*>=* `0`, *<=* `999`] |
 | Used in | in range of [employees](object-properties.md#employees); in range of [persons](object-properties.md#persons); used in axioms of [Container](classes.md#container); used in axioms of [Organization](classes.md#organization) |
 | Examples | `Ada Lovelace — a famous mathematician` |
 | mixins (LinkML) | personinfo:HasAliases |
@@ -246,6 +247,134 @@ The main email address of a person.
 | Range | [xsd:string](http://www.w3.org/2001/XMLSchema#string)[*pattern* `"^\S+@[\S+\.]+\S+"`] |
 | Used in | used in axioms of [Person](classes.md#person) |
 | pattern (LinkML) | ^\S+@[\S+\.]+\S+ |
+
+---
+
+# Annotation properties
+
+### abstract
+
+**IRI:** `https://w3id.org/linkml/abstract` · `linkml:abstract`
+
+### altLabel
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#altLabel` · `skos:altLabel`
+
+### attribute_of
+
+**IRI:** `https://w3id.org/linkml/attribute_of` · `linkml:attribute_of`
+
+### contributor
+
+**IRI:** `http://purl.org/dc/terms/contributor` · `dcterms:contributor`
+
+### created
+
+**IRI:** `http://purl.org/dc/terms/created` · `dcterms:created`
+
+### creator
+
+**IRI:** `http://purl.org/dc/terms/creator` · `dcterms:creator`
+
+### definition
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#definition` · `skos:definition`
+
+### deprecated
+
+**IRI:** `http://www.w3.org/2002/07/owl#deprecated` · `owl:deprecated`
+
+### description
+
+**IRI:** `http://purl.org/dc/terms/description` · `dcterms:description`
+
+### exactMatch
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#exactMatch` · `skos:exactMatch`
+
+### example
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#example` · `skos:example`
+
+### historyNote
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#historyNote` · `skos:historyNote`
+
+### identifier
+
+**IRI:** `https://w3id.org/linkml/identifier` · `linkml:identifier`
+
+### inlined_as_list
+
+**IRI:** `https://w3id.org/linkml/inlined_as_list` · `linkml:inlined_as_list`
+
+### isDefinedBy
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#isDefinedBy` · `rdfs:isDefinedBy`
+
+### keywords
+
+**IRI:** `https://schema.org/keywords`
+
+### label
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#label` · `rdfs:label`
+
+### license
+
+**IRI:** `http://purl.org/dc/terms/license` · `dcterms:license`
+
+### maximum_value
+
+**IRI:** `https://w3id.org/linkml/maximum_value` · `linkml:maximum_value`
+
+### minimum_value
+
+**IRI:** `https://w3id.org/linkml/minimum_value` · `linkml:minimum_value`
+
+### mixin
+
+**IRI:** `https://w3id.org/linkml/mixin` · `linkml:mixin`
+
+### mixins
+
+**IRI:** `https://w3id.org/linkml/mixins` · `linkml:mixins`
+
+### modified
+
+**IRI:** `http://purl.org/dc/terms/modified` · `dcterms:modified`
+
+### multivalued
+
+**IRI:** `https://w3id.org/linkml/multivalued` · `linkml:multivalued`
+
+### pattern
+
+**IRI:** `https://w3id.org/linkml/pattern` · `linkml:pattern`
+
+### permissible_value
+
+**IRI:** `https://w3id.org/linkml/permissible_value` · `linkml:permissible_value`
+
+### preferredNamespacePrefix
+
+**IRI:** `http://purl.org/vocab/vann/preferredNamespacePrefix`
+
+### preferredNamespaceUri
+
+**IRI:** `http://purl.org/vocab/vann/preferredNamespaceUri`
+
+### title
+
+**IRI:** `http://purl.org/dc/terms/title` · `dcterms:title`
+
+### tree_root
+
+**IRI:** `https://w3id.org/linkml/tree_root` · `linkml:tree_root`
+
+### versionInfo
+
+**IRI:** `http://www.w3.org/2002/07/owl#versionInfo` · `owl:versionInfo`
 
 ---
 

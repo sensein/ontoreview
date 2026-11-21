@@ -1,6 +1,24 @@
 {% import "macros.html" as m with context %}
+{% set st = s.context.stats %}
+{% set qsec = sections|selectattr('id', 'equalto', 'quality')|first %}
+{% set qbase = (qsec.page if qsec and multi and qsec.page != page else '') %}
 <section class="section" id="{{ s.id }}">
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  <ul class="stats">
+    {% for k in st.kinds %}
+    {% set ksec = sections|selectattr('id', 'equalto', k.section)|first %}
+    <li class="stat">{% if ksec %}<a class="stat-body" href="{{ page_href(ksec, page) }}">{% else %}<div class="stat-body">{% endif %}<span class="stat-num">{{ k.count }}</span><span class="stat-label">{{ t.kind_title(k.kind) }}</span>{% if ksec %}</a>{% else %}</div>{% endif %}</li>
+    {% endfor %}
+    {% if st.checks_run is not none %}
+    <li class="stat stat-quality">{% if qsec %}<a class="stat-body" href="{{ page_href(qsec, page) }}">{% else %}<div class="stat-body">{% endif %}<span class="stat-num">{{ st.checks_run }}</span><span class="stat-label">{{ t('checks_run') }}</span>{% if qsec %}</a>{% else %}</div>{% endif %}</li>
+    {% endif %}
+    {% for sc in st.scores %}
+    <li class="stat stat-score{% if sc.passed is sameas true %} stat-ok{% elif sc.passed is sameas false %} stat-warn{% endif %}">{% if qsec %}<a class="stat-body" href="{{ qbase }}#{{ sc.anchor }}">{% else %}<div class="stat-body">{% endif %}<span class="stat-num">{{ sc.display if sc.display else '%.2f'|format(sc.value) }}</span><span class="stat-label">{{ sc.tool }}</span>{% if sc.note %}<span class="stat-sub">{{ sc.note }}</span>{% elif sc.threshold is not none and sc.passed is not none %}<span class="stat-sub">{{ t('score_pass' if sc.passed else 'score_fail', theta=sc.threshold) }}</span>{% endif %}{% if qsec %}</a>{% else %}</div>{% endif %}</li>
+    {% endfor %}
+  </ul>
+
+  {% if s.context.index %}
+  <h3 class="subhead">{{ t('term_index') }}</h3>
   {% for kind in onto.kinds_present() %}
   {% set items = onto.by_kind(kind) %}
   <div class="index-group{% if items|length > large_index %} is-large{% endif %}">
@@ -14,4 +32,5 @@
   </div>
   {% endfor %}
   {% if onto.terms.values()|selectattr('external')|list %}<p class="footnote">* {{ t('external') }}: declared in this ontology, outside its namespace.</p>{% endif %}
+  {% endif %}
 </section>

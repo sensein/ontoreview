@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-20T01:28:04.338582+00:00",
-  "run_id": 24,
+  "checked_at": "2026-11-21T18:05:07.872095+00:00",
+  "run_id": 116,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "offline": false,
@@ -12,8 +12,8 @@
       "http://www.w3.org/ns/prov/",
       "http://www.w3.org/ns/prov-o#",
       "http://www.w3.org/ns/prov-o/",
-      "http://www.w3.org/2000/01/rdf-schema#",
-      "http://www.w3.org/2002/07/owl#"
+      "http://www.w3.org/2002/07/owl#",
+      "http://www.w3.org/2000/01/rdf-schema#"
     ],
     "budget": 120,
     "cache_days": 30
@@ -23,8 +23,8 @@
     "http://www.w3.org/ns/prov/",
     "http://www.w3.org/ns/prov-o#",
     "http://www.w3.org/ns/prov-o/",
-    "http://www.w3.org/2000/01/rdf-schema#",
-    "http://www.w3.org/2002/07/owl#"
+    "http://www.w3.org/2002/07/owl#",
+    "http://www.w3.org/2000/01/rdf-schema#"
   ],
   "releases": [],
   "terms": []

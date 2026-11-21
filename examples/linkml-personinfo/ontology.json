@@ -25,6 +25,7 @@
   "class": 6,
   "object_property": 5,
   "datatype_property": 8,
+  "annotation_property": 31,
   "datatype": 1,
   "individual": 4,
   "triples": 267
@@ -36,8 +37,8 @@
    "kind": "class",
    "label": "Container",
    "restrictions": [
-    "personinfo:persons only schema:Person",
-    "personinfo:organizations only personinfo:Organization"
+    "personinfo:organizations only personinfo:Organization",
+    "personinfo:persons only schema:Person"
    ]
   },
   {
@@ -89,8 +90,8 @@
     "personinfo:NamedThing"
    ],
    "restrictions": [
-    "personinfo:founding_date max 1 xsd:date",
-    "personinfo:employees only schema:Person"
+    "personinfo:employees only schema:Person",
+    "personinfo:founding_date max 1 xsd:date"
    ]
   },
   {
@@ -110,11 +111,11 @@
     "personinfo:NamedThing"
    ],
    "restrictions": [
-    "schema:email exactly 1 xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]",
-    "personinfo:age_in_years max 1 xsd:integer[>= 0, <= 999]",
-    "schema:birthDate max 1 xsd:date",
     "personinfo:gender max 1 personinfo:GenderType",
-    "personinfo:employed_by max 1 personinfo:Organization"
+    "schema:email exactly 1 xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]",
+    "schema:birthDate max 1 xsd:date",
+    "personinfo:employed_by max 1 personinfo:Organization",
+    "personinfo:age_in_years max 1 xsd:integer[>= 0, <= 999]"
    ]
   },
   {
@@ -248,6 +249,189 @@
    "range": [
     "xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]"
    ]
+  },
+  {
+   "iri": "https://w3id.org/linkml/abstract",
+   "curie": "linkml:abstract",
+   "kind": "annotation_property",
+   "label": "abstract"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+   "curie": "skos:altLabel",
+   "kind": "annotation_property",
+   "label": "altLabel"
+  },
+  {
+   "iri": "https://w3id.org/linkml/attribute_of",
+   "curie": "linkml:attribute_of",
+   "kind": "annotation_property",
+   "label": "attribute_of"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/contributor",
+   "curie": "dcterms:contributor",
+   "kind": "annotation_property",
+   "label": "contributor"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/created",
+   "curie": "dcterms:created",
+   "kind": "annotation_property",
+   "label": "created"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/creator",
+   "curie": "dcterms:creator",
+   "kind": "annotation_property",
+   "label": "creator"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#definition",
+   "curie": "skos:definition",
+   "kind": "annotation_property",
+   "label": "definition"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#deprecated",
+   "curie": "owl:deprecated",
+   "kind": "annotation_property",
+   "label": "deprecated"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/description",
+   "curie": "dcterms:description",
+   "kind": "annotation_property",
+   "label": "description"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#exactMatch",
+   "curie": "skos:exactMatch",
+   "kind": "annotation_property",
+   "label": "exactMatch"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#example",
+   "curie": "skos:example",
+   "kind": "annotation_property",
+   "label": "example"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#historyNote",
+   "curie": "skos:historyNote",
+   "kind": "annotation_property",
+   "label": "historyNote"
+  },
+  {
+   "iri": "https://w3id.org/linkml/identifier",
+   "curie": "linkml:identifier",
+   "kind": "annotation_property",
+   "label": "identifier"
+  },
+  {
+   "iri": "https://w3id.org/linkml/inlined_as_list",
+   "curie": "linkml:inlined_as_list",
+   "kind": "annotation_property",
+   "label": "inlined_as_list"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "https://schema.org/keywords",
+   "kind": "annotation_property",
+   "label": "keywords"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/license",
+   "curie": "dcterms:license",
+   "kind": "annotation_property",
+   "label": "license"
+  },
+  {
+   "iri": "https://w3id.org/linkml/maximum_value",
+   "curie": "linkml:maximum_value",
+   "kind": "annotation_property",
+   "label": "maximum_value"
+  },
+  {
+   "iri": "https://w3id.org/linkml/minimum_value",
+   "curie": "linkml:minimum_value",
+   "kind": "annotation_property",
+   "label": "minimum_value"
+  },
+  {
+   "iri": "https://w3id.org/linkml/mixin",
+   "curie": "linkml:mixin",
+   "kind": "annotation_property",
+   "label": "mixin"
+  },
+  {
+   "iri": "https://w3id.org/linkml/mixins",
+   "curie": "linkml:mixins",
+   "kind": "annotation_property",
+   "label": "mixins"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/modified",
+   "curie": "dcterms:modified",
+   "kind": "annotation_property",
+   "label": "modified"
+  },
+  {
+   "iri": "https://w3id.org/linkml/multivalued",
+   "curie": "linkml:multivalued",
+   "kind": "annotation_property",
+   "label": "multivalued"
+  },
+  {
+   "iri": "https://w3id.org/linkml/pattern",
+   "curie": "linkml:pattern",
+   "kind": "annotation_property",
+   "label": "pattern"
+  },
+  {
+   "iri": "https://w3id.org/linkml/permissible_value",
+   "curie": "linkml:permissible_value",
+   "kind": "annotation_property",
+   "label": "permissible_value"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+   "kind": "annotation_property",
+   "label": "preferredNamespacePrefix"
+  },
+  {
+   "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+   "kind": "annotation_property",
+   "label": "preferredNamespaceUri"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dcterms:title",
+   "kind": "annotation_property",
+   "label": "title"
+  },
+  {
+   "iri": "https://w3id.org/linkml/tree_root",
+   "curie": "linkml:tree_root",
+   "kind": "annotation_property",
+   "label": "tree_root"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
   },
   {
    "iri": "https://w3id.org/example/personinfo/PhoneNumberType",

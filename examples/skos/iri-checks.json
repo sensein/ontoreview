@@ -1,0 +1,113 @@
+{
+  "checked_at": "2026-11-21T18:03:34.123895+00:00",
+  "run_id": 114,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "settings": {
+    "offline": false,
+    "refresh": false,
+    "repositories": true,
+    "resolve": true,
+    "local_namespaces": [
+      "http://www.w3.org/2004/02/skos/core#",
+      "http://www.w3.org/2004/02/skos/core/"
+    ],
+    "budget": 120,
+    "cache_days": 30
+  },
+  "own_namespaces": [
+    "http://www.w3.org/2004/02/skos/core#",
+    "http://www.w3.org/2004/02/skos/core/"
+  ],
+  "releases": [
+    {
+      "title": "bibo (purl.org)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/ontology/bibo/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T03:50:03.244033+00:00",
+      "terms": 4,
+      "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+      "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+    }
+  ],
+  "terms": [
+    {
+      "iri": "http://purl.org/dc/terms/contributor",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/creator",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/description",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/title",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    }
+  ]
+}

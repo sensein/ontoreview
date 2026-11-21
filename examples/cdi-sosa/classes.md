@@ -127,9 +127,9 @@ The Result of an Observation, Actuation, or act of Sampling. To store an observa
 
 Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.
 
-Physical samples are sometimes known as 'specimens'.
-
 A Sample is the result from an act of Sampling.
+
+Physical samples are sometimes known as 'specimens'.
 
 Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.
 
@@ -140,7 +140,7 @@ Feature which is intended to be representative of a FeatureOfInterest on which O
 | | |
 |---|---|
 | Used in | in domain of [is feature of interest of](object-properties.md#isfeatureofinterestof); in domain of [is result of](object-properties.md#isresultof); in domain of [is sample of](object-properties.md#issampleof); in range of [has feature of interest](object-properties.md#hasfeatureofinterest); in range of [has result](object-properties.md#hasresult); in range of [has sample](object-properties.md#hassample) |
-| Examples | `A 'station' is essentially an identifiable locality where a sensor system or Procedure may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc.`; `A statistical sample is often designed to be characteristic of an entire population, so that observations can be made regarding the sample that provide a good estimate of the properties of the population.` |
+| Examples | `A statistical sample is often designed to be characteristic of an entire population, so that observations can be made regarding the sample that provide a good estimate of the properties of the population.`; `A 'station' is essentially an identifiable locality where a sensor system or Procedure may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc.` |
 
 ### Sampler
 
@@ -166,7 +166,7 @@ An act of Sampling carries out a sampling Procedure to create or transform one o
 | | |
 |---|---|
 | Used in | in domain of [has feature of interest](object-properties.md#hasfeatureofinterest); in domain of [has result](object-properties.md#hasresult); in domain of [has simple result](datatype-properties.md#hassimpleresult); in domain of [made by sampler](object-properties.md#madebysampler); in domain of [phenomenon time](object-properties.md#phenomenontime); in domain of [result time](datatype-properties.md#resulttime); in domain of [used procedure](object-properties.md#usedprocedure); in range of [is feature of interest of](object-properties.md#isfeatureofinterestof); in range of [is result of](object-properties.md#isresultof); in range of [made sampling](object-properties.md#madesampling) |
-| Examples | `Dividing a field site into quadrants.`; `Selecting a subset of a population.`; `Sieving a powder to separate the subset finer than 100-mesh.`; `Registering an image of the landscape.`; `Digging a pit through a soil sequence.`; `Drilling an observation well.`; `Taking a diamond-drill core from a rock outcrop.`; `Crushing a rock sample in a ball mill.`; `Splitting a piece of drill-core to create two new samples.`; `Establishing a station for environmental monitoring.`; `Drawing blood from a patient.` |
+| Examples | `Establishing a station for environmental monitoring.`; `Drilling an observation well.`; `Sieving a powder to separate the subset finer than 100-mesh.`; `Dividing a field site into quadrants.`; `Drawing blood from a patient.`; `Selecting a subset of a population.`; `Taking a diamond-drill core from a rock outcrop.`; `Crushing a rock sample in a ball mill.`; `Digging a pit through a soil sequence.`; `Registering an image of the landscape.`; `Splitting a piece of drill-core to create two new samples.` |
 
 ### Sensor
 

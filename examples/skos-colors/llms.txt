@@ -5,13 +5,14 @@
 - Ontology IRI: https://example.org/colors/scheme
 - Namespace: https://example.org/colors/ (prefix `colors:`)
 - License: CC0 1.0 (Public Domain)
-- Contents: 4 concepts
+- Contents: 11 annotation properties, 4 concepts
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
 ## Documentation
 
 - [Overview](index.md): metadata and contents
+- [Annotation properties](annotation-properties.md): 11 annotation properties with definitions and axioms
 - [Concepts](concepts.md): 4 concepts with definitions and axioms
 
 ## Machine-readable

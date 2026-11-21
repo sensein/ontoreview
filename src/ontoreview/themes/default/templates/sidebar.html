@@ -1,6 +1,6 @@
 {% import "macros.html" as m with context %}
 <div class="toc-inner">
-  <a class="toc-title" href="index.html">{{ meta.title or "Ontology" }}</a>
+  <a class="toc-title" href="{{ '#top' if inline else 'index.html' }}">{{ meta.title or "Ontology" }}</a>
   {% if meta.version_info %}<div class="toc-version">{% if meta.version_info[:1].isdigit() %}{{ t('version') }} {% endif %}{{ meta.version_info|truncate(40, True, '…') }}</div>{% endif %}
 
   <button class="toc-search" data-action="search" aria-label="{{ t('search') }}">
@@ -24,7 +24,7 @@
           <li><a href="{{ qbase }}#quality-builtin"><span class="secno">{{ e.number }}.1</span><span class="toc-label">{{ t('quality_builtin') }}</span>{% if qrep.findings %}<span class="toc-count">{{ qrep.findings|length }}</span>{% endif %}</a></li>
           {% for ext in qrep.external %}
           {% set n = ext.summary.error + ext.summary.warning + ext.summary.info %}
-          <li><a href="{{ qbase }}#quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}"><span class="secno">{{ e.number }}.{{ loop.index + 1 }}</span><span class="toc-label">{{ ext.tool }}</span>{% if ext.error %}<span class="toc-count" title="{{ ext.error }}">!</span>{% elif n %}<span class="toc-count">{{ n }}</span>{% endif %}</a></li>
+          <li><a href="{{ qbase }}#{{ ext.tool|tool_anchor }}"><span class="secno">{{ e.number }}.{{ loop.index + 1 }}</span><span class="toc-label">{{ ext.tool }}</span>{% if ext.error %}<span class="toc-count" title="{{ ext.error }}">!</span>{% elif n %}<span class="toc-count">{{ n }}</span>{% endif %}</a></li>
           {% endfor %}
         </ol>
         {% endif %}

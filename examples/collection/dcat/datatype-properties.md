@@ -52,16 +52,6 @@ The end of the period.
 | Domain | [dcterms:PeriodOfTime](http://purl.org/dc/terms/PeriodOfTime) |
 | Range | [rdfs:Literal](http://www.w3.org/2000/01/rdf-schema#Literal) |
 
-### geografisk opløsning (meter)
-
-**IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
-
-mindste geografiske afstand som kan resolveres i et datasæt, målt i meter.
-
-| | |
-|---|---|
-| Range | [xsd:decimal](http://www.w3.org/2001/XMLSchema#decimal) |
-
 ### keyword
 
 **IRI:** `http://www.w3.org/ns/dcat#keyword` · `dcat:keyword`
@@ -73,6 +63,16 @@ A keyword or tag describing a resource.
 | | |
 |---|---|
 | Range | [rdfs:Literal](http://www.w3.org/2000/01/rdf-schema#Literal) |
+
+### resolución espacial (metros)
+
+**IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
+
+mínima separacíon espacial disponible en un conjunto de datos, medida en metros.
+
+| | |
+|---|---|
+| Range | [xsd:decimal](http://www.w3.org/2001/XMLSchema#decimal) |
 
 ### start date
 

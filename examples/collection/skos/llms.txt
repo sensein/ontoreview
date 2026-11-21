@@ -4,7 +4,7 @@
 
 - Ontology IRI: http://www.w3.org/2004/02/skos/core
 - Namespace: http://www.w3.org/2004/02/skos/core# (prefix `skos:`)
-- Contents: 4 classes, 17 object properties, 1 datatype property, 10 annotation properties
+- Contents: 4 classes, 17 object properties, 1 datatype property, 18 annotation properties
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
@@ -14,7 +14,7 @@ Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL
 - [Classes](classes.md): 4 classes with definitions and axioms
 - [Object properties](object-properties.md): 17 object properties with definitions and axioms
 - [Datatype properties](datatype-properties.md): 1 datatype property with definitions and axioms
-- [Annotation properties](annotation-properties.md): 10 annotation properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 18 annotation properties with definitions and axioms
 
 ## Machine-readable
 

@@ -161,14 +161,14 @@
    "label": "Sample",
    "definition": "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.",
    "comments": [
-    "Physical samples are sometimes known as 'specimens'.",
     "A Sample is the result from an act of Sampling.",
+    "Physical samples are sometimes known as 'specimens'.",
     "Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.\n\nA Sample is intended to sample some FatureOfInterest, so there is an expectation of at least one isSampleOf property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features.",
     "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made."
    ],
    "examples": [
-    "A 'station' is essentially an identifiable locality where a sensor system or Procedure may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc.",
-    "A statistical sample is often designed to be characteristic of an entire population, so that observations can be made regarding the sample that provide a good estimate of the properties of the population."
+    "A statistical sample is often designed to be characteristic of an entire population, so that observations can be made regarding the sample that provide a good estimate of the properties of the population.",
+    "A 'station' is essentially an identifiable locality where a sensor system or Procedure may be deployed and an observation made. In the context of the observation model, it connotes the 'world in the vicinity of the station', so the observed properties relate to the physical medium at the station, and not to any physical artifact such as a mooring, buoy, benchmark, monument, well, etc."
    ]
   },
   {
@@ -194,17 +194,17 @@
     "An act of Sampling carries out a sampling Procedure to create or transform one or more samples."
    ],
    "examples": [
-    "Dividing a field site into quadrants.",
-    "Selecting a subset of a population.",
-    "Sieving a powder to separate the subset finer than 100-mesh.",
-    "Registering an image of the landscape.",
-    "Digging a pit through a soil sequence.",
+    "Establishing a station for environmental monitoring.",
     "Drilling an observation well.",
+    "Sieving a powder to separate the subset finer than 100-mesh.",
+    "Dividing a field site into quadrants.",
+    "Drawing blood from a patient.",
+    "Selecting a subset of a population.",
     "Taking a diamond-drill core from a rock outcrop.",
     "Crushing a rock sample in a ball mill.",
-    "Splitting a piece of drill-core to create two new samples.",
-    "Establishing a station for environmental monitoring.",
-    "Drawing blood from a patient."
+    "Digging a pit through a soil sequence.",
+    "Registering an image of the landscape.",
+    "Splitting a piece of drill-core to create two new samples."
    ]
   },
   {
@@ -268,12 +268,12 @@
    ],
    "domain": [
     "sosa:Observation",
-    "sosa:Actuation",
-    "sosa:Sampling"
+    "sosa:Sampling",
+    "sosa:Actuation"
    ],
    "range": [
-    "sosa:FeatureOfInterest",
-    "sosa:Sample"
+    "sosa:Sample",
+    "sosa:FeatureOfInterest"
    ],
    "inverse_of": [
     "sosa:isFeatureOfInterestOf"
@@ -289,13 +289,13 @@
     "Relation linking an Observation or Actuation or act of Sampling and a Result or Sample."
    ],
    "domain": [
-    "sosa:Observation",
     "sosa:Sampling",
-    "sosa:Actuation"
+    "sosa:Actuation",
+    "sosa:Observation"
    ],
    "range": [
-    "sosa:Sample",
-    "sosa:Result"
+    "sosa:Result",
+    "sosa:Sample"
    ],
    "inverse_of": [
     "sosa:isResultOf"
@@ -333,10 +333,10 @@
     "sosa:Platform"
    ],
    "range": [
+    "sosa:Sampler",
     "sosa:Platform",
-    "sosa:Sensor",
     "sosa:Actuator",
-    "sosa:Sampler"
+    "sosa:Sensor"
    ],
    "inverse_of": [
     "sosa:isHostedBy"
@@ -378,8 +378,8 @@
     "sosa:Sample"
    ],
    "range": [
-    "sosa:Observation",
     "sosa:Actuation",
+    "sosa:Observation",
     "sosa:Sampling"
    ],
    "inverse_of": [
@@ -397,9 +397,9 @@
    ],
    "domain": [
     "sosa:Actuator",
-    "sosa:Sampler",
+    "sosa:Sensor",
     "sosa:Platform",
-    "sosa:Sensor"
+    "sosa:Sampler"
    ],
    "range": [
     "sosa:Platform"
@@ -437,13 +437,13 @@
     "Relation linking a Result to the Observation or Actuation or act of Sampling that created or caused it."
    ],
    "domain": [
-    "sosa:Result",
-    "sosa:Sample"
+    "sosa:Sample",
+    "sosa:Result"
    ],
    "range": [
     "sosa:Observation",
-    "sosa:Actuation",
-    "sosa:Sampling"
+    "sosa:Sampling",
+    "sosa:Actuation"
    ],
    "inverse_of": [
     "sosa:hasResult"
@@ -645,8 +645,8 @@
     "A relation to link to a re-usable Procedure used in making an Observation, an Actuation, or a Sample, typically through a Sensor, Actuator or Sampler."
    ],
    "domain": [
-    "sosa:Observation",
     "sosa:Actuation",
+    "sosa:Observation",
     "sosa:Sampling"
    ],
    "range": [
@@ -666,9 +666,9 @@
     "For instance, the values 23 or true."
    ],
    "domain": [
+    "sosa:Actuation",
     "sosa:Observation",
-    "sosa:Sampling",
-    "sosa:Actuation"
+    "sosa:Sampling"
    ]
   },
   {
@@ -681,9 +681,9 @@
     "The result time is the instant of time when the Observation, Actuation or Sampling activity was completed."
    ],
    "domain": [
-    "sosa:Sampling",
     "sosa:Actuation",
-    "sosa:Observation"
+    "sosa:Observation",
+    "sosa:Sampling"
    ],
    "range": [
     "xsd:dateTime"

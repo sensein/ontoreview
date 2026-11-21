@@ -212,8 +212,16 @@ input[type="search"]:focus { border-color: var(--rule-strong); outline: none; }
 body.figure-open { overflow: hidden; }
 
 /* term entries */
-.term { padding: 2rem 0 1.6rem; border-top: 1px solid var(--rule); }
-.term:target { box-shadow: inset 3px 0 0 var(--link); padding-left: 1rem; }
+.term { padding: 2rem 0 1.6rem; border-top: 1px solid var(--rule); position: relative; }
+/* left bar: faint on hover or keyboard focus, solid for the selected (linked) term; drawn in the
+   margin so the text never shifts */
+.term::before { content: ""; position: absolute; left: -.75rem; top: -1px; bottom: 0; width: 3px;
+  background: var(--link); opacity: 0; transition: opacity .12s ease; pointer-events: none; }
+@media (hover: hover) { .term:hover::before { opacity: .45; } }
+.term:focus-within::before { opacity: .45; }
+.term:target::before { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .term::before { transition: none; } }
+@media (forced-colors: active) { .term::before { background: Highlight; } }
 .term-head { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; }
 .term-title { font-size: 1.32rem; margin: 0; font-weight: 600; }
 .term-title a { color: var(--ink); }
@@ -411,3 +419,43 @@ input[type="search"]:focus-visible, .term-filter:focus-visible, .index-filter:fo
 .metrics .metric-error .mstat { background: var(--del, #B42318); }
 .metrics .metric-skipped td { color: var(--muted); }
 @media (forced-colors: active) { .metrics .mstat { border: 1px solid CanvasText; } }
+
+/* Overview: statistics tiles */
+:root { --stat-hi: #fdf6e3; --bar: var(--link); --bar-track: var(--paper-2); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --stat-hi: #2b2613; } }
+:root[data-theme="dark"] { --stat-hi: #2b2613; }
+.stats { list-style: none; margin: 1rem 0 1.6rem; padding: 0; display: flex; flex-wrap: wrap; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.stat { flex: 1 1 7rem; min-width: 0; margin: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-right: -1px; margin-bottom: -1px; }
+.stat-body { display: block; height: 100%; padding: .9rem 1.1rem; color: inherit; }
+a.stat-body:hover { text-decoration: none; background: var(--paper-2); }
+.stat-num { display: block; font: 600 1.7rem/1.15 var(--serif); color: var(--ink); font-variant-numeric: tabular-nums; }
+.stat-label { display: block; font: .86rem/1.35 var(--sans); color: var(--ink-2); margin-top: .2rem; }
+.stat-sub { display: block; font: .76rem/1.35 var(--sans); color: var(--muted); margin-top: .15rem; }
+.stat-quality { background: var(--stat-hi); }
+.stat-quality .stat-num { color: var(--kw); }
+.stat-ok .stat-num { color: var(--add); }
+.stat-warn .stat-num { color: var(--mod); }
+
+/* Quality report: summary table */
+.check-summary { margin: .4rem 0 1.8rem; }
+.check-summary td { vertical-align: middle; }
+.check-summary .check-count { font-weight: 600; white-space: nowrap; }
+.check-summary .check-bar-col { width: 45%; }
+.check-bar { display: block; height: .45rem; border-radius: 999px; background: var(--bar-track); overflow: hidden; }
+.check-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--bar); }
+@media (forced-colors: active) { .check-bar { border: 1px solid CanvasText; } .check-bar > span { background: CanvasText; } }
+@media (max-width: 640px) { .check-summary .check-bar-col { display: none; } }
+
+/* Provenance: timeline. Rail on the left, time above each event: nothing can overlap, whatever
+   the timestamp width or text size. */
+.prov-timeline { list-style: none; margin: .6rem 0 1.4rem; padding: 0; position: relative; }
+.prov-timeline::before { content: ""; position: absolute; left: .3rem; top: .7rem; bottom: .7rem; width: 1px; background: var(--rule-strong); }
+.prov-ev { position: relative; padding: .45rem 0 .45rem 1.6rem; }
+.prov-ev::before { content: ""; position: absolute; left: calc(.3rem - 4px); top: .85rem; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); border: 2px solid var(--link); box-sizing: border-box; }
+.prov-ev.prov-check::before { border-color: var(--mod); }
+.prov-ev.prov-build::before { background: var(--link); }
+.prov-ev time { display: block; font: .8rem/1.6 var(--mono); color: var(--muted); }
+.prov-what { display: flex; flex-direction: column; }
+.prov-title { font-weight: 600; color: var(--ink); }
+.prov-detail { font-size: .88rem; color: var(--ink-2); }
+@media (forced-colors: active) { .prov-ev::before { border-color: CanvasText; } }

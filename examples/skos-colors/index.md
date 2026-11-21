@@ -8,4 +8,5 @@ A tiny SKOS vocabulary of colours.
 
 ## Contents
 
+- [Annotation properties](annotation-properties.md) (11)
 - [Concepts](concepts.md) (4)

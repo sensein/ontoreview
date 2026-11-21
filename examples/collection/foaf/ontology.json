@@ -22,7 +22,7 @@
   "class": 14,
   "object_property": 34,
   "datatype_property": 27,
-  "annotation_property": 7,
+  "annotation_property": 10,
   "triples": 631
  },
  "terms": [
@@ -1086,6 +1086,12 @@
    "label": "assurance"
   },
   {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
    "iri": "http://purl.org/dc/elements/1.1/date",
    "curie": "dc:date",
    "kind": "annotation_property",
@@ -1096,6 +1102,21 @@
    "curie": "dc:description",
    "kind": "annotation_property",
    "label": "description"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label",
+   "sub_properties": [
+    "foaf:name"
+   ]
   },
   {
    "iri": "http://xmlns.com/foaf/0.1/membershipClass",

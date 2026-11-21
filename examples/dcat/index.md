@@ -15,3 +15,4 @@ DCAT is an RDF vocabulary designed to facilitate interoperability between data c
 - [Classes](classes.md) (9)
 - [Object properties](object-properties.md) (30)
 - [Datatype properties](datatype-properties.md) (9)
+- [Annotation properties](annotation-properties.md) (27)

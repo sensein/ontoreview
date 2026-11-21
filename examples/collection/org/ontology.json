@@ -24,7 +24,7 @@
   "object_property": 31,
   "datatype_property": 2,
   "property": 1,
-  "annotation_property": 1,
+  "annotation_property": 12,
   "individual": 1,
   "triples": 748
  },
@@ -691,6 +691,54 @@
    ]
   },
   {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/contributor",
+   "curie": "dct:contributor",
+   "kind": "annotation_property",
+   "label": "contributor"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/created",
+   "curie": "dct:created",
+   "kind": "annotation_property",
+   "label": "created"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/license",
+   "curie": "dct:license",
+   "kind": "annotation_property",
+   "label": "license"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/modified",
+   "curie": "dct:modified",
+   "kind": "annotation_property",
+   "label": "modified"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#prefLabel",
+   "curie": "skos:prefLabel",
+   "kind": "annotation_property",
+   "label": "prefLabel"
+  },
+  {
    "iri": "http://www.w3.org/ns/org#roleProperty",
    "curie": "org:roleProperty",
    "kind": "annotation_property",
@@ -702,6 +750,24 @@
    "range": [
     "rdf:Property"
    ]
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+   "curie": "rdfs:seeAlso",
+   "kind": "annotation_property",
+   "label": "seeAlso"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dct:title",
+   "kind": "annotation_property",
+   "label": "title"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
   },
   {
    "iri": "http://www.w3.org/ns/org#Head",

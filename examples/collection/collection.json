@@ -8,11 +8,11 @@
       "title": "The data catalog vocabulary",
       "description": "DCAT is an RDF vocabulary designed to facilitate interoperability between data catalogs published on the Web. By using DCAT to describe datasets in data catalogs, publishers increase discoverability and enable applications easily to consume metadata from multiple catalogs. It further enables decentralized publishing of catalogs and facilitates federated dataset search across sites. Aggregated DCAT metadata can serve as a manifest file to facilitate digital preservation. DCAT is defined at http://www.w3.org/TR/vocab-dcat/. Any variance between that normative document and this schema is an error in this schema.",
       "version": "3",
-      "terms": 48,
+      "terms": 75,
       "quality": {
         "error": 67,
-        "warning": 79,
-        "info": 139
+        "warning": 81,
+        "info": 172
       },
       "external": [
         {
@@ -36,6 +36,16 @@
           "scope": ""
         },
         {
+          "tool": "IRI checks",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 2,
+            "info": 9
+          },
+          "scope": "6.5s. Own namespaces (not checked as external): http://www.w3.org/ns/dcat#, http://www.w3.org/ns/dcat/. Run #120 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3."
+        },
+        {
           "tool": "OntoCheck",
           "problem": null,
           "summary": {
@@ -44,6 +54,26 @@
             "info": 113
           },
           "scope": ""
+        },
+        {
+          "tool": "Cross-domain interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 22
+          },
+          "scope": "10 reference ontologies (0 given, 10 discovered); left out: 40 below the top N. Full record in cdi.json, and as CDI run 93 in the term database. Details of 39 repository ontologies came from the term database."
+        },
+        {
+          "tool": "Scientific interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 2
+          },
+          "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json."
         },
         {
           "tool": "OOPS!",
@@ -56,7 +86,7 @@
           "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
-      "files": 12,
+      "files": 14,
       "error": null,
       "issues": [
         {
@@ -96,6 +126,13 @@
         },
         {
           "severity": "warning",
+          "check": "IRI checks",
+          "rule": "release_mismatch",
+          "affected": "2 elements",
+          "count": 2
+        },
+        {
+          "severity": "warning",
           "check": "OntoReview",
           "rule": "OB016 · Duplicate labels",
           "affected": "5 elements",
@@ -114,6 +151,27 @@
           "rule": "missing_definition",
           "affected": "54 elements",
           "count": 54
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-A",
+          "affected": "18 elements",
+          "count": 18
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-G",
+          "affected": "4 elements",
+          "count": 4
+        },
+        {
+          "severity": "info",
+          "check": "IRI checks",
+          "rule": "unverified_external_term",
+          "affected": "9 elements",
+          "count": 9
         },
         {
           "severity": "info",
@@ -184,6 +242,20 @@
           "rule": "missing_superclass",
           "affected": "16 elements",
           "count": 16
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-D",
+          "affected": "ols:dcat, ols:evorao, ols:schemaorg_http, ols:schemaorg_https, ols:sio, ols:afo",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-H",
+          "affected": "5.8 Media and communications",
+          "count": 1
         }
       ]
     },
@@ -193,11 +265,11 @@
       "title": "Friend of a Friend (FOAF) vocabulary",
       "description": "The Friend of a Friend (FOAF) RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language.",
       "version": "",
-      "terms": 82,
+      "terms": 85,
       "quality": {
         "error": 6,
         "warning": 110,
-        "info": 131
+        "info": 161
       },
       "external": [
         {
@@ -221,6 +293,16 @@
           "scope": ""
         },
         {
+          "tool": "IRI checks",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 1
+          },
+          "scope": "1.1s. Own namespaces (not checked as external): http://xmlns.com/foaf/0.1/, http://xmlns.com/foaf/0.1#, http://xmlns.com/wot/0.1/. Run #121 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3."
+        },
+        {
           "tool": "OntoCheck",
           "problem": null,
           "summary": {
@@ -229,6 +311,26 @@
             "info": 88
           },
           "scope": ""
+        },
+        {
+          "tool": "Cross-domain interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 27
+          },
+          "scope": "10 reference ontologies (0 given, 10 discovered); left out: 64 below the top N. Full record in cdi.json, and as CDI run 94 in the term database. Details of 59 repository ontologies came from the term database."
+        },
+        {
+          "tool": "Scientific interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 2
+          },
+          "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json."
         },
         {
           "tool": "OOPS!",
@@ -241,7 +343,7 @@
           "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
-      "files": 13,
+      "files": 14,
       "error": null,
       "issues": [
         {
@@ -341,6 +443,27 @@
           "rule": "missing_definition",
           "affected": "77 elements",
           "count": 77
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-A",
+          "affected": "22 elements",
+          "count": 22
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-G",
+          "affected": "5 elements",
+          "count": 5
+        },
+        {
+          "severity": "info",
+          "check": "IRI checks",
+          "rule": "unverified_external_term",
+          "affected": "http://www.w3.org/2000/10/swap/pim/contact#Person",
+          "count": 1
         },
         {
           "severity": "info",
@@ -460,6 +583,20 @@
           "rule": "missing_superclass",
           "affected": "6 elements",
           "count": 6
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-D",
+          "affected": "ols:afo, ols:schemaorg_http, ols:schemaorg_https, ols:uniprotrdfs, ols:sio",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-H",
+          "affected": "5.8 Media and communications",
+          "count": 1
         }
       ]
     },
@@ -469,11 +606,11 @@
       "title": "Core organization ontology",
       "description": "Vocabulary for describing organizational structures, specializable to a broad variety of types of organization.",
       "version": "0.8",
-      "terms": 45,
+      "terms": 56,
       "quality": {
         "error": 49,
         "warning": 81,
-        "info": 122
+        "info": 140
       },
       "external": [
         {
@@ -497,6 +634,16 @@
           "scope": ""
         },
         {
+          "tool": "IRI checks",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": "0.2s. Own namespaces (not checked as external): http://www.w3.org/ns/org#, http://www.w3.org/ns/org/. Run #122 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3."
+        },
+        {
           "tool": "OntoCheck",
           "problem": null,
           "summary": {
@@ -505,6 +652,26 @@
             "info": 103
           },
           "scope": ""
+        },
+        {
+          "tool": "Cross-domain interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 16
+          },
+          "scope": "10 reference ontologies (0 given, 10 discovered); left out: 37 below the top N. Full record in cdi.json, and as CDI run 95 in the term database. Details of 37 repository ontologies came from the term database."
+        },
+        {
+          "tool": "Scientific interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 2
+          },
+          "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json."
         },
         {
           "tool": "OOPS!",
@@ -517,7 +684,7 @@
           "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
-      "files": 15,
+      "files": 16,
       "error": null,
       "issues": [
         {
@@ -606,6 +773,20 @@
         },
         {
           "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-A",
+          "affected": "15 elements",
+          "count": 15
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-G",
+          "affected": "http://www.w3.org/ns/org#ChangeEvent",
+          "count": 1
+        },
+        {
+          "severity": "info",
           "check": "OOPS!",
           "rule": "P13 · Inverse relationships not explicitly declared",
           "affected": "ontology",
@@ -687,6 +868,20 @@
           "rule": "missing_superclass",
           "affected": "3 elements",
           "count": 3
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-D",
+          "affected": "ols:afo, db:http://www.w3.org/ns/prov-o#, ols:sio, ols:schemaorg_http, ols:schem",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-H",
+          "affected": "5.3 Educational sciences",
+          "count": 1
         }
       ]
     },
@@ -696,18 +891,18 @@
       "title": "W3C PROVenance Interchange Ontology (PROV-O)",
       "description": "This document is published by the Provenance Working Group (http://www.w3.org/2011/prov/wiki/Main_Page). If you wish to make comments regarding this document, please send them to public-prov-comments@w3.org (subscribe public-prov-comments-request@w3.org, archives http://lists.w3.org/Archives/Public/public-prov-comments/). All feedback is welcome.",
       "version": "Recommendation version 2013-04-30",
-      "terms": 95,
+      "terms": 100,
       "quality": {
-        "error": 20,
-        "warning": 137,
-        "info": 189
+        "error": 19,
+        "warning": 139,
+        "info": 239
       },
       "external": [
         {
           "tool": "ROBOT",
           "problem": null,
           "summary": {
-            "error": 18,
+            "error": 17,
             "warning": 99,
             "info": 7
           },
@@ -724,12 +919,42 @@
           "scope": ""
         },
         {
+          "tool": "IRI checks",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 2,
+            "info": 0
+          },
+          "scope": "0.0s. Own namespaces (not checked as external): http://www.w3.org/ns/prov#, http://www.w3.org/ns/prov/, http://www.w3.org/ns/prov-o# and 3 more. Run #123 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3."
+        },
+        {
           "tool": "OntoCheck",
           "problem": null,
           "summary": {
             "error": 0,
             "warning": 1,
             "info": 92
+          },
+          "scope": ""
+        },
+        {
+          "tool": "Cross-domain interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 50
+          },
+          "scope": "10 reference ontologies (0 given, 10 discovered); left out: 52 below the top N. Full record in cdi.json, and as CDI run 96 in the term database. Details of 50 repository ontologies came from the term database."
+        },
+        {
+          "tool": "Scientific interoperability",
+          "problem": "Not computed: the ontology's own scientific domain D is unknown: set evaluation.si_home_domain (an OECD field code such as 1.2, or a field name); the ontology has no title or description to classify",
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
           },
           "scope": ""
         },
@@ -744,7 +969,7 @@
           "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
-      "files": 13,
+      "files": 14,
       "error": null,
       "issues": [
         {
@@ -758,29 +983,36 @@
           "severity": "error",
           "check": "ROBOT",
           "rule": "missing_label",
-          "affected": "15 elements",
-          "count": 15
+          "affected": "14 elements",
+          "count": 14
         },
         {
           "severity": "error",
           "check": "ROBOT",
           "rule": "missing_ontology_description",
-          "affected": "http://www.w3.org/ns/prov#",
+          "affected": "http://www.w3.org/ns/prov-o#",
           "count": 1
         },
         {
           "severity": "error",
           "check": "ROBOT",
           "rule": "missing_ontology_license",
-          "affected": "http://www.w3.org/ns/prov#",
+          "affected": "http://www.w3.org/ns/prov-o#",
           "count": 1
         },
         {
           "severity": "error",
           "check": "ROBOT",
           "rule": "missing_ontology_title",
-          "affected": "http://www.w3.org/ns/prov#",
+          "affected": "http://www.w3.org/ns/prov-o#",
           "count": 1
+        },
+        {
+          "severity": "warning",
+          "check": "IRI checks",
+          "rule": "multiple_ontology_headers",
+          "affected": "2 elements",
+          "count": 2
         },
         {
           "severity": "warning",
@@ -851,6 +1083,27 @@
           "rule": "missing_definition",
           "affected": "93 elements",
           "count": 93
+        },
+        {
+          "severity": "warning",
+          "check": "Scientific interoperability",
+          "rule": "Could not run",
+          "affected": "Not computed: the ontology's own scientific domain D is unknown: set evaluation.si_home_domain (an OECD field code such as 1.2, or a field name); the ontology has no title or description to classify",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-A",
+          "affected": "44 elements",
+          "count": 44
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-G",
+          "affected": "6 elements",
+          "count": 6
         },
         {
           "severity": "info",
@@ -937,11 +1190,11 @@
       "title": "SKOS Vocabulary",
       "description": "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies.",
       "version": "",
-      "terms": 32,
+      "terms": 40,
       "quality": {
         "error": 1,
         "warning": 47,
-        "info": 39
+        "info": 48
       },
       "external": [
         {
@@ -965,6 +1218,16 @@
           "scope": ""
         },
         {
+          "tool": "IRI checks",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 0
+          },
+          "scope": "0.3s. Own namespaces (not checked as external): http://www.w3.org/2004/02/skos/core#, http://www.w3.org/2004/02/skos/core/. Run #124 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3."
+        },
+        {
           "tool": "OntoCheck",
           "problem": null,
           "summary": {
@@ -973,6 +1236,26 @@
             "info": 29
           },
           "scope": ""
+        },
+        {
+          "tool": "Cross-domain interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 7
+          },
+          "scope": "10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 97 in the term database. Details of 17 repository ontologies came from the term database."
+        },
+        {
+          "tool": "Scientific interoperability",
+          "problem": null,
+          "summary": {
+            "error": 0,
+            "warning": 0,
+            "info": 2
+          },
+          "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json."
         },
         {
           "tool": "OOPS!",
@@ -985,7 +1268,7 @@
           "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license)."
         }
       ],
-      "files": 13,
+      "files": 14,
       "error": null,
       "issues": [
         {
@@ -1022,6 +1305,13 @@
           "rule": "missing_definition",
           "affected": "32 elements",
           "count": 32
+        },
+        {
+          "severity": "info",
+          "check": "Cross-domain interoperability",
+          "rule": "CDI-A",
+          "affected": "7 elements",
+          "count": 7
         },
         {
           "severity": "info",
@@ -1085,6 +1375,20 @@
           "rule": "missing_superclass",
           "affected": "3 elements",
           "count": 3
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-D",
+          "affected": "ols:afo, db:http://www.w3.org/ns/odrl/2/, ols:dcat, ols:sio, ols:uniprotrdfs",
+          "count": 1
+        },
+        {
+          "severity": "info",
+          "check": "Scientific interoperability",
+          "rule": "SI-H",
+          "affected": "5.8 Media and communications",
+          "count": 1
         }
       ]
     }

@@ -25,13 +25,14 @@ else:  # pragma: no cover
 
 log = logging.getLogger(__name__)
 
-Task = Literal["site", "single", "markdown", "myst", "check", "diff"]
+Task = Literal["site", "single", "markdown", "myst", "check", "interop", "diff"]
 TASKS: dict[str, str] = {
     "site": "Website",
     "single": "Single HTML file",
     "markdown": "Markdown",
     "myst": "MyST (Sphinx)",
     "check": "Quality check",
+    "interop": "Interoperability check",
     "diff": "Compare versions",
 }
 SETTINGS_FILE = Path(os.environ.get("ONTOREVIEW_UI_SETTINGS",
@@ -72,10 +73,16 @@ class Settings:
     cdi_generality: bool = True
     cdi_top_n: int = 10
     cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
+    si: bool = True                 # scientific interoperability (same run and references as cdi)
+    si_references: str = ""         # one per line; empty = the cross-domain references (same run)
+    si_home_domain: str = ""        # OECD field code or name; empty = classify the ontology's title/description
+    si_theta_s: float = 0.3
+    si_domain_map: str = ""         # one per line: "ols:emi = 1.5; 1.6"
     cdi_bioportal_key: str = field(default="", repr=False)    # optional; never in the CLI line, TOML or history
     cdi_ontoportal_key: str = field(default="", repr=False)   # any other OntoPortal service
     hf_token: str = field(default="", repr=False)             # Hugging Face token for model downloads (optional)
     default_root: str = ""          # Settings > default output folder
+    separate_runs: bool = True      # each docs run writes a new, self-contained folder (name-YYYYMMDD-HHMMSS)
     verbose: bool = False
 
     # -------------------------------------------------------------- derived
@@ -95,12 +102,12 @@ class Settings:
         if self.default_root.strip():
             root = Path(self.default_root.strip()).expanduser()
             stem = (self.source_path.name if self.is_folder else self.source_path.stem) if self.source_path else "ontology"
-            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json",
+            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json", "interop": f"{stem}-interoperability.json",
                     "diff": f"{stem}-changes.md"}.get(self.task, stem)
             return str(root / name)
         base = self.source_path.parent if self.source_path and not self.is_folder else (self.source_path or Path.cwd())
         name = {"site": "docs", "single": "docs", "markdown": "docs-md", "myst": "docs-myst",
-                "check": "quality", "diff": "changes"}[self.task]
+                "check": "quality", "interop": "interoperability", "diff": "changes"}[self.task]
         if self.task == "diff":
             return str(base / "changes.md")
         if self.task == "single" and not self.is_folder:
@@ -108,6 +115,8 @@ class Settings:
             return str(base / f"{stem}.html")
         if self.task == "check":
             return str(base / "quality.json")
+        if self.task == "interop":
+            return str(base / "interoperability.json")
         return str(base / name)
 
     def output_path(self) -> Path:
@@ -156,7 +165,18 @@ class Settings:
                 ev[k] = False
         if not self.cdi:
             ev["cdi"] = "off"
-        else:                       # on by default: only what differs from the defaults
+        if not self.si:
+            ev["si"] = "off"
+        else:
+            if self.si_home_domain.strip():
+                ev["si_home_domain"] = self.si_home_domain.strip()
+            if float(self.si_theta_s or 0.3) != 0.3:
+                ev["si_theta_s"] = float(self.si_theta_s)
+            if self.si_domain_map_dict():
+                ev["si_domain_map"] = self.si_domain_map_dict()
+            if self.si_reference_list():
+                ev["si_references"] = self.si_reference_list()
+        if self.cdi or self.si:     # on by default: only what differs from the defaults (SI uses the same run)
             refs = self.cdi_reference_list()
             if refs != ["ols"]:
                 ev["cdi_references"] = refs
@@ -174,11 +194,26 @@ class Settings:
                 ev["cdi_api_keys"] = {k: v for k, v in keys.items() if v}
             if self.hf_token.strip():
                 ev["cdi_hf_token"] = self.hf_token.strip()
+        if self.task == "interop":       # only the interoperability checks
+            ev.update(robot="off", oops="off", ontocheck="off", iri_checks="off", reasoner="off")
         from .quality_checks.oops import OOPS_ENDPOINT
 
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
             ev["oops_endpoint"] = self.oops_endpoint.strip()
         return ev
+
+    def si_reference_list(self) -> list[str]:
+        """SI's own references, one per line; [] = the cross-domain references."""
+        return [x.strip() for x in self.si_references.splitlines() if x.strip()]
+
+    def si_domain_map_dict(self) -> dict[str, list[str]]:
+        """``ols:emi = 1.5; Biological sciences`` per line -> {"ols:emi": ["1.5", "Biological sciences"]}."""
+        out: dict[str, list[str]] = {}
+        for line in self.si_domain_map.splitlines():
+            oid, sep, doms = line.partition("=")
+            if sep and oid.strip():
+                out[oid.strip()] = [d.strip() for d in doms.replace(",", ";").split(";") if d.strip()]
+        return out
 
     def cdi_reference_list(self) -> list[str]:
         """References, one per line; local paths made absolute."""
@@ -210,12 +245,28 @@ class Settings:
             for v in [x.strip() for x in val.split(",") if x.strip()]:
                 if not v.startswith(("http://", "https://")) and not Path(v).expanduser().exists():
                     problems.append(f"{label} file not found: {v}")
-        if self.cdi and self.task in ("site", "single", "check"):
+        if self.task == "interop" and not (self.cdi or self.si):
+            problems.append("Turn on cross-domain or scientific interoperability (or both) to run this check.")
+        if self.si and self.task in ("site", "single", "check", "interop"):
+            from .quality_checks.cdi.si import resolve_fos
+
+            for label, spec in [("Own scientific domain", self.si_home_domain)] + [
+                    (f"Domain of {k}", d) for k, ds in self.si_domain_map_dict().items() for d in ds]:
+                if spec.strip():
+                    try:
+                        resolve_fos(spec)
+                    except ValueError as e:
+                        problems.append(f"{label}: {e}")
+            bad = [ln.strip() for ln in self.si_domain_map.splitlines() if ln.strip() and "=" not in ln]
+            if bad:
+                problems.append(f"Domain map lines need 'ontology id = field', e.g. 'ols:emi = 1.5': {bad[0]}")
+        if (self.cdi or self.si) and self.task in ("site", "single", "check", "interop"):
             from .quality_checks.cdi import parse_reference
 
             refs = [r for r in self.cdi_references.splitlines() if r.strip()]
+            refs += self.si_reference_list() if self.si else []
             if not refs:
-                problems.append("Cross-domain interoperability needs at least one reference (e.g. ols).")
+                problems.append("Cross-domain and scientific interoperability need at least one reference (e.g. ols).")
             for r in refs:
                 ref = parse_reference(r)
                 if ref["kind"] in ("file", "sssom") and not Path(ref["path"]).exists():
@@ -230,6 +281,7 @@ class Settings:
                "markdown": ["ontoreview", "export", "--format", "markdown"],
                "myst": ["ontoreview", "export", "--format", "myst"],
                "check": ["ontoreview", "check", "--format", "json"],
+               "interop": ["ontoreview", "check", "--format", "json", "--interop-only"],
                "diff": ["ontoreview", "diff"]}[self.task]
         if self.task == "diff":
             return " ".join(cmd + [q(self.previous_version.strip() or "<previous>"), q(self.source or "<source>"),
@@ -250,6 +302,8 @@ class Settings:
                 args.append("--no-individuals")
             if not self.is_folder and self.previous_version.strip():
                 args += ["--previous", q(self.previous_version.strip())]
+        if self.task == "interop":
+            self._cli_interop(args, q)
         if self.task in ("site", "single", "check"):
             if not self.is_folder:
                 for c in [x.strip() for x in self.competency_questions.split(",") if x.strip()]:
@@ -266,19 +320,34 @@ class Settings:
                 args.append("--no-iri")
             elif not self.iri_network:
                 args.append("--offline")
-            if not self.cdi:
-                args.append("--no-cdi")
-            else:
-                refs = self.cdi_reference_list()
-                for r in refs if refs != ["ols"] else []:
-                    args += ["--cdi", q(r)]
-                for d in [x.strip() for x in self.cdi_domains.split(",") if x.strip()]:
-                    args += ["--cdi-domain", q(d)]
-                if self.cdi_ontoaligner != "sbert":
-                    args += ["--cdi-ontoaligner", self.cdi_ontoaligner]
+            self._cli_interop(args, q)
         if self.task == "check" and self.fail_on != "error":
             args += ["--fail-on", self.fail_on]
         return " ".join(args)
+
+    def _cli_interop(self, args: list[str], q) -> None:
+        """Cross-domain and scientific interoperability options of the command line."""
+        if not self.cdi:
+            args.append("--no-cdi")
+        if not self.si:
+            args.append("--no-si")
+        else:
+            if self.si_home_domain.strip():
+                args += ["--si-home-domain", q(self.si_home_domain.strip())]
+            if float(self.si_theta_s or 0.3) != 0.3:
+                args += ["--si-theta-s", str(float(self.si_theta_s))]
+            for k, ds in self.si_domain_map_dict().items():
+                args += ["--si-domain", q(f"{k}={';'.join(ds)}")]
+            for r in self.si_reference_list():
+                args += ["--si-ref", q(r)]
+        if self.cdi or self.si:
+            refs = self.cdi_reference_list()
+            for r in refs if refs != ["ols"] else []:
+                args += ["--cdi", q(r)]
+            for d in [x.strip() for x in self.cdi_domains.split(",") if x.strip()]:
+                args += ["--cdi-domain", q(d)]
+            if self.cdi_ontoaligner != "sbert":
+                args += ["--cdi-ontoaligner", self.cdi_ontoaligner]
 
     def to_toml(self) -> str:
         """An ``ontoreview.toml`` with these settings (paths relative to where it is saved)."""
@@ -302,8 +371,19 @@ class Settings:
                   f"ontocheck = {s('on' if self.ontocheck else 'off')}",
                   f"iri_checks = {s('on' if self.iri_checks else 'off')}",
                   f"iri_network = {'true' if self.iri_network else 'false'}",
-                  f"cdi = {s('on' if self.cdi else 'off')}"]
-        if self.cdi:
+                  f"cdi = {s('on' if self.cdi else 'off')}",
+                  f"si = {s('on' if self.si else 'off')}"]
+        if self.si:
+            if self.si_home_domain.strip():
+                lines.append(f"si_home_domain = {s(self.si_home_domain.strip())}")
+            lines.append(f"si_theta_s = {float(self.si_theta_s or 0.3)}")
+            if self.si_reference_list():
+                lines.append(f"si_references = [{', '.join(s(x) for x in self.si_reference_list())}]")
+            dm = self.si_domain_map_dict()
+            if dm:
+                lines.append("si_domain_map = { " + ", ".join(f"{s(k)} = [{', '.join(s(d) for d in v)}]"
+                                                              for k, v in dm.items()) + " }")
+        if self.cdi or self.si:
             lines += [f"cdi_references = [{', '.join(s(x) for x in self.cdi_reference_list())}]",
                       f"cdi_domains = [{', '.join(s(x.strip()) for x in self.cdi_domains.split(',') if x.strip())}]",
                       f"cdi_generality = {'true' if self.cdi_generality else 'false'}",
@@ -345,6 +425,12 @@ class Settings:
                                       else rel(r) for r in ev.get("cdi_references", ["ols"])),
             cdi_domains=", ".join(ev.get("cdi_domains", [])), cdi_generality=bool(ev.get("cdi_generality", True)),
             cdi_top_n=int(ev.get("cdi_top_n", 10)), cdi_ontoaligner=ev.get("cdi_ontoaligner", "sbert"),
+            si=ev.get("si", "on") not in ("off", False), si_home_domain=str(ev.get("si_home_domain") or ""),
+            si_references="\n".join(r if r.startswith(("ols", "bioportal", "ontoportal", "http://", "https://"))
+                                     else rel(r) for r in ev.get("si_references", [])),
+            si_theta_s=float(ev.get("si_theta_s", 0.3)),
+            si_domain_map="\n".join(f"{k} = {'; '.join(v if isinstance(v, list) else [v])}"
+                                     for k, v in (ev.get("si_domain_map") or {}).items()),
         )
 
     # -------------------------------------------------------------- persistence
@@ -441,9 +527,39 @@ def _external_text(reports) -> str:
     return "; ".join(parts)
 
 
+DOCS_TASKS = ("site", "single", "markdown", "myst")
+RUN_FOLDER_TASKS = DOCS_TASKS + ("check", "interop")   # each run in its own folder (Settings.separate_runs)
+FILE_SUFFIXES = (".html", ".json", ".md")
+
+
+def run_folder(out: Path, now: float | None = None) -> Path:
+    """A new folder for one docs run, so runs never overwrite each other: ``docs`` becomes
+    ``docs-20261121-153012``; a single-file target ``pizza.html`` becomes
+    ``pizza-20261121-153012/pizza.html``. A clash within the same second gets ``-2``, ``-3``…"""
+    stamp = time.strftime("%Y%m%d-%H%M%S", time.localtime(now))
+    is_file = out.suffix.lower() in FILE_SUFFIXES
+    base = out.parent / f"{out.stem if is_file else out.name}-{stamp}"
+    folder, n = base, 1
+    while folder.exists():
+        n += 1
+        folder = base.with_name(f"{base.name}-{n}")
+    return folder / out.name if is_file else folder
+
+
+def interop_only(report) -> None:
+    """Keep only the cross-domain and scientific interoperability sections of a quality report."""
+    from .report.models import TOOLS
+
+    keep = {TOOLS["cdi"].name, TOOLS["si"].name}
+    report.findings, report.rules_run = [], []
+    report.external = [x for x in report.external if x.tool in keep]
+
+
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
-    from .build import build, build_single_file, check, load, resolve_config
+    from datetime import datetime, timezone
+
+    from .build import build, build_single_file, check, check_records, load, resolve_config
     from .collection import build_collection, export_collection
     from .export import export_markdown
     from .model.extract import extract
@@ -455,6 +571,10 @@ def run_task(settings: Settings) -> TaskResult:
     t0 = time.perf_counter()
     s = settings
     out = s.output_path()
+    separate = s.separate_runs and s.task in RUN_FOLDER_TASKS
+    if separate:
+        out = run_folder(out if s.task not in ("check", "interop") or out.suffix.lower() == ".json"
+                         else out / ("interoperability.json" if s.task == "interop" else "quality.json"))
     src = s.source.strip()
     src = src if src.startswith(("http://", "https://")) else str(Path(src).expanduser().resolve())
     ov = s.overrides()
@@ -486,15 +606,25 @@ def run_task(settings: Settings) -> TaskResult:
         coll = export_collection(src, out, myst=s.task == "myst")
         res.rows = [_row_from_entry(e, out, "index.md") for e in coll.entries]
         res.skipped, res.index = coll.skipped, str(out / "index.md")
-    elif s.task == "check":
+    elif s.task in ("check", "interop"):
         files = [Path(src)] if not s.is_folder else find_ontologies(src)[0]
         report_json: dict[str, Any] = {}
+        if out.suffix.lower() != ".json":
+            out = out / ("interoperability.json" if s.task == "interop" else "quality.json")
+        # records (cdi.json, si.json, iri-checks.json, provenance.ttl) go with the report: in the run's
+        # own folder, or in <report>-records/ next to a report written to a shared folder
+        records = out.parent if separate else out.parent / f"{out.stem}-records"
         for f in files:
             name = f.name if not s.is_folder else f.relative_to(Path(src)).as_posix()
             try:
+                started = datetime.now(timezone.utc)
                 onto, rep = check(f, **{k: v for k, v in ov.items()
                                         if k in ("evaluation", "competency_questions", "load_imports",
                                                  "include_individuals", "reason")})
+                if s.task == "interop":
+                    interop_only(rep)
+                check_records(records / (f.relative_to(Path(src)).with_suffix("").as_posix() if s.is_folder else ""),
+                              f, onto, rep, started)
                 sm = rep.totals
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
                                     sm["warning"], sm["info"], _external_text(rep.external),
@@ -504,13 +634,11 @@ def run_task(settings: Settings) -> TaskResult:
             except Exception as e:  # noqa: BLE001
                 res.rows.append(Row(name, problem=str(e)))
                 report_json[name] = {"error": str(e)}
-        if out.suffix.lower() != ".json":
-            out = out / "quality.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(report_json, indent=2, ensure_ascii=False), "utf-8")
         for r in res.rows:
             r.output = str(out)
-        res.output = out
+        res.output, res.index = (out.parent if separate else out), str(out)
     elif s.task in ("markdown", "myst"):
         log.info("Exporting %s → %s", "MyST" if s.task == "myst" else "Markdown", out)
         cfg = resolve_config(src)
@@ -680,6 +808,66 @@ def record_run(settings: Settings, result: TaskResult | None, error: str | None 
     return entry
 
 
+EXPORT_DIR = SETTINGS_FILE.with_name("exports")
+
+
+def export_output(output: str | Path, dest_dir: Path | None = None) -> Path:
+    """A run's output as one file to download: a folder becomes ``<name>.zip`` (its files under
+    ``<name>/``), a single file is returned as it is."""
+    import zipfile
+
+    src = Path(output).expanduser()
+    if not src.exists():
+        raise FileNotFoundError(f"{src} no longer exists")
+    if src.is_file():
+        return src
+    dest_dir = dest_dir or EXPORT_DIR
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    target = dest_dir / f"{src.name}.zip"
+    with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as zf:
+        for f in sorted(src.rglob("*")):
+            if f.is_file():
+                zf.write(f, Path(src.name) / f.relative_to(src))
+    return target
+
+
+def run_config_rows(settings: dict[str, Any]) -> list[tuple[str, str]]:
+    """A recorded run's settings as readable (label, value) rows for the Run history dialog."""
+    g = settings.get
+    on = lambda v: "on" if v else "off"  # noqa: E731
+    rows = [("Task", TASKS.get(g("task", ""), g("task", ""))), ("Ontology", g("source", "")),
+            ("Save to", g("output") or "default, next to the ontology")]
+    if g("task") in DOCS_TASKS:
+        rows += [("Layout", "one page" if g("layout") == "single" else "one page per section"),
+                 ("Languages", g("languages", "en")),
+                 ("Each run in its own folder", on(g("separate_runs", True)))]
+        if g("base_url"):
+            rows.append(("Base URL", g("base_url")))
+    if g("previous_version"):
+        rows.append(("Previous version", g("previous_version")))
+    if g("competency_questions"):
+        rows.append(("Competency questions", g("competency_questions")))
+    if g("task") != "diff":
+        rows += [("Load imports", on(g("load_imports", True))), ("Individuals", on(g("include_individuals", True))),
+                 ("Reasoning", on(g("reason"))),
+                 ("ROBOT", g("robot", "auto")), ("Reasoner", g("reasoner", "hermit")), ("OOPS!", g("oops", "auto")),
+                 ("OntoCheck", on(g("ontocheck", True))), ("IRI checks", on(g("iri_checks", True)))]
+        cdi = g("cdi", True)
+        rows.append(("Cross-domain interoperability",
+                     f"on · references: {', '.join(x.strip() for x in str(g('cdi_references', '')).splitlines() if x.strip()) or '–'}"
+                     + (f" · domains: {g('cdi_domains')}" if g("cdi_domains") else "")
+                     + f" · OntoAligner: {g('cdi_ontoaligner', 'sbert')}" if cdi else "off"))
+        rows.append(("Scientific interoperability",
+                     ("on · references: " + (", ".join(x.strip() for x in str(g("si_references", "")).splitlines()
+                                                         if x.strip()) or "same as cross-domain")
+                      + " · own domain: " + (g("si_home_domain") or "classified") + f" · θ_s = {g('si_theta_s', 0.3)}"
+                      + (" · domain map: " + "; ".join(x.strip() for x in str(g("si_domain_map", "")).splitlines()
+                                                         if x.strip()) if g("si_domain_map") else ""))
+                     if g("si", True) else "off"))
+        rows.append(("Fail on", g("fail_on", "error")))
+    return rows
+
+
 def forget_run(entry_id: str, path: Path | None = None) -> None:
     path = path or HISTORY_FILE
     entries = [e for e in load_history(path) if e.id != entry_id]
@@ -841,7 +1029,7 @@ def issues_text(entry: HistoryEntry) -> str:
 
 
 def task_kind(task: str) -> str:
-    return {"check": "check", "diff": "diff"}.get(task, "docs")
+    return {"check": "check", "interop": "check", "diff": "diff"}.get(task, "docs")
 
 
 # ------------------------------------------------------------------ preferences
@@ -877,6 +1065,11 @@ class Prefs:
     cdi_generality: bool = True
     cdi_top_n: int = 10
     cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
+    si: bool = True
+    si_home_domain: str = ""
+    si_theta_s: float = 0.3
+    si_domain_map: str = ""
+    si_references: str = ""
     cdi_bioportal_key: str = field(default="", repr=False)
     cdi_ontoportal_key: str = field(default="", repr=False)
     hf_token: str = field(default="", repr=False)
@@ -932,6 +1125,7 @@ class Prefs:
         s.ontocheck, s.ontocheck_network, s.ontocheck_search = self.ontocheck, self.ontocheck_network, self.ontocheck_search
         for k in ("iri_checks", "iri_network", "iri_repositories", "iri_resolve",
                   "cdi", "cdi_references", "cdi_domains", "cdi_generality", "cdi_top_n", "cdi_ontoaligner",
+                  "si", "si_home_domain", "si_theta_s", "si_domain_map", "si_references",
                   "cdi_bioportal_key", "cdi_ontoportal_key", "hf_token"):
             setattr(s, k, getattr(self, k))
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",

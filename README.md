@@ -38,7 +38,8 @@ ontoreview check my-ontology.ttl --fail-on error
 
 - **Term documentation:** classes, object/datatype/annotation properties, individuals, datatypes and SKOS concepts. For each term it shows labels, definitions (Markdown supported), examples, notes, and superclasses and subclasses (asserted, plus inferred with `--reason`). Restrictions and equivalences are rendered in **Manchester syntax**. Properties get domain/range, characteristics, inverses and property chains. Every term also gets "used in" back-links, mappings and deprecation status.
 - **Metadata** comes from standard annotations (dcterms, dc, schema.org, vann, PAV, FOAF, PROV, bibo). That covers title, abstract, authors with ORCID and affiliation, license, versions, DOI, citation and logo. Anything can be overridden in `ontoreview.toml`.
-- **Generated sections:** introduction, metadata, overview with A–Z index, visualization, reference, namespaces, changelog, quality report, downloads, how to cite (text, BibTeX and `CITATION.cff`) and provenance (PROV-O).
+- **Generated sections:** introduction, metadata, overview (terms per kind, quality checks run, interoperability scores; optional A–Z index), visualization, terms, namespaces, changelog, quality report (a summary table per check, then the details), downloads, how to cite (text, BibTeX and `CITATION.cff`) and provenance (a timeline with UTC timestamps, the source file's SHA-256 and this build's details, plus `provenance.ttl` in PROV-O).
+- **Self-contained output:** every docs folder also holds `standalone.html`, the whole documentation in one file (CSS, JS, data and downloads inlined), made from the same build without running the checks again. Turn it off with `standalone = false` or `--no-standalone`.
 - **Publishing:** Turtle, RDF/XML, JSON-LD and N-Triples serializations. Content-negotiation configs for Apache (`.htaccess`), nginx and w3id.org. schema.org JSON-LD for search engines. `.nojekyll` for GitHub Pages.
 - **Multilingual:** `--lang en,es,pt` builds one site per language, each with a language switcher. Labels and definitions fall back between languages. UI strings exist for en, es, pt, fr, de, it and zh.
 - **Single or multi-page** layouts.
@@ -100,6 +101,7 @@ For the full list of quality checks, their order and how to configure them, see 
 - **IRI checks** cover IRI syntax, the ontology header and version IRI, whether the ontology IRI resolves, and whether reused external classes and properties exist in their vocabulary, with the right type and not deprecated. Lookups go to a bundled SQLite database of 10 W3C vocabularies first, then your cache, OLS, BioPortal and a direct download. IRI syntax follows the full RFC 3987 grammar. Every result records the vocabulary release it was verified against, cached entries expire after `iri_cache_days` (30), and every run is recorded. Browse, search and extend the database on the app's **Term database** page or with `ontoreview terms`. Use `--offline` for SQLite only, or turn the checks off with `evaluation.iri_checks = "off"` or `--no-iri`.
 - **OntoCheck** ([docs](https://ontocheck.readthedocs.io)) adds a scorecard of 17 metrics in four groups: labeling (labels, alternative labels, definitions), structural (isolated elements, class connections, domains and ranges, leaf classes, links to BFO/CCO), accessibility (SPARQL endpoint, RDF dump, human-readable license, external links) and naming conventions (capitalisation, spaces, spelling, duplicate labels, class search). It runs in-process. Only the endpoint and dump checks use the network (`evaluation.ontocheck_network`). Turn it off with `evaluation.ontocheck = "off"` or `--no-ontocheck`.
 - **OOPS!** runs alongside ROBOT, because it checks modelling (unconnected elements, missing domains, ranges, inverses and disjointness, naming) where ROBOT checks annotations. When the ROBOT report ran, OOPS! leaves out the three pitfalls ROBOT already covers (P08, P32, P41) and says so in the review. Without ROBOT it runs the full catalogue. It calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html), so **it sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to keep it local, or `"on"` (`--oops`) for the full catalogue every time. See [quality_check.md](quality_check.md).
+- **Scientific interoperability** (on by default, from the same run; `--no-si` or `evaluation.si = "off"`) counts the scientific domains (OECD fields of science), other than the ontology's own, in which it is interoperable, ignoring upper-level ontologies. See [Scientific interoperability](#scientific-interoperability).
 - **Cross-domain interoperability** (on by default; turn off with `evaluation.cdi = "off"` or `--no-cdi`) scores whether the ontology can serve beyond its own domain. *Align* is the mean strength of each entity's best correspondence into reference ontologies from other domains (direct, lexical, or inherited through superclasses). *Gen* is how domain-neutral the class definitions are, rated by a zero-shot language model. *CDI* is their weighted harmonic mean. See [Cross-domain interoperability](#cross-domain-interoperability).
 - To skip external evaluators entirely, set both `evaluation.robot = "off"` and `evaluation.oops = "off"`. With ROBOT off, OOPS! runs its full catalogue unless it is off too.
 
@@ -135,6 +137,36 @@ cdi_references = ["ols", "ols:envo,chebi", "refs/upper.owl", "refs/maps.sssom.ts
 cdi_domains = ["agriculture"]
 ```
 
+## Scientific interoperability
+
+Scientific interoperability asks **how many** scientific domains, other than its own, an ontology is interoperable with. It refines cross-domain interoperability and reuses the same run: the same reference ontologies (files you upload, ontologies named on OLS or BioPortal, or ones discovered there), the same correspondences and the same Gen. Nothing is fetched twice.
+
+- **Domains** are the OECD Fields of Science and Technology (Frascati Manual 2015, level 2: 42 fields). Each reference ontology gets domains from your `si_domain_map`, else from repository metadata (OLS domains, BioPortal categories), else from the language model classifying its title and description (kept when p ≥ 0.15). Ontologies left without a domain are listed in the review with the setting that fixes it.
+- **Upper-level ontologies are ignored.** BFO, COB, RO, DOLCE/DUL, GFO, SUMO and gUFO get no domain, and every correspondence into their namespaces is dropped, so SI counts links to scientific fields rather than shared foundational commitments.
+- **Per domain δ**, Align_δ pools the correspondences into that domain's reference ontologies, and CDI_δ = (1+β²)·Align_δ·Gen / (Align_δ + β²·Gen).
+- **SI** is the number of domains, other than the ontology's own (`si_home_domain`, or classified from its title and description), with CDI_δ ≥ θ_s = 0.3. SI ≥ 1 counts as scientifically interoperable. SI^ = SI / 41 is the share of possible domains.
+- Gen caps every domain: even a perfectly aligned domain cannot exceed (1+β²)·Gen / (1+β²·Gen). The review shows that ceiling, and checks that no CDI_δ exceeds CDI.
+
+```bash
+ontoreview check my.ttl --cdi ols --si-home-domain 1.2                 # own domain: Computer and information sciences
+ontoreview check my.ttl --cdi ols:envo --cdi refs/mine.owl --si-domain file:mine.owl=1.6 --si-theta-s 0.25
+ontoreview check my.ttl --no-cdi --cdi ols                            # SI only (still runs the shared alignment)
+```
+
+```toml
+[evaluation]
+si = "on"
+si_home_domain = "1.2"                       # or "Computer and information sciences"
+si_theta_s = 0.3
+si_domain_map = { "ols:emi" = ["1.5"], "file:mine.owl" = ["Biological sciences"] }
+```
+
+**Its own reference ontologies.** By default SI uses the cross-domain references from the same run. Give it a different list with `si_references` (or `--si-ref`, repeatable; same forms as `--cdi`: files, SSSOM, `ols`, `ols:envo`, `bioportal:NCIT`); it then aligns against that list separately and records those releases too.
+
+**Interoperability only.** The app's **Interoperability** page (and **Interoperability check only** on Build) runs just CDI and SI: choose the ontology, upload reference ontologies, find and add them from OLS or BioPortal by name (no upload needed; BioPortal needs an API key), or let OntoReview discover them. Results appear on the page, go to Run history and can be exported. On the command line: `ontoreview check my.ttl --interop-only --format json -o interoperability.json`. The domain of a reference ontology is set row by row in a small form (id + fields); a new row appears when the last one is used.
+
+It runs by default with cross-domain interoperability (`--no-si` or `evaluation.si = "off"` to skip it). In the app it is under **Settings → Quality checks → Scientific interoperability**. The docs show SI in the Overview and in the quality report (per-domain scores and the domain of every reference ontology), and write the full record to `si.json`. SI needs Gen, so it needs the language model (`ontoreview[cdi]`); without it the review says so.
+
 ## For LLMs and agents
 
 Every build also writes Stripe-style machine-readable versions of the docs, which appear in their own "For LLMs and agents" section of the page:
@@ -156,7 +188,7 @@ ontoreview ui                     # or: ontoreview-ui; opens http://127.0.0.1:87
 
 - **Build:** choose a file, a folder or a URL (or drag files and folders onto the page), pick the output (**Website** is recommended for publishing docs), and press **Build docs**. You'll see progress step by step, then the term count, errors and warnings, and a filterable list of issues from the built-in checks, ROBOT and OOPS!. **Open docs** and **Show in folder** take you to the result. The equivalent `ontoreview` command is under **Command line**, ready for CI.
 - **Compare:** drop or choose a previous and a current version of an ontology (files or URLs). The comparison runs as soon as both are there. It shows added, removed and modified terms with the exact statements that changed, and writes a standalone HTML report (open it or download it) plus `changes.md` and `changes.json`. This is the same as `ontoreview diff OLD NEW --format html|markdown|json`. On Build, **Compare versions** is a shortcut for the ontology you're documenting. To put a changelog inside the website instead, set **Previous version** in Settings › Documentation.
-- **Run history:** every run, searchable and filterable. Each can be opened, shown in its folder, re-run with the same settings or removed from the list.
+- **Run history:** every run, searchable and filterable. Click a run to see its configuration and command line. **Edit and run** loads it into Build to change it, **Run again** starts it at once, and **Export** downloads the output (a folder as `.zip`). Docs runs go into a new folder each time (`docs-YYYYMMDD-HHMMSS`), so earlier runs are never overwritten. Switch this off on Build with **Each run in its own folder**.
 - **Settings:** defaults for every build. *General* covers the output folder, default format and history. *Documentation* covers layout, languages, public URL, imports, reasoning, competency questions and previous version. *Quality checks* covers ROBOT (Docker or a local `robot`), the OOPS! service and when a check fails. *Appearance* covers the theme and compact layout. A project's `ontoreview.toml` overrides these.
 - **Project config:** the **Project config** menu on Build creates `ontoreview.toml` from a commented template, or opens the existing file in an editor that checks it before saving. It can also save what you selected, or load another config. The file keeps your settings with the ontology, so the command line, CI and teammates build the same docs.
 - **About:** version, system info for bug reports, and links. **Help:** step-by-step instructions with screenshots (regenerate them with `uv run --extra ui --with playwright python scripts/ui_screenshots.py`).
@@ -178,7 +210,7 @@ The studio is a local page with a compact toolbar: open an ontology (or drop fil
 
 ## Look and layout (`[ui]`)
 
-The default theme is a typeset, paper-like document: a white sheet with a quiet numbered table of contents. The Reference entries in the table of contents expand into class and property hierarchies. The figure uses WebVOWL-style notation by default: classes are circles sized by their number of subclasses, object properties are blue labelled boxes between domain and range, datatype properties are green boxes pointing at yellow literal boxes, inverse properties share one box, and subclass edges are dashed. Readers can switch it to a UML class diagram from the figure toolbar. Every part of this is configurable:
+The default theme is a typeset, paper-like document: a white sheet with a quiet numbered table of contents. The Terms entries in the table of contents expand into class and property hierarchies. The figure uses WebVOWL-style notation by default: classes are circles sized by their number of subclasses, object properties are blue labelled boxes between domain and range, datatype properties are green boxes pointing at yellow literal boxes, inverse properties share one box, and subclass edges are dashed. Readers can switch it to a UML class diagram from the figure toolbar. Every part of this is configurable:
 
 ```toml
 [ui]
@@ -191,7 +223,7 @@ width = "wide"                # or "normal"
 graph_notation = "vowl"       # or "uml"
 graph_layout = "auto"         # "force" | "hierarchy" | "concentric" (auto: force for VOWL, hierarchy for UML)
 graph_property_edges = "auto" # true | false | auto (on for small ontologies)
-section_order = ["introduction", "competency-questions", "reference", "graph"]
+section_order = ["introduction", "competency-questions", "terms", "graph"]
 
 [evaluation]
 robot = "auto"                # ROBOT via local robot or Docker; "on" | "off"

@@ -15,7 +15,7 @@ An object property to express the accountability of an agent towards another age
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | hadDelegate |
-| qualifiedForm | prov:Delegation; prov:qualifiedDelegation |
+| qualifiedForm | prov:qualifiedDelegation; prov:Delegation |
 
 ### activity
 
@@ -76,7 +76,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | Domain | [Activity](classes.md#activity) *or* [Agent](classes.md#agent) *or* [Entity](classes.md#entity) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Location](classes.md#location) |
 | category | expanded |
-| editorialNote | This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).; The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes. |
+| editorialNote | The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.; This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair). |
 | inverse | locationOf |
 | sharesDefinitionWith | prov:Location |
 
@@ -186,7 +186,7 @@ The _optional_ Plan adopted by an Agent in Association with some Activity. Plan 
 | category | expanded |
 | component | derivations |
 | inverse | wasPrimarySourceOf |
-| qualifiedForm | prov:qualifiedPrimarySource; prov:PrimarySource |
+| qualifiedForm | prov:PrimarySource; prov:qualifiedPrimarySource |
 
 ### hadRole
 
@@ -198,7 +198,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Influence](classes.md#influence); [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
+| Domain | [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent); [Influence](classes.md#influence) |
 | Range | [Role](classes.md#role) |
 | category | qualified |
 | component | agents-responsibility |
@@ -538,7 +538,7 @@ A prov:Entity that was used by this prov:Activity. For example, :baking prov:use
 | category | starting-point |
 | component | entities-activities |
 | inverse | wasUsedBy |
-| qualifiedForm | prov:Usage; prov:qualifiedUsage |
+| qualifiedForm | prov:qualifiedUsage; prov:Usage |
 
 ### wasAssociatedWith
 
@@ -555,7 +555,7 @@ An prov:Agent that had some (unspecified) responsibility for the occurrence of t
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | wasAssociateFor |
-| qualifiedForm | prov:qualifiedAssociation; prov:Association |
+| qualifiedForm | prov:Association; prov:qualifiedAssociation |
 
 ### wasAttributedTo
 
@@ -574,7 +574,7 @@ Attribution is the ascribing of an entity to an agent.
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | contributed |
-| qualifiedForm | prov:Attribution; prov:qualifiedAttribution |
+| qualifiedForm | prov:qualifiedAttribution; prov:Attribution |
 
 ### wasDerivedFrom
 
@@ -611,7 +611,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | expanded |
 | component | entities-activities |
 | inverse | ended |
-| qualifiedForm | prov:End; prov:qualifiedEnd |
+| qualifiedForm | prov:qualifiedEnd; prov:End |
 
 ### wasGeneratedBy
 
@@ -647,7 +647,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | component | agents-responsibility |
 | editorialNote | The sub-properties of prov:wasInfluencedBy can be elaborated in more detail using the Qualification Pattern. For example, the binary relation :baking prov:used :spoon can be qualified by asserting :baking prov:qualifiedUsage [ a prov:Usage; prov:entity :spoon; prov:atLocation :kitchen ] .  Subproperties of prov:wasInfluencedBy may also be asserted directly without being qualified.  prov:wasInfluencedBy should not be used without also using one of its subproperties.   |
 | inverse | influenced |
-| qualifiedForm | prov:qualifiedInfluence; prov:Influence |
+| qualifiedForm | prov:Influence; prov:qualifiedInfluence |
 | sharesDefinitionWith | prov:Influence |
 
 ### wasInformedBy
@@ -698,7 +698,7 @@ An entity is derived from an original entity by copying, or 'quoting', some or a
 | category | expanded |
 | component | derivations |
 | inverse | quotedAs |
-| qualifiedForm | prov:Quotation; prov:qualifiedQuotation |
+| qualifiedForm | prov:qualifiedQuotation; prov:Quotation |
 
 ### wasRevisionOf
 
@@ -715,7 +715,7 @@ A revision is a derivation that revises an entity into a revised version.
 | category | expanded |
 | component | derivations |
 | inverse | hadRevision |
-| qualifiedForm | prov:Revision; prov:qualifiedRevision |
+| qualifiedForm | prov:qualifiedRevision; prov:Revision |
 
 ### wasStartedBy
 
@@ -732,5 +732,5 @@ Start is when an activity is deemed to have started. A start may refer to an ent
 | category | expanded |
 | component | entities-activities |
 | inverse | started |
-| qualifiedForm | prov:Start; prov:qualifiedStart |
+| qualifiedForm | prov:qualifiedStart; prov:Start |
 

@@ -207,8 +207,89 @@ def citation_cff(m: Metadata, url: str | None) -> str:
     return "\n".join(lines) + "\n"
 
 
-def provenance_graph(onto: Ontology, source: str, tool_version: str) -> Graph:
-    """A PROV-O description of the ontology version and of this documentation build."""
+def _when(value: str | None) -> tuple[_dt.datetime, bool] | None:
+    """A metadata date or timestamp as an aware UTC datetime, plus whether it was a date only.
+    None for free text that is not a date."""
+    if not value:
+        return None
+    v = str(value).strip()
+    try:
+        d = _dt.datetime.fromisoformat(v.replace("Z", "+00:00"))
+    except ValueError:
+        m = re.match(r"(\d{4})-(\d{2})-(\d{2})", v) or re.fullmatch(r"(\d{4})", v)
+        if not m:
+            return None
+        parts = [int(x) for x in m.groups()] + [1, 1]
+        try:
+            return _dt.datetime(parts[0], parts[1], parts[2], tzinfo=_dt.timezone.utc), True
+        except ValueError:
+            return None
+    date_only = "T" not in v and " " not in v.strip()
+    return (d if d.tzinfo else d.replace(tzinfo=_dt.timezone.utc)).astimezone(_dt.timezone.utc), date_only
+
+
+def _iso(d: _dt.datetime) -> str:
+    return d.astimezone(_dt.timezone.utc).isoformat(timespec="seconds")
+
+
+def provenance_record(onto: Ontology, source: str | Path, tool_version: str, started: _dt.datetime,
+                      report=None, generated: _dt.datetime | None = None) -> dict:
+    """What this documentation was made from, by what, and when: one record shown in the docs'
+    Provenance section and written as ``provenance.ttl``, so both carry the same timestamps."""
+    import hashlib
+
+    m = onto.metadata
+    generated = generated or _dt.datetime.now(_dt.timezone.utc)
+    src = Path(str(source)) if source and not str(source).startswith(("http://", "https://")) else None
+    sha = size = None
+    if src is not None and src.is_file():
+        sha, size = hashlib.sha256(src.read_bytes()).hexdigest(), src.stat().st_size
+    events: list[dict] = []
+
+    def event(when, title: str, detail: str = "", kind: str = "ontology") -> None:
+        w = _when(when) if not isinstance(when, _dt.datetime) else (when, False)
+        if w:
+            events.append({"when": _iso(w[0]), "date_only": w[1], "title": title, "detail": detail, "kind": kind})
+
+    version = f" {m.version_info}" if m.version_info else ""
+    event(m.created, "Ontology created")
+    event(m.issued, f"Version{version} published" if version else "Version published")
+    event(m.modified, "Ontology last modified")
+    checks = []
+    for ext in (report.external if report else []):
+        if ext.error:
+            continue
+        checks.append(ext.tool)
+        pv = ext.provenance or {}
+        if pv.get("checked_at"):
+            n = len(pv.get("releases") or [])
+            summ = pv.get("summary") or {}
+            detail = f"Verified against {n} reference release{'s' if n != 1 else ''}" if n else ""
+            if summ.get("cdi") is not None:
+                detail = f"CDI {summ['cdi']:.2f}" + (f"; {detail.lower()}" if detail else "")
+            if summ.get("si") is not None and summ.get("taxonomy_size"):
+                detail = f"SI {summ['si']} of {summ['taxonomy_size'] - 1} scientific domains"
+            event(pv["checked_at"], f"{ext.tool} run", detail, "check")
+    if report is not None:
+        checks.insert(0, "OntoReview checks")
+    name = src.name if src else str(source or "")
+    event(started, "Documentation build started", f"From {name}" if name else "", "build")
+    event(generated, "Documentation generated",
+          f"OntoReview {tool_version}" + (f"; checks: {', '.join(checks)}" if checks else ""), "build")
+    events.sort(key=lambda e: e["when"])
+    return {"ontology": {"iri": m.iri, "version_iri": m.version_iri, "version_info": m.version_info,
+                         "prior_version": m.prior_version, "title": m.title},
+            "source": {"name": name, "location": str(source or ""), "sha256": sha, "size": size},
+            "tool": {"name": "OntoReview", "version": tool_version},
+            "started": _iso(started), "generated": _iso(generated),
+            "seconds": round((generated - started).total_seconds(), 1),
+            "checks": checks, "events": events}
+
+
+def provenance_graph(onto: Ontology, source: str, tool_version: str, record: dict | None = None) -> Graph:
+    """A PROV-O description of the ontology version and of this documentation build. With
+    ``record`` (from :func:`provenance_record`) the build's times and source checksum match what
+    the docs show."""
     m = onto.metadata
     g = Graph()
     g.bind("prov", PROV)
@@ -239,7 +320,18 @@ def provenance_graph(onto: Ontology, source: str, tool_version: str) -> Graph:
     g.add((doc, PROV.wasGeneratedBy, act))
     g.add((act, RDF.type, PROV.Activity))
     g.add((act, PROV.used, Literal(source)))
-    g.add((act, PROV.endedAtTime, Literal(_dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
-                                          datatype=XSD.dateTime)))
+    rec = record or {}
+    ended = rec.get("generated") or _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds")
+    if rec.get("started"):
+        g.add((act, PROV.startedAtTime, Literal(rec["started"], datatype=XSD.dateTime)))
+    g.add((act, PROV.endedAtTime, Literal(ended, datatype=XSD.dateTime)))
+    g.add((doc, PROV.generatedAtTime, Literal(ended, datatype=XSD.dateTime)))
+    sha = (rec.get("source") or {}).get("sha256")
+    if sha:
+        src = URIRef(f"urn:sha256:{sha}")
+        g.add((src, RDF.type, PROV.Entity))
+        g.add((src, DCTERMS.identifier, Literal(f"sha256:{sha}")))
+        g.add((src, DCTERMS.title, Literal(source)))
+        g.add((act, PROV.used, src))
     g.add((act, PROV.wasAssociatedWith, ontoreview[f"v{tool_version}"]))
     return g

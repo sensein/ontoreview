@@ -1,5 +1,62 @@
 [
   {
+    "@id": "http://example.org/toy/PHReading",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment": [
+      {
+        "@language": "en",
+        "@value": "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "pH reading"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://example.org/toy/Measurement"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/toy/Tractor",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "tractor"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://example.org/toy/Machine"
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/toy/SoilPHReading",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "soil pH reading"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://example.org/toy/PHReading"
+      }
+    ]
+  },
+  {
     "@id": "http://example.org/toy/Process",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
@@ -41,46 +98,6 @@
     ]
   },
   {
-    "@id": "http://example.org/toy/PHReading",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
-      {
-        "@language": "en",
-        "@value": "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units."
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "pH reading"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "http://example.org/toy/Measurement"
-      }
-    ]
-  },
-  {
-    "@id": "http://example.org/toy/Tractor",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "tractor"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "http://example.org/toy/Machine"
-      }
-    ]
-  },
-  {
     "@id": "http://example.org/toy/hasParticipant",
     "@type": [
       "http://www.w3.org/2002/07/owl#ObjectProperty"
@@ -106,23 +123,6 @@
     "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
       {
         "@id": "http://example.org/ref/Device"
-      }
-    ]
-  },
-  {
-    "@id": "http://example.org/toy/SoilPHReading",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "soil pH reading"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "http://example.org/toy/PHReading"
       }
     ]
   },

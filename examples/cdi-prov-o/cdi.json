@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-20T01:28:06.427336+00:00",
+  "checked_at": "2026-11-21T18:05:09.523886+00:00",
   "references": [
     "ols"
   ],
   "notes": [
-    "Details of 49 repository ontologies came from the term database."
+    "Details of 50 repository ontologies came from the term database."
   ],
-  "run_id": 8,
+  "run_id": 89,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -34,7 +34,16 @@
     "cdi_sbert_model": "all-MiniLM-L6-v2",
     "cdi_ontoaligner_threshold": 0.8,
     "cdi_timeout": 30,
-    "cdi_budget": 600
+    "cdi_budget": 600,
+    "si": "on",
+    "si_references": [],
+    "si_home_domain": null,
+    "si_theta_s": 0.3,
+    "si_classifier": true,
+    "si_p_min": 0.15,
+    "si_domain_map": {},
+    "si_upper_ontologies": [],
+    "si_upper_namespaces": []
   },
   "summary": {
     "align": 0.44375,
@@ -83,6 +92,7 @@
       "title": "",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.375,
       "n_correspondences": 30,
       "status": "selected",
@@ -93,11 +103,11 @@
         "ontology_iri": "http://www.w3.org/ns/dcat",
         "version_iri": "http://www.w3.org/ns/dcat3",
         "version": "3",
-        "released": "2026-11-19T00:08:57.854976973",
-        "retrieved": "2026-11-20T01:25:30Z",
-        "metadata_sha256": "4b6353e4abb0fca6664c28227ec0f0f678beab02c12cfa3409864016e2b87cbb",
+        "released": "2026-11-21T00:09:03.721660212",
+        "retrieved": "2026-11-21T17:35:04Z",
+        "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:30.166650+00:00"
+        "cached": "2026-11-21T17:35:04.727973+00:00"
       }
     },
     {
@@ -106,6 +116,7 @@
       "title": "The Earth Metabolome Initiative (EMI) ontology",
       "domain": "",
       "given": false,
+      "description": "The Earth Metabolome Initiative (EMI) ontology is designed to capture and structure the metabolic content of all currently known species on our planet.",
       "coverage": 0.375,
       "n_correspondences": 30,
       "status": "selected",
@@ -117,11 +128,11 @@
         "ontology_iri": "https://w3id.org/emi",
         "version_iri": "https://w3id.org/emi/version/1.0",
         "version": "1.0",
-        "released": "2026-11-19T00:08:59.261766571",
-        "retrieved": "2026-11-20T01:24:59Z",
-        "metadata_sha256": "49ee8ef053a8261f445545f4ccb2e833f916f2b4e621b22846cfe2dd66f453f0",
+        "released": "2026-11-21T00:10:51.376172340",
+        "retrieved": "2026-11-21T17:30:04Z",
+        "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:59.072530+00:00"
+        "cached": "2026-11-21T17:30:04.922969+00:00"
       }
     },
     {
@@ -130,6 +141,7 @@
       "title": "Model Card Report Ontology",
       "domain": "information technology",
       "given": false,
+      "description": "An ontology representing the structure of model card reports - reports that describe basic characteristics of machine learning models for the public and consumers.",
       "coverage": 0.375,
       "n_correspondences": 30,
       "status": "selected",
@@ -141,11 +153,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/mcro.owl",
         "version_iri": "http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl",
         "version": "2023-03-07",
-        "released": "2026-11-19T00:08:08.132342336",
-        "retrieved": "2026-11-20T01:25:24Z",
-        "metadata_sha256": "5d75d29a90a934eaffe02ec560709d4bf6392e04901c788eb0492628f2f96387",
+        "released": "2026-11-21T00:08:36.115248768",
+        "retrieved": "2026-11-21T17:35:02Z",
+        "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:24.595209+00:00"
+        "cached": "2026-11-21T17:35:02.266948+00:00"
       }
     },
     {
@@ -154,6 +166,7 @@
       "title": "MIAPA Ontology",
       "domain": "information",
       "given": false,
+      "description": "An application ontology to formalize annotation of phylogenetic data.",
       "coverage": 0.375,
       "n_correspondences": 30,
       "status": "selected",
@@ -163,11 +176,11 @@
         "ontology": "miapa",
         "title": "MIAPA Ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/miapa.owl",
-        "released": "2026-11-19T00:08:07.727829442",
-        "retrieved": "2026-11-20T01:25:27Z",
-        "metadata_sha256": "029d4d1f9002d632622e232fc2af2162b131d37b276100b9c0847a452ad9b1cc",
+        "released": "2026-11-21T00:08:35.567960162",
+        "retrieved": "2026-11-21T17:35:06Z",
+        "metadata_sha256": "07376e9fe4dbb7e52f7fb268d902fc800661a1bd1c68b9a6d81d93faf68a689c",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:25:27.112932+00:00"
+        "cached": "2026-11-21T17:35:06.339853+00:00"
       }
     },
     {
@@ -176,6 +189,7 @@
       "title": "Provenance Ontology (PROV-O)",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.375,
       "n_correspondences": 30,
       "status": "selected",
@@ -185,11 +199,11 @@
         "ontology": "prov",
         "title": "Provenance Ontology (PROV-O)",
         "ontology_iri": "http://www.w3.org/ns/prov#",
-        "released": "2026-11-19T00:09:10.707761578",
-        "retrieved": "2026-11-20T01:25:21Z",
-        "metadata_sha256": "908f8d1f1c983d4c9e506488361131c6cc0984663efda6b41c8f3a98ab4eeaf5",
+        "released": "2026-11-21T00:09:12.771551703",
+        "retrieved": "2026-11-21T17:34:55Z",
+        "metadata_sha256": "fb42cbd488a0388121ef2776872dc0a0feff1923e6960416b322f328964578d9",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:25:21.689553+00:00"
+        "cached": "2026-11-21T17:34:55.359959+00:00"
       }
     },
     {
@@ -198,6 +212,7 @@
       "title": "REPRODUCE-ME Ontology",
       "domain": "",
       "given": false,
+      "description": "The REPRODUCE-ME ontology is an extension of the PROV-O and the P-Plan ontology to describe a complete path of a scientific experiment. It expresses the REPRODUCE-ME Data Model using the OWL2 Web Ontology Language (OWL2). It provides a set of classes and properties to represent a scientific experiment including its computational and non-computational steps to track the provenance of results. It describes a complete path of a scientific experiment considering the use-case of biological imaging and microscopy experiments, computational experiments, including Jupyter notebooks and scripts. It describes an experiment and its data, agents, activities, plans, steps, variables, instruments, materials, and settings required for its reproducibility.",
       "coverage": 0.375,
       "n_correspondences": 30,
       "status": "selected",
@@ -208,11 +223,11 @@
         "title": "REPRODUCE-ME Ontology",
         "ontology_iri": "https://w3id.org/reproduceme",
         "version": "1.1",
-        "released": "2026-11-19T00:09:14.781374511",
-        "retrieved": "2026-11-20T01:24:36Z",
-        "metadata_sha256": "a0348f7c24e6a5d104e3c9d2ab3887de883fcb31b392dbd2c2d9a9e35398cdda",
+        "released": "2026-11-21T00:09:18.386890850",
+        "retrieved": "2026-11-21T17:30:04Z",
+        "metadata_sha256": "ddd9159098c46f5e9c79010e8b09b092e94b7e617fced634bfad08d510e3f75f",
         "identified_by": "version",
-        "cached": "2026-11-20T01:24:36.574245+00:00"
+        "cached": "2026-11-21T17:30:04.492083+00:00"
       }
     },
     {
@@ -221,6 +236,7 @@
       "title": "NCI Thesaurus OBO Edition",
       "domain": "health",
       "given": false,
+      "description": "NCI Thesaurus (NCIt)is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. The NCIt OBO Edition aims to increase integration of the NCIt with OBO Library ontologies. NCIt OBO Edition releases should be considered experimental.",
       "coverage": 0.3125,
       "n_correspondences": 69,
       "status": "selected",
@@ -232,11 +248,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
         "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
         "version": "26.02d",
-        "released": "2026-11-19T00:08:40.177514829",
-        "retrieved": "2026-11-20T01:24:40Z",
-        "metadata_sha256": "47756ac031c76f5a4c588e0cbfc200bcc492ff4796c174687bfd85c2f3039a90",
+        "released": "2026-11-21T00:09:04.346151993",
+        "retrieved": "2026-11-21T17:30:07Z",
+        "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:40.214587+00:00"
+        "cached": "2026-11-21T17:30:07.631597+00:00"
       }
     },
     {
@@ -245,6 +261,7 @@
       "title": "SNOMED CT (International Edition)",
       "domain": "",
       "given": false,
+      "description": "SNOMED CT or SNOMED Clinical Terms is a systematically organized computer processable collection of medical terms providing codes, terms, synonyms and definitions used in clinical documentation and reporting.",
       "coverage": 0.175,
       "n_correspondences": 14,
       "status": "selected",
@@ -256,10 +273,10 @@
         "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
         "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
         "released": "2026-10-21T10:27:50.617005757",
-        "retrieved": "2026-11-20T01:24:34Z",
+        "retrieved": "2026-11-21T17:30:09Z",
         "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:34.511188+00:00"
+        "cached": "2026-11-21T17:30:09.210659+00:00"
       }
     },
     {
@@ -268,6 +285,7 @@
       "title": "Allotrope Merged Ontology Suite",
       "domain": "",
       "given": false,
+      "description": "Allotrope Merged Ontology Suite",
       "coverage": 0.1375,
       "n_correspondences": 18,
       "status": "selected",
@@ -279,11 +297,11 @@
         "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
         "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
         "version": "REC/2026/09",
-        "released": "2026-11-19T00:09:08.267589190",
-        "retrieved": "2026-11-20T01:24:42Z",
-        "metadata_sha256": "8098223f947c41f28ad3b4cfaff6e5af11596f5654ec8894c84d2e7840f133bd",
+        "released": "2026-11-21T00:09:10.933549934",
+        "retrieved": "2026-11-21T17:30:08Z",
+        "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:42.897913+00:00"
+        "cached": "2026-11-21T17:30:08.826386+00:00"
       }
     },
     {
@@ -292,6 +310,7 @@
       "title": "",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.1375,
       "n_correspondences": 13,
       "status": "selected",
@@ -300,11 +319,11 @@
         "source": "ols",
         "ontology": "schemaorg_http",
         "ontology_iri": "http://schema.org/",
-        "released": "2026-11-19T00:08:59.171477900",
-        "retrieved": "2026-11-20T01:24:59Z",
-        "metadata_sha256": "14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914",
+        "released": "2026-11-21T00:09:03.193403165",
+        "retrieved": "2026-11-21T17:30:03Z",
+        "metadata_sha256": "7b645a0e1b0379b6f24ed719797f26f0f2b7a8f6ece6861fa159ffbf70a9e904",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:24:59.464276+00:00"
+        "cached": "2026-11-21T17:30:03.583178+00:00"
       }
     },
     {
@@ -313,6 +332,7 @@
       "title": "",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.1375,
       "n_correspondences": 13,
       "status": "below-top-N",
@@ -321,11 +341,11 @@
         "source": "ols",
         "ontology": "schemaorg_https",
         "ontology_iri": "https://schema.org/",
-        "released": "2026-11-19T00:09:02.226879785",
-        "retrieved": "2026-11-20T01:24:58Z",
-        "metadata_sha256": "b033e47539459482ec0d4c6fc0dc29a9f91175b3a7dff8beab217ccab5f812a8",
+        "released": "2026-11-21T00:09:05.536558224",
+        "retrieved": "2026-11-21T17:30:08Z",
+        "metadata_sha256": "760ce2d80b346f979ce087c533c3850b05da09cc5f8a615d2afac2fadca7f6a8",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:24:58.642878+00:00"
+        "cached": "2026-11-21T17:30:08.026283+00:00"
       }
     },
     {
@@ -334,6 +354,7 @@
       "title": "Semanticscience Integrated Ontology",
       "domain": "",
       "given": false,
+      "description": "The Semanticscience Integrated Ontology (SIO) provides a simple, integrated ontology of types and relations for rich description of objects, processes and their attributes.",
       "coverage": 0.1125,
       "n_correspondences": 9,
       "status": "below-top-N",
@@ -345,11 +366,11 @@
         "ontology_iri": "http://semanticscience.org/ontology/sio.owl",
         "version_iri": "http://semanticscience.org/ontology/sio/v1.62/sio-release.owl",
         "version": "1.62",
-        "released": "2026-11-19T00:09:05.279774810",
-        "retrieved": "2026-11-20T01:24:38Z",
-        "metadata_sha256": "5c9b80b985b8da025a5fbcb591d50a6579521a802399786f6daf8ab1a31c16a4",
+        "released": "2026-11-21T00:09:09.346259822",
+        "retrieved": "2026-11-21T17:30:12Z",
+        "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:38.445776+00:00"
+        "cached": "2026-11-21T17:30:12.699095+00:00"
       }
     },
     {
@@ -358,6 +379,7 @@
       "title": "Ontology for vCard",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0875,
       "n_correspondences": 10,
       "status": "below-top-N",
@@ -374,11 +396,35 @@
       }
     },
     {
+      "id": "db:http://purl.org/spar/datacite/identifier",
+      "source": "termdb",
+      "title": "The DataCite Ontology (DataCite)",
+      "domain": "",
+      "given": false,
+      "description": "",
+      "coverage": 0.075,
+      "n_correspondences": 6,
+      "status": "below-top-N",
+      "align_d": 0.0,
+      "release": {
+        "source": "term database (cache)",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
+        "retrieved": "2026-11-21T17:40:46.656861+00:00",
+        "identified_by": "version IRI"
+      }
+    },
+    {
       "id": "ols:mesh",
       "source": "ols",
       "title": "Medical Subject Headings",
       "domain": "",
       "given": false,
+      "description": "MeSH (Medical Subject Headings) is the National Library of Medicine's controlled vocabulary thesaurus. It consists of sets of terms naming descriptors in a hierarchical structure that permits searching at various levels of specificity. This thesaurus is used by NLM for indexing articles from biomedical journals, cataloguing of books, documents, etc.",
       "coverage": 0.075,
       "n_correspondences": 6,
       "status": "below-top-N",
@@ -390,11 +436,11 @@
         "ontology_iri": "https://w3id.org/biopragmatics/resources/mesh/mesh.ofn",
         "version_iri": "https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn",
         "version": "2025",
-        "released": "2026-11-19T00:09:20.081199373",
-        "retrieved": "2026-11-20T01:25:00Z",
-        "metadata_sha256": "8599e091ffa3183f674b64dac99d87845aad8ac5829368ce973178196b7654c0",
+        "released": "2026-11-21T00:09:41.663368724",
+        "retrieved": "2026-11-21T17:30:13Z",
+        "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:00.338873+00:00"
+        "cached": "2026-11-21T17:30:13.571879+00:00"
       }
     },
     {
@@ -403,6 +449,7 @@
       "title": "Friend of a Friend (FOAF) vocabulary",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0625,
       "n_correspondences": 5,
       "status": "below-top-N",
@@ -424,6 +471,7 @@
       "title": "Scientific Evidence and Provenance Information Ontology",
       "domain": "investigations",
       "given": false,
+      "description": "An ontology for representing the provenance of scientific claims and the evidence that supports them.",
       "coverage": 0.0625,
       "n_correspondences": 5,
       "status": "below-top-N",
@@ -435,11 +483,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/sepio.owl",
         "version_iri": "http://purl.obolibrary.org/obo/sepio/releases/2023-06-13/sepio.owl",
         "version": "2023-06-13",
-        "released": "2026-11-19T00:08:24.171579473",
-        "retrieved": "2026-11-20T01:25:27Z",
-        "metadata_sha256": "6a2468f62015699db0f66128a75aa80d92596bf88a1d54335418d1cf486ee184",
+        "released": "2026-11-21T00:08:48.181391428",
+        "retrieved": "2026-11-21T17:35:02Z",
+        "metadata_sha256": "f74e04404ed7603e1094c3ebbb7d84db24e5dcaf3061d669e2ca59330157326d",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:27.924152+00:00"
+        "cached": "2026-11-21T17:35:02.792096+00:00"
       }
     },
     {
@@ -448,6 +496,7 @@
       "title": "http://www.w3.org/ns/org#",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0375,
       "n_correspondences": 5,
       "status": "below-top-N",
@@ -468,6 +517,7 @@
       "title": "Basic Formal Ontology",
       "domain": "upper",
       "given": false,
+      "description": "The upper level ontology upon which OBO Foundry ontologies are built.",
       "coverage": 0.0375,
       "n_correspondences": 3,
       "status": "below-top-N",
@@ -478,11 +528,11 @@
         "title": "Basic Formal Ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/bfo.owl",
         "version_iri": "http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl",
-        "released": "2026-11-19T00:07:54.574828980",
-        "retrieved": "2026-11-20T01:24:40Z",
-        "metadata_sha256": "0ed88e61c83009d829240805302c552f0628881d7c3583c7a7519ad5f40ee1bf",
+        "released": "2026-11-21T00:08:26.833422261",
+        "retrieved": "2026-11-21T17:35:01Z",
+        "metadata_sha256": "815bf5efc094317bc65253aaf7c0b829c6c83b7710745bea16a9bc8ac8003e64",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:40.632754+00:00"
+        "cached": "2026-11-21T17:35:01.219511+00:00"
       }
     },
     {
@@ -491,6 +541,7 @@
       "title": "",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0375,
       "n_correspondences": 3,
       "status": "below-top-N",
@@ -499,11 +550,11 @@
         "source": "ols",
         "ontology": "dcterms",
         "ontology_iri": "http://purl.org/dc/terms/",
-        "released": "2026-11-19T00:08:58.760281588",
-        "retrieved": "2026-11-20T01:25:27Z",
-        "metadata_sha256": "20b61b2060d989e5ab59565638d53b7351974064818a8aa235679681148b4065",
+        "released": "2026-11-21T00:09:02.747865110",
+        "retrieved": "2026-11-21T17:34:57Z",
+        "metadata_sha256": "2fb52dd8d014695e57b8b12d15274414e0c70bb081a599cf1c2585be2c3282aa",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:25:27.524175+00:00"
+        "cached": "2026-11-21T17:34:57.971680+00:00"
       }
     },
     {
@@ -512,6 +563,7 @@
       "title": "Gender, Sex, and Sexual Orientation (GSSO) ontology",
       "domain": "organisms",
       "given": false,
+      "description": "The Gender, Sex, and Sexual Orientation (GSSO) ontology has terms for annotating interdisciplinary information concerning gender, sex, and sexual orientation for primary usage in the biomedical and adjacent sciences.",
       "coverage": 0.0375,
       "n_correspondences": 3,
       "status": "below-top-N",
@@ -523,11 +575,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/gsso.owl",
         "version_iri": "http://purl.obolibrary.org/obo/gsso/releases/2.0.11/gsso.owl",
         "version": "2.0.11",
-        "released": "2026-11-19T00:08:37.127881899",
-        "retrieved": "2026-11-20T01:25:19Z",
-        "metadata_sha256": "63359ca40acea1f03d9e62e038d881d85b3c2160a93c0d267d10236e1dc7f478",
+        "released": "2026-11-21T00:08:51.174830044",
+        "retrieved": "2026-11-21T17:34:13Z",
+        "metadata_sha256": "77072fef338f30cb88486ebce2ffffe968d782af59fd89bb4b01250ecbcb6ab2",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:19.642441+00:00"
+        "cached": "2026-11-21T17:34:13.483387+00:00"
       }
     },
     {
@@ -536,6 +588,7 @@
       "title": "Ontology for MIRNA Target",
       "domain": "chemistry and biochemistry",
       "given": false,
+      "description": "Ontology to establish data exchange standards and common data elements in the microRNA (miR) domain",
       "coverage": 0.0375,
       "n_correspondences": 3,
       "status": "below-top-N",
@@ -546,11 +599,11 @@
         "title": "Ontology for MIRNA Target",
         "ontology_iri": "http://purl.obolibrary.org/obo/omit.owl",
         "version_iri": "http://purl.obolibrary.org/obo/omit/dev/omit.owl",
-        "released": "2026-11-19T00:08:23.855087262",
-        "retrieved": "2026-11-20T01:24:58Z",
-        "metadata_sha256": "17ee9415fbbaf888a938f04269c0a0febd2a974b93ddf92ade5b4a52e6faccad",
+        "released": "2026-11-21T00:08:46.697252767",
+        "retrieved": "2026-11-21T17:30:11Z",
+        "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:58.202321+00:00"
+        "cached": "2026-11-21T17:30:11.872640+00:00"
       }
     },
     {
@@ -559,6 +612,7 @@
       "title": "TransformON",
       "domain": "",
       "given": false,
+      "description": "A domain ontology on food and bioproduct processing and characterization that is a specialization of the PO2 ontology (Process and Observation Ontology).",
       "coverage": 0.0375,
       "n_correspondences": 3,
       "status": "below-top-N",
@@ -569,11 +623,11 @@
         "title": "TransformON",
         "ontology_iri": "http://opendata.inrae.fr/PO2/Ontology/TransformON/",
         "version": "33.0",
-        "released": "2026-11-19T00:09:21.695368286",
-        "retrieved": "2026-11-20T01:24:44Z",
-        "metadata_sha256": "96f292eb212f77468a680e101112e5dc688bb92c807f9b648422cb976d4dd6fa",
+        "released": "2026-11-21T00:09:21.120852308",
+        "retrieved": "2026-11-21T17:30:10Z",
+        "metadata_sha256": "2af2ead0b4260b62da6c8db1e53a706ae3fff083e2a4c6149084f2e83f3f851c",
         "identified_by": "version",
-        "cached": "2026-11-20T01:24:44.336997+00:00"
+        "cached": "2026-11-21T17:30:10.249891+00:00"
       }
     },
     {
@@ -582,6 +636,7 @@
       "title": "http://www.w3.org/ns/dcat",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -598,11 +653,34 @@
       }
     },
     {
+      "id": "db:http://www.w3.org/ns/oa",
+      "source": "termdb",
+      "title": "Web Annotation Ontology",
+      "domain": "",
+      "given": false,
+      "description": "",
+      "coverage": 0.025,
+      "n_correspondences": 2,
+      "status": "below-top-N",
+      "align_d": 0.0,
+      "release": {
+        "source": "term database (cache)",
+        "title": "Web Annotation Ontology",
+        "document": "http://www.w3.org/ns/oa",
+        "ontology_iri": "http://www.w3.org/ns/oa#",
+        "sha256": "f661e37d33bf29176390101687711734a7e33a716bdecfb66b90c732373d7af5",
+        "source_url": "https://www.w3.org/ns/oa",
+        "retrieved": "2026-11-20T02:33:52.163363+00:00",
+        "identified_by": "content hash"
+      }
+    },
+    {
       "id": "ols:bao",
       "source": "ols",
       "title": "BioAssay Ontology",
       "domain": "",
       "given": false,
+      "description": "The BioAssay Ontology (BAO) describes biological screening assays and their results including high-throughput screening (HTS) data for the purpose of categorizing assays and data analysis. BAO is an extensible, knowledge-based, highly expressive (currently SHOIQ(D)) description of biological assays making use of descriptive logic based features of the Web Ontology Language (OWL). BAO currently has over 700 classes and also makes use of several other ontologies. It describes several concepts related to biological screening, including Perturbagen, Format, Meta Target, Design, Detection Technology, and Endpoint. Perturbagens are perturbing agents that are screened in an assay; they are mostly small molecules. Assay Meta Target describes what is known about the biological system and / or its components interrogated in the assay (and influenced by the Perturbagen). Meta target can be directly described as a molecular entity (e.g. a purified protein or a protein complex), or indirectly by a biological process or event (e.g. phosphorylation). Format describes the biological or chemical features common to each test condition in the assay and includes biochemical, cell-based, organism-based, and variations thereof. The assay Design describes the assay methodology and implementation of how the perturbation of the biological system is translated into a detectable signal. Detection Technology relates to the physical method and technical details to detect and record a signal. Endpoints are the final HTS results as they are usually published (such as IC50, percent inhibition, etc). BAO has been designed to accommodate multiplexed assays. All main BAO components include multiple levels of sub-categories and specification classes, which are linked via object property relationships forming an expressive knowledge-based representation.",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -614,11 +692,11 @@
         "ontology_iri": "http://www.bioassayontology.org/bao/bao_complete.owl",
         "version_iri": "http://www.bioassayontology.org/bao/bao_complete.owl",
         "version": "2.8.19",
-        "released": "2026-11-19T00:10:15.013089962",
-        "retrieved": "2026-11-20T01:24:38Z",
-        "metadata_sha256": "7f5fb09c9af63a67ddf27d8c236cc0591e6216c967dca3a8df3179c03d7007e0",
+        "released": "2026-11-21T00:10:03.215729815",
+        "retrieved": "2026-11-21T17:30:11Z",
+        "metadata_sha256": "450eb27e5250ddedcf49b6e7d7bb216e86086a113356445c0ae976228f86cc04",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:38.856959+00:00"
+        "cached": "2026-11-21T17:30:11.474751+00:00"
       }
     },
     {
@@ -627,6 +705,7 @@
       "title": "The Behaviour Change Intervention Ontology",
       "domain": "",
       "given": false,
+      "description": "The Behaviour Change Intervention Ontology is an ontology for all aspects of human behaviour change interventions and their evaluation.",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -637,11 +716,11 @@
         "title": "The Behaviour Change Intervention Ontology",
         "ontology_iri": "http://humanbehaviourchange.org/ontology/bcio.owl",
         "version_iri": "http://humanbehaviourchange.org/ontology/bcio.owl/2026-11-10",
-        "released": "2026-11-19T00:09:08.369633030",
-        "retrieved": "2026-11-20T01:25:30Z",
-        "metadata_sha256": "5eb0f0bd96c6dddc2093f80be992ebfaab416aaf4d86dfefc242181924ab5e52",
+        "released": "2026-11-21T00:09:09.507512710",
+        "retrieved": "2026-11-21T17:34:58Z",
+        "metadata_sha256": "b81934d13a47db5e1f51c128535e2516a59693fed7b31468742dbf9164bb7f5c",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:30.569336+00:00"
+        "cached": "2026-11-21T17:34:58.926628+00:00"
       }
     },
     {
@@ -650,6 +729,7 @@
       "title": "Collembola Anatomy Ontology",
       "domain": "anatomy and development",
       "given": false,
+      "description": "CLAO is an ontology of anatomical terms employed in morphological descriptions for the Class Collembola (Arthropoda: Hexapoda).",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -661,11 +741,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/clao.owl",
         "version_iri": "http://purl.obolibrary.org/obo/clao/releases/2026-06-16/clao.owl",
         "version": "2020-16-05",
-        "released": "2026-11-19T00:07:54.770973292",
-        "retrieved": "2026-11-20T01:24:35Z",
-        "metadata_sha256": "9ea95359ec64afb813a666487ce9e67b8f674b284bb8635ea6c947bb4b2ec659",
+        "released": "2026-11-21T00:08:26.787511324",
+        "retrieved": "2026-11-21T17:35:05Z",
+        "metadata_sha256": "f86bf5803ae10484e4e47f3fe629731863f720701ad634deb5f7395461aabeb4",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:35.750130+00:00"
+        "cached": "2026-11-21T17:35:05.126731+00:00"
       }
     },
     {
@@ -674,6 +754,7 @@
       "title": "",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.025,
       "n_correspondences": 3,
       "status": "below-top-N",
@@ -684,11 +765,11 @@
         "ontology_iri": "https://w3id.org/evorao/",
         "version_iri": "https://github.com/EVORA-project/evora-ontology/releases/tag/v1.2.0",
         "version": "1.2.0",
-        "released": "2026-11-19T00:08:56.424208742",
-        "retrieved": "2026-11-20T01:25:28Z",
-        "metadata_sha256": "22f7a02e51b55c2549dc545250e54f250df9c847ce0cfee1a1af602ad618577a",
+        "released": "2026-11-21T00:09:02.046575203",
+        "retrieved": "2026-11-21T17:34:58Z",
+        "metadata_sha256": "ebf61e8ff414d6b2aa4c14255c15722afdde3478ccfbc79c9729160a076874b2",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:28.722983+00:00"
+        "cached": "2026-11-21T17:34:58.496460+00:00"
       }
     },
     {
@@ -697,6 +778,7 @@
       "title": "Exposure ontology",
       "domain": "health",
       "given": false,
+      "description": "Vocabularies for describing exposure data to inform understanding of environmental health.",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -706,13 +788,13 @@
         "ontology": "exo",
         "title": "Exposure ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/exo.owl",
-        "version_iri": "http://purl.obolibrary.org/obo/exo/releases/2025-08-29/exo.owl",
-        "version": "2025-08-29",
-        "released": "2026-11-19T00:08:00.403471040",
-        "retrieved": "2026-11-20T01:24:44Z",
-        "metadata_sha256": "a26a25a7471a2ee906f34e92f55409bfe2b4bc7e5b409c210deb00f8d64e4560",
+        "version_iri": "http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl",
+        "version": "2026-11-20",
+        "released": "2026-11-21T00:08:27.523150479",
+        "retrieved": "2026-11-21T17:34:11Z",
+        "metadata_sha256": "3cb5416d002bdbc7144a9cb8265dcf54713d5ddadf84c4c32641ecb1abcd0c21",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:44.740716+00:00"
+        "cached": "2026-11-21T17:34:11.366549+00:00"
       }
     },
     {
@@ -721,6 +803,7 @@
       "title": "Informed Consent Ontology",
       "domain": "investigations",
       "given": false,
+      "description": "An ontology of clinical informed consents",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -732,11 +815,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/ico.owl",
         "version_iri": "http://purl.obolibrary.org/obo/ico/releases/2026-02-28/ico.owl",
         "version": "2026-02-28",
-        "released": "2026-11-19T00:08:07.577842632",
-        "retrieved": "2026-11-20T01:25:20Z",
-        "metadata_sha256": "56e8fd26a1a0d70eb7d1c02376729a63bab5f8da3d62699b08e1c7b7742ae7e7",
+        "released": "2026-11-21T00:08:32.453029645",
+        "retrieved": "2026-11-21T17:34:56Z",
+        "metadata_sha256": "3b613a0454960e51e10bba047354abcd79af369688b3d2b532d501e56d368ee0",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:20.047999+00:00"
+        "cached": "2026-11-21T17:34:56.509180+00:00"
       }
     },
     {
@@ -745,6 +828,7 @@
       "title": "Ontology for Biomedical Investigations",
       "domain": "investigations",
       "given": false,
+      "description": "An integrated ontology for the description of life-science and clinical investigations",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -756,11 +840,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/obi.owl",
         "version_iri": "http://purl.obolibrary.org/obo/obi/2026-11-03/obi.owl",
         "version": "2026-11-03",
-        "released": "2026-11-19T00:08:13.506308712",
-        "retrieved": "2026-11-20T01:25:24Z",
-        "metadata_sha256": "2c899d1cf3913e2f31a2b892efe5d7cf2e05500f689dbc92675fcb5094ed7404",
+        "released": "2026-11-21T00:08:39.499850016",
+        "retrieved": "2026-11-21T17:34:12Z",
+        "metadata_sha256": "f7d37be83a7a20c4e99f951d94ac187f3f5fc98c4f12dcdadf20d1444a088ab2",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:24.193438+00:00"
+        "cached": "2026-11-21T17:34:12.198758+00:00"
       }
     },
     {
@@ -769,6 +853,7 @@
       "title": "Ontology of units of Measure (OM)",
       "domain": "",
       "given": false,
+      "description": "The OM ontology provides classes, instances, and properties that represent the different concepts used for defining and using measures and units. It includes, for instance, common units such as the SI units meter and kilogram, but also units from other systems of units such as the mile or nautical mile. For many application areas it includes more specific units and quantities, such as the unit of the Hubble constant: km/s/Mpc, or the quantity vaselife.  OM defines the complete set of concepts in the domain as distinguished in the textual standards. As a result the ontology can answer a wider range of competency questions than the existing approaches do. The following application areas are supported by OM:  Geometry; Mechanics; Thermodynamics; Electromagnetism; Fluid mechanics; Chemical physics; Photometry; Radiometry and Radiobiology; Nuclear physics; Astronomy and Astrophysics; Cosmology; Earth science; Meteorology; Material science; Microbiology; Economics; Information technology; Typography; Shipping; Food engineering; Post-harvest; technology; Dynamics of texture and taste; Packaging",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -779,11 +864,11 @@
         "title": "Ontology of units of Measure (OM)",
         "ontology_iri": "http://www.ontology-of-units-of-measure.org/resource/om-2",
         "version": "2.0.60",
-        "released": "2026-11-19T00:09:08.546463004",
-        "retrieved": "2026-11-20T01:25:25Z",
-        "metadata_sha256": "8a3eb6f837b1aee20d8c2a2c479ede4f9224c7e5f3fc787e6a0feed39941c0a1",
+        "released": "2026-11-21T00:09:13.671358264",
+        "retrieved": "2026-11-21T17:32:34Z",
+        "metadata_sha256": "94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59",
         "identified_by": "version",
-        "cached": "2026-11-20T01:25:25.910159+00:00"
+        "cached": "2026-11-21T17:32:34.871014+00:00"
       }
     },
     {
@@ -792,6 +877,7 @@
       "title": "Orphanet Rare Disease Ontology",
       "domain": "",
       "given": false,
+      "description": "The Orphanet Rare Disease ontology (ORDO) is jointly developed by Orphanet and the EBI to provide a structured vocabulary for rare diseases capturing relationships between diseases, genes and other relevant features which will form a useful resource for the computational analysis of rare diseases. It derived from the Orphanet database (www.orpha.net ) , a multilingual database dedicated to rare diseases populated from literature and validated by international experts. It integrates a nosology (classification of rare diseases), relationships (gene-disease relations, epiemological data) and connections with other terminologies (MeSH, UMLS, MedDRA),databases (OMIM, UniProtKB, HGNC, ensembl, Reactome, IUPHAR, Geantlas) or classifications (ICD10).",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -803,11 +889,11 @@
         "ontology_iri": "https://www.orphadata.com/data/ontologies/ordo/last_version/ORDO_en_4.9.owl",
         "version_iri": "https://www.orphadata.com/data/ontologies/ordo/last_version/ORDO_en_4.9.owl",
         "version": "4.9",
-        "released": "2026-11-19T00:09:05.696268306",
-        "retrieved": "2026-11-20T01:25:18Z",
-        "metadata_sha256": "cbd080cf881207a310ee354265cc639cdb58a57b36c13f0d680bedf21130f4c3",
+        "released": "2026-11-21T00:09:09.351226339",
+        "retrieved": "2026-11-21T17:34:54Z",
+        "metadata_sha256": "7e889d987083126a354c0cb098aedbd091c3327949e5cf78e35abf58632e9789",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:18.268135+00:00"
+        "cached": "2026-11-21T17:34:54.927967+00:00"
       }
     },
     {
@@ -816,6 +902,7 @@
       "title": "Research Organization Registry",
       "domain": "",
       "given": false,
+      "description": "ROR (Research Organization Registry) is a global, community-led registry\nof open persistent identifiers for research organizations. ROR is jointly\noperated by California Digital Library, Crossref, and Datacite.",
       "coverage": 0.025,
       "n_correspondences": 4,
       "status": "below-top-N",
@@ -827,11 +914,11 @@
         "ontology_iri": "https://w3id.org/biopragmatics/resources/ror/ror.ofn",
         "version_iri": "https://w3id.org/biopragmatics/resources/ror/2.0/ror.ofn",
         "version": "2.0",
-        "released": "2026-11-19T00:09:24.463532194",
-        "retrieved": "2026-11-20T01:25:20Z",
-        "metadata_sha256": "902ae441d6d746f1d8271c9d2bdb1ef8be30e87b2e53748f3fbcf44192307867",
+        "released": "2026-11-21T00:10:26.041120431",
+        "retrieved": "2026-11-21T17:35:05Z",
+        "metadata_sha256": "96d414de3785ed2ebc905935c1112a24c369a3c296e5ca54587a53e6641f9928",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:20.882120+00:00"
+        "cached": "2026-11-21T17:35:05.534993+00:00"
       }
     },
     {
@@ -840,6 +927,7 @@
       "title": "Experimental condition ontology",
       "domain": "health",
       "given": false,
+      "description": "Conditions under which physiological and morphological measurements are made both in the clinic and in studies involving humans or model organisms.",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -850,11 +938,11 @@
         "title": "Experimental condition ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/xco.owl",
         "version_iri": "http://purl.obolibrary.org/obo/xco/releases/2026-11-14/xco.owl",
-        "released": "2026-11-19T00:08:30.907998299",
-        "retrieved": "2026-11-20T01:25:22Z",
-        "metadata_sha256": "7cdc0038a154fa2eaa1c34061438be00f1921d8110dfb4ed0d2d3b6aaf6dbdd4",
+        "released": "2026-11-21T00:08:48.943969886",
+        "retrieved": "2026-11-21T17:34:59Z",
+        "metadata_sha256": "6f99606313a54b8ff56c1323d33f8e20a9d9950b8631ae2d55bfc66b55483be5",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:22.087533+00:00"
+        "cached": "2026-11-21T17:34:59.450689+00:00"
       }
     },
     {
@@ -863,6 +951,7 @@
       "title": "Zebrafish anatomy and development ontology",
       "domain": "anatomy and development",
       "given": false,
+      "description": "A structured controlled vocabulary of the anatomy and development of the Zebrafish",
       "coverage": 0.025,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -874,11 +963,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/zfa.owl",
         "version_iri": "http://purl.obolibrary.org/obo/zfa/releases/2026-07-16/zfa.owl",
         "version": "2026-07-16",
-        "released": "2026-11-19T00:08:35.128232949",
-        "retrieved": "2026-11-20T01:24:37Z",
-        "metadata_sha256": "0ada6b9ca437aea72e3aa9ad1a0ad53504820e9c7635757aa15e0c22196c729d",
+        "released": "2026-11-21T00:08:49.103159138",
+        "retrieved": "2026-11-21T17:35:05Z",
+        "metadata_sha256": "83393bd7d61ca78e53112b65a9bdda7dfd8e7592225c6df8f610bad62f5ce287",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:37.479907+00:00"
+        "cached": "2026-11-21T17:35:05.944770+00:00"
       }
     },
     {
@@ -887,6 +976,7 @@
       "title": "http://purl.org/dc/dcmitype/Service",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -906,6 +996,7 @@
       "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -927,6 +1018,7 @@
       "title": "http://purl.org/ontology/bibo/doi",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -947,6 +1039,7 @@
       "title": "http://www.cidoc-crm.org/cidoc-crm/E21_Person",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -966,6 +1059,7 @@
       "title": "http://www.w3.org/2004/02/skos/core",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -986,6 +1080,7 @@
       "title": "http://www.w3.org/ns/dqv#",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1005,6 +1100,7 @@
       "title": "Chemical Entities of Biological Interest",
       "domain": "chemistry and biochemistry",
       "given": false,
+      "description": "A structured classification of molecular entities of biological interest focusing on 'small' chemical compounds.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1016,11 +1112,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/chebi.owl",
         "version_iri": "http://purl.obolibrary.org/obo/chebi/257/chebi.owl",
         "version": "257",
-        "released": "2026-11-19T00:08:19.959448025",
-        "retrieved": "2026-11-20T01:24:41Z",
-        "metadata_sha256": "f4ecb37a129ed918a2269a4b35bcab25a075063a53c2bcda627eefba2b3ebb6a",
+        "released": "2026-11-21T00:08:51.503620060",
+        "retrieved": "2026-11-21T17:30:14Z",
+        "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:41.068327+00:00"
+        "cached": "2026-11-21T17:30:14.565811+00:00"
       }
     },
     {
@@ -1029,6 +1125,7 @@
       "title": "Experimental Factor Ontology",
       "domain": "",
       "given": false,
+      "description": "The Experimental Factor Ontology (EFO) provides a systematic description of many experimental variables available in EBI databases, and for external projects such as the NHGRI GWAS catalogue. It combines parts of several biological ontologies, such as anatomy, disease and chemical compounds. The scope of EFO is to support the annotation, analysis and visualization of data handled by many groups at the EBI and as the core ontology for OpenTargets.org",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1040,11 +1137,11 @@
         "ontology_iri": "http://www.ebi.ac.uk/efo/efo.owl",
         "version_iri": "http://www.ebi.ac.uk/efo/releases/v3.96.0/efo.owl",
         "version": "3.96.0",
-        "released": "2026-11-19T00:09:16.738767928",
-        "retrieved": "2026-11-20T01:24:45Z",
-        "metadata_sha256": "bca3cebb6599b2203f2bc80a3b15628fc3f52b86be43d0775d1a0b92ca5cc3b4",
+        "released": "2026-11-21T00:09:19.633779342",
+        "retrieved": "2026-11-21T17:30:05Z",
+        "metadata_sha256": "991b0b25ddb8fffc1bbf5043233b41212ce9d20bdba47274abada46afc5b8abf",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:45.999402+00:00"
+        "cached": "2026-11-21T17:30:05.343809+00:00"
       }
     },
     {
@@ -1053,6 +1150,7 @@
       "title": "eNanoMapper Ontology",
       "domain": "",
       "given": false,
+      "description": "The eNanoMapper project (www.enanomapper.net) is creating a pan-European computational infrastructure for toxicological data management for ENMs, based on semantic web standards and ontologies. > This ontology is an application ontology targeting the full domain of nanomaterial safety assessment. It re-uses several other ontologies including the NPO, CHEMINF, ChEBI, and ENVO.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1064,11 +1162,11 @@
         "ontology_iri": "http://enanomapper.github.io/ontologies/enanomapper.owl",
         "version_iri": "http://enanomapper.github.io/ontologies/releases/10.0/enanomapper.owl",
         "version": "10.0",
-        "released": "2026-11-19T00:09:16.446141320",
-        "retrieved": "2026-11-20T01:25:23Z",
-        "metadata_sha256": "3d3997e14254a6fa833de7d16a00cfc74a54e009b3139976cb790e23dc5b188c",
+        "released": "2026-11-21T00:09:20.733729791",
+        "retrieved": "2026-11-21T17:35:04Z",
+        "metadata_sha256": "ab7cf60285edf7831fa690c685a3b165cd59b26df74ba72324f4b9d805e3bc2f",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:23.751783+00:00"
+        "cached": "2026-11-21T17:35:04.282625+00:00"
       }
     },
     {
@@ -1077,6 +1175,7 @@
       "title": "Gazetteer",
       "domain": "environment",
       "given": false,
+      "description": "A gazetteer constructed on ontological principles. The countries are actively maintained.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1086,11 +1185,11 @@
         "ontology": "gaz",
         "title": "Gazetteer",
         "ontology_iri": "http://purl.obolibrary.org/obo/TEMP",
-        "released": "2026-11-19T00:10:31.227592265",
-        "retrieved": "2026-11-20T01:25:25Z",
-        "metadata_sha256": "3cb917a68aa7ac54ec08402dbda8511c7a6fd5c029b293410fe3a86383290b7b",
+        "released": "2026-11-21T00:10:50.204254522",
+        "retrieved": "2026-11-21T17:34:12Z",
+        "metadata_sha256": "cf5b9726568d852219ed69945cb9d8315764b51bb26d321401a184d967cbbf57",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:25:25.487417+00:00"
+        "cached": "2026-11-21T17:34:12.689754+00:00"
       }
     },
     {
@@ -1099,6 +1198,7 @@
       "title": "Minimum Information about any (x) Sequence (MIxS) standard",
       "domain": "",
       "given": false,
+      "description": "An OWL representation of the Minimum Information for any (x) Standard (MIxS), managed by the Genomic Standards Consortium. This file is released by the Genomic Standards Consortium (GSC; https://www.gensc.org/) for use by anyone handling data or information about biological sequences.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1108,11 +1208,11 @@
         "ontology": "gscmixs",
         "title": "Minimum Information about any (x) Sequence (MIxS) standard",
         "ontology_iri": "https://w3id.org/mixs/mixs.owl.ttl",
-        "released": "2026-11-19T00:09:18.681869559",
-        "retrieved": "2026-11-20T01:24:39Z",
-        "metadata_sha256": "b6ebbd05083aa02553a4bb176afeea848e5739dc4ce887be6c729cfa1009f6d8",
+        "released": "2026-11-21T00:09:21.718398536",
+        "retrieved": "2026-11-21T17:30:03Z",
+        "metadata_sha256": "87aaea481d889d1609ef02bb3f4d4b0af6acb467d9180a205750c4e7d727a0b6",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:24:39.806011+00:00"
+        "cached": "2026-11-21T17:30:03.170285+00:00"
       }
     },
     {
@@ -1121,6 +1221,7 @@
       "title": "HUGO Gene Nomenclature Committee",
       "domain": "",
       "given": false,
+      "description": "The HGNC (HUGO Gene Nomenclature Committee) provides an approved gene name and symbol (short-form abbreviation) for each known human gene.  All approved symbols are stored in the HGNC database, and each symbol is unique. HGNC identifiers refer to records in the HGNC symbol database.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1132,11 +1233,11 @@
         "ontology_iri": "https://w3id.org/biopragmatics/resources/hgnc/hgnc.ofn",
         "version_iri": "https://w3id.org/biopragmatics/resources/hgnc/2026-02-06/hgnc.ofn",
         "version": "2026-02-06",
-        "released": "2026-11-19T00:09:21.591791052",
-        "retrieved": "2026-11-20T01:25:22Z",
-        "metadata_sha256": "4f524a38820c9648bdcdb602639854d6d89b3c390a59396b428b5777b65aa51f",
+        "released": "2026-11-21T00:09:42.059112395",
+        "retrieved": "2026-11-21T17:35:03Z",
+        "metadata_sha256": "88e4051f85cd41c7f3440212b315dbae88389162accf29d88425d33e26c83fb5",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:22.526618+00:00"
+        "cached": "2026-11-21T17:35:03.261971+00:00"
       }
     },
     {
@@ -1145,6 +1246,7 @@
       "title": "Harmonized Ontology of Mammalian Brain Anatomy",
       "domain": "",
       "given": false,
+      "description": "An ontology of mammalian brain anatomy harmonized across atlas and reference sources.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1156,11 +1258,11 @@
         "ontology_iri": "https://purl.brain-bican.org/ontology/homba/homba.owl",
         "version_iri": "https://purl.brain-bican.org/ontology/homba/releases/2026-04-28/homba.owl",
         "version": "2026-04-28",
-        "released": "2026-11-19T00:08:54.932331754",
-        "retrieved": "2026-11-20T01:25:18Z",
-        "metadata_sha256": "f1f38c2e6e655dd8cfb7bd67b45ca85c6521321f163ad98f5bfd6da36ca12526",
+        "released": "2026-11-21T00:09:03.985341089",
+        "retrieved": "2026-11-21T17:34:56Z",
+        "metadata_sha256": "6946375ec3abdc658a3658fca831ad6f0d65133d788971143091f05f9c2be6c0",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:18.823912+00:00"
+        "cached": "2026-11-21T17:34:56.086235+00:00"
       }
     },
     {
@@ -1169,6 +1271,7 @@
       "title": "Mental Functioning Ontology",
       "domain": "health",
       "given": false,
+      "description": "The Mental Functioning Ontology is an overarching ontology for all aspects of mental functioning.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1180,11 +1283,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/MF.owl",
         "version_iri": "http://purl.obolibrary.org/obo/MF/2025-07-08/MF.owl",
         "version": "2025-07-08",
-        "released": "2026-11-19T00:08:07.197080176",
-        "retrieved": "2026-11-20T01:25:23Z",
-        "metadata_sha256": "23c0027e0c41f7642792c0ce2ecfe71b0e4d7fadffe8c3b7c30d5491100f1786",
+        "released": "2026-11-21T00:08:35.388166600",
+        "retrieved": "2026-11-21T17:34:57Z",
+        "metadata_sha256": "a2adb95daae1fde738baf0a502ae4399270cc6a68735f813abc4338ea1750e00",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:23.340146+00:00"
+        "cached": "2026-11-21T17:34:57.550654+00:00"
       }
     },
     {
@@ -1193,6 +1296,7 @@
       "title": "Molecular Interactions Controlled Vocabulary",
       "domain": "investigations",
       "given": false,
+      "description": "A structured controlled vocabulary for the annotation of experiments concerned with protein-protein interactions.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1202,11 +1306,11 @@
         "ontology": "mi",
         "title": "Molecular Interactions Controlled Vocabulary",
         "ontology_iri": "http://purl.obolibrary.org/obo/mi.owl",
-        "released": "2026-11-19T00:08:07.615396310",
-        "retrieved": "2026-11-20T01:24:43Z",
-        "metadata_sha256": "46860b93ad63fd0afe17aa69d0cb46b1e28e82d92476caa7dee94f0ceec8217e",
+        "released": "2026-11-21T00:08:36.114157697",
+        "retrieved": "2026-11-21T17:34:57Z",
+        "metadata_sha256": "1f1733e13a962a462ce4c7885c8700e02d46d749af7458381488b67f52eb5379",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:24:43.300146+00:00"
+        "cached": "2026-11-21T17:34:57.023209+00:00"
       }
     },
     {
@@ -1215,6 +1319,7 @@
       "title": "Mondo Disease Ontology",
       "domain": "health",
       "given": false,
+      "description": "A global community effort to harmonize multiple disease resources to yield a coherent merged ontology.",
       "coverage": 0.0125,
       "n_correspondences": 2,
       "status": "below-top-N",
@@ -1226,11 +1331,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/mondo/mondo-international.owl",
         "version_iri": "http://purl.obolibrary.org/obo/mondo/releases/2026-11-03/mondo-international.owl",
         "version": "2026-11-03",
-        "released": "2026-11-19T00:08:24.282707288",
-        "retrieved": "2026-11-20T01:25:21Z",
-        "metadata_sha256": "3b8e541db0fc836e140374f36c689780e2a33b980a7a8c052e7dd9f5320efb5b",
+        "released": "2026-11-21T00:08:47.117606383",
+        "retrieved": "2026-11-21T17:34:54Z",
+        "metadata_sha256": "1a63aed20efd322b6cc44ecc645f0cf3770614d036ea7594621aad690f271761",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:21.289059+00:00"
+        "cached": "2026-11-21T17:34:54.431345+00:00"
       }
     },
     {
@@ -1239,6 +1344,7 @@
       "title": "NCBI organismal classification",
       "domain": "organisms",
       "given": false,
+      "description": "An ontology representation of the NCBI organismal taxonomy",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1250,11 +1356,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/ncbitaxon.owl",
         "version_iri": "http://purl.obolibrary.org/obo/ncbitaxon/2026-11-09/ncbitaxon.owl",
         "version": "2026-11-09",
-        "released": "2026-11-19T00:09:16.244400407",
-        "retrieved": "2026-11-20T01:25:24Z",
-        "metadata_sha256": "700ee4f630a87f8102401b8496f3119dbac9f77ca5f241ee478ba2e546265482",
+        "released": "2026-11-21T00:09:44.906146626",
+        "retrieved": "2026-11-21T17:35:01Z",
+        "metadata_sha256": "78c69443bfccb5f86ea670b57bcf8d9439b645972d68609d77bc1996ceaab3cc",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:24.993540+00:00"
+        "cached": "2026-11-21T17:35:01.648543+00:00"
       }
     },
     {
@@ -1263,6 +1369,7 @@
       "title": "Ontology for Modeling and Representation of Social Entities",
       "domain": "health",
       "given": false,
+      "description": "The Ontology for Modeling and Representation of Social Entities (OMRSE) is an OBO Foundry ontology that represents the various entities that arise from human social interactions, such as social acts, social roles, social groups, and organizations.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1274,11 +1381,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/omrse.owl",
         "version_iri": "http://purl.obolibrary.org/obo/omrse/releases/2026-09-03/omrse.owl",
         "version": "2026-09-03",
-        "released": "2026-11-19T00:08:16.601374589",
-        "retrieved": "2026-11-20T01:25:22Z",
-        "metadata_sha256": "9b251f19e05271e7f4353fd9cab054a60cca143875fd717172e72971f1fa8f90",
+        "released": "2026-11-21T00:08:38.563699466",
+        "retrieved": "2026-11-21T17:35:06Z",
+        "metadata_sha256": "3b33e05e80d79b72a234b5d33ad08cdafc01a8fbb7068700335e6aa7e1c23d17",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:22.945546+00:00"
+        "cached": "2026-11-21T17:35:06.769135+00:00"
       }
     },
     {
@@ -1287,6 +1394,7 @@
       "title": "Phenotype And Trait Ontology",
       "domain": "phenotype",
       "given": false,
+      "description": "An ontology of phenotypic qualities (properties, attributes or characteristics)",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1298,11 +1406,35 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/pato.owl",
         "version_iri": "http://purl.obolibrary.org/obo/pato/releases/2026-10-01/pato.owl",
         "version": "2026-10-01",
-        "released": "2026-11-19T00:08:22.781959405",
-        "retrieved": "2026-11-20T01:25:26Z",
-        "metadata_sha256": "e28018cd6b3b8718db19464c4b7f515f3944ac21092db6b4b14015179a179b40",
+        "released": "2026-11-21T00:08:43.648975242",
+        "retrieved": "2026-11-21T17:35:03Z",
+        "metadata_sha256": "b564ce9bdf4882ad305f66c6797081c8693771d65a3b03b826e751491b1b73df",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:26.323097+00:00"
+        "cached": "2026-11-21T17:35:03.762709+00:00"
+      }
+    },
+    {
+      "id": "ols:pr",
+      "source": "ols",
+      "title": "PRotein Ontology (PRO)",
+      "domain": "chemistry and biochemistry",
+      "given": false,
+      "description": "An ontological representation of protein-related entities",
+      "coverage": 0.0125,
+      "n_correspondences": 3,
+      "status": "below-top-N",
+      "align_d": 0.0,
+      "release": {
+        "source": "ols",
+        "ontology": "pr",
+        "title": "PRotein Ontology (PRO)",
+        "ontology_iri": "http://purl.obolibrary.org/obo/pr.owl",
+        "version_iri": "http://purl.obolibrary.org/obo/pr/73.1/pr.owl",
+        "released": "2026-11-21T00:15:07.176521483",
+        "retrieved": "2026-11-21T17:34:54Z",
+        "metadata_sha256": "f364584097c073be58fa6f15b4f3389d2c9af45dfb93781a5fb8618516500e88",
+        "identified_by": "version IRI",
+        "cached": "2026-11-21T17:34:54.012029+00:00"
       }
     },
     {
@@ -1311,6 +1443,7 @@
       "title": "",
       "domain": "",
       "given": false,
+      "description": "",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1319,11 +1452,11 @@
         "source": "ols",
         "ontology": "skos",
         "ontology_iri": "http://www.w3.org/2004/02/skos/core",
-        "released": "2026-11-19T00:08:58.684265604",
-        "retrieved": "2026-11-20T01:25:26Z",
-        "metadata_sha256": "c16971fa89c41719b2c28117893615e0485e1e9876e275639de1c8f9115c82a4",
+        "released": "2026-11-21T00:09:05.370663941",
+        "retrieved": "2026-11-21T17:35:00Z",
+        "metadata_sha256": "8cb025a993c897f4bd498bf0be3fb8182ed6e8ef82f1bd7336305cfaf4f50890",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:25:26.713926+00:00"
+        "cached": "2026-11-21T17:35:00.695148+00:00"
       }
     },
     {
@@ -1332,6 +1465,7 @@
       "title": "Space Life Sciences Ontology",
       "domain": "investigations",
       "given": false,
+      "description": "The Space Life Sciences Ontology is an application ontology and is intended to support the operation of NASA's Life Sciences Data Archive and other systems that contain space life science research data.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1343,11 +1477,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/slso.owl",
         "version_iri": "http://purl.obolibrary.org/obo/slso/releases/2025-12-11/slso.owl",
         "version": "2025-12-11",
-        "released": "2026-11-19T00:08:25.073224405",
-        "retrieved": "2026-11-20T01:25:00Z",
-        "metadata_sha256": "a262c57c8e24363961039d0ff1ad2ce159b487a07bf23bba0f501d3326b32539",
+        "released": "2026-11-21T00:08:49.380860265",
+        "retrieved": "2026-11-21T17:30:10Z",
+        "metadata_sha256": "2eac7db0911246e4ef0414058d92fa46393f24e9a6a6c894cf2a9f2db7d2e6a7",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:00.727698+00:00"
+        "cached": "2026-11-21T17:30:10.647832+00:00"
       }
     },
     {
@@ -1356,6 +1490,7 @@
       "title": "Sequence types and features ontology",
       "domain": "chemistry and biochemistry",
       "given": false,
+      "description": "A structured controlled vocabulary for sequence annotation, for the exchange of annotation data and for the description of sequence objects in databases.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1366,11 +1501,11 @@
         "title": "Sequence types and features ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/so.owl",
         "version_iri": "http://purl.obolibrary.org/obo/so/2026-08-07/so.owl",
-        "released": "2026-11-19T00:08:28.663027556",
-        "retrieved": "2026-11-20T01:25:20Z",
-        "metadata_sha256": "e62c60b0b06ebf3c11439a0e51ab4a9f6011d2730f29c9d8592c88466b24cb33",
+        "released": "2026-11-21T00:08:45.050653655",
+        "retrieved": "2026-11-21T17:34:53Z",
+        "metadata_sha256": "8c39fac884d6e9ab37dd8bed4130c1a47edd68431714794d1a27a2ba6d21f166",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:20.458629+00:00"
+        "cached": "2026-11-21T17:34:53.565367+00:00"
       }
     },
     {
@@ -1379,6 +1514,7 @@
       "title": "Uberon multi-species anatomy ontology",
       "domain": "anatomy and development",
       "given": false,
+      "description": "An integrated cross-species anatomy ontology covering animals and bridging multiple species-specific ontologies",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1389,11 +1525,11 @@
         "title": "Uberon multi-species anatomy ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/uberon.owl",
         "version_iri": "http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl",
-        "released": "2026-11-19T00:08:35.356415997",
-        "retrieved": "2026-11-20T01:24:42Z",
-        "metadata_sha256": "1d0cf51606484728dd11c20eb7ee59aaa5d28f84dd09344b91848efe2264d527",
+        "released": "2026-11-21T00:08:53.251939332",
+        "retrieved": "2026-11-21T17:30:14Z",
+        "metadata_sha256": "d6cd8e7b27faebc173306644e61560a54ff00a6dd470b49973f0e3a67ac02567",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:42.059878+00:00"
+        "cached": "2026-11-21T17:30:14.136391+00:00"
       }
     },
     {
@@ -1402,6 +1538,7 @@
       "title": "Variation Ontology",
       "domain": "biological systems",
       "given": false,
+      "description": "Variation Ontology, VariO, is an ontology for standardized, systematic description of effects, consequences and mechanisms of variations.",
       "coverage": 0.0125,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -1411,11 +1548,11 @@
         "ontology": "vario",
         "title": "Variation Ontology",
         "ontology_iri": "http://purl.obolibrary.org/obo/vario.owl",
-        "released": "2026-11-19T00:08:38.889752508",
-        "retrieved": "2026-11-20T01:25:19Z",
-        "metadata_sha256": "5c196bbd295c6604f5d7dbfd33f1569fe848953c68a787329b56c915da4a4a7d",
+        "released": "2026-11-21T00:08:54.000420102",
+        "retrieved": "2026-11-21T17:35:00Z",
+        "metadata_sha256": "295540bbb20e00238f116112ca74bd6bdf6d20a5931a5c252ca16bceacb287a6",
         "identified_by": "release/load date",
-        "cached": "2026-11-20T01:25:19.237143+00:00"
+        "cached": "2026-11-21T17:35:00.169949+00:00"
       }
     }
   ],
@@ -7334,66 +7471,6 @@
     },
     {
       "source": "http://www.w3.org/ns/prov#End",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:dcat",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#End",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:emi",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#End",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:mcro",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#End",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:miapa",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#End",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:prov",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#End",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:reproduceme",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#End",
       "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
       "relation": "⊑",
       "confidence": 1.0,
@@ -7471,6 +7548,66 @@
       "method": "lexical:exact/exact",
       "target_ontology": "ols:schemaorg_http",
       "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#End",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:dcat",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#End",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:emi",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#End",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:mcro",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#End",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:miapa",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#End",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:prov",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#End",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:reproduceme",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
     },
     {
       "source": "http://www.w3.org/ns/prov#End",
@@ -7614,66 +7751,6 @@
     },
     {
       "source": "http://www.w3.org/ns/prov#Generation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:dcat",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Generation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:emi",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Generation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:mcro",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Generation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:miapa",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Generation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:prov",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Generation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:reproduceme",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Generation",
       "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
       "relation": "⊑",
       "confidence": 1.0,
@@ -7751,6 +7828,66 @@
       "method": "lexical:exact/exact",
       "target_ontology": "ols:schemaorg_http",
       "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Generation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:dcat",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Generation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:emi",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Generation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:mcro",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Generation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:miapa",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Generation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:prov",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Generation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:reproduceme",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
     },
     {
       "source": "http://www.w3.org/ns/prov#Generation",
@@ -7824,66 +7961,6 @@
     },
     {
       "source": "http://www.w3.org/ns/prov#Invalidation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:dcat",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Invalidation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:emi",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Invalidation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:mcro",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Invalidation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:miapa",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Invalidation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:prov",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Invalidation",
-      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:reproduceme",
-      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Invalidation",
       "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
       "relation": "⊑",
       "confidence": 1.0,
@@ -7961,6 +8038,66 @@
       "method": "lexical:exact/exact",
       "target_ontology": "ols:schemaorg_http",
       "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Invalidation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:dcat",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Invalidation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:emi",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Invalidation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:mcro",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Invalidation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:miapa",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Invalidation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:prov",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Invalidation",
+      "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:reproduceme",
+      "via": "http://www.w3.org/ns/prov#ActivityInfluence"
     },
     {
       "source": "http://www.w3.org/ns/prov#Invalidation",
@@ -9214,66 +9351,6 @@
     },
     {
       "source": "http://www.w3.org/ns/prov#Start",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:dcat",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Start",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:emi",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Start",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:mcro",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Start",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:miapa",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Start",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:prov",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Start",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:reproduceme",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Start",
       "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
       "relation": "⊑",
       "confidence": 1.0,
@@ -9351,6 +9428,66 @@
       "method": "lexical:exact/exact",
       "target_ontology": "ols:schemaorg_http",
       "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Start",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:dcat",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Start",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:emi",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Start",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:mcro",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Start",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:miapa",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Start",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:prov",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Start",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:reproduceme",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
     },
     {
       "source": "http://www.w3.org/ns/prov#Start",
@@ -9424,66 +9561,6 @@
     },
     {
       "source": "http://www.w3.org/ns/prov#Usage",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:dcat",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Usage",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:emi",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Usage",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:mcro",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Usage",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:miapa",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Usage",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:prov",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Usage",
-      "target": "http://www.w3.org/ns/prov#EntityInfluence",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "ols:reproduceme",
-      "via": "http://www.w3.org/ns/prov#EntityInfluence"
-    },
-    {
-      "source": "http://www.w3.org/ns/prov#Usage",
       "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
       "relation": "⊑",
       "confidence": 1.0,
@@ -9561,6 +9638,66 @@
       "method": "lexical:exact/exact",
       "target_ontology": "ols:schemaorg_http",
       "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Usage",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:dcat",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Usage",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:emi",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Usage",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:mcro",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Usage",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:miapa",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Usage",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:prov",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
+    },
+    {
+      "source": "http://www.w3.org/ns/prov#Usage",
+      "target": "http://www.w3.org/ns/prov#EntityInfluence",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "ols:reproduceme",
+      "via": "http://www.w3.org/ns/prov#EntityInfluence"
     },
     {
       "source": "http://www.w3.org/ns/prov#Usage",
@@ -9642,9 +9779,9 @@
       "ontology_iri": "http://www.w3.org/ns/dcat",
       "version_iri": "http://www.w3.org/ns/dcat3",
       "version": "3",
-      "released": "2026-11-19T00:08:57.854976973",
-      "retrieved": "2026-11-20T01:25:30Z",
-      "metadata_sha256": "4b6353e4abb0fca6664c28227ec0f0f678beab02c12cfa3409864016e2b87cbb",
+      "released": "2026-11-21T00:09:03.721660212",
+      "retrieved": "2026-11-21T17:35:04Z",
+      "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
       "identified_by": "version IRI",
       "terms": 30
     },
@@ -9656,9 +9793,9 @@
       "ontology_iri": "https://w3id.org/emi",
       "version_iri": "https://w3id.org/emi/version/1.0",
       "version": "1.0",
-      "released": "2026-11-19T00:08:59.261766571",
-      "retrieved": "2026-11-20T01:24:59Z",
-      "metadata_sha256": "49ee8ef053a8261f445545f4ccb2e833f916f2b4e621b22846cfe2dd66f453f0",
+      "released": "2026-11-21T00:10:51.376172340",
+      "retrieved": "2026-11-21T17:30:04Z",
+      "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
       "identified_by": "version IRI",
       "terms": 30
     },
@@ -9670,9 +9807,9 @@
       "ontology_iri": "http://purl.obolibrary.org/obo/mcro.owl",
       "version_iri": "http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl",
       "version": "2023-03-07",
-      "released": "2026-11-19T00:08:08.132342336",
-      "retrieved": "2026-11-20T01:25:24Z",
-      "metadata_sha256": "5d75d29a90a934eaffe02ec560709d4bf6392e04901c788eb0492628f2f96387",
+      "released": "2026-11-21T00:08:36.115248768",
+      "retrieved": "2026-11-21T17:35:02Z",
+      "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
       "identified_by": "version IRI",
       "terms": 30
     },
@@ -9682,9 +9819,9 @@
       "source": "ols",
       "ontology": "miapa",
       "ontology_iri": "http://purl.obolibrary.org/obo/miapa.owl",
-      "released": "2026-11-19T00:08:07.727829442",
-      "retrieved": "2026-11-20T01:25:27Z",
-      "metadata_sha256": "029d4d1f9002d632622e232fc2af2162b131d37b276100b9c0847a452ad9b1cc",
+      "released": "2026-11-21T00:08:35.567960162",
+      "retrieved": "2026-11-21T17:35:06Z",
+      "metadata_sha256": "07376e9fe4dbb7e52f7fb268d902fc800661a1bd1c68b9a6d81d93faf68a689c",
       "identified_by": "release/load date",
       "terms": 30,
       "note": "version not reported by the source; identified by release/load date",
@@ -9696,9 +9833,9 @@
       "source": "ols",
       "ontology": "prov",
       "ontology_iri": "http://www.w3.org/ns/prov#",
-      "released": "2026-11-19T00:09:10.707761578",
-      "retrieved": "2026-11-20T01:25:21Z",
-      "metadata_sha256": "908f8d1f1c983d4c9e506488361131c6cc0984663efda6b41c8f3a98ab4eeaf5",
+      "released": "2026-11-21T00:09:12.771551703",
+      "retrieved": "2026-11-21T17:34:55Z",
+      "metadata_sha256": "fb42cbd488a0388121ef2776872dc0a0feff1923e6960416b322f328964578d9",
       "identified_by": "release/load date",
       "terms": 30,
       "note": "version not reported by the source; identified by release/load date",
@@ -9711,9 +9848,9 @@
       "ontology": "reproduceme",
       "ontology_iri": "https://w3id.org/reproduceme",
       "version": "1.1",
-      "released": "2026-11-19T00:09:14.781374511",
-      "retrieved": "2026-11-20T01:24:36Z",
-      "metadata_sha256": "a0348f7c24e6a5d104e3c9d2ab3887de883fcb31b392dbd2c2d9a9e35398cdda",
+      "released": "2026-11-21T00:09:18.386890850",
+      "retrieved": "2026-11-21T17:30:04Z",
+      "metadata_sha256": "ddd9159098c46f5e9c79010e8b09b092e94b7e617fced634bfad08d510e3f75f",
       "identified_by": "version",
       "terms": 30
     },
@@ -9725,9 +9862,9 @@
       "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
       "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
       "version": "26.02d",
-      "released": "2026-11-19T00:08:40.177514829",
-      "retrieved": "2026-11-20T01:24:40Z",
-      "metadata_sha256": "47756ac031c76f5a4c588e0cbfc200bcc492ff4796c174687bfd85c2f3039a90",
+      "released": "2026-11-21T00:09:04.346151993",
+      "retrieved": "2026-11-21T17:30:07Z",
+      "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
       "terms": 69
     },
@@ -9739,7 +9876,7 @@
       "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
       "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
       "released": "2026-10-21T10:27:50.617005757",
-      "retrieved": "2026-11-20T01:24:34Z",
+      "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
       "terms": 14
@@ -9752,9 +9889,9 @@
       "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
       "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
       "version": "REC/2026/09",
-      "released": "2026-11-19T00:09:08.267589190",
-      "retrieved": "2026-11-20T01:24:42Z",
-      "metadata_sha256": "8098223f947c41f28ad3b4cfaff6e5af11596f5654ec8894c84d2e7840f133bd",
+      "released": "2026-11-21T00:09:10.933549934",
+      "retrieved": "2026-11-21T17:30:08Z",
+      "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
       "terms": 18
     },
@@ -9764,9 +9901,9 @@
       "source": "ols",
       "ontology": "schemaorg_http",
       "ontology_iri": "http://schema.org/",
-      "released": "2026-11-19T00:08:59.171477900",
-      "retrieved": "2026-11-20T01:24:59Z",
-      "metadata_sha256": "14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914",
+      "released": "2026-11-21T00:09:03.193403165",
+      "retrieved": "2026-11-21T17:30:03Z",
+      "metadata_sha256": "7b645a0e1b0379b6f24ed719797f26f0f2b7a8f6ece6861fa159ffbf70a9e904",
       "identified_by": "release/load date",
       "terms": 13,
       "note": "version not reported by the source; identified by release/load date",

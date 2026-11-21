@@ -1,7 +1,22 @@
 <section class="section" id="{{ s.id }}">
   {% set r = s.context.report %}
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  {% if r.external %}
+  <p class="prose">{{ t('quality_overview') }}</p>
+  <table class="plain check-summary">
+    <caption class="sr-only">{{ s.title }}</caption>
+    <thead><tr><th scope="col">{{ t('check') }}</th><th scope="col">{{ t('findings') }}</th><th scope="col" class="check-bar-col">{{ t('compared_largest') }}</th></tr></thead>
+    <tbody>
+    {% for row in r.check_rows() %}
+      <tr><td><a href="#{{ row.anchor }}">{{ row.tool or t('quality_builtin') }}</a></td>
+      <td class="check-count">{% if row.error %}<span class="muted">{{ t('not_run') }}</span>{% elif row.count is none %}<a href="#{{ row.anchor }}">{{ t('see_report') }}</a>{% else %}{{ row.count }}{% endif %}</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:{{ '%.1f'|format(row.share * 100) }}%"></span></span></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
   <p class="prose">{{ t('quality_builtin') }}: {{ r.summary.error }} {{ t('errors') }}, {{ r.summary.warning }} {{ t('warnings') }} {{ t('and') }} {{ r.summary.info }} {{ t('infos') }}.{% if not r.findings %} {{ t('no_findings') }}{% endif %}{% for ext in r.external %}{% if not ext.error %} {{ ext.tool }}: {{ ext.summary.error }} {{ t('errors') }}, {{ ext.summary.warning }} {{ t('warnings') }}, {{ ext.summary.info }} {{ t('infos') }}.{% endif %}{% endfor %}</p>
+  {% endif %}
 
   {% if r.external %}<h3 class="subhead" id="quality-builtin">{{ t('quality_builtin') }}</h3>{% endif %}
   {% for rule, findings in r.by_rule() %}
@@ -15,7 +30,7 @@
   {% endfor %}
 
   {% for ext in r.external %}
-  <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}">{{ ext.tool }}{% if ext.url %} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a>{% endif %}</h3>
+  <h3 class="subhead" id="{{ ext.tool|tool_anchor }}">{{ ext.tool }}{% if ext.url %} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a>{% endif %}</h3>
   {% if ext.scope %}<p class="muted small">{{ ext.scope }}</p>{% endif %}
   {% if ext.metrics %}
   <table class="plain metrics">
@@ -29,16 +44,21 @@
     </tbody>
   </table>
   {% endif %}
+  {% if ext.provenance and ext.provenance.releases_in %}
+  <p class="muted small">{{ 'Also checked against' if ext.provenance.releases else 'Checked against' }}: the releases listed under
+    <a href="#{{ 'Cross-domain interoperability'|tool_anchor }}">Cross-domain interoperability</a> (column “Used in”); recorded once, in {{ ext.provenance.releases_in }}.</p>
+  {% endif %}
   {% if ext.provenance and ext.provenance.releases %}
   <table class="plain metrics">
     {% set recfile = ext.provenance.record_file or 'iri-checks.json' %}
-    <caption class="muted small" style="text-align:left;caption-side:top">{{ ext.provenance.label or 'Verified against' }} (frozen at build time, {{ (ext.provenance.checked_at or '')[:19]|replace('T', ' ') }} UTC; full record in <a href="{{ recfile }}">{{ recfile }}</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">{{ ext.provenance.label or 'Verified against' }} (frozen at build time, {{ (ext.provenance.checked_at or '')[:19]|replace('T', ' ') }} UTC; full record in {% if inline %}<code>{{ recfile }}</code> in the documentation folder{% else %}<a href="{{ recfile }}">{{ recfile }}</a>{% endif %})</caption>
+    {% set used = ext.provenance.releases|selectattr('used_in')|list %}
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th>{% if used %}<th scope="col">Used in</th>{% endif %}</tr></thead>
     <tbody>
     {% for rel in ext.provenance.releases %}
       <tr><td>{% if rel.title %}{{ rel.title }}<br>{% endif %}<code class="small">{{ rel.version_iri or ((rel.ontology or rel.ontology_iri or '') ~ (' ' ~ rel.version if rel.version else '')) or 'release not recorded' }}</code>{% if rel.identified_by and not (rel.version_iri or rel.version) %}<br><span class="muted small">version not reported; identified by {{ rel.identified_by }}{% if rel.released %} ({{ rel.released[:19] }}){% endif %}</span>{% endif %}{% if rel.sha256 %}<br><span class="muted small">sha256 {{ rel.sha256[:16] }}…</span>{% elif rel.documents %}<br><span class="muted small">{{ rel.documents|length }} documents, checksums in iri-checks.json</span>{% elif rel.note %}<br><span class="muted small">{{ rel.note }}</span>{% endif %}</td>
       <td class="small">{{ rel.source }}{% if rel.source_url %}<br><span class="muted">{{ rel.source_url }}</span>{% endif %}</td>
-      <td class="small">{{ (rel.retrieved or '')[:10] }}</td><td>{{ rel.terms }}</td></tr>
+      <td class="small">{{ (rel.retrieved or '')[:10] }}</td><td>{{ rel.terms }}</td>{% if used %}<td class="small">{{ (rel.used_in or [])|map('replace', 'cdi', 'Cross-domain')|map('replace', 'si', 'Scientific')|join(', ') }}</td>{% endif %}</tr>
     {% endfor %}
     </tbody>
   </table>

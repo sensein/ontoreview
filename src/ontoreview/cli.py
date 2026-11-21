@@ -83,8 +83,8 @@ def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None =
                     ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False,
                     cdi: list[str] | None = None, cdi_domain: list[str] | None = None,
                     cdi_api_key: list[str] | None = None, cdi_ontoaligner: str | None = None,
-                    no_cdi: bool = False, hf_token: str | None = None) -> dict | None:
-    ev = {}
+                    no_cdi: bool = False, hf_token: str | None = None, si: dict | None = None) -> dict | None:
+    ev = dict(si or {})
     if hf_token:
         ev["cdi_hf_token"] = hf_token
     if no_cdi:
@@ -102,7 +102,8 @@ def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None =
             keys[repo.strip()] = key.strip()
         ev["cdi_api_keys"] = keys
     if cdi:
-        ev["cdi"] = "on"
+        if not no_cdi:
+            ev["cdi"] = "on"
         ev["cdi_references"] = [c if c.startswith(("ols", "bioportal", "ontoportal", "http://", "https://"))
                                 and not Path(c).exists() else str(Path(c).expanduser().resolve()) for c in cdi]
     if cdi_domain:
@@ -125,6 +126,30 @@ def _eval_overrides(oops: bool | None, robot: str | None, reasoner: str | None =
         else:
             ev["robot"] = robot
     return ev or None
+
+
+INTEROP_ONLY = {"robot": "off", "oops": "off", "ontocheck": "off", "iri_checks": "off", "reasoner": "off"}
+
+
+def _si_overrides(no_si: bool = False, home: str | None = None, theta_s: float | None = None,
+                  domains: list[str] | None = None, refs: list[str] | None = None) -> dict:
+    """Scientific interoperability options -> ``[evaluation]`` overrides."""
+    ev: dict = {}
+    if no_si:
+        ev["si"] = "off"
+    if home:
+        ev["si_home_domain"] = home
+    if theta_s is not None:
+        ev["si_theta_s"] = theta_s
+    for item in domains or []:
+        oid, sep, codes = item.partition("=")
+        if not sep or not oid.strip():
+            raise typer.BadParameter("use ONTOLOGY_ID=FIELD, e.g. ols:emi=1.5", param_hint="--si-domain")
+        ev.setdefault("si_domain_map", {})[oid.strip()] = [c.strip() for c in codes.split(";") if c.strip()]
+    if refs:
+        ev["si_references"] = [r if r.startswith(("ols", "bioportal", "ontoportal", "http://", "https://"))
+                               and not Path(r).exists() else str(Path(r).expanduser().resolve()) for r in refs]
+    return ev
 
 
 def _folder_source(source: str | None, config: Path | None) -> Path | None:
@@ -233,7 +258,13 @@ def build(
     no_cdi: bool = typer.Option(False, "--no-cdi", help="Skip the cross-domain interoperability score (on by default; it queries OLS and runs a language model)."),
     cdi_ontoaligner: str | None = typer.Option(None, "--cdi-ontoaligner", help="Also match file/URL references with OntoAligner: sbert (sentence embeddings, default; model downloaded automatically), fuzzy (string similarity) or off. Needs ontoreview[cdi]."),
     cdi_api_key: list[str] | None = typer.Option(None, "--cdi-api-key", help="Optional API key for BioPortal (KEY or bioportal=KEY), another OntoPortal service (ontoportal=KEY or bioportal@host=KEY). Avoids shared rate limits; OLS needs none. Prefer BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY to keep keys out of shell history."),
+    no_si: bool = typer.Option(False, "--no-si", help="Skip the scientific interoperability degree (on by default; it reuses the cross-domain run and its --cdi references)."),
+    si_home_domain: str | None = typer.Option(None, "--si-home-domain", help="The ontology's own scientific domain: an OECD field code (1.2) or name. Default: classified from its title and description."),
+    si_theta_s: float | None = typer.Option(None, "--si-theta-s", help="θ_s: a domain counts as covered when its CDI reaches this (default 0.3)."),
+    si_domain: list[str] | None = typer.Option(None, "--si-domain", help="Your scientific domain for a reference ontology, e.g. ols:emi=1.5 (several: ols:emi=1.5;1.6). Repeatable."),
+    si_ref: list[str] | None = typer.Option(None, "--si-ref", help="Reference ontology for scientific interoperability only (same forms as --cdi: file, SSSOM, ols, ols:envo, bioportal:NCIT). Repeatable; default: the --cdi references."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
+    standalone: bool | None = typer.Option(None, "--standalone/--no-standalone", help="Also write standalone.html (the whole documentation in one file) in the output folder (default: on)."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
@@ -244,9 +275,9 @@ def build(
     from .build import build_single_file
 
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
-                    base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason,
+                    base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason, standalone=standalone,
                     load_imports=imports, include_imported=include_imported,
-                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token),
+                    include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, _si_overrides(no_si, si_home_domain, si_theta_s, si_domain, si_ref)),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
     folder = _folder_source(source, config)
     if folder is not None:
@@ -431,6 +462,7 @@ def check(
     fail_on: FailOn = typer.Option(FailOn.error, "--fail-on", help="Exit 1 if findings at/above this severity."),
     output: Path | None = typer.Option(None, "--output", "-o", help="Write the report to a file."),
     cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file; repeatable."),
+    interop_only: bool = typer.Option(False, "--interop-only", help="Only the cross-domain and scientific interoperability checks: no built-in rules, ROBOT, reasoner, IRI checks, OntoCheck or OOPS!."),
     oops: bool | None = typer.Option(None, "--oops/--no-oops", help="--oops: full OOPS! pitfall catalogue; --no-oops: never upload to oops.linkeddata.es. By default OOPS! runs alongside ROBOT, skipping what ROBOT checks (full when ROBOT cannot run)."),
     robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
     reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
@@ -443,6 +475,11 @@ def check(
     no_cdi: bool = typer.Option(False, "--no-cdi", help="Skip the cross-domain interoperability score (on by default; it queries OLS and runs a language model)."),
     cdi_ontoaligner: str | None = typer.Option(None, "--cdi-ontoaligner", help="Also match file/URL references with OntoAligner: sbert (sentence embeddings, default; model downloaded automatically), fuzzy (string similarity) or off. Needs ontoreview[cdi]."),
     cdi_api_key: list[str] | None = typer.Option(None, "--cdi-api-key", help="Optional API key for BioPortal (KEY or bioportal=KEY), another OntoPortal service (ontoportal=KEY or bioportal@host=KEY). Avoids shared rate limits; OLS needs none. Prefer BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY to keep keys out of shell history."),
+    no_si: bool = typer.Option(False, "--no-si", help="Skip the scientific interoperability degree (on by default; it reuses the cross-domain run and its --cdi references)."),
+    si_home_domain: str | None = typer.Option(None, "--si-home-domain", help="The ontology's own scientific domain: an OECD field code (1.2) or name. Default: classified from its title and description."),
+    si_theta_s: float | None = typer.Option(None, "--si-theta-s", help="θ_s: a domain counts as covered when its CDI reaches this (default 0.3)."),
+    si_domain: list[str] | None = typer.Option(None, "--si-domain", help="Your scientific domain for a reference ontology, e.g. ols:emi=1.5 (several: ols:emi=1.5;1.6). Repeatable."),
+    si_ref: list[str] | None = typer.Option(None, "--si-ref", help="Reference ontology for scientific interoperability only (same forms as --cdi: file, SSSOM, ols, ols:envo, bioportal:NCIT). Repeatable; default: the --cdi references."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Run quality checks: built-in rules, ROBOT report and a reasoner consistency check (Docker),
@@ -451,17 +488,27 @@ def check(
     _setup_logging(verbose)
     from .build import check as do_check
 
+    si_ev = _si_overrides(no_si, si_home_domain, si_theta_s, si_domain, si_ref) | (INTEROP_ONLY if interop_only else {})
     folder = _folder_source(source, config)
     if folder is not None:
-        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token)
+        _check_folder(folder, config, fmt, fail_on, output, oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, si_ev, interop_only)
         return
 
     try:
-        ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token)
+        ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, si_ev)
         extra = {"evaluation": ev} if ev else {}
         if cq:
             extra["competency_questions"] = [str(Path(c).resolve()) for c in cq]
+        import datetime as _dt
+        started = _dt.datetime.now(_dt.timezone.utc)
         onto, report = do_check(source, config=config, **extra)
+        if interop_only:
+            from .ui_core import interop_only as keep_interop
+            keep_interop(report)
+        if output:      # self-contained: cdi.json, si.json, iri-checks.json, provenance.ttl next to the report
+            from .build import check_records
+            check_records(output.parent / f"{output.stem}-records", source or Path(config or ".").name,
+                          onto, report, started)
     except (ValueError, FileNotFoundError) as e:
         err.print(f"[bold red]Error:[/] {e}")
         raise typer.Exit(2) from e
@@ -492,7 +539,8 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
                   ontocheck: bool | None = None, iri: bool | None = None, offline: bool = False,
                   cdi: list[str] | None = None, cdi_domain: list[str] | None = None,
                   cdi_api_key: list[str] | None = None, cdi_ontoaligner: str | None = None,
-                  no_cdi: bool = False, hf_token: str | None = None) -> None:
+                  no_cdi: bool = False, hf_token: str | None = None, si: dict | None = None,
+                  interop_only: bool = False) -> None:
     import json
 
     from .build import check as do_check
@@ -502,13 +550,22 @@ def _check_folder(folder: Path, config: Path | None, fmt, fail_on, output: Path 
     if not files:
         err.print(f"[bold red]Error:[/] No ontology files found in {folder}")
         raise typer.Exit(2)
-    ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token)
+    ev = _eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token, si)
     extra = {"evaluation": ev} if ev else {}
     results, failed, broken = {}, False, False
     for f in files:
         rel = f.relative_to(folder.resolve()).as_posix()
         try:
+            import datetime as _dt
+            started = _dt.datetime.now(_dt.timezone.utc)
             onto, report = do_check(f, config=_config_for(f, folder, config), **extra)
+            if interop_only:
+                from .ui_core import interop_only as keep_interop
+                keep_interop(report)
+            if output:
+                from .build import check_records
+                check_records(output.parent / f"{output.stem}-records" / Path(rel).with_suffix(""), f, onto,
+                              report, started)
         except Exception as e:  # noqa: BLE001
             broken = True
             results[rel] = {"error": str(e)}

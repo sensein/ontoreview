@@ -14,7 +14,7 @@ def test_default_layout_paper(fixtures, tmp_path):
     html = _html(tmp_path, fixtures)
     # one document header with metadata + downloads, no separate metadata/index sections
     assert 'class="doc-header"' in html and 'class="doc-downloads"' in html
-    assert 'id="overview"' not in html
+    assert 'id="overview"' in html and 'class="stats"' in html and 'class="index-group' not in html
     # terms listed as a sub-hierarchy in the sidebar
     assert 'class="toc-kind"' in html
     toc = html.split('<main', 1)[0]
@@ -85,3 +85,27 @@ def test_graph_data_has_vowl_details(tmp_path):
     assert any(e["data"].get("inv") for e in data["graph"]["edges"] if e["data"]["type"] == "prop")
     html = (tmp_path / "index.html").read_text()
     assert 'id="g-notation"' in html and "legend-vowl" in html
+
+
+def test_overview_and_quality_summary(fixtures, tmp_path):
+    from ontoreview.report.models import ExternalReport, Report
+
+    html = _html(tmp_path, fixtures)
+    main = html.split('<main', 1)[1]
+    assert main.index('id="overview"') < main.index('id="graph"')
+    toc = html.split('<main', 1)[0]
+    assert 'toc-label">Terms<' in toc and 'toc-label">Reference<' not in toc
+    assert 'quality checks run' in main
+    # scores come from tools that declare one; CDI's summary key is "cdi"
+    r = Report(external=[ExternalReport("Cross-domain interoperability", "", provenance={
+        "summary": {"cdi": 0.326, "interoperable": False, "params": {"theta": 0.5}}})])
+    (s,) = r.scores()
+    assert s["value"] == 0.326 and s["passed"] is False and s["anchor"] == "quality-cross-domain-interoperability"
+    rows = r.check_rows()
+    assert rows[0]["anchor"] == "quality-builtin" and rows[1]["count"] == 0
+
+
+def test_section_order_terms_alias(fixtures, tmp_path):
+    html = _html(tmp_path, fixtures, ui={"section_order": ["terms", "graph"]})
+    main = html.split('<main', 1)[1]
+    assert main.index('id="classes"') < main.index('id="graph"')

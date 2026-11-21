@@ -24,6 +24,7 @@ from .publish import (
     htaccess,
     nginx_conf,
     provenance_graph,
+    provenance_record,
     w3id_htaccess,
     write_serializations,
 )
@@ -117,6 +118,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     import tempfile
 
     t0 = time.perf_counter()
+    started = _now()
     cfg = resolve_config(source, config, **overrides)
     out_file = Path(out_file)
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -129,6 +131,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
+    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
     changelog = None
     if cfg.previous_version:
         prev = cfg.previous_version
@@ -144,10 +147,43 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
                                          cfg.serializations) if cfg.sections.serializations else []
         renderer = SiteRenderer(cfg.model_copy(update={"layout": "single"}), onto, tmpdir,
                                 report=report, changelog=changelog, downloads=downloads,
-                                plugin_sections=plugins.sections(onto, cfg), inline=True, cqs=cqset)
+                                plugin_sections=plugins.sections(onto, cfg), inline=True, cqs=cqset,
+                                provenance=prov)
         page = renderer.render()[0]
         shutil.copyfile(page, out_file)
     return BuildResult(out_file, onto, report, changelog, [out_file], time.perf_counter() - t0, cqset)
+
+
+STANDALONE_FILE = "standalone.html"
+
+
+def _now():
+    import datetime as dt
+
+    return dt.datetime.now(dt.timezone.utc)
+
+
+def _write_standalone(cfg: Config, onto: Ontology, out_dir: Path, report, changelog, downloads: list[dict],
+                      plugins: PluginManager, cqset, prov: dict | None = None) -> Path:
+    """The site's primary language as one self-contained page in ``out_dir``, rendered from the
+    results this build already has (no second parse or quality run)."""
+    import copy
+    import tempfile
+
+    dl = copy.deepcopy(downloads)            # the inline renderer rewrites href to data: URIs
+    for d in dl:
+        d.setdefault("path", str(out_dir / d["file"]))
+    with tempfile.TemporaryDirectory() as tmp:
+        renderer = SiteRenderer(cfg.model_copy(update={"layout": "single"}), onto, Path(tmp),
+                                report=report, changelog=changelog, downloads=dl,
+                                plugin_sections=plugins.sections(onto, cfg), inline=True, cqs=cqset,
+                                provenance=prov)
+        if plugins.template_dirs():
+            renderer._plugin_template_dirs = plugins.template_dirs()
+            renderer.env = renderer._env()
+        target = out_dir / STANDALONE_FILE
+        shutil.copyfile(renderer.render()[0], target)
+    return target
 
 
 def build(source: str | Path | None = None, out: str | Path | None = None,
@@ -159,6 +195,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     >>> ontoreview.build("ontology.ttl", out="docs/")          # doctest: +SKIP
     """
     t0 = time.perf_counter()
+    started = _now()
     cfg = resolve_config(source, config, **overrides)
     out_dir = Path(out) if out else (cfg.resolve(cfg.output) or Path("docs"))
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -174,6 +211,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
+    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
 
     changelog = None
     if cfg.previous_version:
@@ -226,11 +264,15 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             live_reload=live_reload,
             cqs=cqset,
             llm_files=llm_files,
+            provenance=prov,
         )
         if plugins.template_dirs():
             renderer._plugin_template_dirs = plugins.template_dirs()
             renderer.env = renderer._env()
         files += renderer.render()
+
+    if cfg.standalone:
+        files.append(_write_standalone(cfg, onto, out_dir, report, changelog, downloads, plugins, cqset, prov))
 
     # Publishing extras
     if cfg.conneg and downloads:
@@ -240,30 +282,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             (out_dir / "w3id.htaccess").write_text(w3id_htaccess(cfg.base_url, downloads), "utf-8")
     if cfg.sections.citation:
         (out_dir / "CITATION.cff").write_text(citation_cff(onto.metadata, cfg.base_url), "utf-8")
-    from .report.models import TOOLS
-
-    externals = report.external if report else []
-    iri_prov = next((x.provenance for x in externals if x.tool == TOOLS["iri"].name and x.provenance), None)
-    cdi_rec = next((x.provenance for x in externals if x.tool == TOOLS["cdi"].name and x.provenance), None)
-    if cdi_rec:
-        # scores, per-entity and per-reference results, and every correspondence
-        (out_dir / "cdi.json").write_text(json.dumps(cdi_rec, indent=2, ensure_ascii=False), "utf-8")
-    if iri_prov:
-        # frozen at build time: which release each external term was verified against
-        (out_dir / "iri-checks.json").write_text(json.dumps(iri_prov, indent=2, ensure_ascii=False), "utf-8")
-    if cfg.sections.provenance:
-        pg = provenance_graph(onto, Path(cfg.source or "").name, __version__)
-        if iri_prov or cdi_rec:
-            from rdflib import URIRef
-
-            from .report.iri import add_iri_provenance
-            if iri_prov:
-                add_iri_provenance(pg, iri_prov, URIRef("urn:ontoreview:build"))
-            if cdi_rec:     # the reference ontology releases the CDI score was computed against
-                add_iri_provenance(pg, cdi_rec, URIRef("urn:ontoreview:build"),
-                                   purpose="Reference release used for the cross-domain interoperability score "
-                                           "({terms} correspondence(s), via {source}).")
-        pg.serialize(destination=str(out_dir / "provenance.ttl"), format="turtle")
+    write_records(out_dir, onto, report, prov, Path(cfg.source or "").name, provenance=cfg.sections.provenance)
     if report is not None:
         (out_dir / "quality.json").write_text(report.to_json(), "utf-8")
     if changelog is not None:
@@ -282,6 +301,56 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
                                             "total_rows", "columns", "rows")} for q in cqset.questions]},
             indent=2, ensure_ascii=False), "utf-8")
     return BuildResult(out_dir, onto, report, changelog, files, time.perf_counter() - t0, cqset)
+
+
+def write_records(out_dir: Path, onto: Ontology, report: Report | None, prov: dict | None, source_name: str,
+                  provenance: bool = True) -> list[Path]:
+    """The frozen records of a run, next to its docs or report: ``iri-checks.json``, ``cdi.json``,
+    ``si.json`` (each with the releases it was checked against) and ``provenance.ttl`` (PROV-O,
+    the same times and releases). Used by docs builds and by quality / interoperability runs, so
+    any single run is self-contained."""
+    from .report.models import TOOLS
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    externals = report.external if report else []
+
+    def rec(tool: str):
+        return next((x.provenance for x in externals if x.tool == TOOLS[tool].name and x.provenance), None)
+
+    iri_prov, cdi_rec, si_rec = rec("iri"), rec("cdi"), rec("si")
+    for name, record in (("iri-checks.json", iri_prov), ("cdi.json", cdi_rec), ("si.json", si_rec)):
+        if record:      # frozen at run time: what each check verified against, and its results
+            path = out_dir / name
+            path.write_text(json.dumps(record, indent=2, ensure_ascii=False), "utf-8")
+            written.append(path)
+    if provenance:
+        pg = provenance_graph(onto, source_name, __version__, prov)
+        from rdflib import URIRef
+
+        from .report.iri import add_iri_provenance
+        act = URIRef("urn:ontoreview:build")
+        if iri_prov:
+            add_iri_provenance(pg, iri_prov, act)
+        # each reference release once (tag_releases), with the checks that used it
+        what = {("cdi",): "the cross-domain interoperability score", ("si",): "the scientific interoperability degree",
+                ("cdi", "si"): "the cross-domain interoperability score and the scientific interoperability degree"}
+        for rels in ((cdi_rec or {}).get("releases") or [], (si_rec or {}).get("releases") or []):
+            for used in what:
+                group = [r for r in rels if tuple(r.get("used_in") or ()) == used]
+                if group:
+                    add_iri_provenance(pg, {"releases": group}, act, purpose=f"Reference release used for {what[used]} "
+                                                                             "({terms} correspondence(s), via {source}).")
+        path = out_dir / "provenance.ttl"
+        pg.serialize(destination=str(path), format="turtle")
+        written.append(path)
+    return written
+
+
+def check_records(out_dir: Path, source: str | Path, onto: Ontology, report: Report, started) -> list[Path]:
+    """Records and PROV-O for a quality or interoperability run (no docs): see :func:`write_records`."""
+    prov = provenance_record(onto, source, __version__, started, report)
+    return write_records(out_dir, onto, report, prov, Path(str(source)).name)
 
 
 def check(source: str | Path | None = None, config: Config | str | Path | None = None,

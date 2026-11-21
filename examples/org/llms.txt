@@ -6,7 +6,7 @@
 - Namespace: http://www.w3.org/ns/org# (prefix `org:`)
 - Version: 0.8
 - License: http://www.opendatacommons.org/licenses/pddl/1.0/
-- Contents: 9 classes, 31 object properties, 2 datatype properties, 1 property, 1 annotation property, 1 named individual
+- Contents: 9 classes, 31 object properties, 2 datatype properties, 1 property, 12 annotation properties, 1 named individual
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
@@ -17,7 +17,7 @@ Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL
 - [Object properties](object-properties.md): 31 object properties with definitions and axioms
 - [Datatype properties](datatype-properties.md): 2 datatype properties with definitions and axioms
 - [Properties](properties.md): 1 property with definitions and axioms
-- [Annotation properties](annotation-properties.md): 1 annotation property with definitions and axioms
+- [Annotation properties](annotation-properties.md): 12 annotation properties with definitions and axioms
 - [Named individuals](individuals.md): 1 named individual with definitions and axioms
 
 ## Machine-readable

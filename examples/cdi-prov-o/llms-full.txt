@@ -39,9 +39,9 @@ An activity is something that occurs over a period of time and acts upon or with
 
 **IRI:** `http://www.w3.org/ns/prov#ActivityInfluence` · `prov:ActivityInfluence`
 
-ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
-
 It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.
+
+ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
 
 | | |
 |---|---|
@@ -199,9 +199,9 @@ An instance of prov:Delegation provides additional descriptions about the binary
 
 A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.
 
-An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].
-
 The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.
+
+An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].
 
 | | |
 |---|---|
@@ -556,7 +556,7 @@ An object property to express the accountability of an agent towards another age
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | hadDelegate |
-| qualifiedForm | prov:Delegation; prov:qualifiedDelegation |
+| qualifiedForm | prov:qualifiedDelegation; prov:Delegation |
 
 ### activity
 
@@ -617,7 +617,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | Domain | [Activity](classes.md#activity) *or* [Agent](classes.md#agent) *or* [Entity](classes.md#entity) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Location](classes.md#location) |
 | category | expanded |
-| editorialNote | This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair).; The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes. |
+| editorialNote | The naming of prov:atLocation parallels prov:atTime, and is not named prov:hadLocation to avoid conflicting with the convention that prov:had* properties are used on prov:Influence classes.; This property is not functional because the many values could be at a variety of granularies (In this building, in this room, in that chair). |
 | inverse | locationOf |
 | sharesDefinitionWith | prov:Location |
 
@@ -727,7 +727,7 @@ The _optional_ Plan adopted by an Agent in Association with some Activity. Plan 
 | category | expanded |
 | component | derivations |
 | inverse | wasPrimarySourceOf |
-| qualifiedForm | prov:qualifiedPrimarySource; prov:PrimarySource |
+| qualifiedForm | prov:PrimarySource; prov:qualifiedPrimarySource |
 
 ### hadRole
 
@@ -739,7 +739,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Influence](classes.md#influence); [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
+| Domain | [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent); [Influence](classes.md#influence) |
 | Range | [Role](classes.md#role) |
 | category | qualified |
 | component | agents-responsibility |
@@ -1079,7 +1079,7 @@ A prov:Entity that was used by this prov:Activity. For example, :baking prov:use
 | category | starting-point |
 | component | entities-activities |
 | inverse | wasUsedBy |
-| qualifiedForm | prov:Usage; prov:qualifiedUsage |
+| qualifiedForm | prov:qualifiedUsage; prov:Usage |
 
 ### wasAssociatedWith
 
@@ -1096,7 +1096,7 @@ An prov:Agent that had some (unspecified) responsibility for the occurrence of t
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | wasAssociateFor |
-| qualifiedForm | prov:qualifiedAssociation; prov:Association |
+| qualifiedForm | prov:Association; prov:qualifiedAssociation |
 
 ### wasAttributedTo
 
@@ -1115,7 +1115,7 @@ Attribution is the ascribing of an entity to an agent.
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | contributed |
-| qualifiedForm | prov:Attribution; prov:qualifiedAttribution |
+| qualifiedForm | prov:qualifiedAttribution; prov:Attribution |
 
 ### wasDerivedFrom
 
@@ -1152,7 +1152,7 @@ End is when an activity is deemed to have ended. An end may refer to an entity, 
 | category | expanded |
 | component | entities-activities |
 | inverse | ended |
-| qualifiedForm | prov:End; prov:qualifiedEnd |
+| qualifiedForm | prov:qualifiedEnd; prov:End |
 
 ### wasGeneratedBy
 
@@ -1188,7 +1188,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 | component | agents-responsibility |
 | editorialNote | The sub-properties of prov:wasInfluencedBy can be elaborated in more detail using the Qualification Pattern. For example, the binary relation :baking prov:used :spoon can be qualified by asserting :baking prov:qualifiedUsage [ a prov:Usage; prov:entity :spoon; prov:atLocation :kitchen ] .  Subproperties of prov:wasInfluencedBy may also be asserted directly without being qualified.  prov:wasInfluencedBy should not be used without also using one of its subproperties.   |
 | inverse | influenced |
-| qualifiedForm | prov:qualifiedInfluence; prov:Influence |
+| qualifiedForm | prov:Influence; prov:qualifiedInfluence |
 | sharesDefinitionWith | prov:Influence |
 
 ### wasInformedBy
@@ -1239,7 +1239,7 @@ An entity is derived from an original entity by copying, or 'quoting', some or a
 | category | expanded |
 | component | derivations |
 | inverse | quotedAs |
-| qualifiedForm | prov:Quotation; prov:qualifiedQuotation |
+| qualifiedForm | prov:qualifiedQuotation; prov:Quotation |
 
 ### wasRevisionOf
 
@@ -1256,7 +1256,7 @@ A revision is a derivation that revises an entity into a revised version.
 | category | expanded |
 | component | derivations |
 | inverse | hadRevision |
-| qualifiedForm | prov:Revision; prov:qualifiedRevision |
+| qualifiedForm | prov:qualifiedRevision; prov:Revision |
 
 ### wasStartedBy
 
@@ -1273,7 +1273,7 @@ Start is when an activity is deemed to have started. A start may refer to an ent
 | category | expanded |
 | component | entities-activities |
 | inverse | started |
-| qualifiedForm | prov:Start; prov:qualifiedStart |
+| qualifiedForm | prov:qualifiedStart; prov:Start |
 
 ---
 
@@ -1292,7 +1292,7 @@ The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.
 | category | qualified |
 | component | entities-activities |
 | sharesDefinitionWith | prov:InstantaneousEvent |
-| unqualifiedForm | prov:invalidatedAtTime; prov:generatedAtTime; prov:endedAtTime; prov:startedAtTime |
+| unqualifiedForm | prov:generatedAtTime; prov:endedAtTime; prov:invalidatedAtTime; prov:startedAtTime |
 
 ### endedAtTime
 
@@ -1337,7 +1337,7 @@ The time at which an entity was invalidated (i.e., no longer usable).
 | category | expanded |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedInvalidation o prov:atTime) rdfs:subPropertyOf prov:invalidatedAtTime. |
-| qualifiedForm | prov:atTime; prov:Invalidation |
+| qualifiedForm | prov:Invalidation; prov:atTime |
 
 ### startedAtTime
 
@@ -1352,7 +1352,7 @@ The time at which an activity started. See also prov:endedAtTime.
 | category | starting-point |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedStart o prov:atTime) rdfs:subPropertyOf prov:startedAtTime. |
-| qualifiedForm | prov:atTime; prov:Start |
+| qualifiedForm | prov:Start; prov:atTime |
 
 ### value
 

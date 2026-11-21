@@ -12,7 +12,7 @@ skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint propert
 
 | | |
 |---|---|
-| Super-properties | [rdfs:label](http://www.w3.org/2000/01/rdf-schema#label) |
+| Super-properties | [label](annotation-properties.md#label) |
 | Examples | `Acronyms, abbreviations, spelling variants, and irregular plural/singular forms may be included among the alternative labels for a concept. Mis-spelled terms are normally included as hidden labels (see skos:hiddenLabel).` |
 
 ### change note
@@ -25,6 +25,18 @@ A note about a modification to a concept.
 |---|---|
 | Super-properties | [note](annotation-properties.md#note) |
 
+### comment
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#comment` · `rdfs:comment`
+
+### contributor
+
+**IRI:** `http://purl.org/dc/terms/contributor` · `dcterms:contributor`
+
+### creator
+
+**IRI:** `http://purl.org/dc/terms/creator` · `dcterms:creator`
+
 ### definition
 
 **IRI:** `http://www.w3.org/2004/02/skos/core#definition` · `skos:definition`
@@ -34,6 +46,10 @@ A statement or formal explanation of the meaning of a concept.
 | | |
 |---|---|
 | Super-properties | [note](annotation-properties.md#note) |
+
+### description
+
+**IRI:** `http://purl.org/dc/terms/description` · `dcterms:description`
 
 ### editorial note
 
@@ -61,13 +77,13 @@ An example of the use of a concept.
 
 A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.
 
-skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.
-
 The range of skos:hiddenLabel is the class of RDF plain literals.
+
+skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.
 
 | | |
 |---|---|
-| Super-properties | [rdfs:label](http://www.w3.org/2000/01/rdf-schema#label) |
+| Super-properties | [label](annotation-properties.md#label) |
 
 ### history note
 
@@ -78,6 +94,18 @@ A note about the past state/use/meaning of a concept.
 | | |
 |---|---|
 | Super-properties | [note](annotation-properties.md#note) |
+
+### isDefinedBy
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#isDefinedBy` · `rdfs:isDefinedBy`
+
+### label
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#label` · `rdfs:label`
+
+| | |
+|---|---|
+| Sub-properties | [alternative label](annotation-properties.md#altlabel), [hidden label](annotation-properties.md#hiddenlabel), [preferred label](annotation-properties.md#preflabel) |
 
 ### note
 
@@ -97,14 +125,14 @@ The preferred lexical label for a resource, in a given language.
 
 The range of skos:prefLabel is the class of RDF plain literals.
 
+A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.
+
 skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise
       disjoint properties.
 
-A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.
-
 | | |
 |---|---|
-| Super-properties | [rdfs:label](http://www.w3.org/2000/01/rdf-schema#label) |
+| Super-properties | [label](annotation-properties.md#label) |
 
 ### scope note
 
@@ -115,4 +143,12 @@ A note that helps to clarify the meaning and/or the use of a concept.
 | | |
 |---|---|
 | Super-properties | [note](annotation-properties.md#note) |
+
+### seeAlso
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#seeAlso` · `rdfs:seeAlso`
+
+### title
+
+**IRI:** `http://purl.org/dc/terms/title` · `dcterms:title`
 
