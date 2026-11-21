@@ -531,5 +531,47 @@ def text_scans(g, onto) -> list[Suggestion]:
     return out
 
 
+@fixer("OB029")
+def missed_reuse(f, g, onto):
+    """A term re-created instead of reused: link it to the standard term, or reuse the standard IRI."""
+    from ..quality_checks.reuse import candidates, term_index
+    t = onto.terms.get(f.subject or "")
+    if t is None:
+        return None
+    found = candidates(t, g, [onto.namespace or ""], term_index())
+    same = [c for c in found if c.same_kind]
+    s = URIRef(t.iri)
+    if not same:
+        if not found:
+            return None
+        c = found[0]
+        return Suggestion(f.rule, t.iri, "M", f"Kind differs from {c.curie}",
+                          f"“{t.label}” is defined here as a {'class' if t.kind == 'class' else 'property'}, but "
+                          f"{c.curie} ({c.label}) is a {c.kind}. If you meant the standard term, use it in place of "
+                          f"yours; otherwise rename yours to avoid confusion.", made_by=made_by(f.rule))
+    link = (OWL.equivalentClass if t.kind == "class" else
+            RDFS.subPropertyOf if t.kind == "annotation_property" else OWL.equivalentProperty)
+    opts = [Option(f"Keep yours, declare it {'a subproperty of' if link == RDFS.subPropertyOf else 'equivalent to'} "
+                   f"{c.curie}", add=[n3((s, link, URIRef(c.iri)))], confidence=("medium", "low", "low")[i],
+                   reason="Keeps your IRI and links it to the standard term, so data using either is connected.")
+            for i, c in enumerate(same)]
+    best = URIRef(same[0].iri)
+    rem, add = [], []
+    for tr in set(g.triples((s, None, None))) | set(g.triples((None, None, s))) | set(g.triples((None, s, None))):
+        rem.append(n3(tr))
+        a, p_, o = tr
+        if a == s and (p_ == RDF.type or isinstance(o, Literal)):
+            continue        # the standard vocabulary declares and describes its own term
+        add.append(n3(tuple(best if x == s else x for x in tr)))
+    opts.append(Option(f"Reuse {same[0].curie} instead of your term", add=add, remove=rem, confidence="low",
+                       reason=f"Breaking: replaces {t.curie or t.iri} with {same[0].curie} everywhere in this "
+                              f"ontology and drops your own declaration and labels. Data using your IRI must be "
+                              f"updated."))
+    return Suggestion(f.rule, t.iri, "A", f"Reuse a standard term? ({same[0].curie})",
+                      f"“{t.label}” has the same name as {', '.join(c.curie for c in same)}. A shared name is not "
+                      f"proof of the same meaning: check the standard term's definition before choosing.",
+                      options=opts, flags=["guess"], made_by=made_by(f.rule))
+
+
 __all__ = ["FIXERS", "REQUIRED", "creator_text", "parse_creators", "license_choices", "missing_values", "ontology_node", "readable",
            "resolve_fields", "text_scans"]

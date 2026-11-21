@@ -298,3 +298,33 @@ def multiple_domain_range(ctx):
             yield t.iri, f"“{t.label}” has {len(t.domain)} domains (intersection semantics)."
         if len(t.range) > 1:
             yield t.iri, f"“{t.label}” has {len(t.range)} ranges (intersection semantics)."
+
+
+@rule("OB029", "Possible re-definition of a standard term", "info",
+      "A term defined here has the same label or name as a term of a widely reused vocabulary (from the "
+      "term database). Reusing the standard IRI, or declaring the two equivalent, makes the ontology "
+      "interoperable with data that already uses it.")
+def missed_reuse(ctx):
+    from .iri import cache_path
+    from .reuse import candidates, term_index
+    try:
+        index = term_index(cache_path(ctx.config.evaluation))
+    except Exception:  # noqa: BLE001 - no term database: nothing to compare with
+        return
+    if not index:
+        return
+    own_ns = [ctx.ontology.namespace or "", *ctx.config.evaluation.iri_local_namespaces]
+    for t in _own(ctx):
+        if t.deprecated:
+            continue
+        found = candidates(t, ctx.graph, own_ns, index)
+        same = [c for c in found if c.same_kind]
+        if same:
+            yield t.iri, (f"“{t.label}” has the same name as "
+                          + ", ".join(f"`{c.curie}`" for c in same)
+                          + "; if it means the same thing, consider reusing it.")
+        elif found:
+            c = found[0]
+            mine = "class" if t.kind == "class" else "property"
+            yield t.iri, (f"“{t.label}” is defined as a {mine}, but `{c.curie}` with the same name is a "
+                          f"{c.kind}; check which one is meant.")
