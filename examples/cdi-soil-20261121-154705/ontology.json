@@ -1,0 +1,185 @@
+{
+ "title": "example ontology",
+ "iri": "http://example.org/toy",
+ "version": "1.0.0",
+ "namespace": "http://example.org/toy/",
+ "prefix": "ex",
+ "description": "example ontology",
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "creators": [
+  "tek raj"
+ ],
+ "prefixes": {
+  "dcterms": "http://purl.org/dc/terms/",
+  "ex": "http://example.org/toy/",
+  "obo": "http://purl.obolibrary.org/obo/",
+  "oio": "http://www.geneontology.org/formats/oboInOwl#",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "r": "http://example.org/ref/",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "skos": "http://www.w3.org/2004/02/skos/core#"
+ },
+ "counts": {
+  "class": 9,
+  "object_property": 1,
+  "annotation_property": 10,
+  "triples": 39
+ },
+ "terms": [
+  {
+   "iri": "http://example.org/toy/1.0.0/",
+   "kind": "class",
+   "label": "1.0.0"
+  },
+  {
+   "iri": "http://example.org/toy/Machine",
+   "curie": "ex:Machine",
+   "kind": "class",
+   "label": "farm machine",
+   "definition": "A Device that performs agricultural tasks such as plowing and planting.",
+   "superclasses": [
+    "r:Device"
+   ],
+   "subclasses": [
+    "ex:Tractor"
+   ]
+  },
+  {
+   "iri": "http://example.org/toy/Measurement",
+   "curie": "ex:Measurement",
+   "kind": "class",
+   "label": "measurement",
+   "definition": "An act of determining the value of a quantity.",
+   "subclasses": [
+    "ex:PHReading"
+   ]
+  },
+  {
+   "iri": "http://example.org/toy/PHReading",
+   "curie": "ex:PHReading",
+   "kind": "class",
+   "label": "pH reading",
+   "definition": "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units.",
+   "superclasses": [
+    "ex:Measurement"
+   ],
+   "subclasses": [
+    "ex:SoilPHReading"
+   ]
+  },
+  {
+   "iri": "http://example.org/toy/Process",
+   "curie": "ex:Process",
+   "kind": "class",
+   "label": "process",
+   "definition": "Something that happens over time and has participants."
+  },
+  {
+   "iri": "http://example.org/toy/Sensor",
+   "curie": "ex:Sensor",
+   "kind": "class",
+   "label": "sensor",
+   "definition": "A device that detects a physical property and produces an output signal."
+  },
+  {
+   "iri": "http://example.org/toy/SoilPHReading",
+   "curie": "ex:SoilPHReading",
+   "kind": "class",
+   "label": "soil pH reading",
+   "definition": "A pH reading that specifies the acidity or alkalinity of soil.",
+   "superclasses": [
+    "ex:PHReading"
+   ],
+   "subclasses": [
+    "ex:SoilSample"
+   ]
+  },
+  {
+   "iri": "http://example.org/toy/SoilSample",
+   "curie": "ex:SoilSample",
+   "kind": "class",
+   "label": "soil sample",
+   "definition": "A sample of topsoil collected for agronomic analysis of a field.",
+   "superclasses": [
+    "ex:SoilPHReading"
+   ]
+  },
+  {
+   "iri": "http://example.org/toy/Tractor",
+   "curie": "ex:Tractor",
+   "kind": "class",
+   "label": "tractor",
+   "superclasses": [
+    "ex:Machine"
+   ]
+  },
+  {
+   "iri": "http://example.org/toy/hasParticipant",
+   "curie": "ex:hasParticipant",
+   "kind": "object_property",
+   "label": "has participant"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/creator",
+   "curie": "dcterms:creator",
+   "kind": "annotation_property",
+   "label": "creator"
+  },
+  {
+   "iri": "http://www.w3.org/2004/02/skos/core#definition",
+   "curie": "skos:definition",
+   "kind": "annotation_property",
+   "label": "definition"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/description",
+   "curie": "dcterms:description",
+   "kind": "annotation_property",
+   "label": "description"
+  },
+  {
+   "iri": "http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym",
+   "curie": "oio:hasBroadSynonym",
+   "kind": "annotation_property",
+   "label": "hasBroadSynonym"
+  },
+  {
+   "iri": "http://purl.obolibrary.org/obo/IAO_0000115",
+   "curie": "obo:IAO_0000115",
+   "kind": "annotation_property",
+   "label": "IAO_0000115"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/license",
+   "curie": "dcterms:license",
+   "kind": "annotation_property",
+   "label": "license"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dcterms:title",
+   "kind": "annotation_property",
+   "label": "title"
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
+  }
+ ],
+ "competency_questions": []
+}

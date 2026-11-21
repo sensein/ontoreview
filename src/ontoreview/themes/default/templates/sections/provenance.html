@@ -25,6 +25,22 @@
     {% endfor %}
   </ol>
 
+  {% if rec.fixes %}
+  <h3 class="subhead" id="provenance-fixes">{{ t('prov_fixes') }}</h3>
+  <p class="small muted">{{ t('prov_fixes_intro', original=rec.fixes.derived_from.name or '?', n=rec.fixes.applied|length) }}</p>
+  <table class="plain metrics">
+    <thead><tr><th scope="col">{{ t('prov_fix_term') }}</th><th scope="col">{{ t('prov_fix_change') }}</th><th scope="col">{{ t('prov_fix_by') }}</th><th scope="col">{{ t('prov_fix_at') }}</th></tr></thead>
+    <tbody>
+    {% for a in rec.fixes.applied %}
+      {% set term = onto.terms.get(a.subject) if a.subject else none %}
+      <tr><td>{% if term %}<a href="{{ href(term.ref()) }}">{{ term.label }}</a>{% else %}{{ t('prov_fix_ontology') }}{% endif %}</td>
+      <td>{{ a.title }}{% if a.ai_assisted %} <span class="ai-tag">AI-assisted</span>{% endif %}<br><span class="muted small">{{ a.option }}{% if a.edited %} · {{ t('prov_fix_edited') }}{% endif %}</span></td>
+      <td class="small">{% if a.made_by.type == 'llm' %}{{ a.made_by.provider or a.made_by.source }} · <code>{{ a.made_by.model }}</code>{% if a.made_by.revision %}<br><span class="muted">{{ a.made_by.revision[:16] }}</span>{% endif %}{% else %}{{ a.source }} <code class="muted">{{ a.made_by.id or a.rule }}</code>{% endif %}</td>
+      <td class="small"><time datetime="{{ a.accepted_at }}">{{ {'when': a.accepted_at}|prov_when }}</time></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
   <h3 class="subhead" id="provenance-build">{{ t('prov_build') }}</h3>
   <table class="rel">
     <tbody>

@@ -13,14 +13,18 @@ import argparse
 import json
 import logging
 import os
+import re
 import secrets
 import sys
 import time
 import uuid
 import webbrowser
-from dataclasses import asdict
+from dataclasses import asdict, fields
 from datetime import datetime
+from html import escape as html_escape
 from pathlib import Path
+
+from rdflib import URIRef
 
 from . import __version__
 from .ui_core import (
@@ -36,6 +40,8 @@ from .ui_core import (
     deploys_for,
     describe_source,
     existing_output,
+    load_reviews,
+    save_reviews,
     export_output,
     forget_run,
     issues_text,
@@ -198,6 +204,7 @@ def logo_svg(size: int, small: bool = False) -> str:
 
 NAV = [  # key, path, label, svg path data
     ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
+    ("issues", "/issues", "Quality issues", '<path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/>'),
     ("history", "/history", "Run history", '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>'),
     ("compare", "/compare", "Compare", '<path d="M8 3v18M16 3v18"/><path d="m4 8 4-4 4 4M12 16l4 4 4-4"/>'),
     ("interop", "/interoperability", "Interoperability", '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/>'
@@ -387,6 +394,47 @@ HELP = [
         "The other row buttons open the output, show it in its folder, or remove the entry (files are kept). API keys "
         "are never stored in the history, so re-runs use the keys currently set in Settings.",
     ], "", [("Open Run history", "/history")]),
+    ("fixes", "Fix first, then document", "", [
+        "After <b>Build docs</b>, OntoReview checks the ontology and opens the <b>Quality issues</b> page before any "
+        "docs are generated (also from <b>Review fixes</b> on a result). The original file is <b>never changed</b>: applied fixes go to a new file "
+        "(<code>a-v1.ttl</code>, then <code>a-v2.ttl</code> …), and the docs are built from it.",
+        "<b>Required metadata:</b> title, description, license and creators. The docs are not generated without "
+        "them; fill them in (an AI draft can suggest the description). Values in ontoreview.toml [metadata] count. "
+        "You can leave a review and come back later, even after restarting the app: each <b>Build docs</b> adds "
+        "its ontology to the list on the Quality issues page (<i>All reviews</i>), with its status: <i>Waiting</i> "
+        "(open issues) or <i>Built</i>. <i>Fix &amp; build</i> opens one; <i>Apply</i> or <i>Skip</i> builds only "
+        "that ontology, with the settings it was started with. "
+        "The AI button turns amber and pulses while the model works, green when the draft is ready, red if it "
+        "failed. "
+        "For each creator, the name is looked up in the public ORCID registry (or press the search icon in the ORCID "
+        "field): pick the right person to fill in the ORCID, or choose <i>None of these</i>. Nothing is filled in "
+        "without your choice.",
+        "<b>Suggested fixes</b> are marked by who made them: <b>Rule</b> (exact edits such as trimming spaces, a "
+        "label from the term's name, removing a self-reference, resolving a two-class cycle), <b>Your input</b> "
+        "(e.g. a version) and <b>AI draft</b> (definitions, refinements; editable). Safe fixes are pre-selected; "
+        "open <i>Show change</i> to see the triples.",
+        "Each fix is tested on a copy first: if it would cause a new problem, the review says so.",
+        "Pick an issue on the left; the centre shows its fixes and the Turtle change, the right side what changes in "
+        "the ontology and the docs. <b>Accept fix</b>, or <b>Ignore in future builds</b>.",
+        "<b>Apply N fixes &amp; build</b> writes the new file plus a SPARQL patch and a record; <b>Skip and build</b> uses the "
+        "original (not possible while required metadata is missing). Fixes you did not apply can be applied later; "
+        "that writes another file.",
+        "The docs' Provenance section and <code>provenance.ttl</code> list every applied fix: what changed, what made "
+        "it (rule, or AI source, model and revision) and when it was accepted. Run history marks fixed versions.",
+        "Command line: <code>ontoreview fix list a.ttl</code> and <code>ontoreview fix apply a.ttl --accept-safe "
+        "--set license=…</code>.",
+        "<b>AI suggestions</b> (on by default): definitions for terms without one, refined definitions, the description, "
+        "and ranked domains and ranges with a reason each (only classes of your ontology). They are prepared "
+        "automatically and shown for review: edit a definition, pick a suggested class or <b>choose another one "
+        "yourself</b>. Nothing is applied until you accept it; what came from AI is marked <b>AI-assisted</b> in the "
+        "docs and provenance, your own choices are not.",
+        "<b>Where AI runs</b> (Settings › AI &amp; fixes, priority you can reorder): <b>Ollama</b> first if it is "
+        "running (its installed models are listed; if the chosen model is missing the closest installed one is used; "
+        "<b>Pull a model</b> downloads another), then <b>Hugging Face</b> (an open-source model downloaded once, "
+        "with progress on the Quality issues page; default Qwen/Qwen3.5-4B, about 9 GB), then an <b>API key</b> "
+        "(OpenAI, Anthropic, OpenRouter, …). Local sources keep the ontology on this computer.",
+    ], "Turn the review off in Settings › AI &amp; fixes (required metadata is still asked), or turn AI off there.",
+     [("AI & fixes settings", "settings:ai")]),
     ("deploy", "Deploy: GitHub Pages, Docker, any server", "deploy.png", [
         "Every website folder includes a deployment kit: <code>DEPLOY.md</code> (step-by-step), a "
         "<code>Dockerfile</code> and <code>docker-compose.yml</code> (nginx, content negotiation included), "
@@ -488,6 +536,13 @@ def _icon(paths: str, size: int = 18) -> str:
 
 
 CSS = """
+@keyframes or-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes or-spin { to { transform: rotate(360deg); } }
+.or-ai-working { color: #b54708 !important; border-color: #f79009 !important; background: #fffaeb !important; }
+.or-ai-working .q-icon { animation: or-pulse 1s ease-in-out infinite; }
+.or-ai-ok { color: #067647 !important; border-color: #17b26a !important; background: #ecfdf3 !important; }
+.or-ai-err { color: #b42318 !important; border-color: #f04438 !important; background: #fef3f2 !important; }
+@media (prefers-reduced-motion: reduce) { .or-ai-working .q-icon { animation: none; } }
 :root { --or-bg:#F4F6F8; --or-card:#fff; --or-line:#E2E7EC; --or-line-2:#F2F4F7; --or-ink:#101828; --or-ink-2:#344054;
   --or-muted:#5B6675; --or-input:#D0D7DE; --or-primary:#2F4FD8; --or-primary-soft:#EEF1FD; --or-side:#0F1724;
   --or-side-2:#1E293B; --or-side-ink:#C9D1DB; --or-side-muted:#8A97A8; --or-ok-bg:#ECFDF3; --or-ok:#067647;
@@ -597,9 +652,74 @@ class _Session:
         self.build: dict = {"last": None, "running": False, "steps": [], "active": None, "done": frozenset(),
                             "folder_pos": "", "filter": "all", "log": [], "env": None, "prior": None}
         self.interop: dict = {"s": None, "last": None, "running": False, "started": 0.0}
+        # the Quality issues page: one review per ontology (its fix session, the build waiting for it and the
+        # user's decisions); several can wait at once, and each builds only its own ontology
+        self.reviews: dict[str, dict] = {}
+        self.review_key: str | None = None
+        self._saved = ""
+        known = {f.name for f in fields(Settings)}
+        for r in load_reviews():                   # waiting reviews survive a restart (re-checked when opened)
+            try:
+                job = Settings(**{k: v for k, v in r["job"].items() if k in known})
+            except TypeError:
+                continue
+            self.reviews[r["key"]] = {"key": r["key"], "session": None, "job": job, "mode": r.get("mode", "prebuild"),
+                                      "dec": r.get("dec") or {}, "sel": None, "filter": "all", "show_ignored": False,
+                                      "added": r.get("added", 0), "status": r.get("status", "open"),
+                                      "finished": r.get("finished", ""), "result": r.get("result", ""),
+                                      "open": r.get("open", 0), "keep": r.get("keep") or []}
         self.cmp: dict = {"old": "", "new": "", "output": "", "last": None, "running": False, "filter": "all",
                           "done": None}
         self.verbose = False
+
+    @property
+    def fixes(self) -> dict:
+        """The review shown on the Quality issues page (an empty one when nothing waits)."""
+        return self.reviews.get(self.review_key or "") or {"session": None, "job": None, "mode": "", "dec": {},
+                                                           "sel": None, "filter": "all", "show_ignored": False}
+
+    def add_review(self, session, job, mode: str = "prebuild") -> dict:
+        """A new review for this ontology (replacing an older one of the same file) and show it."""
+        key = str(Path(job.source).expanduser().resolve()) if job is not None else str(session.source)
+        entry = {"key": key, "session": session, "job": job, "mode": mode, "dec": {}, "sel": None, "filter": "all",
+                 "show_ignored": False, "added": time.time(), "status": "open", "finished": "", "result": "",
+                 "open": 0, "keep": []}
+        self.reviews[key] = entry
+        self.review_key = key
+        self.persist()
+        return entry
+
+    def drop_review(self, key: str) -> None:
+        self.reviews.pop(key, None)
+        if self.review_key == key:
+            self.review_key = None
+        self.persist()
+
+    def finish_review(self, key: str, status: str, result: str = "") -> None:
+        """Mark a review built (``built`` from the fixed file, ``skipped`` from the original); it stays listed."""
+        e = self.reviews.get(key)
+        if e is not None:
+            e.update(status=status, result=result, session=None, open=0,
+                     finished=time.strftime("%Y-%m-%d %H:%M"))
+        if self.review_key == key:
+            self.review_key = None
+        self.persist()
+
+    def persist(self) -> None:
+        """Save the reviews (decisions, AI drafts kept, status) when they changed."""
+        rows = []
+        for e in self.reviews.values():
+            sess = e.get("session")
+            if sess is not None:          # AI drafts and own choices are not re-created by a new check: keep them
+                e["keep"] = [x.to_dict() for x in sess.suggestions
+                             if x.kind == "L" or (x.made_by or {}).get("type") == "user"]
+                e["open"] = open_issue_count(e)
+            rows.append({k: e.get(k) for k in ("key", "mode", "dec", "added", "status", "finished", "result", "open",
+                                               "keep")} | {"job": asdict(e["job"]) if e.get("job") else None})
+        text = json.dumps(rows, default=str, sort_keys=True)
+        if text != self._saved:
+            self._saved = text
+            save_reviews(rows)
 
     def progress(self, msg: str) -> None:
         """Advance the Build progress steps from a log message (called from the worker thread)."""
@@ -618,6 +738,62 @@ class _Session:
 
 
 SESSION = _Session()
+
+
+def open_issue_total() -> int:
+    """Open issues of every review waiting on the Quality issues page, for the sidebar badge."""
+    return sum(open_issue_count(fs) for fs in SESSION.reviews.values() if fs.get("status", "open") == "open")
+
+
+def restore_review(e: dict) -> None:
+    """Re-check the ontology of a review saved before a restart and replay the user's decisions."""
+    from .fixes import FixError as _FixError
+    from .fixes import FixSession
+    from .fixes.model import suggestion_from_dict
+    job = e["job"]
+    ov = {k: v for k, v in job.overrides().items() if k in ("evaluation", "load_imports", "include_individuals",
+                                                             "reason", "competency_questions")}
+    sess = FixSession(job.source, **ov)
+    sess.precheck()
+    ids = {x.id for x in sess.suggestions}
+    for d in e.get("keep") or []:
+        try:
+            x = suggestion_from_dict(d)
+        except (TypeError, KeyError):
+            continue
+        if x.id not in ids:
+            sess.replace(x)
+    for sid, d in list((e.get("dec") or {}).items()):
+        if d.get("status") != "accepted":
+            continue
+        try:
+            x = sess.get(sid)
+            if x.fields:
+                sess.accept(sid, values=d.get("values") or {})
+            elif x.kind == "L":
+                sess.accept(sid, option=d.get("opt", 0), text=d.get("text") or None)
+            else:
+                sess.accept(sid, option=d.get("opt", 0))
+        except _FixError:
+            d["status"] = "open"              # the ontology changed since: decide again
+    e["session"] = sess
+
+
+def open_issue_count(fs: dict) -> int:
+    """Open issues of one review (not accepted, not ignored)."""
+    sess = fs.get("session")
+    if sess is None:
+        return int(fs.get("open") or 0) if fs.get("status", "open") == "open" else 0
+    ignored = ignored_ids()
+    return sum(1 for x in sess.suggestions if x.id not in sess.accepted and x.id not in ignored
+               and fs["dec"].get(x.id, {}).get("status") != "ignored")
+
+
+def ignored_ids() -> set[str]:
+    try:
+        return {x for x in Prefs.load().fix_ignored.split() if x}
+    except Exception:  # noqa: BLE001
+        return set()
 LOG_LIMIT = 2000
 
 
@@ -725,6 +901,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     if key in ("build", "compare"):
                         nav_busy[key] = ui.spinner(size="14px").classes("q-ml-auto").tooltip("Running")
                         nav_busy[key].set_visibility(False)
+                    if key == "issues":
+                        nav_busy["issues"] = ui.badge("0").props("rounded color=primary").classes("q-ml-auto")
+                        nav_busy["issues"].set_visibility(False)
                 nav_links[key] = link
         with ui.element("div").classes("or-env"):
             ui.label("Environment").style("font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--or-side-muted)")
@@ -770,8 +949,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         for key, st in (("build", state), ("compare", cmp)):
             if key in nav_busy:
                 nav_busy[key].set_visibility(bool(st["running"]))
+        n = open_issue_total()
+        if "issues" in nav_busy:
+            nav_busy["issues"].set_text(str(n))
+            nav_busy["issues"].set_visibility(n > 0)
 
     ui.timer(0.5, show_busy)
+    ui.timer(2.0, SESSION.persist)              # save review decisions so they survive a restart
 
     # ------------------------------------------------------------------ shared helpers
     def page_head(title: str, subtitle: str):
@@ -1175,6 +1359,105 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             go.on_click(run_deploy)
         d.open()
 
+    def creator_rows(get, put) -> None:
+        """Creators as rows (name, ORCID, email), with an "Add creator" button for more. The value is
+        kept as text, one "Name | ORCID | email" line per creator."""
+        from .fixes.rules import ORCID_RE, parse_creators
+
+        rows = [dict(c) for c in parse_creators(get() or "")]
+        with ui.column().classes("w-full gap-1"):
+            box = ui.column().classes("w-full gap-2").mark("creator-rows")
+            ui.button("Add creator", icon="person_add", on_click=lambda: add({"name": "", "orcid": "", "email": ""})) \
+                .props("flat dense no-caps").mark("creator-add")
+
+        def save() -> None:
+            put("\n".join(f"{r['name']} | {r['orcid']} | {r['email']}" for r in rows if r["name"].strip()))
+
+        def changed(r: dict, key: str, value: str, warn=None) -> None:
+            r[key] = (value or "").strip()
+            if warn is not None and key == "orcid":
+                warn.set_visibility(bool(r["orcid"]) and not ORCID_RE.search(r["orcid"]))
+            save()
+
+        def remove(r: dict, el) -> None:
+            if r in rows:
+                rows.remove(r)
+            el.delete()
+            save()
+            if not rows:                     # always at least one row to type into
+                add({"name": "", "orcid": "", "email": ""})
+
+        async def lookup(r: dict, oi, picks, auto: bool = False) -> None:
+            """Candidates from the ORCID registry for the row's name; the user picks one (or none)."""
+            from .fixes.orcid import search_orcid
+            name = r["name"].strip()
+            if len(name) < 3 or (auto and (r["orcid"] or r.get("_looked") == name)):
+                return
+            r["_looked"] = name
+            picks.clear()
+            with picks:
+                ui.spinner(size="sm")
+                ui.label(f"Looking up “{name}” in ORCID…").classes("or-hint")
+            try:
+                hits = await run.io_bound(search_orcid, name)
+            except Exception as e:  # noqa: BLE001 - offline, rate limit, …
+                picks.clear()
+                if not auto:
+                    with picks:
+                        ui.label(f"ORCID lookup failed ({type(e).__name__}); type the ORCID yourself.") \
+                            .classes("or-hint text-negative")
+                return
+            picks.clear()
+            with picks:
+                if not hits:
+                    ui.label(f"No ORCID record found for “{name}”.").classes("or-hint")
+                    return
+                ui.label("Is one of these the creator? Pick to fill in the ORCID:").classes("or-hint")
+                for h in hits:
+                    with ui.row().classes("items-center gap-2 no-wrap"):
+                        ui.button("Use", on_click=lambda h=h: use(r, oi, picks, h["orcid"])) \
+                            .props("dense flat no-caps color=primary").mark(f"orcid-use orcid-{h['orcid']}")
+                        ui.label(h["name"]).classes("text-sm")
+                        ui.link(h["orcid"], h["url"], new_tab=True).classes("or-mono text-xs")
+                        if h["institutions"]:
+                            ui.label(" · ".join(h["institutions"])).classes("or-hint")
+                ui.button("None of these", on_click=picks.clear).props("dense flat no-caps").classes("or-hint")
+
+        def use(r: dict, oi, picks, orcid: str) -> None:
+            oi.value = orcid             # on_value_change saves and validates it
+            picks.clear()
+
+        def add(r: dict) -> None:
+            rows.append(r)
+            with box, ui.column().classes("w-full gap-0") as el:
+                with ui.row().classes("w-full no-wrap gap-2 items-center"):
+                    ui.label(f"{len(rows)}.").classes("or-hint").style("width:16px")
+                    ni = ui.input("Name", value=r["name"], on_change=lambda e, r=r: changed(r, "name", e.value)) \
+                        .props("outlined dense").style("flex: 1 1 14rem").mark("creator-name")
+                    oi = ui.input("ORCID (optional)", value=r["orcid"], placeholder="0000-0002-1825-0097") \
+                        .props("outlined dense").classes("or-mono").style("flex: 1 1 13rem").mark("creator-orcid")
+                    ui.input("Email (optional)", value=r["email"], on_change=lambda e, r=r: changed(r, "email", e.value)) \
+                        .props("outlined dense type=email").style("flex: 1 1 13rem").mark("creator-email")
+                    ui.button(icon="close", on_click=lambda r=r, el=el: remove(r, el)) \
+                        .props('flat round dense aria-label="Remove creator"')
+                warn = ui.label("An ORCID looks like 0000-0002-1825-0097 (or its https://orcid.org/ link).") \
+                    .classes("or-hint text-negative")
+                warn.set_visibility(False)
+                picks = ui.column().classes("gap-1 q-pl-lg").mark("orcid-picks")
+                oi.on_value_change(lambda e, r=r, w=warn: changed(r, "orcid", e.value, w))
+                with oi.add_slot("append"):
+                    ui.button(icon="search", on_click=lambda r=r, oi=oi, p=picks: lookup(r, oi, p)) \
+                        .props('flat round dense size=sm aria-label="Find ORCID by name"').tooltip("Find in ORCID by name") \
+                        .mark("orcid-find")
+                # when a name is typed and no ORCID given yet, look it up and offer the matches
+                ni.on("blur", lambda _, r=r, oi=oi, p=picks: lookup(r, oi, p, auto=True))
+
+        for r in list(rows):
+            rows.remove(r)
+            add(r)
+        if not rows:
+            add({"name": "", "orcid": "", "email": ""})
+
     def metrics_grid(metrics: list[dict], title: str = "Quality metrics", mark: str = "ontocheck-metrics") -> None:
         dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
         with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
@@ -1370,6 +1653,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     b.on("click", lambda fid=fid: (setattr(s, "task", fid), refresh()))
 
         def refresh() -> None:
+            # another ontology picked: the result shown belongs to the previous one, so clear it
+            if (state["last"] is not None and not state["running"] and state.get("shown_for") is not None
+                    and s.source != state["shown_for"]):
+                new_build()
             render_source()
             render_formats()
             describe_later()
@@ -1519,6 +1806,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 if res.index and res.task not in ("check", "interop"):
                                     ui.button("Open docs", icon="open_in_new", on_click=lambda: open_result(res.index)) \
                                         .props("unelevated no-caps")
+                                if res.task in ("site", "single", "markdown", "myst") and not many:
+                                    ui.button("Review fixes", icon="build", on_click=lambda: start(force_review=True)) \
+                                        .props("outline no-caps").mark("review-fixes") \
+                                        .tooltip("Fix the issues found, write a fixed copy and rebuild from it")
                                 if res.task == "site" and res.ok:
                                     ui.button("Deploy", icon="cloud_upload",
                                               on_click=lambda: deploy_dialog(str(res.output))) \
@@ -1647,7 +1938,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
         ui.timer(0.25, sync)
 
-        async def start() -> None:
+        async def start(force_review: bool = False) -> None:
             if state["running"]:
                 notify("A build is already running.", "warning")
                 return
@@ -1658,6 +1949,57 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 return
             s.save()
             job = Settings(**asdict(s))           # the form may change while the task runs
+            new_build()                           # a new run: the previous result and log go (still in history)
+            if job.task in ("site", "single", "markdown", "myst") and not job.is_folder \
+                    and not job.source.strip().startswith(("http://", "https://")):
+                job = await review_fixes(job, force_review)     # fix first, then document
+                if job is None:
+                    return
+            launch(job)
+
+        async def review_fixes(job: Settings, force: bool = False) -> Settings | None:
+            """Fix first, then document: check the ontology and, when there is something to review, open the
+            Quality issues page with this build waiting there. Returns the job to build right away, or None."""
+            from .fixes import FixSession
+
+            run_btn.disable()
+            run_btn.text = "Checking…"
+            try:
+                ov = {k: v for k, v in job.overrides().items() if k in ("evaluation", "load_imports", "include_individuals",
+                                                                         "reason", "competency_questions")}
+                session = await run.io_bound(lambda: FixSession(job.source, **ov))
+                await run.io_bound(session.precheck)
+            except Exception as e:  # noqa: BLE001 - the build itself reports parse errors
+                logging.getLogger(__name__).debug("fix review skipped: %s", e)
+                return job
+            finally:
+                run_btn.enable()
+                refresh()
+            required = session.required_open() if session.cfg.require_metadata else []
+            ignored = ignored_ids()
+            # anything the Quality issues page can show: fixes, values to type, manual issues
+            actionable = [x for x in session.suggestions if not x.required and (x.options or x.fields or x.kind == "M")
+                          and session.supported(x) and x.id not in ignored]
+            if not required and (not (prefs.fix_review or force) or not actionable):
+                if force:
+                    notify("No fixes to suggest for this ontology.", "positive")
+                    return None
+                if prefs.fix_review:
+                    left = len([x for x in session.suggestions if x.id not in ignored])
+                    notify(f"No issues to review in {Path(job.source).name}; building the docs directly." if not left
+                           else f"{Path(job.source).name}: {left} issue(s) cannot be fixed here (e.g. terms from "
+                                f"imported files, or ignored); building the docs directly.", "info")
+                return job
+            SESSION.add_review(session, job)
+            others = len(SESSION.reviews) - 1
+            if others:
+                notify(f"{Path(job.source).name} added to Quality issues; {others} other ontolog"
+                       f"{'y is' if others == 1 else 'ies are'} still waiting there.", "info")
+            ui.navigate.to("/issues")
+            return None
+
+        def launch(job: Settings) -> None:
+            state["shown_for"] = s.source        # the form's source (a fixed a-v1 file builds for it too)
             state.update(running=True, steps=_plan(job), active="parse", done=frozenset(), folder_pos="",
                          filter="all")
             state["log"].append(f"$ {job.cli()}")
@@ -1799,6 +2141,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         render_results()
         if state.pop("autostart", False):      # "Run again" from Run history
             ui.timer(0.2, start, once=True)
+        pending = state.pop("pending_job", None)  # from the Quality issues page: build what was reviewed
+        if pending is not None:
+            ui.timer(0.1, lambda: launch(pending), once=True)
 
     # ------------------------------------------------------------------ Run history
     def history_view() -> None:
@@ -1842,7 +2187,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                      "name": run_name(e), "out": e.output, "task": TASKS.get(e.task, e.task),
                      "issues": issues_text(e), "when": when_text(e.when), "index": e.index or "",
                      "exists": e.exists, "site": e.task == "site" and not e.failed,
-                     "deployed": (e.deploys[0].get("when", "")[:10] if e.deploys else "")} for e in shown]
+                     "deployed": (e.deploys[0].get("when", "")[:10] if e.deploys else ""),
+                     "fixed": e.fixed_note} for e in shown]
             tbl = ui.table(rows=rows, row_key="id", pagination={"rowsPerPage": 20}, columns=[
                 {"name": "status", "label": "Status", "field": "status", "align": "left"},
                 {"name": "name", "label": "Ontology", "field": "name", "align": "left"},
@@ -1856,6 +2202,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 <span v-else-if="props.value === 'failed'" class="or-badge err">Failed</span>
                 <span v-else class="or-badge off">Output deleted</span></q-td>''')
             tbl.add_slot("body-cell-name", r'''<q-td :props="props"><div class="text-weight-medium">{{ props.value }}</div>
+                <div v-if="props.row.fixed" class="or-hint" style="color: var(--q-positive)">✓ {{ props.row.fixed }}</div>
                 <div class="or-hint or-mono">→ {{ props.row.out }}</div></q-td>''')
             tbl.add_slot("body-cell-act", r'''<q-td :props="props" class="text-no-wrap">
                 <q-btn flat round dense size="sm" icon="tune"
@@ -1917,6 +2264,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
                 if entry.failed:
                     ui.label(entry.failed).classes("or-hint text-negative")
+                if entry.fixed_note:
+                    ui.label("✓ " + entry.fixed_note).classes("or-hint").style("color: var(--q-positive)")
                 ui.label("Configuration").classes("or-hint text-uppercase q-mt-sm").style("letter-spacing:.6px")
                 with ui.element("dl").classes("or-config w-full"):
                     for k, v in run_config_rows(entry.settings):
@@ -1967,6 +2316,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 t_general = ui.tab("General")
                 t_docs = ui.tab("Documentation")
                 t_checks = ui.tab("Quality checks")
+                t_ai = ui.tab("AI & fixes")
                 t_look = ui.tab("Appearance")
 
         def row(label: str, hint: str = ""):
@@ -1980,7 +2330,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             return r
 
         with ui.element("div").classes("or-body").style("padding-top: 16px"):
-            start_tab = {"general": t_general, "docs": t_docs, "checks": t_checks, "look": t_look} \
+            start_tab = {"general": t_general, "docs": t_docs, "checks": t_checks, "ai": t_ai, "look": t_look} \
                 .get(state.pop("settings_tab", "general"), t_general)
             tabs.set_value(start_tab)
             with ui.tab_panels(tabs, value=start_tab, animated=False).classes("w-full").style("background: transparent"):
@@ -2349,6 +2699,186 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.select({"error": "Any error", "warning": "Any warning or error",
                                        "info": "Any finding", "never": "Never"}).bind_value(work, "fail_on") \
                                 .props('outlined dense aria-label="Fail on"').classes("w-64")
+                with ui.tab_panel(t_ai).classes("q-pa-none"):
+                    with ui.card().classes("or-card w-full").props("flat"):
+                        with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
+                            ui.label("Fixes").classes("or-h2 q-pt-md")
+                            with row("Review fixes before generating docs",
+                                     "After Build docs, show the suggested fixes first: apply some and build from "
+                                     "a fixed copy (a-v1.ttl), or skip. The original file is never changed. "
+                                     "Required metadata (title, description, license, creators) is always asked."):
+                                ui.checkbox().bind_value(work, "fix_review").props('aria-label="Review fixes"')
+                    with ui.card().classes("or-card w-full q-mt-md").props("flat"):
+                        with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
+                            ui.label("AI drafts").classes("or-h2 q-pt-md")
+                            ui.label("Draft definitions for terms without one, refine existing definitions and "
+                                     "suggest a description. Every draft is shown with the model that wrote it and "
+                                     "applied only when you accept it.").classes("or-hint")
+                            with row("Use AI drafts", "Off by default."):
+                                ui.checkbox().bind_value(work, "ai_enabled").props('aria-label="Use AI drafts"') \
+                                    .mark("ai-enabled")
+                            with row("Priority", "The first available source is used; reorder or remove sources. "
+                                                 "Local sources keep the ontology on this computer."):
+                                prio_box = ui.column().classes("gap-1").style("flex: 1 1 320px")
+                            ui.label("Hugging Face (local)").classes("or-label q-mt-md")
+                            with row("Model", "Any Hugging Face model; downloaded on first use and run here. Default: "
+                                              "Qwen/Qwen3.5-4B (open source, Apache-2.0); Qwen/Qwen3.5-2B for small "
+                                              "machines. Needs pip install 'ontoreview[cdi]'."):
+                                ui.input().bind_value(work, "ai_hf_model").props('outlined dense aria-label="HF model"') \
+                                    .classes("or-mono").style("flex: 1 1 320px")
+                            with row("Hugging Face token (optional)", "For gated models and higher download limits. "
+                                                                      "Also used by the interoperability models."):
+                                ui.input(password=True, password_toggle_button=True).bind_value(work, "hf_token") \
+                                    .props('outlined dense clearable autocomplete="off" aria-label="Hugging Face token"') \
+                                    .classes("or-mono").style("flex: 1 1 320px")
+                            ui.label("Ollama (local)").classes("or-label q-mt-md")
+                            with row("Model", "The models installed in your Ollama. If the chosen one is missing, the "
+                                              "closest installed model is used (and named in each draft)."):
+                                with ui.row().classes("no-wrap gap-2 items-center").style("flex: 1 1 320px"):
+                                    ollama_sel = ui.select({work.ai_ollama_model: work.ai_ollama_model},
+                                                           value=work.ai_ollama_model, with_input=True,
+                                                           new_value_mode="add-unique") \
+                                        .bind_value(work, "ai_ollama_model") \
+                                        .props('outlined dense aria-label="Ollama model"').classes("grow or-mono") \
+                                        .mark("ollama-model")
+                                    ui.button(icon="refresh", on_click=lambda: list_ollama()) \
+                                        .props('flat round dense aria-label="Refresh installed models"') \
+                                        .tooltip("Refresh the installed models")
+                            ollama_info = ui.label().classes("or-hint q-pl-sm")
+                            with row("Pull a model", "Download another model into Ollama, e.g. qwen3.5:4b, gemma3:4b "
+                                                     "or llama3.2:3b (see ollama.com/library)."):
+                                with ui.column().classes("gap-1").style("flex: 1 1 320px"):
+                                    with ui.row().classes("no-wrap gap-2 w-full"):
+                                        pull_in = ui.input(placeholder="qwen3.5:4b") \
+                                            .props('outlined dense clearable aria-label="Model to pull"') \
+                                            .classes("grow or-mono").mark("ollama-pull-name")
+                                        pull_btn = ui.button("Pull", icon="download", on_click=lambda: pull_ollama()) \
+                                            .props("outline no-caps").mark("ollama-pull")
+                                    pull_prog = ui.linear_progress(value=0, show_value=False).props("rounded size=6px")
+                                    pull_msg = ui.label().classes("or-hint")
+                                    pull_prog.set_visibility(False)
+                            with row("Server", "Where Ollama runs."):
+                                ui.input().bind_value(work, "ai_ollama_url") \
+                                    .props('outlined dense aria-label="Ollama server"').classes("or-mono").style("flex: 1 1 320px")
+                            ui.label("API (with a key)").classes("or-label q-mt-md")
+                            with row("Provider", "OpenAI-compatible providers, or Anthropic. Custom: any "
+                                                 "OpenAI-compatible URL (LM Studio, vLLM, a company gateway)."):
+                                ui.select({"openai": "OpenAI", "anthropic": "Anthropic", "openrouter": "OpenRouter",
+                                           "gemini": "Google Gemini", "mistral": "Mistral", "groq": "Groq",
+                                           "custom": "Custom (OpenAI-compatible URL)"}) \
+                                    .bind_value(work, "ai_api_provider").props('outlined dense aria-label="Provider"') \
+                                    .style("flex: 1 1 320px")
+                            with row("Model", "The provider's model id, e.g. gpt-4o-mini or claude-sonnet-4-5."):
+                                ui.input().bind_value(work, "ai_api_model") \
+                                    .props('outlined dense aria-label="API model"').classes("or-mono").style("flex: 1 1 320px")
+                            with row("Base URL (custom only)", "Leave empty for the provider's own address."):
+                                ui.input(placeholder="http://localhost:1234/v1").bind_value(work, "ai_api_base_url") \
+                                    .props('outlined dense clearable aria-label="API base URL"').classes("or-mono") \
+                                    .style("flex: 1 1 320px")
+                            with row("API key", "Kept on this computer only; never in reports, the history or "
+                                                "ontoreview.toml. Empty: the provider's environment variable "
+                                                "(OPENAI_API_KEY, ANTHROPIC_API_KEY, …). Text you send leaves this "
+                                                "computer."):
+                                ui.input(password=True, password_toggle_button=True).bind_value(work, "ai_api_key") \
+                                    .props('outlined dense clearable autocomplete="off" aria-label="API key"') \
+                                    .classes("or-mono").style("flex: 1 1 320px")
+                            with ui.row().classes("items-center gap-3 q-py-md"):
+                                ai_check = ui.button("Check sources", icon="fact_check").props("outline no-caps") \
+                                    .mark("ai-check")
+                                ai_info = ui.label().classes("or-hint").style("word-break:break-word")
+
+                    names = {"hf": "Hugging Face (local)", "ollama": "Ollama (local)", "api": "API (with a key)"}
+
+                    def render_prio() -> None:
+                        prio_box.clear()
+                        order = [x for x in work.ai_priority.split(",") if x in names]
+                        with prio_box:
+                            for i, key in enumerate(order):
+                                with ui.row().classes("items-center gap-1 no-wrap"):
+                                    ui.label(f"{i + 1}.").classes("or-hint").style("width:18px")
+                                    ui.label(names[key]).classes("or-label").style("min-width:170px")
+                                    ui.button(icon="arrow_upward", on_click=lambda i=i: move(i, -1)) \
+                                        .props(f'flat round dense size=sm aria-label="Move {names[key]} up"') \
+                                        .set_enabled(i > 0)
+                                    ui.button(icon="arrow_downward", on_click=lambda i=i: move(i, 1)) \
+                                        .props(f'flat round dense size=sm aria-label="Move {names[key]} down"') \
+                                        .set_enabled(i < len(order) - 1)
+                                    ui.button(icon="close", on_click=lambda k=key: drop(k)) \
+                                        .props(f'flat round dense size=sm aria-label="Do not use {names[key]}"') \
+                                        .set_enabled(len(order) > 1)
+                            for key in [k for k in names if k not in order]:
+                                ui.button(f"Add {names[key]}", icon="add", on_click=lambda k=key: (
+                                    setattr(work, "ai_priority", ",".join(order + [k])), render_prio())) \
+                                    .props("flat dense no-caps size=sm")
+
+                    def move(i: int, d: int) -> None:
+                        order = [x for x in work.ai_priority.split(",") if x in names]
+                        order[i], order[i + d] = order[i + d], order[i]
+                        work.ai_priority = ",".join(order)
+                        render_prio()
+
+                    def drop(key: str) -> None:
+                        work.ai_priority = ",".join(x for x in work.ai_priority.split(",") if x in names and x != key)
+                        render_prio()
+
+                    async def check_ai() -> None:
+                        from .fixes.ai.sources import make_source
+                        cfg = work.ai_config()
+                        ai_info.text = "Checking…"
+                        parts, used = [], None
+                        for key in cfg.priority:
+                            ok, why = await run.io_bound(lambda k=key: make_source(k, cfg, work.hf_token).available())
+                            parts.append(f"{names[key]}: {'ready' if ok else why}")
+                            if ok and used is None:
+                                used = names[key]
+                        ai_info.text = (f"Would use {used}. " if used else "No source is ready. ") + " · ".join(parts) \
+                            + ("" if work.ai_enabled else " (AI drafts are off.)")
+                    ai_check.on_click(check_ai)
+                    render_prio()
+
+                    async def list_ollama() -> None:
+                        from .fixes.ai.sources import OllamaSource
+                        models = await run.io_bound(OllamaSource(work.ai_ollama_model, work.ai_ollama_url).models)
+                        if not models:
+                            ollama_info.set_text(f"Ollama is not running at {work.ai_ollama_url} (or has no models).")
+                            return
+                        opts = {m["name"]: f"{m['name']}  ·  {m['parameters'] or ''} {m['size'] / 1e9:.1f} GB".strip()
+                                for m in models}
+                        if work.ai_ollama_model and work.ai_ollama_model not in opts:
+                            opts[work.ai_ollama_model] = f"{work.ai_ollama_model}  ·  not installed"
+                        ollama_sel.set_options(opts, value=work.ai_ollama_model)
+                        ollama_info.set_text(f"{len(models)} model(s) installed in Ollama.")
+
+                    async def pull_ollama() -> None:
+                        from .fixes.ai.sources import AIError, OllamaSource
+                        name = (pull_in.value or "").strip()
+                        if not name:
+                            notify("Type a model name, e.g. qwen3.5:4b.", "warning")
+                            return
+                        pull_btn.disable()
+                        pull_prog.set_visibility(True)
+                        state_ = {"status": "starting", "done": 0, "total": 0}
+
+                        def progress(status, done, total) -> None:
+                            state_.update(status=status, done=done or state_["done"], total=total or state_["total"])
+
+                        def tick() -> None:
+                            t_, d_ = state_["total"], state_["done"]
+                            pull_prog.set_value(min(d_ / t_, 1.0) if t_ else 0)
+                            pull_msg.set_text(f"{state_['status']}" + (f": {d_ / 1e9:.2f} of {t_ / 1e9:.2f} GB" if t_ else ""))
+                        timer = ui.timer(0.5, tick)
+                        try:
+                            await run.io_bound(OllamaSource("", work.ai_ollama_url).pull, name, progress)
+                            work.ai_ollama_model = name
+                            notify(f"{name} is ready in Ollama.", "positive")
+                            await list_ollama()
+                        except AIError as e:
+                            notify(str(e), "warning")
+                        finally:
+                            timer.cancel()
+                            tick()
+                            pull_btn.enable()
+                    ui.timer(0.1, list_ollama, once=True)
                 with ui.tab_panel(t_look).classes("q-pa-none").style("max-width: 900px"):
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
@@ -2701,6 +3231,758 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             render_side(side)
         show_out()
         render()
+
+    # ------------------------------------------------------------------ Quality issues
+    def review_list() -> None:
+        """Every ontology checked for Build docs, like Run history: waiting ones to fix and build, built ones."""
+        def open_(k: str) -> None:
+            SESSION.review_key = k
+            ui.navigate.reload()
+
+        def remove(k: str) -> None:
+            SESSION.drop_review(k)
+            ui.navigate.reload()
+
+        def clear_done() -> None:
+            for k in [k for k, e in SESSION.reviews.items() if e.get("status", "open") != "open"]:
+                SESSION.drop_review(k)
+            ui.navigate.reload()
+        rows = sorted(SESSION.reviews.values(), key=lambda e: (e.get("status", "open") != "open", -e["added"]))
+        with ui.element("div").classes("or-body"), ui.card().classes("or-card w-full").props("flat"):
+            with ui.column().classes("or-sec gap-2 w-full"):
+                with ui.row().classes("w-full items-center justify-between"):
+                    n_wait = sum(1 for e in rows if e.get("status", "open") == "open")
+                    ui.label(f"Ontologies checked ({len(rows)}) · {n_wait} waiting for review").classes("or-h2")
+                    if len(rows) > n_wait:
+                        ui.button("Clear finished", on_click=clear_done).props("flat dense no-caps")
+                ui.label("Each Build docs checks the ontology first and waits here. Fix now or come back later; "
+                         "docs are generated when you apply or skip.").classes("or-hint")
+                for e in rows:
+                    st = e.get("status", "open")
+                    job = e["job"]
+                    with ui.row().classes("w-full items-center no-wrap gap-3 q-py-sm").style(
+                            "border-top:1px solid var(--or-line)").mark(f"review-row-{Path(e['key']).name}"):
+                        ui.icon({"open": "pending_actions", "built": "check_circle", "skipped": "task_alt"}[st]
+                                if st in ("open", "built", "skipped") else "help",
+                                color={"open": "warning", "built": "positive"}.get(st, "grey")).style("font-size:22px")
+                        with ui.column().classes("gap-0 grow min-w-0"):
+                            ui.label(Path(e["key"]).name).classes("text-weight-medium")
+                            ui.label(f"{TASKS.get(job.task, job.task)} → {job.output or 'default output'} · checked "
+                                     f"{time.strftime('%Y-%m-%d %H:%M', time.localtime(e['added']))}") \
+                                .classes("or-hint ellipsis")
+                        if st == "open":
+                            n = open_issue_count(e)
+                            acc = sum(1 for d in (e.get("dec") or {}).values() if d.get("status") == "accepted")
+                            ui.badge(f"Waiting · {n} open" + (f", {acc} accepted" if acc else ""),
+                                     color="orange-2", text_color="orange-10").props("rounded")
+                            ui.button("Fix & build", icon="build", on_click=lambda k=e["key"]: open_(k)) \
+                                .props("unelevated dense no-caps").mark("review-open")
+                        else:
+                            what = (f"Built from {Path(e['result']).name}" if st == "built" and e.get("result")
+                                    else "Built from the original")
+                            ui.badge(f"{what} · {e.get('finished', '')}", color="green-1",
+                                     text_color="green-9").props("rounded")
+                        ui.button(icon="delete_outline", on_click=lambda k=e["key"]: remove(k)) \
+                            .props('flat round dense aria-label="Remove from the list"') \
+                            .tooltip("Remove from this list (files and docs are kept)")
+
+    def issues_view() -> None:  # noqa: C901
+        """Review suggested fixes before the docs are built (or after, to rebuild): issues on the left,
+        the selected issue and its fixes in the centre, impact and context on the right."""
+        from .fixes import FixError
+        from .fixes.model import term as n3term
+        from .fixes.rules import missing_values
+
+        set_active("issues")
+        fs = SESSION.fixes
+        if fs.get("status", "open") != "open":
+            SESSION.review_key, fs = None, SESSION.fixes
+        session = fs.get("session")
+        head = page_head("Quality issues", "Fix first, then document: each fix shows what changes in the ontology "
+                                           "and in the docs. The original file is never changed.")
+        if fs.get("key") and session is None:          # saved before a restart: check it again, then show it
+            with ui.element("div").classes("or-body"):
+                with ui.row().classes("items-center gap-3 q-pa-md"):
+                    ui.spinner(size="24px")
+                    ui.label(f"Checking {Path(fs['key']).name} again and restoring your choices…") \
+                        .classes("text-weight-medium")
+
+            async def _restore(e=fs) -> None:
+                try:
+                    await run.io_bound(restore_review, e)
+                except Exception as ex:  # noqa: BLE001 - file moved or unreadable
+                    notify(f"Could not re-check {Path(e['key']).name}: {ex}", "warning")
+                    SESSION.review_key = None
+                ui.navigate.reload()
+            ui.timer(0.1, _restore, once=True)
+            return
+        if session is None and SESSION.reviews:
+            review_list()
+            return
+        if session is None:
+            with ui.element("div").classes("or-body"):
+                with ui.card().classes("or-card w-full").props("flat"):
+                    with ui.column().classes("or-sec gap-2 items-center text-center q-py-xl"):
+                        ui.icon("task_alt", size="40px").classes("or-muted")
+                        ui.label("No issues to review").classes("or-h2")
+                        ui.label("Press Build docs on the Build page: the ontology is checked first and its "
+                                 "issues appear here before any docs are generated.").classes("or-hint")
+                        ui.button("Go to Build", on_click=lambda: ui.navigate.to("/")).props("outline no-caps")
+            return
+        job: Settings | None = fs.get("job")
+        ignored = ignored_ids()
+        sev_of = {(f.rule, f.subject): f.severity for f in session.report.findings}
+        sev_of_rules = {f.rule for f in session.report.findings}
+
+        def sev(x) -> str:
+            if x.required:
+                return "required"
+            if x.severity and (x.rule, x.subject) not in sev_of:
+                return x.severity
+            return sev_of.get((x.rule, x.subject)) or next(
+                (f.severity for f in session.report.findings if f.rule == x.rule), "info")
+
+        def check_of(x) -> str:
+            if x.required:
+                return "Required metadata"
+            if ":" in x.rule:                                  # a finding of another check, e.g. OntoCheck:checkLabel
+                return " · ".join(x.rule.split(":", 1))
+            if x.rule.startswith("FX"):
+                return f"Text check · {x.rule}"
+            if x.rule in sev_of_rules:
+                return f"Built-in rules · {x.rule}"
+            return x.reported_by[0] if x.reported_by else f"Built-in rules · {x.rule}"
+
+        def label_of(iri) -> str:
+            t = session.onto.terms.get(iri or "")
+            if t:
+                return t.curie or t.label
+            return "ontology" if iri in (None, session.onto.metadata.iri) else str(iri).rsplit("/", 1)[-1]
+
+        def dec(x) -> dict:
+            if x.id not in fs["dec"]:
+                text = str(n3term(x.options[0].add[0][2])) if x.kind == "L" and x.options and x.options[0].add else ""
+                fs["dec"][x.id] = {"opt": 0, "values": {f.name: f.value for f in x.fields}, "text": text,
+                                   "status": "accepted" if x.id in session.accepted else "open"}
+            return fs["dec"][x.id]
+
+        def visible() -> list:
+            items = [x for x in session.suggestions if session.supported(x) and (x.options or x.fields or x.kind == "M")]
+            if not fs["show_ignored"]:
+                items = [x for x in items if x.id not in ignored and dec(x)["status"] != "ignored"]
+            f_ = fs["filter"]
+            if f_ != "all":
+                want = {"errors": ("error", "required"), "warnings": ("warning",), "suggestions": ("info",)}[f_]
+                items = [x for x in items if sev(x) in want]
+            order = {"required": 0, "error": 1, "warning": 2, "info": 3}
+            return sorted(items, key=lambda x: (order.get(sev(x), 4), dec(x)["status"] == "accepted"))
+
+        with head:
+            header_box = ui.row().classes("gap-2 items-center")
+        with ui.element("div").classes("or-body"):
+            with ui.row().classes("w-full items-center gap-2 q-mb-sm"):
+                def to_list() -> None:
+                    SESSION.review_key = None
+                    ui.navigate.reload()
+                ui.button(f"All reviews ({len(SESSION.reviews)})", icon="arrow_back", on_click=to_list) \
+                    .props("flat dense no-caps").mark("reviews-all")
+                waiting = sum(1 for e in SESSION.reviews.values() if e.get("status", "open") == "open")
+                if waiting > 1:
+                    ui.label(f"{waiting - 1} other ontolog{'y' if waiting == 2 else 'ies'} waiting for review") \
+                        .classes("or-hint")
+            ext_bar = ui.row().classes("w-full items-center gap-3 q-pa-sm q-mb-sm no-wrap").style(
+                "background:var(--or-line-2);border-radius:8px")
+            with ext_bar:
+                ui.spinner(size="18px")
+                ext_msg = ui.label("Running ROBOT, the reasoner, IRI checks, OntoCheck and OOPS!: their issues are "
+                                   "added here when ready. You can start reviewing.").classes("text-weight-medium")
+            ext_bar.set_visibility(False)
+            ai_bar = ui.row().classes("w-full items-center gap-3 q-pa-sm q-mb-sm no-wrap").style(
+                "background:var(--or-line-2);border-radius:8px")
+            ai_bar.set_visibility(False)
+            with ai_bar:
+                ui.spinner(size="18px")
+                with ui.column().classes("gap-0 grow"):
+                    ai_msg = ui.label().classes("text-weight-medium")
+                    ai_prog = ui.linear_progress(value=0, show_value=False).props("rounded size=6px")
+            sub_ = f"From the check of {session.source.name}" + (f" · {TASKS.get(job.task, job.task)} output" if job else "")
+            ui.label(sub_ + (" · the docs are built after you apply or skip." if fs["mode"] == "prebuild" else "."))\
+                .classes("or-hint q-mb-sm")
+            with ui.row().classes("w-full gap-4 items-start no-wrap max-lg:flex-wrap"):
+                left = ui.card().classes("or-card").props("flat").style("flex: 0 0 300px; min-width: 260px")
+                centre = ui.column().classes("gap-4").style("flex: 1 1 520px; min-width: 0")
+                right = ui.column().classes("gap-4").style("flex: 0 0 300px; min-width: 260px")
+
+        def render_left() -> None:
+            left.clear()
+            items = visible()
+            all_items = [x for x in session.suggestions if session.supported(x) and (x.options or x.fields or x.kind == "M")]
+            handled = sum(1 for x in all_items if dec(x)["status"] in ("accepted", "ignored") or x.id in ignored)
+            with left, ui.column().classes("w-full gap-0"):
+                with ui.row().classes("w-full items-center justify-between q-pa-md q-pb-sm"):
+                    ui.label("Found in this check").classes("or-label")
+                    ui.label(f"{len(all_items) - handled} open · {handled} handled").classes("or-hint")
+                counts = {k: sum(1 for x in all_items if sev(x) in v) for k, v in
+                          {"errors": ("error", "required"), "warnings": ("warning",), "suggestions": ("info",)}.items()}
+                with ui.row().classes("gap-1 q-px-md q-pb-sm"):
+                    for key, lab in (("all", f"All {len(all_items)}"), ("errors", f"Errors {counts['errors']}"),
+                                     ("warnings", f"Warnings {counts['warnings']}"),
+                                     ("suggestions", f"Suggestions {counts['suggestions']}")):
+                        ui.button(lab, on_click=lambda k=key: (fs.__setitem__("filter", k), render_all())) \
+                            .props("dense no-caps " + ("unelevated" if fs["filter"] == key else "outline")) \
+                            .classes("q-px-sm")
+                for x in items:
+                    d = dec(x)
+                    sel = fs["sel"] == x.id
+                    with ui.element("div").classes("w-full cursor-pointer q-px-md q-py-sm").style(
+                            "border-top:1px solid var(--or-line-2);"
+                            + ("background:var(--or-line-2);box-shadow:inset 3px 0 0 var(--q-primary);" if sel else "")) as row:
+                        with ui.row().classes("items-center gap-2 no-wrap"):
+                            s_ = sev(x)
+                            badge({"required": "err", "error": "err", "warning": "warn", "info": "info"}.get(s_, "info"),
+                                  s_.upper() if s_ != "info" else "SUGGESTION")
+                            ui.label(check_of(x).split(" · ")[0] + (f" +{len(x.reported_by)}" if x.reported_by and ":" not in x.rule else ""))\
+                                .classes("or-hint ellipsis")
+                            if d["status"] == "accepted":
+                                ui.icon("check_circle", size="16px").classes("text-positive q-ml-auto")
+                            elif d["status"] == "ignored" or x.id in ignored:
+                                ui.icon("visibility_off", size="16px").classes("or-muted q-ml-auto")
+                        ui.label(x.title).classes("text-weight-medium")
+                        ui.label(label_of(x.subject)).classes("or-hint or-mono ellipsis w-full")
+                    row.on("click", lambda x=x: (fs.__setitem__("sel", x.id), render_all()))
+                if not items:
+                    ui.label("Nothing here.").classes("or-hint q-pa-md")
+                n_ign = sum(1 for x in all_items if x.id in ignored)
+                if n_ign:
+                    ui.button(("Hide" if fs["show_ignored"] else "Show") + f" {n_ign} ignored",
+                              on_click=lambda: (fs.__setitem__("show_ignored", not fs["show_ignored"]), render_all())) \
+                        .props("flat dense no-caps").classes("q-ma-sm")
+
+        def current():
+            items = visible()
+            if not items:
+                return None
+            if fs["sel"] not in {x.id for x in items}:
+                fs["sel"] = items[0].id
+            return next(x for x in items if x.id == fs["sel"])
+
+        def chosen_option(x):
+            d = dec(x)
+            if x.fields:
+                try:
+                    from .fixes.rules import resolve_fields
+                    return resolve_fields(x, d["values"], session.graph, session.onto) if not missing_values(x, d["values"]) else None
+                except Exception:  # noqa: BLE001
+                    return None
+            if d.get("custom") and x.rule in ("OB012", "OB013"):
+                from rdflib.namespace import RDFS as _RDFS
+
+                from .fixes.model import Option as _Opt
+                from .fixes.model import n3 as _n3
+                pred = _RDFS.domain if x.rule == "OB012" else _RDFS.range
+                return _Opt("Your choice", add=[_n3((URIRef(x.subject), pred, URIRef(d["custom"])))],
+                            confidence="high", reason="Chosen by you.")
+            return x.options[d["opt"]] if x.options and d["opt"] < len(x.options) else None
+
+        def render_centre() -> None:
+            centre.clear()
+            x = current()
+            if x is None:
+                with centre, ui.card().classes("or-card w-full").props("flat"):
+                    ui.label("All issues handled. Apply the fixes and build.").classes("or-sec or-hint")
+                return
+            d = dec(x)
+            with centre:
+                with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2"):
+                    with ui.row().classes("items-center gap-2"):
+                        s_ = sev(x)
+                        badge({"required": "err", "error": "err", "warning": "warn"}.get(s_, "info"),
+                              s_.upper() if s_ != "info" else "SUGGESTION")
+                        ui.label(check_of(x)).classes("or-hint")
+                    ui.label(x.title).classes("or-h2").style("font-size:20px")
+                    ui.label(label_of(x.subject)).classes("or-mono text-primary")
+                    if x.reported_by:
+                        with ui.row().classes("items-center gap-1"):
+                            ui.label("Also reported by").classes("or-hint")
+                            for tag in x.reported_by:
+                                badge("info", tag)
+                    if x.explanation:
+                        ui.label(x.explanation).style("color:var(--or-ink-2)")
+                with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
+                    if x.kind == "M":
+                        ui.label("Needs a modelling decision").classes("or-h2")
+                        ui.label("No automatic fix: edit the ontology yourself. The explanation above shows why.") \
+                            .classes("or-hint")
+                    else:
+                        ui.label("Suggested fix" + ("es" if len(x.options) > 1 else "")).classes("or-h2")
+                        for i, o in enumerate(x.options):
+                            picked = d["opt"] == i and not d.get("custom")
+                            with ui.element("div").classes("w-full cursor-pointer q-pa-md").style(
+                                    "border-radius:10px;border:1px solid "
+                                    + ("var(--q-primary);background:rgba(37,99,235,.06)" if picked else "var(--or-line)")) as card:
+                                with ui.row().classes("items-start gap-3 no-wrap"):
+                                    ui.icon("radio_button_checked" if picked else "radio_button_unchecked",
+                                            size="20px").classes("text-primary" if picked else "or-muted")
+                                    with ui.column().classes("gap-0 grow"):
+                                        with ui.row().classes("items-center gap-2"):
+                                            ui.label(o.label).classes("text-weight-medium")
+                                            badge({"high": "ok", "medium": "warn", "low": "off"}.get(o.confidence, "info"),
+                                                  f"{o.confidence.title()} confidence")
+                                            badge("info", x.source)
+                                        if o.reason:
+                                            ui.label(o.reason).classes("or-hint")
+                            card.on("click", lambda i=i: (d.__setitem__("opt", i), d.__setitem__("custom", ""), render_all()))
+                        if x.kind == "L":
+                            mb = x.made_by
+                            text_draft = bool(x.options and x.options[0].add and x.options[0].add[0][2].startswith('"'))
+                            ui.label(f"AI {'draft' if text_draft else 'suggestion'} by {mb.get('provider') or mb.get('source')} "
+                                     f"· {mb.get('model')}" + (" — edit it before accepting if needed" if text_draft else
+                                                               " — pick the one that fits")).classes("or-hint")
+                            if text_draft:
+                                ui.textarea(value=d["text"], on_change=lambda e: d.__setitem__("text", e.value or "")) \
+                                    .props("outlined autogrow").classes("w-full").mark("issue-text")
+                            elif x.rule in ("OB012", "OB013"):
+                                which = "domain" if x.rule == "OB012" else "range"
+                                t_ = session.onto.terms.get(x.subject or "")
+                                if which == "range" and t_ is not None and t_.kind == "datatype_property":
+                                    pool = {f"http://www.w3.org/2001/XMLSchema#{k}": f"xsd:{k}" for k in (
+                                        "string", "boolean", "integer", "decimal", "double", "dateTime", "date", "anyURI")}
+                                else:
+                                    pool = {c.iri: c.label for c in session.onto.terms.values()
+                                            if c.kind == "class" and not c.imported}
+
+                                def own_pick(e, which=which, x=x, pool=pool) -> None:
+                                    d["custom"] = e.value or ""
+                                    d["opt"] = len(x.options) if e.value else 0
+                                    render_side()
+                                ui.select(pool, label=f"Or choose another {which} yourself", value=d.get("custom") or None,
+                                          with_input=True, clearable=True, on_change=own_pick) \
+                                    .props("outlined dense").classes("w-full").mark("issue-own-choice")
+                        for f in x.fields:
+                            def typed(e, n=f.name) -> None:
+                                d["values"][n] = e.value or ""
+                                render_side()
+                            if f.kind == "creators":
+                                creator_rows(lambda: d["values"].get("creators", ""),
+                                             lambda val: (d["values"].__setitem__("creators", val), render_side()))
+                            elif f.kind in ("license", "choice"):
+                                with ui.row().classes("w-full items-center no-wrap gap-2"):
+                                    ui.select(dict(f.choices), label=f.label, value=d["values"].get(f.name) or None,
+                                              on_change=typed, with_input=True).props("outlined dense").classes("grow") \
+                                        .mark(f"issue-{f.name}")
+                                    if prefs.ai_enabled and f.name in ("domain", "range"):
+                                        ui.button("Suggest with AI", icon="auto_awesome",
+                                                  on_click=lambda e, n=f.name, x=x: ai_fill(None, n, x, e.sender)) \
+                                            .props("outline no-caps").mark("issue-ai-suggest") \
+                                            .tooltip("Ranked suggestions with reasons; you pick and accept")
+                            elif f.kind == "textarea":
+                                with ui.row().classes("w-full items-start no-wrap gap-2"):
+                                    ta = ui.textarea(f.label, value=d["values"].get(f.name, ""), placeholder=f.hint,
+                                                     on_change=typed).props("outlined dense autogrow").classes("grow") \
+                                        .mark(f"issue-{f.name}")
+                                    if prefs.ai_enabled and f.name in ("description", "definition"):
+                                        ui.button("Draft with AI", icon="auto_awesome",
+                                                  on_click=lambda e, ta=ta, n=f.name, x=x: ai_fill(ta, n, x, e.sender)) \
+                                            .props("outline no-caps").mark("issue-ai-draft") \
+                                            .tooltip("Shown for review; you accept or edit it")
+                            else:
+                                ui.input(f.label, value=d["values"].get(f.name, ""), placeholder=f.hint,
+                                         on_change=typed).props("outlined dense").classes("w-full").mark(f"issue-{f.name}")
+                        o = chosen_option(x)
+                        if o is not None and (o.add or o.remove):
+                            with ui.row().classes("w-full justify-between"):
+                                ui.label("Ontology change · Turtle").classes("or-label")
+                                ui.html('<span class="or-hint"><b style="color:#b42318">−</b> removed '
+                                        '<b style="color:#067647">+</b> added</span>', sanitize=False)
+                            lines = "".join(
+                                f'<div style="background:{"rgba(180,35,24,.08)" if ln.startswith("-") else "rgba(6,118,71,.08)"};'
+                                f'padding:2px 8px;white-space:pre-wrap;word-break:break-all">{html_escape(short_n3(ln))}</div>'
+                                for ln in o.turtle_diff().splitlines())
+                            ui.html(f'<div class="or-mono" style="font-size:12.5px;border:1px solid var(--or-line);'
+                                    f'border-radius:8px;overflow:hidden">{lines}</div>', sanitize=False)
+                        with ui.row().classes("gap-2 q-mt-sm"):
+                            if d["status"] == "accepted":
+                                ui.button("Accepted · Undo", icon="check", on_click=lambda: undo(x)) \
+                                    .props("outline no-caps color=positive").mark("issue-undo")
+                            else:
+                                ui.button("Accept fix", on_click=lambda: accept(x)).props("unelevated no-caps") \
+                                    .mark("issue-accept")
+                            if not x.required:
+                                ui.button("Ignore in future builds", on_click=lambda: ignore(x)) \
+                                    .props("outline no-caps").mark("issue-ignore")
+
+        def short_n3(line: str) -> str:
+            """A diff line with prefixed names (:Neuron, rdfs:label) instead of full IRIs."""
+            nm = session.graph.namespace_manager
+
+            def qname(m) -> str:
+                try:
+                    return nm.normalizeUri(URIRef(m.group(1)))
+                except Exception:  # noqa: BLE001
+                    return m.group(0)
+            return re.sub(r"<([^>\s]+)>", qname, line)
+
+        def render_side() -> None:
+            right.clear()
+            x = current()
+            if x is None:
+                return
+            o = chosen_option(x)
+            with right:
+                with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2 w-full"):
+                    ui.label("Ontology impact").classes("or-h2")
+                    if o is None:
+                        ui.label("Fill in the value to see the change." if x.fields else "No edit.").classes("or-hint")
+                    else:
+                        annot = {"label", "definition", "comment", "altLabel", "prefLabel", "title", "description",
+                                 "license", "creator", "name", "mbox", "versionInfo", "preferredNamespacePrefix",
+                                 "preferredNamespaceUri"}
+                        logical = any(not any(a in t3[1] for a in annot) for t3 in o.add + o.remove)
+                        for k, v in (("Statements added", len(o.add)), ("Statements removed", len(o.remove))):
+                            with ui.row().classes("w-full justify-between"):
+                                ui.label(k).classes("or-hint")
+                                ui.label(str(v)).classes("text-weight-medium")
+                        with ui.row().classes("w-full justify-between"):
+                            ui.label("Reasoner").classes("or-hint")
+                            ui.label("May change: re-check after the build" if logical else "Unchanged (annotations only)") \
+                                .classes("text-weight-medium").style("text-align:right")
+                        checked = (x.checked.get("options") or []) if x.checked else []
+                        c = checked[dec(x)["opt"]] if dec(x)["opt"] < len(checked) else {}
+                        if c.get("new_findings"):
+                            ui.label("Would add: " + "; ".join(c["new_findings"])).classes("or-hint text-negative")
+                with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-2 w-full"):
+                    ui.label("Docs impact").classes("or-h2")
+                    ui.label("Shown on the next build").classes("or-hint")
+                    what = {"label": "label", "definition": "definition", "subClassOf": "parents list",
+                            "equivalentClass": "equivalences", "domain": "domain", "range": "range", "title": "document title",
+                            "description": "introduction", "license": "license and citation", "creator": "authors",
+                            "versionInfo": "version", "isReplacedBy": "replacement link", "altLabel": "other labels",
+                            "type": "kind of term"}
+                    rows = []
+                    for t3 in (o.add + o.remove) if o else []:
+                        key = next((k for k in what if k in t3[1]), None)
+                        if key:
+                            rows.append((label_of(str(n3term(t3[0]))), what[key]))
+                    if o and any("subClassOf" in t3[1] for t3 in o.add + o.remove):
+                        rows.append(("Class diagram", "updated"))
+                    rows.append(("Quality report", "issue cleared"))
+                    for a, b in list(dict.fromkeys(rows))[:6]:
+                        with ui.row().classes("w-full justify-between no-wrap q-pa-xs").style(
+                                "background:var(--or-line-2);border-radius:6px"):
+                            ui.label(a).classes("or-mono ellipsis").style("font-size:12.5px")
+                            ui.label(b).classes("or-hint")
+                with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-1 w-full"):
+                    ui.label("Made by").classes("or-h2")
+                    mb = x.made_by or {}
+                    if mb.get("type") == "llm":
+                        ui.label(f"AI draft · {mb.get('provider') or mb.get('source')}").classes("text-weight-medium")
+                        ui.label(f"{mb.get('model')}" + (f" · {str(mb.get('revision'))[:16]}" if mb.get("revision") else ""))\
+                            .classes("or-hint or-mono")
+                        ui.label("Recorded as AI-assisted in the provenance when accepted.").classes("or-hint")
+                    else:
+                        ui.label({"D": "Rule", "A": "Ranked candidates", "U": "Your input", "M": "—"}.get(x.kind, x.source))\
+                            .classes("text-weight-medium")
+                        ui.label(mb.get("id", x.rule) + (f" · {mb['method']}" if mb.get("method") else "")) \
+                            .classes("or-hint or-mono")
+                t = session.onto.terms.get(x.subject or "")
+                if t is not None and t.kind == "class":
+                    chain, cur, seen = [], t, set()
+                    while cur is not None and cur.iri not in seen and len(chain) < 6:
+                        seen.add(cur.iri)
+                        chain.append(cur)
+                        nxt = cur.superclasses[0].iri if cur.superclasses else None
+                        cur = session.onto.terms.get(nxt) if nxt else None
+                    with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-1 w-full"):
+                        ui.label("Hierarchy context").classes("or-h2")
+                        names = ["owl:Thing"] + [c.curie or c.label for c in reversed(chain)]
+                        for depth, nm in enumerate(names):
+                            ui.label(nm).classes("or-mono").style(
+                                f"padding-left:{depth * 14}px;font-size:12.5px;border-left:1px solid var(--or-line);"
+                                + ("color:#b42318;font-weight:600" if depth == len(names) - 1 else ""))
+                elif t is not None and t.kind in ("object_property", "datatype_property"):
+                    with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-1 w-full"):
+                        ui.label("Property context").classes("or-h2")
+                        for k, vals in (("Domain", t.domain), ("Range", t.range)):
+                            ui.label(f"{k}: " + (", ".join(str(getattr(v, 'label', v)) for v in vals) or "none")) \
+                                .classes("or-hint")
+
+        ai_status = {"state": "idle", "msg": ""}      # idle | working | ok | error: colours the header chip
+
+        def sync_header() -> None:
+            """The header buttons, rebuilt to show the current count and what is still required."""
+            required = session.required_open() if session.cfg.require_metadata else []
+            n = len(session.accepted)
+            ai = prefs.ai_config()
+            ai_text = ("AI: " + {"hf": f"Hugging Face · {ai.hf_model}", "ollama": f"Ollama · {ai.ollama_model}",
+                                 "api": f"{ai.api_provider} · {ai.api_model or '?'}"}.get(ai.priority[0], "")) \
+                if prefs.ai_enabled else "AI: off"
+            verb = "build" if fs["mode"] == "prebuild" else "rebuild"
+            header_box.clear()
+            with header_box:
+                st_ = ai_status["state"]
+                chip = ui.button({"working": "AI working… · ", "error": "AI failed · "}.get(st_, "") + ai_text,
+                                 icon={"working": "auto_awesome", "ok": "check_circle", "error": "error"}
+                                 .get(st_, "auto_awesome"),
+                                 on_click=lambda: (state.__setitem__("settings_tab", "ai"), ui.navigate.to("/settings"))) \
+                    .props("flat dense no-caps").mark("ai-status") \
+                    .tooltip(ai_status["msg"] or "AI drafts are applied only when you accept them · Settings")
+                if st_ in ("working", "ok", "error"):
+                    chip.classes(f"or-ai-{st_}")
+                ui.button("Re-run checks", icon="refresh", on_click=lambda: rerun()).props("outline no-caps")
+                if fs["mode"] == "prebuild":
+                    sk = ui.button("Skip and build", on_click=lambda: finish(skip=True)).props("outline no-caps") \
+                        .mark("issues-skip")
+                    sk.set_enabled(not required)
+                    sk.tooltip("Accept the required metadata first" if required else "Build from the original file")
+                ap = ui.button(f"Apply {n} fix{'es' if n != 1 else ''} & {verb} docs", icon="build",
+                               on_click=lambda: finish(skip=False)).props("unelevated no-caps").mark("issues-apply")
+                ap.set_enabled(n > 0 and not required)
+                if required:
+                    ap.tooltip("Accept the required metadata first: " + ", ".join(x.title.lower() for x in required))
+
+        def render_all() -> None:
+            render_left()
+            render_centre()
+            render_side()
+            sync_header()
+
+        def accept(x) -> None:
+            d = dec(x)
+            try:
+                if d.get("custom") and x.rule in ("OB012", "OB013"):
+                    from .fixes.model import Suggestion as _Sug
+                    own = _Sug(x.rule, x.subject, "U", x.title.replace(" (AI suggestion)", ""),
+                               "Chosen by you instead of the AI suggestions.", options=[chosen_option(x)],
+                               made_by={"type": "user", "id": f"fix-{x.rule.lower()}"})
+                    session.replace(own)
+                    session.accept(own.id)
+                    fs["dec"][own.id] = {"opt": 0, "values": {}, "text": "", "status": "accepted"}
+                    fs["sel"] = own.id
+                    render_all()
+                    return
+                if x.fields:
+                    session.accept(x.id, values=d["values"])
+                elif x.kind == "L":
+                    session.accept(x.id, option=d["opt"], text=d["text"])
+                else:
+                    session.accept(x.id, option=d["opt"])
+            except FixError as e:
+                notify(str(e), "warning")
+                return
+            d["status"] = "accepted"
+            nxt = next((y for y in visible() if dec(y)["status"] == "open" and y.id != x.id), None)
+            if nxt is not None:
+                fs["sel"] = nxt.id
+            render_all()
+
+        def undo(x) -> None:
+            session.reject(x.id)
+            dec(x)["status"] = "open"
+            render_all()
+
+        def ignore(x) -> None:
+            ids = ignored_ids() | {x.id}
+            prefs.fix_ignored = " ".join(sorted(ids))
+            prefs.save()
+            ignored.add(x.id)
+            session.reject(x.id)
+            dec(x)["status"] = "ignored"
+            notify("Ignored in future builds (Show ignored brings it back).")
+            render_all()
+
+        ai_lock = {"busy": False}
+
+        def set_ai(state_: str, msg: str = "") -> None:
+            ai_status.update(state=state_, msg=msg)
+            sync_header()
+
+        def mark_btn(btn, how: str, text: str, icon: str) -> None:
+            """Show on the clicked button what the AI is doing (it may be gone after a re-render)."""
+            if btn is None or btn.is_deleted:
+                return
+            btn.classes(remove="or-ai-working or-ai-ok or-ai-err")
+            if how:
+                btn.classes(f"or-ai-{how}")
+            btn.set_text(text)
+            btn.props(f"icon={icon}")
+            btn.set_enabled(how != "working")
+
+        async def ensure_ai():
+            """The AI source, downloaded (Hugging Face, first use) and loaded, with progress on the page."""
+            from .fixes.ai import pick_source
+            src = await run.io_bound(pick_source, prefs.ai_config(), prefs.hf_token or None)
+            if src.name != "hf":
+                return src
+            ai_bar.set_visibility(True)
+            if not await run.io_bound(src.cached):
+                total = await run.io_bound(src.total_bytes)
+
+                def tick() -> None:
+                    got = src.downloaded_bytes()
+                    ai_msg.set_text(f"Downloading {src.model} from Hugging Face (first use only): "
+                                    f"{got / 1e9:.1f}" + (f" of {total / 1e9:.1f} GB" if total else " GB"))
+                    ai_prog.set_value(min(got / total, 1.0) if total else 0)
+                tick()
+                timer = ui.timer(1.0, tick)
+                try:
+                    await run.io_bound(src.prepare)
+                finally:
+                    timer.cancel()
+            ai_msg.set_text(f"Loading {src.model} into memory…")
+            ai_prog.props("indeterminate")
+            await run.io_bound(src.load)
+            ai_prog.props(remove="indeterminate")
+            ai_bar.set_visibility(False)
+            return src
+
+        async def ai_fill(ta, name: str, x, btn=None) -> None:
+            from .fixes.ai import AIError, draft_definition, draft_description
+            label = btn.text if btn is not None else "Draft with AI"
+            if ai_lock["busy"]:
+                notify("AI is already working (see the bar above); try again when it is done.")
+                return
+            ai_lock["busy"] = True
+            what = {"description": "a description", "domain": "domains", "range": "ranges"}.get(name, "a definition")
+            mark_btn(btn, "working", "Drafting…" if name in ("description", "definition") else "Suggesting…",
+                     "auto_awesome")
+            set_ai("working", f"Asking for {what}…")
+            ok = False
+            try:
+                src = await ensure_ai()
+                model = src.describe().get("model", "") if hasattr(src, "describe") else ""
+                ai_bar.set_visibility(True)
+                ai_msg.set_text(f"Asking {model or 'the model'} for {what}… (the first answer can take a minute)")
+                ai_prog.props("indeterminate")
+                if name == "description":
+                    text, prov = await run.io_bound(draft_description, session, src)
+                    ta.set_value(text)
+                    x.made_by = prov | {"field": "description"}
+                elif name in ("domain", "range"):
+                    from .fixes.ai import suggest_domain_range
+                    sug = await run.io_bound(suggest_domain_range, session, x.subject, name, src)
+                    session.replace(sug)
+                    fs["sel"] = sug.id
+                    render_all()
+                else:
+                    draft = await run.io_bound(draft_definition, session, x.subject, src)
+                    session.replace(draft)
+                    fs["sel"] = draft.id
+                    render_all()
+                ok = True
+            except (AIError, Exception) as e:  # noqa: BLE001
+                notify(f"AI: {e}", "warning")
+                mark_btn(btn, "err", "AI failed · retry", "error")
+                set_ai("error", f"Last request failed: {e}")
+            finally:
+                ai_lock["busy"] = False
+                ai_prog.props(remove="indeterminate")
+                ai_bar.set_visibility(False)
+            if ok:
+                mark_btn(btn, "ok", "Drafted · review it" if name == "description" else "Done", "check_circle")
+                set_ai("ok", f"{what[0].upper() + what[1:]} ready for review")
+
+                def back() -> None:
+                    mark_btn(btn, "", label, "auto_awesome")
+                    if ai_status["state"] == "ok":
+                        set_ai("idle")
+                ui.timer(4.0, back, once=True)
+
+        async def auto_drafts() -> None:
+            """AI drafts for every term without a definition, automatically (the model is downloaded on
+            first use, with progress); each draft appears as it is ready, applied only when accepted."""
+            from .fixes.ai import AIError as _AIError
+            from .fixes.ai import draft_definition, suggest_domain_range
+            todo = [x for x in session.suggestions if x.rule in ("OB011", "OB012", "OB013") and x.kind == "U"]
+            if not prefs.ai_enabled or not todo or ai_lock["busy"]:
+                return
+            ai_lock["busy"] = True
+            set_ai("working", f"Drafting AI suggestions for {len(todo)} issues…")
+            try:
+                src = await ensure_ai()
+                desc = src.describe() if src.name != "hf" else {"provider": "Hugging Face", "model": src.model}
+                ai_bar.set_visibility(True)
+                for i, x in enumerate(todo, 1):
+                    if x.id in session.accepted or x not in session.suggestions:
+                        continue
+                    ai_msg.set_text(f"AI suggestions with {desc.get('provider')} · {desc.get('model')}: "
+                                    f"{i} of {len(todo)}")
+                    ai_prog.set_value(i / len(todo))
+                    try:
+                        if x.rule == "OB011":
+                            draft = await run.io_bound(draft_definition, session, x.subject, src)
+                        else:
+                            draft = await run.io_bound(suggest_domain_range, session, x.subject,
+                                                       "domain" if x.rule == "OB012" else "range", src)
+                    except _AIError:
+                        continue            # keep the field to fill by hand
+                    session.replace(draft)
+                    if fs["sel"] == x.id:
+                        fs["sel"] = draft.id
+                    render_all()
+                notify("AI suggestions ready to review; nothing is applied until you accept.", "positive")
+                set_ai("ok", "AI suggestions ready for review")
+                ui.timer(4.0, lambda: ai_status["state"] == "ok" and set_ai("idle"), once=True)
+            except Exception as e:  # noqa: BLE001
+                notify(f"AI: {e}", "warning")
+                set_ai("error", f"AI suggestions failed: {e}")
+            finally:
+                ai_lock["busy"] = False
+                ai_bar.set_visibility(False)
+
+        async def rerun() -> None:
+            from .fixes import FixSession
+            try:
+                new = await run.io_bound(FixSession, str(session.source))
+                await run.io_bound(new.precheck)
+            except Exception as e:  # noqa: BLE001
+                notify(str(e), "warning")
+                return
+            fs.update(session=new, dec={}, sel=None)
+            ui.navigate.reload()
+
+        async def finish(skip: bool) -> None:
+            if state["running"]:
+                notify("Another build is running; apply or skip when it has finished (your choices are kept).",
+                       "warning")
+                return
+            # build exactly the ontology reviewed here, with the settings it was started with
+            same = job is not None and Path(job.source).expanduser().resolve() == Path(session.source).resolve()
+            base = job if same else Settings(**{**asdict(job or s), "source": str(session.source)})
+            if not skip:
+                try:
+                    result = await run.io_bound(session.write)
+                except FixError as e:
+                    notify(str(e), "warning")
+                    return
+                base = Settings(**{**asdict(base), "source": str(result.path)})
+                notify(f"{result.path.name} written ({result.applied} fixes). Building the docs from it.", "positive")
+            SESSION.finish_review(fs.get("key", ""), "skipped" if skip else "built", "" if skip else base.source)
+            state["pending_job"] = base
+            ui.navigate.to("/")
+
+        async def load_external() -> None:
+            """ROBOT, the reasoner, IRI checks, OntoCheck and OOPS! in the background; their issues join the list."""
+            if session.external is not None:
+                return
+            ext_bar.set_visibility(True)
+            try:
+                reports = await run.io_bound(session.run_external)
+                errs = [f"{r.tool}: {r.error}" for r in reports if r.error]
+                ext_msg.set_text("")
+                if errs:
+                    notify("Some checks could not run: " + "; ".join(errs)[:300], "warning")
+                render_all()
+            except Exception as e:  # noqa: BLE001
+                notify(f"The other checks could not run: {e}", "warning")
+            finally:
+                ext_bar.set_visibility(False)
+
+        async def start_page() -> None:
+            await load_external()
+            await auto_drafts()
+
+        render_all()
+        ui.timer(0.2, start_page, once=True)
 
     # ------------------------------------------------------------------ Interoperability
     def interop_view() -> None:  # noqa: C901
@@ -3500,6 +4782,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
     ui.sub_pages({"/": build_view, "/history": history_view, "/compare": compare_view, "/terms": terms_view,
                   "/interoperability": interop_view,
+                  "/issues": issues_view,
                   "/settings": settings_view,
                   "/about": about_view,
                   "/help": help_view}) \

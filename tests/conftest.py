@@ -32,6 +32,9 @@ def personinfo():
 def _private_iri_db(tmp_path, monkeypatch):
     """Never touch the user's IRI term cache from tests."""
     monkeypatch.setenv("ONTOREVIEW_IRI_DB", str(tmp_path / "iri-cache.sqlite3"))
+    # fixtures include third-party ontologies without a license or creators; tests of the
+    # required-metadata rule turn it on explicitly (require_metadata=True)
+    monkeypatch.setenv("ONTOREVIEW_REQUIRE_METADATA", "0")
 
 
 @pytest.fixture(autouse=True)
@@ -45,6 +48,8 @@ def _no_external_evaluators(request, monkeypatch):
         monkeypatch.setattr(iri, "check_iris", lambda *a, **k: None)
     if "real_cdi" not in request.keywords:      # on by default: OLS queries and a language model
         monkeypatch.setattr(cdi, "check_cdi", lambda *a, **k: [])
+    import ontoreview.fixes.orcid as orcid      # the creator form looks names up in ORCID
+    monkeypatch.setattr(orcid, "search_orcid", lambda *a, **k: [])
     if "real_evaluators" in request.keywords:
         return
     monkeypatch.setattr(robot, "run_robot", lambda *a, **k: None)

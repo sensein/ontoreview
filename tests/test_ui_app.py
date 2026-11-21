@@ -3,6 +3,8 @@
 import asyncio
 import json
 import shutil
+from pathlib import Path
+import time
 
 import pytest
 
@@ -19,6 +21,8 @@ from ontoreview.ui import build_page  # noqa: E402
 def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(ui_core, "SETTINGS_FILE", tmp_path / "cfg" / "ui.json")
     monkeypatch.setattr(ui_core, "HISTORY_FILE", tmp_path / "cfg" / "history.json")
+    (tmp_path / "cfg").mkdir(parents=True, exist_ok=True)       # builds go straight through unless a test
+    (tmp_path / "cfg" / "prefs.json").write_text('{"fix_review": false}')   # exercises the review step
     from ontoreview.ui import SESSION
     SESSION.reset()                      # run state is process-wide (it outlives page switches)
     return tmp_path
@@ -253,7 +257,7 @@ async def test_build_survives_switching_pages(isolated, fixtures, monkeypatch):
         await user.open("/")
         await user.should_see("pizza.ttl")
         user.find(marker="run").click()
-        await user.should_see("Building pizza.ttl")
+        await user.should_see("Building pizza.ttl", retries=20)
         await user.open("/history")                       # leave while it runs
         await user.should_see("Run history")
         for _ in range(100):
@@ -427,3 +431,168 @@ async def test_help_search(isolated):
         await user.should_see("Scientific interoperability")
         user.find(marker="help-search").clear().type("zzzz-nothing")
         await user.should_see("No help topic mentions")
+
+
+@pytest.mark.anyio
+async def test_review_before_build_asks_required_metadata(isolated, fixtures, monkeypatch):
+    monkeypatch.setenv("ONTOREVIEW_REQUIRE_METADATA", "1")
+    import ontoreview.fixes.orcid as orcid
+    monkeypatch.setattr(orcid, "search_orcid", lambda name, **kw: [
+        {"orcid": "0000-0001-0000-0001", "name": name, "institutions": [], "url": "https://orcid.org/0000-0001-0000-0001"},
+        {"orcid": "0000-0002-1825-0097", "name": name, "institutions": ["Royal Society"],
+         "url": "https://orcid.org/0000-0002-1825-0097"}])
+    src = isolated / "toy_onto.ttl"
+    shutil.copy(fixtures / "cdi" / "toy_onto.ttl", src)
+    original = src.read_bytes()
+    ui_core.Settings(source=str(src), output=str(isolated / "docs"), oops="off", cdi=False, si=False,
+                     separate_runs=False).save()
+    ui_core.Prefs(ai_enabled=False, fix_review=True).save()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("toy_onto.ttl")
+        user.find(marker="run").click()
+        await user.should_see("Found in this check", retries=50)      # the Quality issues page, before any docs
+        await user.should_see("Required metadata")
+        user.find(marker="issue-title").type("Soil sensing")
+        user.find(marker="issue-accept").click()
+        await user.should_see(marker="issue-description")
+        user.find(marker="issue-description").type("Soil pH readings.")
+        user.find(marker="issue-accept").click()
+        await user.should_see(marker="issue-license")
+        user.find(marker="issue-license").elements.pop().set_value("https://creativecommons.org/licenses/by/4.0/")
+        user.find(marker="issue-accept").click()
+        await user.should_see(marker="creator-name")
+        user.find(marker="creator-name").type("Ada Lovelace")
+        user.find(marker="orcid-find").click()                       # ORCID candidates for the name; user picks
+        await user.should_see("Is one of these the creator?", retries=30)
+        await user.should_see("Royal Society")
+        user.find(marker="orcid-0000-0002-1825-0097").click()        # the second candidate
+        assert user.find(marker="creator-orcid").elements.pop().value == "0000-0002-1825-0097"
+        user.find(marker="creator-add").click()
+        await user.should_see(marker="creator-name")
+        names = sorted(user.find(marker="creator-name").elements, key=lambda e: e.id)
+        names[-1].set_value("Grace Hopper")
+        user.find(marker="issue-accept").click()
+        await user.should_see("Apply 4 fixes & build docs", retries=20)
+        user.find(marker="issues-apply").click()
+        from ontoreview.ui import SESSION
+        for _ in range(150):
+            if (isolated / "docs" / "index.html").exists() and not SESSION.build["running"]:
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Terms documented", retries=30)
+    assert src.read_bytes() == original                                   # the original is never changed
+    fixed = isolated / "toy_onto-v1.ttl"
+    assert fixed.is_file() and (isolated / "toy_onto-v1.fixes.json").is_file()
+    html = (isolated / "docs" / "index.html").read_text()
+    assert "Soil sensing" in html and "Fixes applied" in html
+    assert "Ada Lovelace" in html and "Grace Hopper" in html
+    entry = json.loads(ui_core.HISTORY_FILE.read_text())[0]
+    assert entry["source"] == str(fixed) and entry["derived_from"] == "toy_onto.ttl" and entry["fixes_applied"] == 4
+    assert ui_core.load_history()[0].fixed_note.startswith("Fixed version of toy_onto.ttl · 4 of ")
+
+
+@pytest.mark.anyio
+async def test_draft_with_ai_shows_that_it_is_working(isolated, fixtures, monkeypatch):
+    """Clicking Draft with AI must visibly change state (working → done), not look like nothing happened."""
+    monkeypatch.setenv("ONTOREVIEW_REQUIRE_METADATA", "1")
+    import ontoreview.fixes.ai as ai_mod
+
+    class Slow:
+        name = "api"
+        model = "stub-model"
+
+        def describe(self):
+            return {"source": "api", "provider": "stub", "model": self.model}
+
+        def generate(self, system, user, schema):
+            if "description" not in user:            # the automatic definition drafts: answer at once
+                return {"definition": "A thing that is measured.", "choices": []}
+            time.sleep(0.8)
+            return {"description": "Soil pH readings from field sensors."}
+    monkeypatch.setattr(ai_mod, "pick_source", lambda *a, **k: Slow())
+    src = isolated / "toy_onto.ttl"
+    shutil.copy(fixtures / "cdi" / "toy_onto.ttl", src)
+    ui_core.Settings(source=str(src), output=str(isolated / "docs"), oops="off", cdi=False, si=False,
+                     separate_runs=False).save()
+    ui_core.Prefs(ai_enabled=True, fix_review=True).save()
+    monkeypatch.setattr(ai_mod, "ai_suggestions", lambda *a, **k: [])
+    async with user_simulation(root=build_page) as user:
+        await user.open("/")
+        await user.should_see("toy_onto.ttl")
+        user.find(marker="run").click()
+        await user.should_see("Required metadata", retries=50)
+        user.find(marker="issue-title").type("Soil sensing")
+        user.find(marker="issue-accept").click()
+        await user.should_see(marker="issue-ai-draft")
+        from ontoreview.ui import SESSION  # noqa: F401
+        await asyncio.sleep(1.0)                     # let the automatic drafts finish first
+        user.find(marker="issue-ai-draft").click()
+        await user.should_see("Drafting…")
+        await user.should_see("AI working…", retries=10)
+        await user.should_see("Drafted · review it", retries=40)
+        assert user.find(marker="issue-description").elements.pop().value.startswith("Soil pH readings")
+
+
+@pytest.mark.anyio
+async def test_several_reviews_wait_and_each_builds_its_own_ontology(isolated, fixtures):
+    """Start a build for A (it waits in Quality issues), then for B: both wait; applying B builds B, not A,
+    and A is still there to finish later."""
+    from ontoreview.ui import SESSION
+    a, b = isolated / "alpha.ttl", isolated / "beta.ttl"
+    shutil.copy(fixtures / "cdi" / "toy_onto.ttl", a)
+    shutil.copy(fixtures / "cdi" / "toy_onto.ttl", b)
+    ui_core.Prefs(ai_enabled=False, fix_review=True).save()
+    async with user_simulation(root=build_page) as user:
+        for src in (a, b):
+            ui_core.Settings(source=str(src), output=str(isolated / f"docs-{src.stem}"), oops="off", cdi=False,
+                             si=False, separate_runs=False).save()
+            await user.open("/")
+            await user.should_see(src.name)
+            user.find(marker="run").click()
+            await user.should_see("Found in this check", retries=50)
+        await user.should_see(marker="reviews-all")
+        assert set(SESSION.reviews) == {str(a.resolve()), str(b.resolve())}
+        assert SESSION.fixes["session"].source.name == "beta.ttl"
+        user.find(marker="issues-skip").click()                      # build the one shown: beta
+        for _ in range(150):
+            if (isolated / "docs-beta" / "index.html").exists() and not SESSION.build["running"]:
+                break
+            await asyncio.sleep(0.1)
+        assert (isolated / "docs-beta" / "index.html").exists()
+        assert not (isolated / "docs-alpha").exists()                 # alpha was not built
+        status = {Path(k).name: e["status"] for k, e in SESSION.reviews.items()}
+        assert status == {"alpha.ttl": "open", "beta.ttl": "skipped"}  # alpha still waits; beta is listed as built
+        await user.open("/issues")                                     # the list, like Run history
+        await user.should_see(marker="review-row-alpha.ttl")
+        await user.should_see("Built from the original", retries=10)
+        user.find(marker="review-open").click()                        # come back to alpha later
+        await user.should_see("Found in this check", retries=50)
+        await user.should_see(marker="reviews-all")
+    # a restart keeps the waiting review (re-checked when opened)
+    SESSION.reset()
+    assert {Path(k).name: e["status"] for k, e in SESSION.reviews.items()} == {"alpha.ttl": "open",
+                                                                                "beta.ttl": "skipped"}
+    entry = json.loads(ui_core.HISTORY_FILE.read_text())[0]
+    assert entry["source"] == str(b)
+
+
+def test_saved_review_is_restored_with_its_decisions(isolated, fixtures):
+    """After a restart, a waiting review is re-checked and the fixes accepted before are accepted again."""
+    from ontoreview.fixes import FixSession
+    from ontoreview.ui import SESSION, restore_review
+    src = isolated / "toy_onto.ttl"
+    shutil.copy(fixtures / "cdi" / "toy_onto.ttl", src)
+    job = ui_core.Settings(source=str(src), output=str(isolated / "docs"))
+    sess = FixSession(str(src))
+    sess.precheck()
+    title = next(x for x in sess.suggestions if x.rule == "OB001" or "title" in x.title.lower())
+    sess.accept(title.id, values={"title": "Soil sensing"})
+    e = SESSION.add_review(sess, job)
+    e["dec"][title.id] = {"opt": 0, "values": {"title": "Soil sensing"}, "text": "", "status": "accepted"}
+    SESSION.persist()
+    SESSION.reset()                                                  # as after an app restart
+    e = SESSION.reviews[str(src.resolve())]
+    assert e["session"] is None and e["status"] == "open"
+    restore_review(e)
+    assert title.id in e["session"].accepted

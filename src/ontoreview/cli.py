@@ -15,6 +15,7 @@ from pathlib import Path
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.markup import escape
 from rich.table import Table
 
 from . import __version__
@@ -288,7 +289,7 @@ def build(
                 res = build_collection(folder, output or Path("docs"), config=config,
                                        single_file=single_file, **ov)
         except (ValueError, FileNotFoundError) as e:
-            err.print(f"[bold red]Error:[/] {e}")
+            err.print(f"[bold red]Error:[/] {escape(str(e))}")
             raise typer.Exit(2) from e
         _print_collection(res, "built")
         if open_browser:
@@ -306,7 +307,7 @@ def build(
             else:
                 res = do_build(source, out=output, config=config, **ov)
     except (ValueError, FileNotFoundError) as e:
-        err.print(f"[bold red]Error:[/] {e}")
+        err.print(f"[bold red]Error:[/] {escape(str(e))}")
         raise typer.Exit(2) from e
     o = res.ontology
     from .render.i18n import Translator
@@ -510,7 +511,7 @@ def check(
             check_records(output.parent / f"{output.stem}-records", source or Path(config or ".").name,
                           onto, report, started)
     except (ValueError, FileNotFoundError) as e:
-        err.print(f"[bold red]Error:[/] {e}")
+        err.print(f"[bold red]Error:[/] {escape(str(e))}")
         raise typer.Exit(2) from e
 
     if fmt == CheckFormat.json:
@@ -685,7 +686,7 @@ def export_cmd(
         try:
             res = export_collection(folder, output, config=config, myst=fmt == ExportFormat.myst)
         except (ValueError, FileNotFoundError) as e:
-            err.print(f"[bold red]Error:[/] {e}")
+            err.print(f"[bold red]Error:[/] {escape(str(e))}")
             raise typer.Exit(2) from e
         _print_collection(res, "exported")
         if res.failed:
@@ -866,3 +867,83 @@ def terms_runs(limit: int = typer.Option(20, "--limit", "-n")) -> None:
                       str(sm.get("external_terms", "")),
                       ", ".join(f"{v} {k}" for k, v in sorted((sm.get("statuses") or {}).items())))
     console.print(table)
+
+
+# ---------------------------------------------------------------- fixes
+fix_app = typer.Typer(help="Suggested fixes for quality findings, written to a new ontology file (the original is "
+                           "never changed).", no_args_is_help=True)
+app.add_typer(fix_app, name="fix", rich_help_panel=ADVANCED)
+
+
+def _fix_session(source: str, config: Path | None):
+    from .fixes import FixSession
+    try:
+        return FixSession(source, config)
+    except (ValueError, FileNotFoundError) as e:
+        err.print(f"[bold red]Error:[/] {escape(str(e))}")
+        raise typer.Exit(2) from e
+
+
+@fix_app.command("list")
+def fix_list(source: str = typer.Argument(..., help="Ontology file."), config: Path | None = ConfigOpt,
+             json_out: bool = typer.Option(False, "--json", help="Print the suggestions as JSON."),
+             ai: bool = typer.Option(False, "--ai", help="Also draft missing definitions with the configured AI source.")):
+    """List suggested fixes, required metadata first. Nothing is changed."""
+    import json as _json
+    s = _fix_session(source, config)
+    s.precheck()
+    if ai:
+        from .fixes.ai import AIError, ai_suggestions, pick_source
+        try:
+            ai_suggestions(s, pick_source(s.cfg.ai, s.cfg.evaluation.cdi_hf_token))
+        except AIError as e:
+            err.print(f"[yellow]AI:[/] {escape(str(e))}")
+    if json_out:
+        console.print_json(_json.dumps([x.to_dict() for x in s.suggestions], ensure_ascii=False))
+        return
+    t = Table(title=f"{len(s.suggestions)} suggested fixes for {Path(source).name}")
+    for col in ("id", "kind", "rule", "fix", "term", "flags"):
+        t.add_column(col)
+    for x in s.suggestions:
+        t.add_row(x.id, x.source + (" (required)" if x.required else ""), x.rule, escape(x.title),
+                  escape(s.onto.terms[x.subject].label if x.subject in s.onto.terms else (x.subject or "ontology")),
+                  ", ".join(x.flags))
+    console.print(t)
+    if s.required_open():
+        console.print("[bold]Required before docs:[/] " + ", ".join(x.title.lower() for x in s.required_open())
+                      + ". Use: ontoreview fix apply SOURCE --set title=… --set license=… …")
+
+
+@fix_app.command("apply")
+def fix_apply(source: str = typer.Argument(..., help="Ontology file."), config: Path | None = ConfigOpt,
+              accept: list[str] | None = typer.Option(None, "--accept", help="Suggestion id to apply (option 1); "
+                                                                            "ID:N picks option N. Repeatable."),
+              accept_safe: bool = typer.Option(False, "--accept-safe", help="Apply every fix flagged safe."),
+              set_: list[str] | None = typer.Option(None, "--set", help="A required value: title=…, description=…, "
+                                                                       "license=URL, creators='Name ORCID; Name', version=…"),
+              output: Path | None = typer.Option(None, "--output", "-o", help="Default: the next version, e.g. a-v1.ttl.")):
+    """Apply chosen fixes: writes a new file (a-v1.ttl), a SPARQL patch and a record; the original is unchanged."""
+    from .fixes import FixError
+    s = _fix_session(source, config)
+    values = dict(v.split("=", 1) for v in (set_ or []) if "=" in v)
+    if "creators" in values:
+        values["creators"] = values["creators"].replace(";", "\n")
+    try:
+        for x in s.suggestions:
+            names = [f.name for f in x.fields]
+            if names and all(values.get(n) for n in names):
+                s.accept(x.id, values=values)
+        for item in accept or []:
+            sid, _, opt = item.partition(":")
+            s.accept(sid, option=max(int(opt) - 1, 0) if opt else 0)
+        if accept_safe:
+            s.accept_safe()
+        r = s.write(output)
+    except FixError as e:
+        err.print(f"[bold red]Error:[/] {escape(str(e))}")
+        raise typer.Exit(2) from e
+    console.print(f"[green]✓[/] {r.path}  ({r.applied} fixes; {r.not_applied} not applied)")
+    console.print(f"  patch {r.patch.name} · record {r.record.name}")
+    console.print(f"  fixed: {len(r.fixed)} findings" + (f"; new: {', '.join(r.new_findings)}" if r.new_findings else ""))
+    if s.required_open():
+        console.print("[yellow]Still required before docs:[/] " + ", ".join(x.title.lower() for x in s.required_open()))

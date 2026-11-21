@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import html
+import os
 import shutil
 from pathlib import Path
 
@@ -15,6 +16,10 @@ from ontoreview.build import load, resolve_config
 from ontoreview.collection import build_collection, export_collection
 from ontoreview.export import export_markdown
 from ontoreview.model.extract import extract
+
+# the examples are third-party ontologies (W3C, FOAF, …), several without a license triple: build them as
+# they are instead of asking for the missing metadata
+os.environ.setdefault("ONTOREVIEW_REQUIRE_METADATA", "0")
 
 ROOT = Path(__file__).resolve().parent.parent
 FIX = ROOT / "tests" / "fixtures"

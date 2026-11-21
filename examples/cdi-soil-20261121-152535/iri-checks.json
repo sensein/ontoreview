@@ -1,0 +1,245 @@
+{
+  "checked_at": "2026-11-21T20:25:37.483356+00:00",
+  "run_id": 150,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "settings": {
+    "offline": false,
+    "refresh": false,
+    "repositories": true,
+    "resolve": true,
+    "local_namespaces": [
+      "http://example.org/toy/",
+      "http://example.org/toy#"
+    ],
+    "budget": 120,
+    "cache_days": 30
+  },
+  "own_namespaces": [
+    "http://example.org/toy/",
+    "http://example.org/toy#"
+  ],
+  "releases": [
+    {
+      "title": "bibo (purl.org)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/ontology/bibo/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T03:50:03.244033+00:00",
+      "terms": 3,
+      "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+      "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+    },
+    {
+      "title": "Simple Knowledge Organization System",
+      "source": "bundle",
+      "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T01:08:31.108081+00:00",
+      "terms": 1,
+      "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+      "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+    },
+    {
+      "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/goodrelations/v1",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:34.665699+00:00",
+      "terms": 1,
+      "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+      "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+    },
+    {
+      "title": null,
+      "source": "ols",
+      "ontology_iri": "iao",
+      "ontology": "iao",
+      "version_iri": "http://purl.obolibrary.org/obo/iao/2026-03-30/iao.owl",
+      "version": "2026-03-30",
+      "retrieved": "2026-11-19T00:08:07.006472302",
+      "terms": 1
+    },
+    {
+      "title": null,
+      "source": "ols",
+      "ontology_iri": "oio",
+      "ontology": "oio",
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T00:08:58.696434276",
+      "terms": 1
+    },
+    {
+      "title": "soil",
+      "source": "cache",
+      "ontology_iri": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-21T18:10:59.470954+00:00",
+      "terms": 1,
+      "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+      "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl"
+    }
+  ],
+  "terms": [
+    {
+      "iri": "http://example.org/ref/Device",
+      "roles": [
+        "class"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": null,
+        "namespace": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/",
+        "title": "soil",
+        "document": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+        "version_iri": null,
+        "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+        "fetched_at": "2026-11-21T18:10:59.470954+00:00",
+        "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.obolibrary.org/obo/IAO_0000115",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "iao",
+        "ontology_iri": "iao",
+        "version_iri": "http://purl.obolibrary.org/obo/iao/2026-03-30/iao.owl",
+        "version": "2026-03-30",
+        "loaded": "2026-11-19T00:08:07.006472302"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://purl.org/dc/terms/creator",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/description",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/license",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/title",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "oio",
+        "ontology_iri": "oio",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-19T00:08:58.696434276"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#definition",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    }
+  ]
+}

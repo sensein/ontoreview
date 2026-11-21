@@ -1,6 +1,6 @@
 # Fixing quality findings
 
-*Plan, not implemented yet.*
+*Phase 1 implemented (rule fixes, required metadata, review before build, AI drafts for definitions); aligner rankings and the Quality issues page are next.*
 
 ## Rule
 

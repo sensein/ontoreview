@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this ontology, please cite it as below."
+type: dataset
+title: "example ontology"
+version: "1.0.0"
+url: "http://example.org/toy"
+authors:
+  - given-names: "tek"
+    family-names: "raj"

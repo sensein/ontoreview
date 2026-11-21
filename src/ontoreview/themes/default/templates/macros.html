@@ -48,7 +48,7 @@
     {% if x.status %}<span class="term-flag">{{ x.status }}</span>{% endif %}
   </header>
   <p class="term-iri"><code>{{ x.iri }}</code> <button class="copy" data-copy="{{ x.iri }}" aria-label="{{ t('copy_iri') }}">copy</button></p>
-  {% if x.definition %}<div class="definition">{{ x.definition|md }}</div>{% endif %}
+  {% if x.definition %}<div class="definition">{{ x.definition|md }}{% if x.iri in ai_terms %} <span class="ai-tag" title="{{ ai_terms[x.iri] }}">AI-assisted</span>{% endif %}</div>{% endif %}
   {% for c in x.comments %}<div class="comment">{{ c|md }}</div>{% endfor %}
   {% if x.replaced_by %}<p class="note-line">{{ t('replaced_by') }}: {{ refs(x.replaced_by) }}</p>{% endif %}
   <table class="rel">

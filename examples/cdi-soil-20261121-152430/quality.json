@@ -1,0 +1,3520 @@
+{
+  "summary": {
+    "error": 1,
+    "warning": 4,
+    "info": 5
+  },
+  "totals": {
+    "error": 1,
+    "warning": 16,
+    "info": 32
+  },
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://example.org/toy/Machine",
+            "http://example.org/toy/PHReading",
+            "http://example.org/toy/Process",
+            "http://example.org/toy/Sensor",
+            "http://example.org/toy/SoilPHReading",
+            "http://example.org/toy/SoilSample",
+            "http://example.org/toy/Tractor",
+            "http://example.org/toy/hasParticipant"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "http://example.org/toy/Measurement",
+            "http://example.org/toy/Process",
+            "http://example.org/toy/Sensor",
+            "http://example.org/toy/SoilSample"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 8,
+        "info": 4
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "IRI checks",
+      "url": "https://www.w3.org/TR/cooluris/",
+      "items": [
+        {
+          "code": "ontology_iri_not_resolvable",
+          "name": "Ontology IRI does not resolve to this ontology",
+          "severity": "info",
+          "description": "Published ontologies should return RDF for their IRI (content negotiation). Expected for unpublished or in-development ontologies.",
+          "affected": [
+            "http://example.org/toy"
+          ],
+          "note": "HTTPError: 404 Client Error: Not Found for url: http://example.org/toy"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "0.1s. Own namespaces (not checked as external): http://example.org/toy/, http://example.org/toy#. Run #149 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "metrics": [
+        {
+          "group": "IRI",
+          "metric": "syntax",
+          "title": "IRI syntax",
+          "value": "No malformed IRIs",
+          "status": "ok",
+          "about": "All 29 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host"
+        },
+        {
+          "group": "IRI",
+          "metric": "header",
+          "title": "Ontology header",
+          "value": "http://example.org/toy",
+          "status": "ok",
+          "about": "Exactly one named owl:Ontology"
+        },
+        {
+          "group": "IRI",
+          "metric": "version",
+          "title": "Version IRI",
+          "value": "http://example.org/toy/1.0.0/",
+          "status": "ok",
+          "about": "owl:versionIRI, distinct from the ontology IRI"
+        },
+        {
+          "group": "IRI",
+          "metric": "resolves",
+          "title": "Ontology IRI resolves",
+          "value": "Not reachable",
+          "status": "warn",
+          "about": "The ontology IRI returns RDF (content negotiation) whose header matches it"
+        },
+        {
+          "group": "IRI",
+          "metric": "external",
+          "title": "External terms",
+          "value": "8 checked: 8 valid",
+          "status": "ok",
+          "about": "Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated"
+        },
+        {
+          "group": "IRI",
+          "metric": "sources",
+          "title": "Lookup sources",
+          "value": "bundled 1, cache 7",
+          "status": "info",
+          "about": "Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download"
+        },
+        {
+          "group": "IRI",
+          "metric": "freshness",
+          "title": "Freshness",
+          "value": "All lookups current",
+          "status": "ok",
+          "about": "Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged"
+        },
+        {
+          "group": "IRI",
+          "metric": "releases",
+          "title": "Releases verified against",
+          "value": "http://purl.obolibrary.org/obo/iao/2026-03-30/iao.owl (1)",
+          "status": "info",
+          "about": "The vocabulary release (version IRI / version) each external term was checked against"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T20:24:32.329959+00:00",
+        "run_id": 149,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "offline": false,
+          "refresh": false,
+          "repositories": true,
+          "resolve": true,
+          "local_namespaces": [
+            "http://example.org/toy/",
+            "http://example.org/toy#"
+          ],
+          "budget": 120,
+          "cache_days": 30
+        },
+        "own_namespaces": [
+          "http://example.org/toy/",
+          "http://example.org/toy#"
+        ],
+        "releases": [
+          {
+            "title": "bibo (purl.org)",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/ontology/bibo/",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T03:50:03.244033+00:00",
+            "terms": 3,
+            "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+            "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+          },
+          {
+            "title": "Simple Knowledge Organization System",
+            "source": "bundle",
+            "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T01:08:31.108081+00:00",
+            "terms": 1,
+            "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+            "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+          },
+          {
+            "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/goodrelations/v1",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-19T17:47:34.665699+00:00",
+            "terms": 1,
+            "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+            "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+          },
+          {
+            "title": null,
+            "source": "ols",
+            "ontology_iri": "iao",
+            "ontology": "iao",
+            "version_iri": "http://purl.obolibrary.org/obo/iao/2026-03-30/iao.owl",
+            "version": "2026-03-30",
+            "retrieved": "2026-11-19T00:08:07.006472302",
+            "terms": 1
+          },
+          {
+            "title": null,
+            "source": "ols",
+            "ontology_iri": "oio",
+            "ontology": "oio",
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-19T00:08:58.696434276",
+            "terms": 1
+          },
+          {
+            "title": "soil",
+            "source": "cache",
+            "ontology_iri": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-21T18:10:59.470954+00:00",
+            "terms": 1,
+            "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+            "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl"
+          }
+        ],
+        "terms": [
+          {
+            "iri": "http://example.org/ref/Device",
+            "roles": [
+              "class"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": null,
+              "namespace": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/",
+              "title": "soil",
+              "document": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+              "version_iri": null,
+              "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+              "fetched_at": "2026-11-21T18:10:59.470954+00:00",
+              "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.obolibrary.org/obo/IAO_0000115",
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "ols",
+              "ontology": "iao",
+              "ontology_iri": "iao",
+              "version_iri": "http://purl.obolibrary.org/obo/iao/2026-03-30/iao.owl",
+              "version": "2026-03-30",
+              "loaded": "2026-11-19T00:08:07.006472302"
+            },
+            "attempts": [
+              {
+                "provider": "local",
+                "status": "unverified"
+              }
+            ]
+          },
+          {
+            "iri": "http://purl.org/dc/terms/creator",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/description",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/license",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/goodrelations/v1",
+              "namespace": "http://purl.org/goodrelations/",
+              "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+              "document": "http://purl.org/goodrelations/v1",
+              "version_iri": null,
+              "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+              "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+              "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/title",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym",
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "ols",
+              "ontology": "oio",
+              "ontology_iri": "oio",
+              "version_iri": null,
+              "version": null,
+              "loaded": "2026-11-19T00:08:58.696434276"
+            },
+            "attempts": [
+              {
+                "provider": "local",
+                "status": "unverified"
+              }
+            ]
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#definition",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          }
+        ]
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 1
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "checkLabel",
+          "name": "Classes without rdfs:label",
+          "severity": "info",
+          "description": "OntoCheck checkLabel: these named classes have no rdfs:label.",
+          "affected": [
+            "http://example.org/ref/Device"
+          ],
+          "note": ""
+        },
+        {
+          "code": "definitionCheck",
+          "name": "Classes without skos:definition",
+          "severity": "info",
+          "description": "OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).",
+          "affected": [
+            "http://example.org/ref/Device",
+            "http://example.org/toy/Machine",
+            "http://example.org/toy/Measurement",
+            "http://example.org/toy/PHReading",
+            "http://example.org/toy/SoilPHReading",
+            "http://example.org/toy/Tractor"
+          ],
+          "note": ""
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "http://example.org/toy/Process",
+            "http://example.org/toy/Sensor",
+            "http://example.org/toy/SoilSample",
+            "http://example.org/toy/hasParticipant"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "1 without rdfs:domain, 1 without rdfs:range.",
+          "affected": [
+            "http://example.org/toy/hasParticipant"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "8 of 9 classes (89%)",
+          "status": "warn"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "0 of 9 classes (0%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "3 of 9 classes (33%)",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "3 classes, 1 property",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "5 groups",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "1 without domain, 1 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "5 of 9 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 5 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Found",
+          "status": "ok"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "0.0% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "9 of 9 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "0 possible misspellings in 52 words (0.0%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 12
+      }
+    },
+    {
+      "tool": "Cross-domain interoperability",
+      "url": "",
+      "items": [
+        {
+          "code": "CDI-A",
+          "name": "No correspondence in another domain",
+          "severity": "info",
+          "description": "No direct, lexical or inherited correspondence of sufficient strength into the reference ontologies. Mapping these (e.g. SSSOM, owl:equivalentClass, rdfs:subClassOf) raises Align.",
+          "affected": [
+            "http://example.org/toy/SoilPHReading"
+          ],
+          "note": ""
+        },
+        {
+          "code": "CDI-G",
+          "name": "Very specific class definition",
+          "severity": "info",
+          "description": "The definition reads as describing a concrete system or measurable details. A more general wording helps reuse outside this domain and raises Gen.",
+          "affected": [
+            "http://example.org/toy/Process",
+            "http://example.org/toy/Sensor"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 22 below the top N. Full record in cdi.json, and as CDI run 119 in the term database. Details of 29 repository ontologies came from the term database.",
+      "metrics": [
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "CDI",
+          "title": "CDI score",
+          "status": "warn",
+          "value": "0.35, not interoperable (θ = 0.5, β = 1.0)",
+          "about": "Weighted harmonic mean of Align and Gen; low when either is low"
+        },
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "Align",
+          "title": "Alignment",
+          "status": "ok",
+          "value": "0.76; 8 of 9 entities aligned",
+          "about": "Mean best correspondence strength per entity into ontologies of other domains (counted from τ = 0.5)"
+        },
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "Gen",
+          "title": "Generality",
+          "status": "warn",
+          "value": "0.22 = definition coverage 0.62 (5/8) × mean generality 0.36",
+          "about": "How domain-neutral the class definitions are (zero-shot language model)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:ncit",
+          "title": "NCI Thesaurus OBO Edition",
+          "status": "info",
+          "value": "Align_d 0.44, coverage 0.44, 8 correspondences (discovered)",
+          "about": "ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:sio",
+          "title": "Semanticscience Integrated Ontology",
+          "status": "info",
+          "value": "Align_d 0.44, coverage 0.44, 4 correspondences (discovered)",
+          "about": "ols:sio; release http://semanticscience.org/ontology/sio/v1.62/sio-release.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+          "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+          "status": "info",
+          "value": "Align_d 0.34, coverage 0.33, 3 correspondences (discovered)",
+          "about": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl; version not reported (identified by content hash)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:afo",
+          "title": "Allotrope Merged Ontology Suite",
+          "status": "info",
+          "value": "Align_d 0.34, coverage 0.33, 4 correspondences (discovered)",
+          "about": "ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:snomed",
+          "title": "SNOMED CT (International Edition)",
+          "status": "info",
+          "value": "Align_d 0.43, coverage 0.33, 4 correspondences (discovered)",
+          "about": "ols:snomed; release http://snomed.info/sct/900000000000207008/version/20251017"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+          "title": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+          "status": "info",
+          "value": "Align_d 0.18, coverage 0.22, 2 correspondences (discovered)",
+          "about": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl; version not reported (identified by content hash)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "db:http://www.w3.org/ns/sosa/",
+          "title": "http://www.w3.org/ns/sosa/",
+          "status": "info",
+          "value": "Align_d 0.18, coverage 0.22, 2 correspondences (discovered)",
+          "about": "db:http://www.w3.org/ns/sosa/; version not reported (identified by content hash)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:agro",
+          "title": "Agronomy Ontology",
+          "status": "info",
+          "value": "Align_d 0.20, coverage 0.22, 2 correspondences (discovered)",
+          "about": "ols:agro; domain: agriculture; release http://purl.obolibrary.org/obo/agro/releases/2022-11-02/agro.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:exo",
+          "title": "Exposure ontology",
+          "status": "info",
+          "value": "Align_d 0.26, coverage 0.22, 2 correspondences (discovered)",
+          "about": "ols:exo; domain: health; release http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:uberon",
+          "title": "Uberon multi-species anatomy ontology",
+          "status": "info",
+          "value": "Align_d 0.20, coverage 0.22, 2 correspondences (discovered)",
+          "about": "ols:uberon; domain: anatomy and development; release http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T20:24:33.605473+00:00",
+        "references": [
+          "ols"
+        ],
+        "notes": [
+          "Details of 29 repository ontologies came from the term database."
+        ],
+        "run_id": 119,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "cdi": "on",
+          "cdi_references": [
+            "ols"
+          ],
+          "cdi_term_db": true,
+          "cdi_domains": [],
+          "cdi_exclude": [],
+          "cdi_namespace": [],
+          "cdi_classes_only": false,
+          "cdi_top_n": 10,
+          "cdi_tau": 0.5,
+          "cdi_c_lex": 0.9,
+          "cdi_rho_sub": 0.8,
+          "cdi_gamma": 0.8,
+          "cdi_k_max": 3,
+          "cdi_beta": 1.0,
+          "cdi_theta": 0.5,
+          "cdi_model": "facebook/bart-large-mnli",
+          "cdi_generality": true,
+          "cdi_ontoaligner": "sbert",
+          "cdi_sbert_model": "all-MiniLM-L6-v2",
+          "cdi_ontoaligner_threshold": 0.8,
+          "cdi_timeout": 30,
+          "cdi_budget": 600,
+          "si": "on",
+          "si_references": [],
+          "si_home_domain": null,
+          "si_theta_s": 0.3,
+          "si_classifier": true,
+          "si_p_min": 0.15,
+          "si_domain_map": {},
+          "si_upper_ontologies": [],
+          "si_upper_namespaces": [],
+          "used_for": [
+            "cdi",
+            "si"
+          ]
+        },
+        "summary": {
+          "align": 0.764,
+          "gen": 0.22371200079340336,
+          "cdi": 0.34608462480736857,
+          "interoperable": false,
+          "definition_coverage": 0.625,
+          "mean_definition_generality": 0.3579392012694454,
+          "n_entities": 9,
+          "n_aligned_entities": 8,
+          "n_classes": 8,
+          "n_defined_classes": 5,
+          "reference_ontologies": [
+            "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "db:http://www.w3.org/ns/sosa/",
+            "ols:afo",
+            "ols:agro",
+            "ols:exo",
+            "ols:ncit",
+            "ols:sio",
+            "ols:snomed",
+            "ols:uberon"
+          ],
+          "params": {
+            "tau": 0.5,
+            "c_lex": 0.9,
+            "rho_sub": 0.8,
+            "gamma": 0.8,
+            "k_max": 3,
+            "top_n": 10,
+            "beta": 1.0,
+            "theta": 0.5,
+            "domains": [],
+            "namespace": [
+              "http://example.org/toy/"
+            ]
+          }
+        },
+        "per_ontology": [
+          {
+            "id": "ols:ncit",
+            "source": "ols",
+            "title": "NCI Thesaurus OBO Edition",
+            "domain": "health",
+            "given": false,
+            "description": "NCI Thesaurus (NCIt)is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. The NCIt OBO Edition aims to increase integration of the NCIt with OBO Library ontologies. NCIt OBO Edition releases should be considered experimental.",
+            "coverage": 0.4444444444444444,
+            "n_correspondences": 8,
+            "status": "selected",
+            "align_d": 0.44400000000000006,
+            "release": {
+              "source": "ols",
+              "ontology": "ncit",
+              "title": "NCI Thesaurus OBO Edition",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+              "version": "26.02d",
+              "released": "2026-11-21T00:09:04.346151993",
+              "retrieved": "2026-11-21T17:30:07Z",
+              "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:07.631597+00:00"
+            }
+          },
+          {
+            "id": "ols:sio",
+            "source": "ols",
+            "title": "Semanticscience Integrated Ontology",
+            "domain": "",
+            "given": false,
+            "description": "The Semanticscience Integrated Ontology (SIO) provides a simple, integrated ontology of types and relations for rich description of objects, processes and their attributes.",
+            "coverage": 0.4444444444444444,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.44400000000000006,
+            "release": {
+              "source": "ols",
+              "ontology": "sio",
+              "title": "Semanticscience Integrated Ontology",
+              "ontology_iri": "http://semanticscience.org/ontology/sio.owl",
+              "version_iri": "http://semanticscience.org/ontology/sio/v1.62/sio-release.owl",
+              "version": "1.62",
+              "released": "2026-11-21T00:09:09.346259822",
+              "retrieved": "2026-11-21T17:30:12Z",
+              "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:12.699095+00:00"
+            }
+          },
+          {
+            "id": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "source": "termdb",
+            "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.3333333333333333,
+            "n_correspondences": 3,
+            "status": "selected",
+            "align_d": 0.3400000000000001,
+            "release": {
+              "source": "term database (cache)",
+              "document": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+              "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+              "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+              "retrieved": "2026-11-21T18:10:59.470954+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "ols:afo",
+            "source": "ols",
+            "title": "Allotrope Merged Ontology Suite",
+            "domain": "",
+            "given": false,
+            "description": "Allotrope Merged Ontology Suite",
+            "coverage": 0.3333333333333333,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.34400000000000003,
+            "release": {
+              "source": "ols",
+              "ontology": "afo",
+              "title": "Allotrope Merged Ontology Suite",
+              "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+              "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+              "version": "REC/2026/09",
+              "released": "2026-11-21T00:09:10.933549934",
+              "retrieved": "2026-11-21T17:30:08Z",
+              "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:08.826386+00:00"
+            }
+          },
+          {
+            "id": "ols:snomed",
+            "source": "ols",
+            "title": "SNOMED CT (International Edition)",
+            "domain": "",
+            "given": false,
+            "description": "SNOMED CT or SNOMED Clinical Terms is a systematically organized computer processable collection of medical terms providing codes, terms, synonyms and definitions used in clinical documentation and reporting.",
+            "coverage": 0.3333333333333333,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.42800000000000005,
+            "release": {
+              "source": "ols",
+              "ontology": "snomed",
+              "title": "SNOMED CT (International Edition)",
+              "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
+              "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
+              "released": "2026-10-21T10:27:50.617005757",
+              "retrieved": "2026-11-21T17:30:09Z",
+              "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:09.210659+00:00"
+            }
+          },
+          {
+            "id": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "source": "termdb",
+            "title": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.2222222222222222,
+            "n_correspondences": 2,
+            "status": "selected",
+            "align_d": 0.18000000000000002,
+            "release": {
+              "source": "term database (cache)",
+              "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+              "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+              "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+              "retrieved": "2026-11-21T18:30:32.069107+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "db:http://www.w3.org/ns/sosa/",
+            "source": "termdb",
+            "title": "http://www.w3.org/ns/sosa/",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.2222222222222222,
+            "n_correspondences": 2,
+            "status": "selected",
+            "align_d": 0.18000000000000002,
+            "release": {
+              "source": "term database (bundled)",
+              "document": "http://www.w3.org/ns/sosa/",
+              "ontology_iri": "http://www.w3.org/ns/sosa/",
+              "sha256": "c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392",
+              "source_url": "https://www.w3.org/ns/sosa/sosa.ttl",
+              "retrieved": "2026-11-18T01:08:30.672748+00:00",
+              "identified_by": "content hash"
+            }
+          },
+          {
+            "id": "ols:agro",
+            "source": "ols",
+            "title": "Agronomy Ontology",
+            "domain": "agriculture",
+            "given": false,
+            "description": "Ontology of agronomic practices, agronomic techniques, and agronomic variables used in agronomic experiments",
+            "coverage": 0.2222222222222222,
+            "n_correspondences": 2,
+            "status": "selected",
+            "align_d": 0.2,
+            "release": {
+              "source": "ols",
+              "ontology": "agro",
+              "title": "Agronomy Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/agro-edit.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/agro/releases/2022-11-02/agro.owl",
+              "released": "2026-11-21T00:08:28.017847139",
+              "retrieved": "2026-11-21T17:39:09Z",
+              "metadata_sha256": "69eeed4def7c5923cbee0fe4d3619fa29949c1ef5efb3b488a0c1892ec20d2da",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:39:09.840896+00:00"
+            }
+          },
+          {
+            "id": "ols:exo",
+            "source": "ols",
+            "title": "Exposure ontology",
+            "domain": "health",
+            "given": false,
+            "description": "Vocabularies for describing exposure data to inform understanding of environmental health.",
+            "coverage": 0.2222222222222222,
+            "n_correspondences": 2,
+            "status": "selected",
+            "align_d": 0.264,
+            "release": {
+              "source": "ols",
+              "ontology": "exo",
+              "title": "Exposure ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/exo.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl",
+              "version": "2026-11-20",
+              "released": "2026-11-21T00:08:27.523150479",
+              "retrieved": "2026-11-21T17:34:11Z",
+              "metadata_sha256": "3cb5416d002bdbc7144a9cb8265dcf54713d5ddadf84c4c32641ecb1abcd0c21",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:34:11.366549+00:00"
+            }
+          },
+          {
+            "id": "ols:uberon",
+            "source": "ols",
+            "title": "Uberon multi-species anatomy ontology",
+            "domain": "anatomy and development",
+            "given": false,
+            "description": "An integrated cross-species anatomy ontology covering animals and bridging multiple species-specific ontologies",
+            "coverage": 0.2222222222222222,
+            "n_correspondences": 2,
+            "status": "selected",
+            "align_d": 0.2,
+            "release": {
+              "source": "ols",
+              "ontology": "uberon",
+              "title": "Uberon multi-species anatomy ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/uberon.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl",
+              "released": "2026-11-21T00:08:53.251939332",
+              "retrieved": "2026-11-21T17:30:14Z",
+              "metadata_sha256": "d6cd8e7b27faebc173306644e61560a54ff00a6dd470b49973f0e3a67ac02567",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:14.136391+00:00"
+            }
+          },
+          {
+            "id": "ols:addicto",
+            "source": "ols",
+            "title": "Addiction Ontology",
+            "domain": "",
+            "given": false,
+            "description": "The Addiction Ontology (AddictO) is an ontology being developed all aspects of addiction research.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "addicto",
+              "title": "Addiction Ontology",
+              "ontology_iri": "http://addictovocab.org/addicto.owl",
+              "version_iri": "http://addictovocab.org/addicto.owl/2026-10-08",
+              "released": "2026-11-21T00:09:03.288042145",
+              "retrieved": "2026-11-21T17:35:45Z",
+              "metadata_sha256": "019e3e12eff52147b169c8f77af313b96c391e0f3ff9c7d64005e2d1e8127790",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:45.321096+00:00"
+            }
+          },
+          {
+            "id": "ols:bao",
+            "source": "ols",
+            "title": "BioAssay Ontology",
+            "domain": "",
+            "given": false,
+            "description": "The BioAssay Ontology (BAO) describes biological screening assays and their results including high-throughput screening (HTS) data for the purpose of categorizing assays and data analysis. BAO is an extensible, knowledge-based, highly expressive (currently SHOIQ(D)) description of biological assays making use of descriptive logic based features of the Web Ontology Language (OWL). BAO currently has over 700 classes and also makes use of several other ontologies. It describes several concepts related to biological screening, including Perturbagen, Format, Meta Target, Design, Detection Technology, and Endpoint. Perturbagens are perturbing agents that are screened in an assay; they are mostly small molecules. Assay Meta Target describes what is known about the biological system and / or its components interrogated in the assay (and influenced by the Perturbagen). Meta target can be directly described as a molecular entity (e.g. a purified protein or a protein complex), or indirectly by a biological process or event (e.g. phosphorylation). Format describes the biological or chemical features common to each test condition in the assay and includes biochemical, cell-based, organism-based, and variations thereof. The assay Design describes the assay methodology and implementation of how the perturbation of the biological system is translated into a detectable signal. Detection Technology relates to the physical method and technical details to detect and record a signal. Endpoints are the final HTS results as they are usually published (such as IC50, percent inhibition, etc). BAO has been designed to accommodate multiplexed assays. All main BAO components include multiple levels of sub-categories and specification classes, which are linked via object property relationships forming an expressive knowledge-based representation.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "bao",
+              "title": "BioAssay Ontology",
+              "ontology_iri": "http://www.bioassayontology.org/bao/bao_complete.owl",
+              "version_iri": "http://www.bioassayontology.org/bao/bao_complete.owl",
+              "version": "2.8.19",
+              "released": "2026-11-21T00:10:03.215729815",
+              "retrieved": "2026-11-21T17:30:11Z",
+              "metadata_sha256": "450eb27e5250ddedcf49b6e7d7bb216e86086a113356445c0ae976228f86cc04",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:11.474751+00:00"
+            }
+          },
+          {
+            "id": "ols:bfo",
+            "source": "ols",
+            "title": "Basic Formal Ontology",
+            "domain": "upper",
+            "given": false,
+            "description": "The upper level ontology upon which OBO Foundry ontologies are built.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "bfo",
+              "title": "Basic Formal Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/bfo.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl",
+              "released": "2026-11-21T00:08:26.833422261",
+              "retrieved": "2026-11-21T17:35:01Z",
+              "metadata_sha256": "815bf5efc094317bc65253aaf7c0b829c6c83b7710745bea16a9bc8ac8003e64",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:01.219511+00:00"
+            }
+          },
+          {
+            "id": "ols:cao",
+            "source": "ols",
+            "title": "The Chemical Analysis Ontology",
+            "domain": "",
+            "given": false,
+            "description": "",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "cao",
+              "title": "The Chemical Analysis Ontology",
+              "ontology_iri": "http://champ-project.org/images/ontology/cao.owl",
+              "version": "0.2",
+              "released": "2026-11-21T00:09:03.195186071",
+              "retrieved": "2026-11-21T17:30:12Z",
+              "metadata_sha256": "9210d5f40a9efe3b9d21d131f92821dabb44814da125da63064def5e82c707e0",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:30:12.275808+00:00"
+            }
+          },
+          {
+            "id": "ols:chebi",
+            "source": "ols",
+            "title": "Chemical Entities of Biological Interest",
+            "domain": "chemistry and biochemistry",
+            "given": false,
+            "description": "A structured classification of molecular entities of biological interest focusing on 'small' chemical compounds.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "chebi",
+              "title": "Chemical Entities of Biological Interest",
+              "ontology_iri": "http://purl.obolibrary.org/obo/chebi.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/chebi/257/chebi.owl",
+              "version": "257",
+              "released": "2026-11-21T00:08:51.503620060",
+              "retrieved": "2026-11-21T17:30:14Z",
+              "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:14.565811+00:00"
+            }
+          },
+          {
+            "id": "ols:chmo",
+            "source": "ols",
+            "title": "Chemical Methods Ontology",
+            "domain": "health",
+            "given": false,
+            "description": "CHMO, the chemical methods ontology, describes methods used to",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "chmo",
+              "title": "Chemical Methods Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/chmo.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/chmo/releases/2026-05-27/chmo.owl",
+              "version": "2026-05-27",
+              "released": "2026-11-21T00:08:27.357834644",
+              "retrieved": "2026-11-21T17:30:11Z",
+              "metadata_sha256": "a2845e428fc5454657cef21e891672ae1eb5f9cc93e3fe8058241883eea890fe",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:11.077634+00:00"
+            }
+          },
+          {
+            "id": "ols:clao",
+            "source": "ols",
+            "title": "Collembola Anatomy Ontology",
+            "domain": "anatomy and development",
+            "given": false,
+            "description": "CLAO is an ontology of anatomical terms employed in morphological descriptions for the Class Collembola (Arthropoda: Hexapoda).",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "clao",
+              "title": "Collembola Anatomy Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/clao.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/clao/releases/2026-06-16/clao.owl",
+              "version": "2020-16-05",
+              "released": "2026-11-21T00:08:26.787511324",
+              "retrieved": "2026-11-21T17:35:05Z",
+              "metadata_sha256": "f86bf5803ae10484e4e47f3fe629731863f720701ad634deb5f7395461aabeb4",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:05.126731+00:00"
+            }
+          },
+          {
+            "id": "ols:edam",
+            "source": "ols",
+            "title": "Ontology of bioinformatics topics, operations, identifiers, and formats",
+            "domain": "",
+            "given": false,
+            "description": "EDAM is a simple ontology of well established, familiar concepts that are prevalent within bioinformatics, including types of data and data identifiers, data formats, operations and topics. EDAM provides a set of terms with synonyms and definitions - organised into an intuitive hierarchy for convenient use.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "edam",
+              "title": "Ontology of bioinformatics topics, operations, identifiers, and formats",
+              "ontology_iri": "http://edamontology.org",
+              "version_iri": "http://edamontology.org/EDAM_1.25-20260626T1230Z",
+              "version": "1.25-20260626T1230Z",
+              "released": "2026-11-21T00:09:06.634571043",
+              "retrieved": "2026-11-21T17:35:03Z",
+              "metadata_sha256": "78394191b7f64a43abaa0053827a7ce8822f60aabddb44ee0f915e18f411e0ab",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:03.255537+00:00"
+            }
+          },
+          {
+            "id": "ols:efo",
+            "source": "ols",
+            "title": "Experimental Factor Ontology",
+            "domain": "",
+            "given": false,
+            "description": "The Experimental Factor Ontology (EFO) provides a systematic description of many experimental variables available in EBI databases, and for external projects such as the NHGRI GWAS catalogue. It combines parts of several biological ontologies, such as anatomy, disease and chemical compounds. The scope of EFO is to support the annotation, analysis and visualization of data handled by many groups at the EBI and as the core ontology for OpenTargets.org",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "efo",
+              "title": "Experimental Factor Ontology",
+              "ontology_iri": "http://www.ebi.ac.uk/efo/efo.owl",
+              "version_iri": "http://www.ebi.ac.uk/efo/releases/v3.96.0/efo.owl",
+              "version": "3.96.0",
+              "released": "2026-11-21T00:09:19.633779342",
+              "retrieved": "2026-11-21T17:30:05Z",
+              "metadata_sha256": "991b0b25ddb8fffc1bbf5043233b41212ce9d20bdba47274abada46afc5b8abf",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:05.343809+00:00"
+            }
+          },
+          {
+            "id": "ols:gscmixs",
+            "source": "ols",
+            "title": "Minimum Information about any (x) Sequence (MIxS) standard",
+            "domain": "",
+            "given": false,
+            "description": "An OWL representation of the Minimum Information for any (x) Standard (MIxS), managed by the Genomic Standards Consortium. This file is released by the Genomic Standards Consortium (GSC; https://www.gensc.org/) for use by anyone handling data or information about biological sequences.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "gscmixs",
+              "title": "Minimum Information about any (x) Sequence (MIxS) standard",
+              "ontology_iri": "https://w3id.org/mixs/mixs.owl.ttl",
+              "released": "2026-11-21T00:09:21.718398536",
+              "retrieved": "2026-11-21T17:30:03Z",
+              "metadata_sha256": "87aaea481d889d1609ef02bb3f4d4b0af6acb467d9180a205750c4e7d727a0b6",
+              "identified_by": "release/load date",
+              "cached": "2026-11-21T17:30:03.170285+00:00"
+            }
+          },
+          {
+            "id": "ols:hao",
+            "source": "ols",
+            "title": "Hymenoptera Anatomy Ontology",
+            "domain": "anatomy and development",
+            "given": false,
+            "description": "A structured controlled vocabulary of the anatomy of the Hymenoptera (bees, wasps, and ants)",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "hao",
+              "title": "Hymenoptera Anatomy Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/hao.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/hao/2023-06-01/hao.owl",
+              "version": "2023-06-01",
+              "released": "2026-11-21T00:08:33.836517497",
+              "retrieved": "2026-11-21T17:35:44Z",
+              "metadata_sha256": "270534dda2ddd710f4cd6dba0f142312231feba68ba1babd38a97223cad8c20e",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:44.504895+00:00"
+            }
+          },
+          {
+            "id": "ols:mi",
+            "source": "ols",
+            "title": "Molecular Interactions Controlled Vocabulary",
+            "domain": "investigations",
+            "given": false,
+            "description": "A structured controlled vocabulary for the annotation of experiments concerned with protein-protein interactions.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "mi",
+              "title": "Molecular Interactions Controlled Vocabulary",
+              "ontology_iri": "http://purl.obolibrary.org/obo/mi.owl",
+              "released": "2026-11-21T00:08:36.114157697",
+              "retrieved": "2026-11-21T17:34:57Z",
+              "metadata_sha256": "1f1733e13a962a462ce4c7885c8700e02d46d749af7458381488b67f52eb5379",
+              "identified_by": "release/load date",
+              "cached": "2026-11-21T17:34:57.023209+00:00"
+            }
+          },
+          {
+            "id": "ols:ms",
+            "source": "ols",
+            "title": "Mass spectrometry ontology",
+            "domain": "investigations",
+            "given": false,
+            "description": "A structured controlled vocabulary for the annotation of experiments concerned with proteomics mass spectrometry.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "ms",
+              "title": "Mass spectrometry ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ms.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ms/4.2.17/ms.owl",
+              "released": "2026-11-21T00:08:36.558279523",
+              "retrieved": "2026-11-21T17:30:06Z",
+              "metadata_sha256": "6d2dbbfc9746ac0d4e30363f94cd0cda51a8a4b98698e94390fe34764fc9e90d",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:06.797028+00:00"
+            }
+          },
+          {
+            "id": "ols:nmrcv",
+            "source": "ols",
+            "title": "nuclear magnetic resonance CV",
+            "domain": "",
+            "given": false,
+            "description": "This artefact is an MSI-approved controlled vocabulary primarily developed under COSMOS EU and PhenoMeNal EU governance. The nmrCV is supporting the nmrML XML format with standardized terms. nmrML is a vendor agnostic open access NMR raw data standard. Its primaly role is analogous to the mzCV for the PSI-approved mzML XML format. It uses BFO2.0 as its Top level. This CV was derived from two predecessors (The NMR CV from the David Wishart Group, developed by Joseph Cruz) and the MSI nmr CV developed by Daniel Schober at the EBI.  This simple taxonomy of terms (no DL semantics used) serves the nuclear magnetic resonance markup language (nmrML) with meaningful descriptors to amend the nmrML xml file with CV terms. Metabolomics scientists are encouraged to use this CV to annotrate their raw and experimental context data, i.e. within nmrML. The approach to have an exchange syntax mixed of an xsd and CV stems from the PSI mzML effort. The reason to branch out from an xsd into a CV is, that in areas where the terminology is likely to change faster than the nmrML xsd could be updated and aligned, an externally and decentrallised maintained CV can accompensate for such dynamics in a more flexible way. A second reason for this set-up is that semantic validity of CV terms used in an nmrML XML instance (allowed CV terms, position/relation to each other, cardinality) can be validated by rule-based proprietary validators:  By means of cardinality specifications and XPath expressions defined in an XML mapping file (an instances of the CvMappingRules.xsd ), one can define what ontology terms are allowed in a specific location of the data model.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "nmrcv",
+              "title": "nuclear magnetic resonance CV",
+              "ontology_iri": "http://nmrML.org/nmrCV",
+              "version_iri": "http://nmrml.org/cv/v1.1.0/nmrCV.owl",
+              "version": "1.1.0",
+              "released": "2026-11-21T00:09:09.163971423",
+              "retrieved": "2026-11-21T17:30:04Z",
+              "metadata_sha256": "caba1bb088f5538d6afa57de12bd869c5a11f08dc0f56e0039c6bb1b292df667",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:04.071757+00:00"
+            }
+          },
+          {
+            "id": "ols:reproduceme",
+            "source": "ols",
+            "title": "REPRODUCE-ME Ontology",
+            "domain": "",
+            "given": false,
+            "description": "The REPRODUCE-ME ontology is an extension of the PROV-O and the P-Plan ontology to describe a complete path of a scientific experiment. It expresses the REPRODUCE-ME Data Model using the OWL2 Web Ontology Language (OWL2). It provides a set of classes and properties to represent a scientific experiment including its computational and non-computational steps to track the provenance of results. It describes a complete path of a scientific experiment considering the use-case of biological imaging and microscopy experiments, computational experiments, including Jupyter notebooks and scripts. It describes an experiment and its data, agents, activities, plans, steps, variables, instruments, materials, and settings required for its reproducibility.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "reproduceme",
+              "title": "REPRODUCE-ME Ontology",
+              "ontology_iri": "https://w3id.org/reproduceme",
+              "version": "1.1",
+              "released": "2026-11-21T00:09:18.386890850",
+              "retrieved": "2026-11-21T17:30:04Z",
+              "metadata_sha256": "ddd9159098c46f5e9c79010e8b09b092e94b7e617fced634bfad08d510e3f75f",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:30:04.492083+00:00"
+            }
+          },
+          {
+            "id": "ols:ro",
+            "source": "ols",
+            "title": "Relation Ontology",
+            "domain": "upper",
+            "given": false,
+            "description": "Relationship types shared across multiple ontologies",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "ro",
+              "title": "Relation Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ro.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ro/releases/2026-09-04/ro.owl",
+              "version": "2026-09-04",
+              "released": "2026-11-21T00:08:42.341255549",
+              "retrieved": "2026-11-21T17:36:14Z",
+              "metadata_sha256": "a7b579fc6485c2043add8471a2913993e1e11c924b8febfc7225b94b33ef6fbc",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:36:14.600072+00:00"
+            }
+          },
+          {
+            "id": "ols:scdo",
+            "source": "ols",
+            "title": "Sickle Cell Disease Ontology",
+            "domain": "health",
+            "given": false,
+            "description": "An ontology for the standardization of terminology and integration of knowledge about Sickle Cell Disease.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "scdo",
+              "title": "Sickle Cell Disease Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/scdo.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/scdo/releases/2021-04-15/scdo.owl",
+              "released": "2026-11-21T00:08:54.898707380",
+              "retrieved": "2026-11-21T17:30:09Z",
+              "metadata_sha256": "2d0378db63ded6923382283ff79853e0742af09bb2c50c191680d8dfc24e2dee",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:09.827559+00:00"
+            }
+          },
+          {
+            "id": "ols:spd",
+            "source": "ols",
+            "title": "Spider Ontology",
+            "domain": "anatomy and development",
+            "given": false,
+            "description": "An ontology for spider comparative biology including anatomical parts (e.g. leg, claw), behavior (e.g. courtship, combing) and products (i.g. silk, web, borrow).",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "spd",
+              "title": "Spider Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/TEMP",
+              "released": "2026-11-21T00:08:48.439364913",
+              "retrieved": "2026-11-21T17:39:10Z",
+              "metadata_sha256": "9cf4b9f1d152f631cdfa0260c5de540c9fccf2f050d488312dc545c822226b2c",
+              "identified_by": "release/load date",
+              "cached": "2026-11-21T17:39:10.692159+00:00"
+            }
+          },
+          {
+            "id": "ols:tfo",
+            "source": "ols",
+            "title": "TransformON",
+            "domain": "",
+            "given": false,
+            "description": "A domain ontology on food and bioproduct processing and characterization that is a specialization of the PO2 ontology (Process and Observation Ontology).",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "tfo",
+              "title": "TransformON",
+              "ontology_iri": "http://opendata.inrae.fr/PO2/Ontology/TransformON/",
+              "version": "33.0",
+              "released": "2026-11-21T00:09:21.120852308",
+              "retrieved": "2026-11-21T17:30:10Z",
+              "metadata_sha256": "2af2ead0b4260b62da6c8db1e53a706ae3fff083e2a4c6149084f2e83f3f851c",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:30:10.249891+00:00"
+            }
+          },
+          {
+            "id": "ols:txpo",
+            "source": "ols",
+            "title": "Toxic Process Ontology",
+            "domain": "chemistry and biochemistry",
+            "given": false,
+            "description": "TOXic Process Ontology (TXPO) systematizes a wide variety of terms involving toxicity courses and processes. The first version of TXPO focuses on liver toxicity.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "txpo",
+              "title": "Toxic Process Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/txpo.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/txpo/releases/2022-12-07/txpo.owl",
+              "version": "2022/12/07",
+              "released": "2026-11-21T00:08:50.421617032",
+              "retrieved": "2026-11-21T17:30:08Z",
+              "metadata_sha256": "b0ee3c6e3a667867cc55a37c43d98f633c8ece3202588f4c24037c95afa985ce",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:08.422791+00:00"
+            }
+          },
+          {
+            "id": "ols:xao",
+            "source": "ols",
+            "title": "Xenopus Anatomy Ontology",
+            "domain": "anatomy and development",
+            "given": false,
+            "description": "XAO represents the anatomy and development of the African frogs Xenopus laevis and tropicalis.",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "xao",
+              "title": "Xenopus Anatomy Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/xao.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/xao/releases/2024-09-03/xao.owl",
+              "released": "2026-11-21T00:08:48.799557528",
+              "retrieved": "2026-11-21T17:39:10Z",
+              "metadata_sha256": "5955400caa265a7e4dc10f9bea2ba6bbf660fbfd74d5e81d7f6146d77bb3e62b",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:39:10.271173+00:00"
+            }
+          },
+          {
+            "id": "ols:zfa",
+            "source": "ols",
+            "title": "Zebrafish anatomy and development ontology",
+            "domain": "anatomy and development",
+            "given": false,
+            "description": "A structured controlled vocabulary of the anatomy and development of the Zebrafish",
+            "coverage": 0.1111111111111111,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "zfa",
+              "title": "Zebrafish anatomy and development ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/zfa.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/zfa/releases/2026-07-16/zfa.owl",
+              "version": "2026-07-16",
+              "released": "2026-11-21T00:08:49.103159138",
+              "retrieved": "2026-11-21T17:35:05Z",
+              "metadata_sha256": "83393bd7d61ca78e53112b65a9bdda7dfd8e7592225c6df8f610bad62f5ce287",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:35:05.944770+00:00"
+            }
+          }
+        ],
+        "per_entity": [
+          {
+            "entity": "http://example.org/toy/Machine",
+            "label": "farm machine",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://snomed.info/id/19966008",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.0,
+            "predicted_level": null,
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://example.org/toy/Measurement",
+            "label": "measurement",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/NCIT_C25209",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.3291,
+            "predicted_level": 3,
+            "p_l1": 0.0137,
+            "p_l2": 0.0396,
+            "p_l3": 0.4138,
+            "p_l4": 0.3149,
+            "p_l5": 0.2179,
+            "definition": "An act of determining the value of a quantity."
+          },
+          {
+            "entity": "http://example.org/toy/PHReading",
+            "label": "pH reading",
+            "is_class": true,
+            "a_e": 0.576,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/NCIT_C25209",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://example.org/toy/Measurement",
+            "best_strength": 0.576,
+            "gen": 0.3606,
+            "predicted_level": 3,
+            "p_l1": 0.0043,
+            "p_l2": 0.0134,
+            "p_l3": 0.6725,
+            "p_l4": 0.0403,
+            "p_l5": 0.2695,
+            "definition": "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units."
+          },
+          {
+            "entity": "http://example.org/toy/Process",
+            "label": "process",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://snomed.info/id/415178003",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.3669,
+            "predicted_level": 4,
+            "p_l1": 0.0136,
+            "p_l2": 0.0605,
+            "p_l3": 0.3227,
+            "p_l4": 0.5861,
+            "p_l5": 0.0171,
+            "definition": "Something that happens over time and has participants."
+          },
+          {
+            "entity": "http://example.org/toy/Sensor",
+            "label": "sensor",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://www.w3.org/ns/sosa/Sensor",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/ns/sosa/",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.324,
+            "predicted_level": 4,
+            "p_l1": 0.0091,
+            "p_l2": 0.0201,
+            "p_l3": 0.2678,
+            "p_l4": 0.6635,
+            "p_l5": 0.0394,
+            "definition": "A device that detects a physical property and produces an output signal."
+          },
+          {
+            "entity": "http://example.org/toy/SoilPHReading",
+            "label": "soil pH reading",
+            "is_class": true,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "http://purl.obolibrary.org/obo/NCIT_C25209",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://example.org/toy/Measurement",
+            "best_strength": 0.4608,
+            "gen": 0.0,
+            "predicted_level": null,
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://example.org/toy/SoilSample",
+            "label": "soil sample",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/AGRO_00000699",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:agro",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.4091,
+            "predicted_level": 3,
+            "p_l1": 0.0208,
+            "p_l2": 0.0234,
+            "p_l3": 0.6216,
+            "p_l4": 0.2399,
+            "p_l5": 0.0943,
+            "definition": "A sample of topsoil collected for agronomic analysis of a field."
+          },
+          {
+            "entity": "http://example.org/toy/Tractor",
+            "label": "tractor",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/AGRO_00000124",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:agro",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.0,
+            "predicted_level": null,
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "http://example.org/toy/hasParticipant",
+            "label": "has participant",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://semanticscience.org/resource/SIO_000132",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          }
+        ],
+        "correspondences": [
+          {
+            "source": "http://example.org/toy/Machine",
+            "target": "http://example.org/ref/Device",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 0,
+            "method": "asserted:subClassOf",
+            "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://www.w3.org/ns/sosa/Sensor",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:http://www.w3.org/ns/sosa/",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://example.org/ref/Sensor",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://example.org/ref/Sensor",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://www.w3.org/ns/sosa/Sample",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "db:http://www.w3.org/ns/sosa/",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://example.org/ref/Sample",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://example.org/ref/Sample",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Machine",
+            "target": "http://snomed.info/id/19966008",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Measurement",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C25209",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Measurement",
+            "target": "http://snomed.info/id/122869004",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Measurement",
+            "target": "http://purl.obolibrary.org/obo/ExO_0000067",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:exo",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Measurement",
+            "target": "http://purl.allotrope.org/ontologies/process#AFP_0002294",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Measurement",
+            "target": "http://semanticscience.org/resource/SIO_001054",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://snomed.info/id/415178003",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://snomed.info/id/719982003",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C29862",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://semanticscience.org/resource/SIO_000006",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://purl.obolibrary.org/obo/ExO_0000023",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:exo",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C133285",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Process",
+            "target": "http://purl.obolibrary.org/obo/UBERON_0004529",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:uberon",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://purl.allotrope.org/ontologies/equipment#AFE_0002184",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C28220",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C50166",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Sensor",
+            "target": "http://purl.obolibrary.org/obo/UBERON_0000020",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:uberon",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://semanticscience.org/resource/SIO_001050",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://purl.allotrope.org/ontologies/role#AFRL_0000508",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://purl.allotrope.org/ontologies/role#AFRL_0000035",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C180316",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C70699",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C19157",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:broad/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/SoilSample",
+            "target": "http://purl.obolibrary.org/obo/AGRO_00000699",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:agro",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Tractor",
+            "target": "http://purl.obolibrary.org/obo/AGRO_00000124",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:agro",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/hasParticipant",
+            "target": "http://semanticscience.org/resource/SIO_000132",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": ""
+          },
+          {
+            "source": "http://example.org/toy/Machine",
+            "target": "http://example.org/ref/Device",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "via": "http://example.org/ref/Device"
+          },
+          {
+            "source": "http://example.org/toy/PHReading",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C25209",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/PHReading",
+            "target": "http://snomed.info/id/122869004",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/PHReading",
+            "target": "http://purl.obolibrary.org/obo/ExO_0000067",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:exo",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/PHReading",
+            "target": "http://purl.allotrope.org/ontologies/process#AFP_0002294",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/PHReading",
+            "target": "http://semanticscience.org/resource/SIO_001054",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/SoilPHReading",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C25209",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/SoilPHReading",
+            "target": "http://snomed.info/id/122869004",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/SoilPHReading",
+            "target": "http://purl.obolibrary.org/obo/ExO_0000067",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:exo",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/SoilPHReading",
+            "target": "http://purl.allotrope.org/ontologies/process#AFP_0002294",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/SoilPHReading",
+            "target": "http://semanticscience.org/resource/SIO_001054",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:sio",
+            "via": "http://example.org/toy/Measurement"
+          },
+          {
+            "source": "http://example.org/toy/Tractor",
+            "target": "http://example.org/ref/Device",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "asserted:subClassOf",
+            "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "via": "http://example.org/toy/Machine"
+          },
+          {
+            "source": "http://example.org/toy/Tractor",
+            "target": "http://snomed.info/id/19966008",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "http://example.org/toy/Machine"
+          },
+          {
+            "source": "http://example.org/toy/Tractor",
+            "target": "http://example.org/ref/Device",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 2,
+            "method": "shared-iri",
+            "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "via": "http://example.org/ref/Device"
+          }
+        ],
+        "releases": [
+          {
+            "title": "NCI Thesaurus OBO Edition",
+            "id": "ols:ncit",
+            "source": "ols",
+            "ontology": "ncit",
+            "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+            "version": "26.02d",
+            "released": "2026-11-21T00:09:04.346151993",
+            "retrieved": "2026-11-21T17:30:07Z",
+            "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
+            "identified_by": "version IRI",
+            "terms": 8,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "Semanticscience Integrated Ontology",
+            "id": "ols:sio",
+            "source": "ols",
+            "ontology": "sio",
+            "ontology_iri": "http://semanticscience.org/ontology/sio.owl",
+            "version_iri": "http://semanticscience.org/ontology/sio/v1.62/sio-release.owl",
+            "version": "1.62",
+            "released": "2026-11-21T00:09:09.346259822",
+            "retrieved": "2026-11-21T17:30:12Z",
+            "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
+            "identified_by": "version IRI",
+            "terms": 4,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "id": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "source": "term database (cache)",
+            "retrieved": "2026-11-21T18:10:59.470954+00:00",
+            "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+            "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "identified_by": "content hash",
+            "terms": 3,
+            "note": "version not reported by the source; identified by content hash",
+            "release_recorded": true,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "Allotrope Merged Ontology Suite",
+            "id": "ols:afo",
+            "source": "ols",
+            "ontology": "afo",
+            "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+            "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+            "version": "REC/2026/09",
+            "released": "2026-11-21T00:09:10.933549934",
+            "retrieved": "2026-11-21T17:30:08Z",
+            "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
+            "identified_by": "version IRI",
+            "terms": 4,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "SNOMED CT (International Edition)",
+            "id": "ols:snomed",
+            "source": "ols",
+            "ontology": "snomed",
+            "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
+            "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
+            "released": "2026-10-21T10:27:50.617005757",
+            "retrieved": "2026-11-21T17:30:09Z",
+            "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
+            "identified_by": "version IRI",
+            "terms": 4,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "id": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "source": "term database (cache)",
+            "retrieved": "2026-11-21T18:30:32.069107+00:00",
+            "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+            "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "identified_by": "content hash",
+            "terms": 2,
+            "note": "version not reported by the source; identified by content hash",
+            "release_recorded": true,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "http://www.w3.org/ns/sosa/",
+            "id": "db:http://www.w3.org/ns/sosa/",
+            "source": "term database (bundled)",
+            "ontology_iri": "http://www.w3.org/ns/sosa/",
+            "retrieved": "2026-11-18T01:08:30.672748+00:00",
+            "sha256": "c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392",
+            "source_url": "https://www.w3.org/ns/sosa/sosa.ttl",
+            "identified_by": "content hash",
+            "terms": 2,
+            "note": "version not reported by the source; identified by content hash",
+            "release_recorded": true,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "Agronomy Ontology",
+            "id": "ols:agro",
+            "source": "ols",
+            "ontology": "agro",
+            "ontology_iri": "http://purl.obolibrary.org/obo/agro-edit.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/agro/releases/2022-11-02/agro.owl",
+            "released": "2026-11-21T00:08:28.017847139",
+            "retrieved": "2026-11-21T17:39:09Z",
+            "metadata_sha256": "69eeed4def7c5923cbee0fe4d3619fa29949c1ef5efb3b488a0c1892ec20d2da",
+            "identified_by": "version IRI",
+            "terms": 2,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "Exposure ontology",
+            "id": "ols:exo",
+            "source": "ols",
+            "ontology": "exo",
+            "ontology_iri": "http://purl.obolibrary.org/obo/exo.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl",
+            "version": "2026-11-20",
+            "released": "2026-11-21T00:08:27.523150479",
+            "retrieved": "2026-11-21T17:34:11Z",
+            "metadata_sha256": "3cb5416d002bdbc7144a9cb8265dcf54713d5ddadf84c4c32641ecb1abcd0c21",
+            "identified_by": "version IRI",
+            "terms": 2,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          },
+          {
+            "title": "Uberon multi-species anatomy ontology",
+            "id": "ols:uberon",
+            "source": "ols",
+            "ontology": "uberon",
+            "ontology_iri": "http://purl.obolibrary.org/obo/uberon.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl",
+            "released": "2026-11-21T00:08:53.251939332",
+            "retrieved": "2026-11-21T17:30:14Z",
+            "metadata_sha256": "d6cd8e7b27faebc173306644e61560a54ff00a6dd470b49973f0e3a67ac02567",
+            "identified_by": "version IRI",
+            "terms": 2,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
+          }
+        ],
+        "record_file": "cdi.json",
+        "label": "Checked against"
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 3
+      }
+    },
+    {
+      "tool": "Scientific interoperability",
+      "url": "",
+      "items": [
+        {
+          "code": "SI-D",
+          "name": "Reference ontology without a scientific domain",
+          "severity": "info",
+          "description": "Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {\"ols:sio\" = [\"1.5\"]}.",
+          "affected": [],
+          "note": "ols:sio, db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl, ols:afo, db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl"
+        },
+        {
+          "code": "SI-H",
+          "name": "Own domain guessed by the classifier",
+          "severity": "info",
+          "description": "D = 5.3 Educational sciences was inferred from the ontology's title and description (classifier (p = 0.05)). Set evaluation.si_home_domain if it is wrong: that domain is never counted.",
+          "affected": [],
+          "note": "5.3 Educational sciences"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 119 in the term database.",
+      "metrics": [
+        {
+          "group": "Scientific interoperability",
+          "metric": "SI",
+          "title": "Scientific interoperability",
+          "status": "ok",
+          "value": "1 of 41 domains covered (3.2 Clinical medicine); θ_s = 0.3",
+          "about": "Scientific domains other than the ontology's own whose CDI reaches θ_s"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "SI^",
+          "title": "Share of domains",
+          "status": "info",
+          "value": "0.024",
+          "about": "SI divided by the 41 possible domains (OECD fields of science)"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "D",
+          "title": "Own domain",
+          "status": "info",
+          "value": "5.3 Educational sciences (classifier (p = 0.05))",
+          "about": "Not counted; set evaluation.si_home_domain to fix it"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "Ceiling",
+          "title": "Generality ceiling",
+          "status": "info",
+          "value": "0.37, from Gen = 0.22",
+          "about": "The highest CDI any one domain can reach, even fully aligned; more general class definitions raise it"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "Upper",
+          "title": "Upper-level ontologies ignored",
+          "status": "info",
+          "value": "0 correspondences removed; 0 upper-level and 4 reference ontologies without a domain ignored, of 10",
+          "about": "BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO (by ontology and IRI namespace)"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "CDI ≥ CDI_δ",
+          "title": "Consistency with CDI",
+          "status": "ok",
+          "value": "holds: every CDI_δ ≤ CDI = 0.35",
+          "about": "A domain's CDI can never exceed the cross-domain score"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "3.2",
+          "title": "Clinical medicine",
+          "status": "ok",
+          "value": "CDI_δ 0.33 (covered); Align_δ 0.61, 7 entities aligned",
+          "about": "via ols:exo, ols:ncit, ols:snomed"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.6",
+          "title": "Biological sciences",
+          "status": "warn",
+          "value": "CDI_δ 0.21 (below θ_s = 0.3); Align_δ 0.20, 2 entities aligned",
+          "about": "via ols:uberon"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "4.1",
+          "title": "Agriculture, forestry, and fisheries",
+          "status": "warn",
+          "value": "CDI_δ 0.21 (below θ_s = 0.3); Align_δ 0.20, 2 entities aligned",
+          "about": "via ols:agro"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "5.4",
+          "title": "Sociology",
+          "status": "warn",
+          "value": "CDI_δ 0.20 (below θ_s = 0.3); Align_δ 0.18, 2 entities aligned",
+          "about": "via db:http://www.w3.org/ns/sosa/"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "db:http://www.w3.org/ns/sosa/",
+          "title": "http://www.w3.org/ns/sosa/",
+          "status": "info",
+          "value": "5.4 Sociology",
+          "about": "classifier, p = 0.30"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:agro",
+          "title": "Agronomy Ontology",
+          "status": "info",
+          "value": "4.1 Agriculture, forestry, and fisheries",
+          "about": "repository metadata; repository domain: agriculture"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:exo",
+          "title": "Exposure ontology",
+          "status": "info",
+          "value": "3.2 Clinical medicine",
+          "about": "repository metadata; repository domain: health"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:ncit",
+          "title": "NCI Thesaurus OBO Edition",
+          "status": "info",
+          "value": "3.2 Clinical medicine",
+          "about": "repository metadata; repository domain: health"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:snomed",
+          "title": "SNOMED CT (International Edition)",
+          "status": "info",
+          "value": "3.2 Clinical medicine",
+          "about": "classifier, p = 0.59"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:uberon",
+          "title": "Uberon multi-species anatomy ontology",
+          "status": "info",
+          "value": "1.6 Biological sciences",
+          "about": "repository metadata; repository domain: anatomy and development"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+          "title": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+          "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:afo",
+          "title": "Allotrope Merged Ontology Suite",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:sio",
+          "title": "Semanticscience Integrated Ontology",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T20:24:33.605473+00:00",
+        "references": [
+          "ols"
+        ],
+        "run_id": 119,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "cdi_run_id": 119,
+        "settings": {
+          "si": "on",
+          "si_references": [],
+          "si_home_domain": null,
+          "si_theta_s": 0.3,
+          "si_classifier": true,
+          "si_p_min": 0.15,
+          "si_domain_map": {},
+          "si_upper_ontologies": [],
+          "si_upper_namespaces": []
+        },
+        "summary": {
+          "home_domain": "5.3 Educational sciences",
+          "home_domain_source": "classifier (p = 0.05)",
+          "si": 1,
+          "si_normalised": 0.024390243902439025,
+          "covered_domains": [
+            "3.2 Clinical medicine"
+          ],
+          "theta_s": 0.3,
+          "taxonomy_size": 42,
+          "generality": 0.22371200079340336,
+          "generality_ceiling": 0.3656285149583528,
+          "cdi": 0.34608462480736857,
+          "align": 0.764,
+          "proposition_holds": true,
+          "n_reference_ontologies": 10,
+          "n_ignored_upper": 0,
+          "n_ignored_no_domain": 4,
+          "n_correspondences_removed_upper": 0,
+          "upper_namespaces": [
+            "http://purl.obolibrary.org/obo/BFO_",
+            "http://purl.obolibrary.org/obo/COB_",
+            "http://purl.obolibrary.org/obo/RO_",
+            "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#",
+            "http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#",
+            "http://www.loa.istc.cnr.it/ontologies/DOLCE-Lite.owl#",
+            "http://www.onto-med.de/ontologies/gfo.owl#",
+            "http://www.ontologyportal.org/SUMO.owl#",
+            "http://www.ontologyportal.org/SUMO#",
+            "http://purl.org/nemo/gufo#"
+          ],
+          "interoperable": true,
+          "display": "1",
+          "params": {
+            "theta": 0.3
+          },
+          "display_note": "of 41 domains (θ_s = 0.3)"
+        },
+        "per_domain": [
+          {
+            "domain": "3.2",
+            "name": "Clinical medicine",
+            "reference_ontologies": [
+              "ols:exo",
+              "ols:ncit",
+              "ols:snomed"
+            ],
+            "n_aligned_entities": 7,
+            "align_delta": 0.6080000000000001,
+            "cdi_delta": 0.327076912086485,
+            "covered": true
+          },
+          {
+            "domain": "1.6",
+            "name": "Biological sciences",
+            "reference_ontologies": [
+              "ols:uberon"
+            ],
+            "n_aligned_entities": 2,
+            "align_delta": 0.2,
+            "cdi_delta": 0.21119250847226537,
+            "covered": false
+          },
+          {
+            "domain": "4.1",
+            "name": "Agriculture, forestry, and fisheries",
+            "reference_ontologies": [
+              "ols:agro"
+            ],
+            "n_aligned_entities": 2,
+            "align_delta": 0.2,
+            "cdi_delta": 0.21119250847226537,
+            "covered": false
+          },
+          {
+            "domain": "5.4",
+            "name": "Sociology",
+            "reference_ontologies": [
+              "db:http://www.w3.org/ns/sosa/"
+            ],
+            "n_aligned_entities": 2,
+            "align_delta": 0.18000000000000002,
+            "cdi_delta": 0.19948953741119796,
+            "covered": false
+          },
+          {
+            "domain": "1.1",
+            "name": "Mathematics",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.2",
+            "name": "Computer and information sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.3",
+            "name": "Physical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.4",
+            "name": "Chemical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.5",
+            "name": "Earth and related environmental sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.7",
+            "name": "Other natural sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.1",
+            "name": "Civil engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.10",
+            "name": "Nano-technology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.11",
+            "name": "Other engineering and technologies",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.2",
+            "name": "Electrical engineering, electronic engineering, information engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.3",
+            "name": "Mechanical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.4",
+            "name": "Chemical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.5",
+            "name": "Materials engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.6",
+            "name": "Medical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.7",
+            "name": "Environmental engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.8",
+            "name": "Environmental biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.9",
+            "name": "Industrial biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.1",
+            "name": "Basic medicine",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.3",
+            "name": "Health sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.4",
+            "name": "Medical biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.5",
+            "name": "Other medical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.2",
+            "name": "Animal and dairy science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.3",
+            "name": "Veterinary science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.4",
+            "name": "Agricultural biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.5",
+            "name": "Other agricultural sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.1",
+            "name": "Psychology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.2",
+            "name": "Economics and business",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.5",
+            "name": "Law",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.6",
+            "name": "Political science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.7",
+            "name": "Social and economic geography",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.8",
+            "name": "Media and communications",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.9",
+            "name": "Other social sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.1",
+            "name": "History and archaeology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.2",
+            "name": "Languages and literature",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.3",
+            "name": "Philosophy, ethics and religion",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.4",
+            "name": "Arts (arts, history of arts, performing arts, music)",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.5",
+            "name": "Other humanities",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          }
+        ],
+        "domain_assignments": [
+          {
+            "ontology": "ols:ncit",
+            "domains": [
+              "3.2"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "NCI Thesaurus OBO Edition",
+            "raw_domain": "health"
+          },
+          {
+            "ontology": "ols:sio",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "Semanticscience Integrated Ontology",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:afo",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "Allotrope Merged Ontology Suite",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:snomed",
+            "domains": [
+              "3.2"
+            ],
+            "source": "classifier",
+            "score": 0.5897862315177917,
+            "title": "SNOMED CT (International Edition)",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "db:file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "db:http://www.w3.org/ns/sosa/",
+            "domains": [
+              "5.4"
+            ],
+            "source": "classifier",
+            "score": 0.29778119921684265,
+            "title": "http://www.w3.org/ns/sosa/",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:agro",
+            "domains": [
+              "4.1"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Agronomy Ontology",
+            "raw_domain": "agriculture"
+          },
+          {
+            "ontology": "ols:exo",
+            "domains": [
+              "3.2"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Exposure ontology",
+            "raw_domain": "health"
+          },
+          {
+            "ontology": "ols:uberon",
+            "domains": [
+              "1.6"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Uberon multi-species anatomy ontology",
+            "raw_domain": "anatomy and development"
+          }
+        ],
+        "n_correspondences_without_upper": 47,
+        "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
+        "record_file": "si.json",
+        "own_references": false,
+        "notes": [],
+        "releases": [],
+        "label": "Checked against",
+        "releases_in": "cdi.json"
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 2
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P10",
+          "name": "Missing disjointness",
+          "severity": "warning",
+          "description": "The ontology lacks disjoint axioms between classes or between properties that should be defined as disjoint. This pitfall is related with the guidelines provided in [6], [2] and [7].",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "http://example.org/toy/hasParticipant"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P34",
+          "name": "Untyped class",
+          "severity": "warning",
+          "description": "An ontology element is used as a class without having been explicitly declared as such using the primitives owl:Class or rdfs:Class. This pitfall is related with the common problems listed in [8].",
+          "affected": [
+            "http://example.org/ref/Device"
+          ],
+          "note": ""
+        },
+        {
+          "code": "Warning",
+          "name": "WARNING: the following classes do not have rdf:type owl:Class or equivalent.",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "http://example.org/ref/Device"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P04",
+          "name": "Creating unconnected ontology elements",
+          "severity": "info",
+          "description": "Ontology elements (classes, object properties and datatype properties) are created isolated, with no relation to the rest of the ontology.",
+          "affected": [
+            "http://example.org/toy/Measurement",
+            "http://example.org/toy/Process",
+            "http://example.org/toy/Sensor",
+            "http://example.org/toy/SoilSample"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 4,
+        "info": 5
+      }
+    }
+  ],
+  "findings": [
+    {
+      "rule": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "message": "`http://example.org/toy/1.0.0/` is used but not declared.",
+      "subject": null,
+      "subject_label": null,
+      "anchor": null
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Class “farm machine” has no definition.",
+      "subject": "http://example.org/toy/Machine",
+      "subject_label": "farm machine",
+      "anchor": "Machine"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Class “soil pH reading” has no definition.",
+      "subject": "http://example.org/toy/SoilPHReading",
+      "subject_label": "soil pH reading",
+      "anchor": "SoilPHReading"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Class “tractor” has no definition.",
+      "subject": "http://example.org/toy/Tractor",
+      "subject_label": "tractor",
+      "anchor": "Tractor"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Object property “has participant” has no definition.",
+      "subject": "http://example.org/toy/hasParticipant",
+      "subject_label": "has participant",
+      "anchor": "hasParticipant"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “has participant” has no domain.",
+      "subject": "http://example.org/toy/hasParticipant",
+      "subject_label": "has participant",
+      "anchor": "hasParticipant"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “has participant” has no range.",
+      "subject": "http://example.org/toy/hasParticipant",
+      "subject_label": "has participant",
+      "anchor": "hasParticipant"
+    },
+    {
+      "rule": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "message": "“process” is not connected to any other term.",
+      "subject": "http://example.org/toy/Process",
+      "subject_label": "process",
+      "anchor": "Process"
+    },
+    {
+      "rule": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "message": "“sensor” is not connected to any other term.",
+      "subject": "http://example.org/toy/Sensor",
+      "subject_label": "sensor",
+      "anchor": "Sensor"
+    },
+    {
+      "rule": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "message": "“soil sample” is not connected to any other term.",
+      "subject": "http://example.org/toy/SoilSample",
+      "subject_label": "soil sample",
+      "anchor": "SoilSample"
+    }
+  ],
+  "rules": [
+    {
+      "id": "OB001",
+      "title": "Ontology has no title",
+      "severity": "warning",
+      "description": "Add dcterms:title (or rdfs:label) to the owl:Ontology node."
+    },
+    {
+      "id": "OB002",
+      "title": "Ontology has no description",
+      "severity": "warning",
+      "description": "Add dcterms:description or dcterms:abstract so readers know what the ontology is for."
+    },
+    {
+      "id": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "description": "Declare a license with dcterms:license so others know how they may reuse the ontology."
+    },
+    {
+      "id": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "description": "Add owl:versionInfo and owl:versionIRI to make releases citable and comparable."
+    },
+    {
+      "id": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "description": "Credit the authors with dcterms:creator."
+    },
+    {
+      "id": "OB006",
+      "title": "No preferred prefix/namespace",
+      "severity": "info",
+      "description": "Add vann:preferredNamespacePrefix and vann:preferredNamespaceUri."
+    },
+    {
+      "id": "OB010",
+      "title": "Term without a label",
+      "severity": "warning",
+      "description": "Every term should have a human-readable rdfs:label or skos:prefLabel (OOPS! P08)."
+    },
+    {
+      "id": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "description": "Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08)."
+    },
+    {
+      "id": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "description": "Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms."
+    },
+    {
+      "id": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "description": "Consider declaring rdfs:range (OOPS! P11)."
+    },
+    {
+      "id": "OB014",
+      "title": "Cycle in class hierarchy",
+      "severity": "error",
+      "description": "A class is (indirectly) a subclass of itself, which makes the classes equivalent (OOPS! P06)."
+    },
+    {
+      "id": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "description": "A term in the ontology namespace is used but never declared (no rdf:type) (OOPS! P34/P35)."
+    },
+    {
+      "id": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "description": "Two or more terms share the same label, which confuses readers and tools."
+    },
+    {
+      "id": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "description": "A term has more than one rdfs:label/skos:prefLabel in the same language."
+    },
+    {
+      "id": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "description": "Deprecated terms should point to their replacement with dcterms:isReplacedBy."
+    },
+    {
+      "id": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "description": "Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22)."
+    },
+    {
+      "id": "OB020",
+      "title": "Class both subclass of and disjoint with another",
+      "severity": "error",
+      "description": "A class that is a subclass of a class it is disjoint with is unsatisfiable."
+    },
+    {
+      "id": "OB021",
+      "title": "Transitive property used as functional",
+      "severity": "error",
+      "description": "In OWL 2 DL a transitive property cannot be functional or inverse functional."
+    },
+    {
+      "id": "OB022",
+      "title": "Self-referencing definition",
+      "severity": "warning",
+      "description": "A class is declared equivalent to or a subclass of itself (OOPS! P24/P27)."
+    },
+    {
+      "id": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "description": "A class with no superclass, no subclasses and no usage is disconnected from the model."
+    },
+    {
+      "id": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "description": "Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like)."
+    },
+    {
+      "id": "OB025",
+      "title": "Inverse of itself but not symmetric",
+      "severity": "warning",
+      "description": "A property declared as inverse of itself should be declared symmetric instead (OOPS! P25)."
+    },
+    {
+      "id": "OB026",
+      "title": "Missing language tags",
+      "severity": "info",
+      "description": "When some labels carry language tags, all of them should (helps multilingual docs)."
+    },
+    {
+      "id": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "description": "Declared terms that live in other namespaces are documented as external."
+    },
+    {
+      "id": "OB028",
+      "title": "Multiple domains or ranges",
+      "severity": "warning",
+      "description": "Several rdfs:domain (or range) axioms are interpreted as their intersection, which is often not intended (OOPS! P19)."
+    }
+  ]
+}

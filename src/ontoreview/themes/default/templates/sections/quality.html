@@ -1,21 +1,50 @@
 <section class="section" id="{{ s.id }}">
   {% set r = s.context.report %}
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
-  {% if r.external %}
-  <p class="prose">{{ t('quality_overview') }}</p>
-  <table class="plain check-summary">
-    <caption class="sr-only">{{ s.title }}</caption>
-    <thead><tr><th scope="col">{{ t('check') }}</th><th scope="col">{{ t('findings') }}</th><th scope="col" class="check-bar-col">{{ t('compared_largest') }}</th></tr></thead>
+  {% set ps = r.plain_summary() %}
+  <div class="qsum prose">
+    <p>{% if ps.issues == 0 %}{{ t('qs_none')|replace('{checks}', ps.checks) }}{% else %}{{ t('qs_found')|replace('{checks}', ps.checks)|replace('{n}', ps.issues) }}
+      {% set parts = [] %}{% if ps.by.error %}{% set _ = parts.append('<b>' ~ ps.by.error ~ '</b> ' ~ t('qs_errors')) %}{% endif %}{% if ps.by.warning %}{% set _ = parts.append('<b>' ~ ps.by.warning ~ '</b> ' ~ t('qs_warnings')) %}{% endif %}{% if ps.by.info %}{% set _ = parts.append('<b>' ~ ps.by.info ~ '</b> ' ~ t('qs_infos')) %}{% endif %}
+      {{ parts|join(', ')|safe }}.
+      {% if ps.overlap %}{{ t('qs_overlap')|replace('{raw}', ps.raw)|replace('{n}', ps.overlap) }}{% endif %}{% endif %}
+      {{ ' ' }}{% if ps.consistent is true %}{{ t('qs_consistent') }}{% elif ps.consistent is false %}<b>{{ t('qs_inconsistent') }}</b>{% endif %}
+      {% if ps.failed %}{{ t('qs_failed') }}: {{ ps.failed|join(', ') }}.{% endif %}</p>
+    {% if ps.top and ps.by.error + ps.by.warning %}<p>{{ t('qs_start') }}: {% for i in ps.top %}<i>{{ i.title }}</i>{% if i.elements %} ({{ i.elements|length }}){% endif %}{{ ', ' if not loop.last else '.' }}{% endfor %}</p>{% endif %}
+  </div>
+
+  {% set issues = r.merged_issues() %}
+  {% if issues %}
+  <h3 class="subhead" id="quality-issues">{{ t('qs_issues') }}</h3>
+  <p class="muted small">{{ t('qs_issues_note') }}</p>
+  <table class="plain issue-summary">
+    <caption class="sr-only">{{ t('qs_issues') }}</caption>
+    <thead><tr><th scope="col">{{ t('qs_issue') }}</th><th scope="col">{{ t('qs_severity') }}</th><th scope="col">{{ t('qs_affected') }}</th><th scope="col">{{ t('qs_found_by') }}</th></tr></thead>
     <tbody>
-    {% for row in r.check_rows() %}
-      <tr><td><a href="#{{ row.anchor }}">{{ row.tool or t('quality_builtin') }}</a></td>
-      <td class="check-count">{% if row.error %}<span class="muted">{{ t('not_run') }}</span>{% elif row.count is none %}<a href="#{{ row.anchor }}">{{ t('see_report') }}</a>{% else %}{{ row.count }}{% endif %}</td>
-      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:{{ '%.1f'|format(row.share * 100) }}%"></span></span></td></tr>
+    {% for i in issues %}
+      <tr class="sev-{{ i.severity }}"><td>{{ i.title }}</td><td><span class="sev">{{ t('sev_' ~ i.severity) }}</span></td>
+      <td class="small">{% if i.elements %}{% for e in i.elements[:4] %}{% if e in onto.terms %}<a href="{{ href(onto.terms[e].ref()) }}">{{ onto.terms[e].label }}</a>{% else %}<code>{{ e|replace('http://', '')|truncate(40) }}</code>{% endif %}{{ ', ' if not loop.last }}{% endfor %}{% if i.elements|length > 4 %} <span class="muted">+{{ i.elements|length - 4 }}</span>{% endif %}{% else %}<span class="muted">{{ t('qs_whole') }}</span>{% endif %}</td>
+      <td class="small">{% for b in i.found_by %}<a href="#{{ i.anchors[loop.index0] }}">{{ b }}</a>{{ ', ' if not loop.last }}{% endfor %}</td></tr>
     {% endfor %}
     </tbody>
   </table>
-  {% else %}
-  <p class="prose">{{ t('quality_builtin') }}: {{ r.summary.error }} {{ t('errors') }}, {{ r.summary.warning }} {{ t('warnings') }} {{ t('and') }} {{ r.summary.info }} {{ t('infos') }}.{% if not r.findings %} {{ t('no_findings') }}{% endif %}{% for ext in r.external %}{% if not ext.error %} {{ ext.tool }}: {{ ext.summary.error }} {{ t('errors') }}, {{ ext.summary.warning }} {{ t('warnings') }}, {{ ext.summary.info }} {{ t('infos') }}.{% endif %}{% endfor %}</p>
+  {% endif %}
+
+  {% if r.external %}
+  <h3 class="subhead">{{ t('qs_checks') }}</h3>
+  <p class="muted small">{{ t('quality_overview') }}</p>
+  <table class="plain check-summary">
+    <caption class="sr-only">{{ t('qs_checks') }}</caption>
+    <thead><tr><th scope="col">{{ t('check') }}</th><th scope="col">{{ t('qs_what') }}</th><th scope="col" class="num">{{ t('qs_col_err') }}</th><th scope="col" class="num">{{ t('qs_col_warn') }}</th><th scope="col" class="num">{{ t('qs_col_info') }}</th></tr></thead>
+    <tbody>
+    {% for row in r.check_rows() %}
+      <tr><td><a href="#{{ row.anchor }}">{{ row.tool or t('quality_builtin') }}</a></td>
+      <td class="small muted">{{ row.about }}</td>
+      {% if row.error %}<td colspan="3" class="small muted">{{ t('not_run') }}</td>
+      {% elif row.count is none %}<td colspan="3" class="small">{% if row.note %}{{ row.note }} {% endif %}<a href="#{{ row.anchor }}">{{ t('see_report') }}</a></td>
+      {% else %}<td class="num{% if row.errors %} n-err{% endif %}">{{ row.errors }}</td><td class="num{% if row.warnings %} n-warn{% endif %}">{{ row.warnings }}</td><td class="num">{{ row.infos }}</td>{% endif %}</tr>
+    {% endfor %}
+    </tbody>
+  </table>
   {% endif %}
 
   {% if r.external %}<h3 class="subhead" id="quality-builtin">{{ t('quality_builtin') }}</h3>{% endif %}

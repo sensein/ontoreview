@@ -643,6 +643,8 @@ def run_task(settings: Settings) -> TaskResult:
         log.info("Exporting %s → %s", "MyST" if s.task == "myst" else "Markdown", out)
         cfg = resolve_config(src)
         onto = extract(load(cfg), cfg)
+        from .fixes import check_required
+        check_required(onto, cfg, src)
         written = export_markdown(onto, out, myst=s.task == "myst")
         res.rows = [Row(Path(src).name, onto.metadata.title or Path(src).stem, len(onto.terms),
                         output=str(out / "index.md"))]
@@ -737,6 +739,30 @@ def describe_source(source: str) -> str:
 
 # ------------------------------------------------------------------ run history
 HISTORY_FILE = SETTINGS_FILE.with_name("history.json")
+
+
+def reviews_file() -> Path:
+    """Reviews waiting on the Quality issues page (kept across restarts)."""
+    return SETTINGS_FILE.with_name("reviews.json")
+
+
+def load_reviews() -> list[dict]:
+    try:
+        data = json.loads(reviews_file().read_text("utf-8"))
+        return [r for r in data if isinstance(r, dict) and r.get("key") and r.get("job")]
+    except (OSError, ValueError):
+        return []
+
+
+def save_reviews(rows: list[dict]) -> None:
+    f = reviews_file()
+    try:
+        f.parent.mkdir(parents=True, exist_ok=True)
+        tmp = f.with_suffix(".tmp")
+        tmp.write_text(json.dumps(rows, indent=1, default=str), "utf-8")
+        tmp.replace(f)
+    except OSError:
+        pass
 HISTORY_LIMIT = 200
 
 
@@ -757,6 +783,15 @@ class HistoryEntry:
     failed: str | None = None      # the run raised before producing anything
     summary: str = ""              # e.g. "+3 added · 1 removed · 2 modified" for comparisons
     deploys: list[dict] = field(default_factory=list)   # GitHub Pages deploys of this run's website
+    derived_from: str = ""         # a fixed version (a-v1.ttl): the original it was made from
+    fixes_applied: int = 0
+    fixes_total: int = 0
+
+    @property
+    def fixed_note(self) -> str:
+        if not self.derived_from:
+            return ""
+        return f"Fixed version of {self.derived_from} · {self.fixes_applied} of {self.fixes_total} fixes applied"
 
     @property
     def exists(self) -> bool:
@@ -800,6 +835,13 @@ def record_run(settings: Settings, result: TaskResult | None, error: str | None 
         seconds=round(r.seconds, 2) if r else 0.0, settings={k: v for k, v in asdict(settings).items() if not k.endswith(("_key", "_token"))}, failed=error,
         summary="{added} added · {removed} removed · {modified} modified".format(**change_counts(r.changes))
         if r and r.changes else "")
+    if settings.source and not settings.source.startswith(("http://", "https://")):
+        from .fixes import fixes_record
+        rec = fixes_record(settings.source)
+        if rec:
+            entry.derived_from = rec.get("source", {}).get("name", "")
+            entry.fixes_applied = len(rec.get("applied", []))
+            entry.fixes_total = entry.fixes_applied + len(rec.get("not_applied", []))
     entries = [entry] + load_history(path)
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -1097,6 +1139,17 @@ class Prefs:
     deploy_token: str = field(default="", repr=False)   # optional GitHub token; kept like the API keys
     deploy_create: bool = True      # create the repository when it does not exist (needs the token)
     deploy_private: bool = False
+    fix_review: bool = True         # review suggested fixes before docs are generated
+    fix_ignored: str = ""           # suggestion ids ignored in future builds (space-separated, stable across builds)
+    ai_enabled: bool = True         # AI drafts (definitions, refinements, description); applied only when accepted
+    ai_priority: str = "ollama,hf,api"
+    ai_hf_model: str = "Qwen/Qwen3.5-4B"
+    ai_ollama_model: str = "qwen3.5:4b"
+    ai_ollama_url: str = "http://localhost:11434"
+    ai_api_provider: str = "openai"
+    ai_api_base_url: str = ""
+    ai_api_model: str = ""
+    ai_api_key: str = field(default="", repr=False)     # kept like the other keys
     cdi_bioportal_key: str = field(default="", repr=False)
     cdi_ontoportal_key: str = field(default="", repr=False)
     hf_token: str = field(default="", repr=False)
@@ -1118,12 +1171,24 @@ class Prefs:
     def path() -> Path:
         return SETTINGS_FILE.with_name(PREFS_NAME)
 
+    def ai_config(self):
+        """The AI settings as the fixes package uses them."""
+        from .config import AIConfig
+        order = [x.strip() for x in self.ai_priority.split(",") if x.strip() in ("hf", "ollama", "api")]
+        return AIConfig(enabled=self.ai_enabled, priority=order or ["ollama", "hf", "api"], hf_model=self.ai_hf_model,
+                        ollama_model=self.ai_ollama_model, ollama_url=self.ai_ollama_url,
+                        api_provider=self.ai_api_provider if self.ai_api_provider in (
+                            "openai", "anthropic", "openrouter", "gemini", "mistral", "groq", "custom") else "custom",
+                        api_base_url=self.ai_api_base_url, api_model=self.ai_api_model,
+                        api_key=self.ai_api_key or None)
+
     def save(self) -> None:
         try:
             self.path().parent.mkdir(parents=True, exist_ok=True)
             path = self.path()
             path.touch(mode=0o600, exist_ok=True)
-            if self.cdi_bioportal_key or self.cdi_ontoportal_key or self.hf_token or self.deploy_token:
+            if self.cdi_bioportal_key or self.cdi_ontoportal_key or self.hf_token or self.deploy_token \
+                    or self.ai_api_key:
                 path.chmod(0o600)                       # optional API keys: readable by this user only
             path.write_text(json.dumps(asdict(self), indent=2), "utf-8")
         except OSError as e:
@@ -1137,6 +1202,8 @@ class Prefs:
             prefs = cls(**{k: v for k, v in data.items() if k in known})
             if not (prefs.oops_endpoint or "").strip():   # an emptied field means "the standard service"
                 prefs.oops_endpoint = cls.oops_endpoint
+            if prefs.ai_priority == "hf,ollama,api":       # the old default: a local Ollama now comes first
+                prefs.ai_priority = "ollama,hf,api"
             return prefs
         except (OSError, ValueError, TypeError):
             return cls()

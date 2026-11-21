@@ -1,0 +1,54 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/toy/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix oio: <http://www.geneontology.org/formats/oboInOwl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix r: <http://example.org/ref/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://example.org/toy> a owl:Ontology ;
+    dcterms:creator "tek raj" ;
+    dcterms:description "example ontology"@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "example ontology"@en ;
+    owl:versionIRI <http://example.org/toy/1.0.0/> ;
+    owl:versionInfo "1.0.0" .
+
+ex:Process a owl:Class ;
+    rdfs:label "process"@en ;
+    skos:definition "Something that happens over time and has participants."@en .
+
+ex:Sensor a owl:Class ;
+    rdfs:label "sensor"@en ;
+    skos:definition "A device that detects a physical property and produces an output signal."@en .
+
+ex:SoilPHReading a owl:Class ;
+    rdfs:label "soil pH reading"@en ;
+    rdfs:subClassOf ex:PHReading .
+
+ex:SoilSample a owl:Class ;
+    rdfs:label "soil sample"@en ;
+    oio:hasBroadSynonym "sample" ;
+    skos:definition "A sample of topsoil collected for agronomic analysis of a field."@en .
+
+ex:Tractor a owl:Class ;
+    rdfs:label "tractor"@en ;
+    rdfs:subClassOf ex:Machine .
+
+ex:hasParticipant a owl:ObjectProperty ;
+    rdfs:label "has participant"@en .
+
+ex:Machine a owl:Class ;
+    rdfs:label "farm machine"@en ;
+    rdfs:subClassOf r:Device .
+
+ex:Measurement a owl:Class ;
+    rdfs:label "measurement"@en ;
+    obo:IAO_0000115 "An act of determining the value of a quantity."@en .
+
+ex:PHReading a owl:Class ;
+    rdfs:label "pH reading"@en ;
+    rdfs:comment "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units."@en ;
+    rdfs:subClassOf ex:Measurement .
+

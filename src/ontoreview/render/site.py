@@ -177,8 +177,21 @@ class SiteRenderer:
             large_index=LARGE_INDEX,
             ui=self.cfg.ui,
             build_id=format(int(time.time()), "x"),
+            ai_terms=self._ai_terms(),
         )
         return env
+
+    def _ai_terms(self) -> dict[str, str]:
+        """Terms whose text came from an accepted AI draft: IRI → "model, accepted at" (shown as AI-assisted)."""
+        fixes = (getattr(self, "provenance", None) or {}).get("fixes") or {}
+        out = {}
+        for a in fixes.get("applied", []):
+            if a.get("ai_assisted") and a.get("subject"):
+                mb = a.get("made_by") or {}
+                out[a["subject"]] = (f"Drafted by {mb.get('provider') or mb.get('source')} · {mb.get('model')}"
+                                     + (", edited by the author" if a.get("edited") else "")
+                                     + f"; accepted {str(a.get('accepted_at', ''))[:10]}")
+        return out
 
     def href(self, ref: Ref) -> str:
         if ref.internal and ref.anchor:

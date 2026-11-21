@@ -440,11 +440,18 @@ a.stat-body:hover { text-decoration: none; background: var(--paper-2); }
 .check-summary { margin: .4rem 0 1.8rem; }
 .check-summary td { vertical-align: middle; }
 .check-summary .check-count { font-weight: 600; white-space: nowrap; }
-.check-summary .check-bar-col { width: 45%; }
-.check-bar { display: block; height: .45rem; border-radius: 999px; background: var(--bar-track); overflow: hidden; }
-.check-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--bar); }
-@media (forced-colors: active) { .check-bar { border: 1px solid CanvasText; } .check-bar > span { background: CanvasText; } }
-@media (max-width: 640px) { .check-summary .check-bar-col { display: none; } }
+.check-summary .num, .issue-summary .num { text-align: right; font-variant-numeric: tabular-nums; width: 5.5rem; }
+.check-summary .n-err { color: var(--del); font-weight: 600; }
+.check-summary .n-warn { color: var(--mod); font-weight: 600; }
+.qsum { border-left: 3px solid var(--rule-strong); padding: .2rem 0 .2rem 1rem; margin: .4rem 0 1.4rem; }
+.qsum p { margin: .3rem 0; }
+.issue-summary { margin: .4rem 0 1.8rem; }
+.issue-summary td { vertical-align: top; }
+.issue-summary .sev { font-size: .78em; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+.issue-summary .sev-error .sev { color: var(--del); }
+.issue-summary .sev-warning .sev { color: var(--mod); }
+.issue-summary .sev-info .sev { color: var(--muted); }
+@media (max-width: 640px) { .check-summary td:nth-child(2), .check-summary th:nth-child(2) { display: none; } }
 
 /* Provenance: timeline. Rail on the left, time above each event: nothing can overlap, whatever
    the timestamp width or text size. */
@@ -454,8 +461,14 @@ a.stat-body:hover { text-decoration: none; background: var(--paper-2); }
 .prov-ev::before { content: ""; position: absolute; left: calc(.3rem - 4px); top: .85rem; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); border: 2px solid var(--link); box-sizing: border-box; }
 .prov-ev.prov-check::before { border-color: var(--mod); }
 .prov-ev.prov-build::before { background: var(--link); }
+.prov-ev.prov-fix::before { border-color: var(--add); background: var(--add); }
 .prov-ev time { display: block; font: .8rem/1.6 var(--mono); color: var(--muted); }
 .prov-what { display: flex; flex-direction: column; }
 .prov-title { font-weight: 600; color: var(--ink); }
 .prov-detail { font-size: .88rem; color: var(--ink-2); }
 @media (forced-colors: active) { .prov-ev::before { border-color: CanvasText; } }
+
+/* AI-assisted text (accepted AI drafts) */
+.ai-tag { display: inline-block; font: 600 .66rem/1.5 var(--sans); letter-spacing: .04em; text-transform: uppercase;
+  color: var(--mod); border: 1px solid currentColor; border-radius: 4px; padding: 0 .35rem; margin-left: .3rem;
+  vertical-align: .15em; cursor: help; }

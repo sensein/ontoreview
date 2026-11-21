@@ -1,0 +1,151 @@
+# example ontology
+
+**IRI:** `http://example.org/toy`
+
+**Version:** 1.0.0
+
+**Authors:** tek raj
+
+**License:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+example ontology
+
+## Contents
+
+- [Classes](classes.md) (9)
+- [Object properties](object-properties.md) (1)
+- [Annotation properties](annotation-properties.md) (10)
+
+---
+
+# Classes
+
+### 1.0.0
+
+**IRI:** `http://example.org/toy/1.0.0/`
+
+### farm machine
+
+**IRI:** `http://example.org/toy/Machine` · `ex:Machine`
+
+A Device that performs agricultural tasks such as plowing and planting.
+
+| | |
+|---|---|
+| Superclasses | [r:Device](http://example.org/ref/Device) |
+| Subclasses | [tractor](classes.md#tractor) |
+
+### measurement
+
+**IRI:** `http://example.org/toy/Measurement` · `ex:Measurement`
+
+An act of determining the value of a quantity.
+
+| | |
+|---|---|
+| Subclasses | [pH reading](classes.md#phreading) |
+
+### pH reading
+
+**IRI:** `http://example.org/toy/PHReading` · `ex:PHReading`
+
+A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units.
+
+| | |
+|---|---|
+| Superclasses | [measurement](classes.md#measurement) |
+| Subclasses | [soil pH reading](classes.md#soilphreading) |
+
+### process
+
+**IRI:** `http://example.org/toy/Process` · `ex:Process`
+
+Something that happens over time and has participants.
+
+### sensor
+
+**IRI:** `http://example.org/toy/Sensor` · `ex:Sensor`
+
+A device that detects a physical property and produces an output signal.
+
+### soil pH reading
+
+**IRI:** `http://example.org/toy/SoilPHReading` · `ex:SoilPHReading`
+
+A pH reading that specifies the acidity or alkalinity of soil.
+
+| | |
+|---|---|
+| Superclasses | [pH reading](classes.md#phreading) |
+| Subclasses | [soil sample](classes.md#soilsample) |
+
+### soil sample
+
+**IRI:** `http://example.org/toy/SoilSample` · `ex:SoilSample`
+
+A sample of topsoil collected for agronomic analysis of a field.
+
+| | |
+|---|---|
+| Superclasses | [soil pH reading](classes.md#soilphreading) |
+| hasBroadSynonym | sample |
+
+### tractor
+
+**IRI:** `http://example.org/toy/Tractor` · `ex:Tractor`
+
+| | |
+|---|---|
+| Superclasses | [farm machine](classes.md#machine) |
+
+---
+
+# Object properties
+
+### has participant
+
+**IRI:** `http://example.org/toy/hasParticipant` · `ex:hasParticipant`
+
+---
+
+# Annotation properties
+
+### comment
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#comment` · `rdfs:comment`
+
+### creator
+
+**IRI:** `http://purl.org/dc/terms/creator` · `dcterms:creator`
+
+### definition
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#definition` · `skos:definition`
+
+### description
+
+**IRI:** `http://purl.org/dc/terms/description` · `dcterms:description`
+
+### hasBroadSynonym
+
+**IRI:** `http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym` · `oio:hasBroadSynonym`
+
+### IAO_0000115
+
+**IRI:** `http://purl.obolibrary.org/obo/IAO_0000115` · `obo:IAO_0000115`
+
+### label
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#label` · `rdfs:label`
+
+### license
+
+**IRI:** `http://purl.org/dc/terms/license` · `dcterms:license`
+
+### title
+
+**IRI:** `http://purl.org/dc/terms/title` · `dcterms:title`
+
+### versionInfo
+
+**IRI:** `http://www.w3.org/2002/07/owl#versionInfo` · `owl:versionInfo`
