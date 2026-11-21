@@ -8,7 +8,6 @@
 **Documentation, quality review and interoperability scores for OWL, RDFS, SKOS and LinkML ontologies.**
 Pure Python, no Java. One app or one command; the result is a self-contained website you can publish anywhere.
 
-![Generated documentation: header and overview](guide/images/docs-overview.png)
 
 ## Quick start
 
