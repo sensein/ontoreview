@@ -140,7 +140,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "2.5s. Own namespaces (not checked as external): https://w3id.org/example/personinfo/, https://w3id.org/example/personinfo#, https://w3id.org/example/personinfo/GenderType#. Run #88 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "2.5s. Own namespaces (not checked as external): https://w3id.org/example/personinfo/, https://w3id.org/example/personinfo#, https://w3id.org/example/personinfo/GenderType#. Run #109 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -208,8 +208,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:44:33.402333+00:00",
-        "run_id": 88,
+        "checked_at": "2026-11-21T18:01:32.143250+00:00",
+        "run_id": 109,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -1239,7 +1239,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 64 in the term database. Details of 20 repository ontologies came from the term database.",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 83 in the term database. Details of 20 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -1347,14 +1347,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:44:36.427364+00:00",
+        "checked_at": "2026-11-21T18:01:35.450913+00:00",
         "references": [
           "ols"
         ],
         "notes": [
           "Details of 20 repository ontologies came from the term database."
         ],
-        "run_id": 64,
+        "run_id": 83,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -1382,6 +1382,7 @@
           "cdi_timeout": 30,
           "cdi_budget": 600,
           "si": "on",
+          "si_references": [],
           "si_home_domain": null,
           "si_theta_s": 0.3,
           "si_classifier": true,
@@ -1733,7 +1734,7 @@
               "version_iri": "http://www.w3.org/ns/prov-o-20130430",
               "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
               "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-              "retrieved": "2026-11-21T17:38:33.645152+00:00",
+              "retrieved": "2026-11-21T17:47:58.239000+00:00",
               "identified_by": "version IRI"
             }
           },
@@ -3102,13 +3103,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:44:36.427364+00:00",
+        "checked_at": "2026-11-21T18:01:35.450913+00:00",
         "references": [
           "ols"
         ],
-        "cdi_run_id": 64,
+        "cdi_run_id": 83,
         "settings": {
           "si": "on",
+          "si_references": [],
           "si_home_domain": null,
           "si_theta_s": 0.3,
           "si_classifier": true,
@@ -3633,7 +3635,9 @@
         ],
         "n_correspondences_without_upper": 40,
         "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
-        "record_file": "si.json"
+        "record_file": "si.json",
+        "own_references": false,
+        "notes": []
       },
       "summary": {
         "error": 0,

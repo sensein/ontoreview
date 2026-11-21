@@ -4,29 +4,17 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
 >
-  <rdf:Description rdf:about="https://example.org/colors/scheme">
-    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
-    <dcterms:title xml:lang="en">Colour thesaurus</dcterms:title>
-    <dcterms:description xml:lang="en">A tiny SKOS vocabulary of colours.</dcterms:description>
-    <dcterms:license rdf:resource="https://creativecommons.org/publicdomain/zero/1.0/"/>
-    <skos:hasTopConcept rdf:resource="https://example.org/colors/color"/>
+  <rdf:Description rdf:about="https://example.org/colors/color">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel xml:lang="en">colour</skos:prefLabel>
+    <skos:definition xml:lang="en">A visual property.</skos:definition>
+    <skos:inScheme rdf:resource="https://example.org/colors/scheme"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://example.org/colors/darkred">
     <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
     <skos:prefLabel xml:lang="en">dark red</skos:prefLabel>
     <skos:broader rdf:resource="https://example.org/colors/red"/>
     <skos:related rdf:resource="https://example.org/colors/maroon"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/colors/maroon">
-    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-    <skos:prefLabel xml:lang="en">maroon</skos:prefLabel>
-    <skos:broader rdf:resource="https://example.org/colors/red"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://example.org/colors/color">
-    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-    <skos:prefLabel xml:lang="en">colour</skos:prefLabel>
-    <skos:definition xml:lang="en">A visual property.</skos:definition>
-    <skos:inScheme rdf:resource="https://example.org/colors/scheme"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://example.org/colors/red">
     <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
@@ -35,5 +23,17 @@
     <skos:broader rdf:resource="https://example.org/colors/color"/>
     <skos:inScheme rdf:resource="https://example.org/colors/scheme"/>
     <skos:exactMatch rdf:resource="http://dbpedia.org/resource/Red"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/colors/scheme">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <dcterms:title xml:lang="en">Colour thesaurus</dcterms:title>
+    <dcterms:description xml:lang="en">A tiny SKOS vocabulary of colours.</dcterms:description>
+    <dcterms:license rdf:resource="https://creativecommons.org/publicdomain/zero/1.0/"/>
+    <skos:hasTopConcept rdf:resource="https://example.org/colors/color"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/colors/maroon">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel xml:lang="en">maroon</skos:prefLabel>
+    <skos:broader rdf:resource="https://example.org/colors/red"/>
   </rdf:Description>
 </rdf:RDF>

@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T17:44:04.952936+00:00",
+  "checked_at": "2026-11-21T18:01:02.916922+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 12 repository ontologies came from the term database."
   ],
-  "run_id": 63,
+  "run_id": 81,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -34,6 +34,7 @@
     "cdi_timeout": 30,
     "cdi_budget": 600,
     "si": "on",
+    "si_references": [],
     "si_home_domain": null,
     "si_theta_s": 0.3,
     "si_classifier": true,

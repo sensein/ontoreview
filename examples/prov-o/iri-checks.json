@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-11-21T18:02:10.686979+00:00",
+  "run_id": 111,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "settings": {
+    "offline": false,
+    "refresh": false,
+    "repositories": true,
+    "resolve": true,
+    "local_namespaces": [
+      "http://www.w3.org/ns/prov#",
+      "http://www.w3.org/ns/prov/",
+      "http://www.w3.org/ns/prov-o#",
+      "http://www.w3.org/ns/prov-o/",
+      "http://www.w3.org/2002/07/owl#",
+      "http://www.w3.org/2000/01/rdf-schema#"
+    ],
+    "budget": 120,
+    "cache_days": 30
+  },
+  "own_namespaces": [
+    "http://www.w3.org/ns/prov#",
+    "http://www.w3.org/ns/prov/",
+    "http://www.w3.org/ns/prov-o#",
+    "http://www.w3.org/ns/prov-o/",
+    "http://www.w3.org/2002/07/owl#",
+    "http://www.w3.org/2000/01/rdf-schema#"
+  ],
+  "releases": [],
+  "terms": []
+}

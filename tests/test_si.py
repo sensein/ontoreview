@@ -189,3 +189,36 @@ def test_cli_overrides():
     assert ev == {"si_home_domain": "Mathematics", "si_theta_s": 0.25, "si_domain_map": {"ols:emi": ["1.5", "1.6"]}}
     ev = _eval_overrides(None, None, cdi=["ols"], no_cdi=True, si={})
     assert ev["cdi"] == "off" and ev["cdi_references"] == ["ols"]        # --no-cdi with references: SI only
+
+
+@pytest.mark.real_cdi
+def test_own_references(toy, monkeypatch):
+    """SI against its own list: a second alignment, its releases recorded; CDI keeps its references."""
+    onto_path, ref, sssom = toy
+    monkeypatch.setattr(cdi, "generality_backend", lambda ev: (core.CallableBackend(fake_levels), ""))
+    g = Graph().parse(onto_path)
+    ev = _ev(cdi_references=[str(sssom)], si_references=[str(ref)], si_home_domain="4.1",
+             si_domain_map={"file:toy_ref.ttl": ["1.5"]})
+    cdi_rep, si_rep = cdi.check_cdi(g, ev, str(onto_path))
+    assert {r["id"] for r in cdi_rep.provenance["per_ontology"]} == {"sssom:toy_to_bfo.sssom.tsv"}
+    rec = si_rep.provenance
+    assert rec["own_references"] and rec["references"] == [str(ref)] and rec["releases"]
+    assert [a["ontology"] for a in rec["domain_assignments"]] == ["file:toy_ref.ttl"]
+    assert "its own reference ontologies" in si_rep.scope
+    only = cdi.check_cdi(g, _ev(cdi="off", cdi_references=["ols"], si_references=[str(ref)], si_home_domain="4.1",
+                                iri_network=False), str(onto_path))
+    assert [r.tool for r in only] == ["Scientific interoperability"] and only[0].error is None   # no OLS run
+
+
+def test_repository_search(monkeypatch):
+    from ontoreview.quality_checks.cdi import repos
+    rows = [{"id": "envo", "title": "Environment Ontology", "description": "", "prefix": "ENVO"},
+            {"id": "chebi", "title": "Chemical Entities of Biological Interest", "description": "", "prefix": "CHEBI"},
+            {"id": "pato", "title": "Phenotype And Trait Ontology", "description": "environmental qualities", "prefix": ""}]
+    monkeypatch.setattr(repos, "ontology_list", lambda *a, **k: rows)
+    assert [r.spec for r in repos.search_ontologies("envo")] == ["ols:envo"]
+    assert [r.spec for r in repos.search_ontologies("environment")] == ["ols:envo", "ols:pato"]   # title before description
+    assert repos.search_ontologies("CHEBI", "bioportal")[0].spec == "bioportal:chebi"
+    monkeypatch.undo()
+    with pytest.raises(ValueError, match="API key"):
+        repos.ontology_list("bioportal", api_key="")

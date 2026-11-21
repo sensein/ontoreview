@@ -144,7 +144,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "0.2s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #86 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "0.1s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #107 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -212,8 +212,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:43:31.665229+00:00",
-        "run_id": 86,
+        "checked_at": "2026-11-21T18:00:29.139829+00:00",
+        "run_id": 107,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -834,7 +834,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 62 in the term database. Details of 12 repository ontologies came from the term database.",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 80 in the term database. Details of 12 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -942,14 +942,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:43:31.939300+00:00",
+        "checked_at": "2026-11-21T18:00:29.310588+00:00",
         "references": [
           "ols"
         ],
         "notes": [
           "Details of 12 repository ontologies came from the term database."
         ],
-        "run_id": 62,
+        "run_id": 80,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -977,6 +977,7 @@
           "cdi_timeout": 30,
           "cdi_budget": 600,
           "si": "on",
+          "si_references": [],
           "si_home_domain": null,
           "si_theta_s": 0.3,
           "si_classifier": true,
@@ -2774,13 +2775,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:43:31.939300+00:00",
+        "checked_at": "2026-11-21T18:00:29.310588+00:00",
         "references": [
           "ols"
         ],
-        "cdi_run_id": 62,
+        "cdi_run_id": 80,
         "settings": {
           "si": "on",
+          "si_references": [],
           "si_home_domain": null,
           "si_theta_s": 0.3,
           "si_classifier": true,
@@ -3316,7 +3318,9 @@
         ],
         "n_correspondences_without_upper": 78,
         "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
-        "record_file": "si.json"
+        "record_file": "si.json",
+        "own_references": false,
+        "notes": []
       },
       "summary": {
         "error": 0,

@@ -1,559 +1,5 @@
 [
   {
-    "@id": "http://schema.org/Person",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "Person"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "https://w3id.org/example/personinfo/NamedThing"
-      },
-      {
-        "@id": "https://w3id.org/example/personinfo/HasAliases"
-      },
-      {
-        "@id": "_:Ndc57bea2374f4ad4bce2e9d5d2a8514a"
-      },
-      {
-        "@id": "_:N48706e5d1a034a9698fdbb0c1081b745"
-      },
-      {
-        "@id": "_:N83bf981b0ac74f699fe36c5775028e2e"
-      },
-      {
-        "@id": "_:Nfa76c2062d9c4753be0f5ca133796829"
-      },
-      {
-        "@id": "_:Nc5b45604b86e4f78b23365cfd907709d"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#altLabel": [
-      {
-        "@value": "human being"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A person (alive, dead, undead, or fictional)."
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#exactMatch": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#example": [
-      {
-        "@value": "Ada Lovelace — a famous mathematician"
-      }
-    ],
-    "https://w3id.org/linkml/mixins": [
-      {
-        "@id": "https://w3id.org/example/personinfo/HasAliases"
-      }
-    ]
-  },
-  {
-    "@id": "_:Ndc57bea2374f4ad4bce2e9d5d2a8514a",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#onDataRange": [
-      {
-        "@id": "_:Nf4503c491cb841c3af71510e8322a70a"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "http://schema.org/email"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ]
-  },
-  {
-    "@id": "_:Nf4503c491cb841c3af71510e8322a70a",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2002/07/owl#onDatatype": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#withRestrictions": [
-      {
-        "@list": [
-          {
-            "@id": "_:Nc5b84d08b21e408093e196b264ff1e74"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:Nc5b84d08b21e408093e196b264ff1e74",
-    "http://www.w3.org/2001/XMLSchema#pattern": [
-      {
-        "@value": "^\\S+@[\\S+\\.]+\\S+"
-      }
-    ]
-  },
-  {
-    "@id": "_:N48706e5d1a034a9698fdbb0c1081b745",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onDataRange": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#date"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "http://schema.org/birthDate"
-      }
-    ]
-  },
-  {
-    "@id": "_:N83bf981b0ac74f699fe36c5775028e2e",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onDataRange": [
-      {
-        "@id": "_:Ne84ca854e9c84a529cf99c1a3dbf0b67"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/age_in_years"
-      }
-    ]
-  },
-  {
-    "@id": "_:Ne84ca854e9c84a529cf99c1a3dbf0b67",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2002/07/owl#onDatatype": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#integer"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#withRestrictions": [
-      {
-        "@list": [
-          {
-            "@id": "_:Nfc80aa5e5bc54b86ac27dc5c834227a0"
-          },
-          {
-            "@id": "_:Nb8655d3d65c346518262058dc7e9d279"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:Nfc80aa5e5bc54b86ac27dc5c834227a0",
-    "http://www.w3.org/2001/XMLSchema#minInclusive": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 0
-      }
-    ]
-  },
-  {
-    "@id": "_:Nb8655d3d65c346518262058dc7e9d279",
-    "http://www.w3.org/2001/XMLSchema#maxInclusive": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 999
-      }
-    ]
-  },
-  {
-    "@id": "_:Nfa76c2062d9c4753be0f5ca133796829",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onClass": [
-      {
-        "@id": "https://w3id.org/example/personinfo/GenderType"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/gender"
-      }
-    ]
-  },
-  {
-    "@id": "_:Nc5b45604b86e4f78b23365cfd907709d",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onClass": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/employed_by"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/organizations",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "organizations"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "https://w3id.org/linkml/attribute_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Container"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Container"
-      }
-    ],
-    "https://w3id.org/linkml/inlined_as_list": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ],
-    "https://w3id.org/linkml/multivalued": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/age_in_years",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "age_in_years"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "_:N7478e3439e6347ea82296ad8cc14383f"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ],
-    "https://w3id.org/linkml/maximum_value": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 999
-      }
-    ],
-    "https://w3id.org/linkml/minimum_value": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 0
-      }
-    ]
-  },
-  {
-    "@id": "_:N7478e3439e6347ea82296ad8cc14383f",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2002/07/owl#onDatatype": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#integer"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#withRestrictions": [
-      {
-        "@list": [
-          {
-            "@id": "_:Nb065be2a26644cf2ab12596110144537"
-          },
-          {
-            "@id": "_:Ne22395ddd2184b74b41e533896f1eba7"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:Nb065be2a26644cf2ab12596110144537",
-    "http://www.w3.org/2001/XMLSchema#minInclusive": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 0
-      }
-    ]
-  },
-  {
-    "@id": "_:Ne22395ddd2184b74b41e533896f1eba7",
-    "http://www.w3.org/2001/XMLSchema#maxInclusive": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 999
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/NamedThing",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/core"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "NamedThing"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "_:N257f8ac42d274a119f0ca1b7d912ee75"
-      },
-      {
-        "@id": "_:Nf2f224d934b34b40b2d695663ea0f887"
-      },
-      {
-        "@id": "_:N3aeaa9f6b2684c8ca522a5e9378484f5"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A generic grouping for any identifiable entity."
-      }
-    ],
-    "https://w3id.org/linkml/abstract": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ]
-  },
-  {
-    "@id": "_:N257f8ac42d274a119f0ca1b7d912ee75",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#onDataRange": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#anyURI"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/id"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ]
-  },
-  {
-    "@id": "_:Nf2f224d934b34b40b2d695663ea0f887",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onDataRange": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "http://schema.org/name"
-      }
-    ]
-  },
-  {
-    "@id": "_:N3aeaa9f6b2684c8ca522a5e9378484f5",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
-        "@value": "1"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onDataRange": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "http://schema.org/description"
-      }
-    ]
-  },
-  {
-    "@id": "http://purl.obolibrary.org/obo/GSSO_009253",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "https://w3id.org/example/personinfo/GenderType"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "nonbinary woman"
-      }
-    ],
-    "https://w3id.org/linkml/permissible_value": [
-      {
-        "@value": "nonbinary woman"
-      }
-    ]
-  },
-  {
-    "@id": "http://schema.org/birthDate",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "birth_date"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#date"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/employees",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "employees"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#inverseOf": [
-      {
-        "@id": "https://w3id.org/example/personinfo/employed_by"
-      }
-    ],
-    "https://w3id.org/linkml/attribute_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "https://w3id.org/linkml/multivalued": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ]
-  },
-  {
     "@id": "https://w3id.org/example/personinfo/Organization",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
@@ -573,10 +19,10 @@
         "@id": "https://w3id.org/example/personinfo/NamedThing"
       },
       {
-        "@id": "_:N01248e228ee24d0a91adc98a3ec78d47"
+        "@id": "_:N2ff80fab14914c37953ac06c9586a65f"
       },
       {
-        "@id": "_:N5adeefa398c44024904dff0457fe0ebf"
+        "@id": "_:Nb560593911564781975f54232a46cf52"
       }
     ],
     "http://www.w3.org/2004/02/skos/core#definition": [
@@ -586,7 +32,7 @@
     ]
   },
   {
-    "@id": "_:N01248e228ee24d0a91adc98a3ec78d47",
+    "@id": "_:N2ff80fab14914c37953ac06c9586a65f",
     "@type": [
       "http://www.w3.org/2002/07/owl#Restriction"
     ],
@@ -608,7 +54,7 @@
     ]
   },
   {
-    "@id": "_:N5adeefa398c44024904dff0457fe0ebf",
+    "@id": "_:Nb560593911564781975f54232a46cf52",
     "@type": [
       "http://www.w3.org/2002/07/owl#Restriction"
     ],
@@ -620,587 +66,6 @@
     "http://www.w3.org/2002/07/owl#onProperty": [
       {
         "@id": "https://w3id.org/example/personinfo/employees"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/HasAliases",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "HasAliases"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "_:N39d7ef47839e4b0c9314fbc005f1f0ee"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A mixin applied to any class that can have aliases."
-      }
-    ],
-    "https://w3id.org/linkml/mixin": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ]
-  },
-  {
-    "@id": "_:N39d7ef47839e4b0c9314fbc005f1f0ee",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#allValuesFrom": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/aliases"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/gender",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "gender"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "https://w3id.org/example/personinfo/GenderType"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ]
-  },
-  {
-    "@id": "http://schema.org/description",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/core"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "description"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A human-readable description for a thing."
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/NamedThing"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/GenderType",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "GenderType"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#equivalentClass": [
-      {
-        "@id": "_:N098471d7d27d45b28c83dd31c100a012"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "Gender of a person."
-      }
-    ],
-    "https://w3id.org/linkml/kind": [
-      {
-        "@value": "enum"
-      }
-    ]
-  },
-  {
-    "@id": "_:N098471d7d27d45b28c83dd31c100a012",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2002/07/owl#oneOf": [
-      {
-        "@list": [
-          {
-            "@id": "http://purl.obolibrary.org/obo/GSSO_009254"
-          },
-          {
-            "@id": "http://purl.obolibrary.org/obo/GSSO_009253"
-          },
-          {
-            "@id": "http://purl.obolibrary.org/obo/GSSO_000384"
-          },
-          {
-            "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/Container",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "Container"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "_:N99280cdfd7464aa1956ca74933bcf119"
-      },
-      {
-        "@id": "_:N7d5de7a7fba34bbf91bd9fa6d4f06257"
-      }
-    ],
-    "https://w3id.org/linkml/tree_root": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ]
-  },
-  {
-    "@id": "_:N99280cdfd7464aa1956ca74933bcf119",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#allValuesFrom": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/persons"
-      }
-    ]
-  },
-  {
-    "@id": "_:N7d5de7a7fba34bbf91bd9fa6d4f06257",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
-    ],
-    "http://www.w3.org/2002/07/owl#allValuesFrom": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
-      {
-        "@id": "https://w3id.org/example/personinfo/organizations"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "https://w3id.org/example/personinfo/GenderType"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "cisgender man"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A man whose gender matches the sex assigned at birth."
-      }
-    ],
-    "https://w3id.org/linkml/permissible_value": [
-      {
-        "@value": "cisgender man"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/persons",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "persons"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ],
-    "https://w3id.org/linkml/attribute_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Container"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Container"
-      }
-    ],
-    "https://w3id.org/linkml/inlined_as_list": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ],
-    "https://w3id.org/linkml/multivalued": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ]
-  },
-  {
-    "@id": "http://purl.obolibrary.org/obo/GSSO_009254",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "https://w3id.org/example/personinfo/GenderType"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "nonbinary man"
-      }
-    ],
-    "https://w3id.org/linkml/permissible_value": [
-      {
-        "@value": "nonbinary man"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/employed_by",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "employed_by"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#deprecated": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#historyNote": [
-      {
-        "@value": "Use employment history instead."
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ]
-  },
-  {
-    "@id": "http://purl.obolibrary.org/obo/GSSO_000384",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "https://w3id.org/example/personinfo/GenderType"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "transgender woman"
-      }
-    ],
-    "https://w3id.org/linkml/permissible_value": [
-      {
-        "@value": "transgender woman"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/founding_date",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "founding_date"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#date"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "When the organization was founded."
-      }
-    ],
-    "https://w3id.org/linkml/attribute_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/Organization"
-      }
-    ]
-  },
-  {
-    "@id": "http://schema.org/email",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/personinfo"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "primary_email"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "_:Nfe583876202c4bbe93236e391bc50eb6"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "The main email address of a person."
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "http://schema.org/Person"
-      }
-    ],
-    "https://w3id.org/linkml/pattern": [
-      {
-        "@value": "^\\S+@[\\S+\\.]+\\S+"
-      }
-    ]
-  },
-  {
-    "@id": "_:Nfe583876202c4bbe93236e391bc50eb6",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2002/07/owl#onDatatype": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#withRestrictions": [
-      {
-        "@list": [
-          {
-            "@id": "_:Nc3211258a2a142f59a08ddf698be409d"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:Nc3211258a2a142f59a08ddf698be409d",
-    "http://www.w3.org/2001/XMLSchema#pattern": [
-      {
-        "@value": "^\\S+@[\\S+\\.]+\\S+"
-      }
-    ]
-  },
-  {
-    "@id": "http://schema.org/name",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/core"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "name"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A human-readable name for a thing."
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/NamedThing"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/PhoneNumberType",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/core"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "PhoneNumberType"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#equivalentClass": [
-      {
-        "@id": "_:Na4dce150eae04357abaabddd309fdc4e"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A phone number."
-      }
-    ]
-  },
-  {
-    "@id": "_:Na4dce150eae04357abaabddd309fdc4e",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2002/07/owl#onDatatype": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#withRestrictions": [
-      {
-        "@list": [
-          {
-            "@id": "_:Ndf20cb50a39a400584f85473d0f2f1fa"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:Ndf20cb50a39a400584f85473d0f2f1fa",
-    "http://www.w3.org/2001/XMLSchema#pattern": [
-      {
-        "@value": "^[\\d\\(\\)\\-]+$"
-      }
-    ]
-  },
-  {
-    "@id": "https://w3id.org/example/personinfo/id",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty",
-      "http://www.w3.org/2002/07/owl#FunctionalProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
-      {
-        "@id": "https://w3id.org/example/core"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@value": "id"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#anyURI"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@value": "A unique identifier for a thing."
-      }
-    ],
-    "https://w3id.org/linkml/domain_of": [
-      {
-        "@id": "https://w3id.org/example/personinfo/NamedThing"
-      }
-    ],
-    "https://w3id.org/linkml/identifier": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-        "@value": true
       }
     ]
   },
@@ -1274,6 +139,1013 @@
     ]
   },
   {
+    "@id": "https://w3id.org/example/personinfo/id",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/core"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "id"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#anyURI"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A unique identifier for a thing."
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/NamedThing"
+      }
+    ],
+    "https://w3id.org/linkml/identifier": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "http://schema.org/email",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "primary_email"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "_:N679d58477bfa4e0d95304076db73b562"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "The main email address of a person."
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ],
+    "https://w3id.org/linkml/pattern": [
+      {
+        "@value": "^\\S+@[\\S+\\.]+\\S+"
+      }
+    ]
+  },
+  {
+    "@id": "_:N679d58477bfa4e0d95304076db73b562",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2002/07/owl#onDatatype": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#withRestrictions": [
+      {
+        "@list": [
+          {
+            "@id": "_:N5cbc58b868e94a15a2c71eb2e88fc833"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:N5cbc58b868e94a15a2c71eb2e88fc833",
+    "http://www.w3.org/2001/XMLSchema#pattern": [
+      {
+        "@value": "^\\S+@[\\S+\\.]+\\S+"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/age_in_years",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "age_in_years"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "_:N7c65118cc9774819827e180499b0e10c"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ],
+    "https://w3id.org/linkml/maximum_value": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 999
+      }
+    ],
+    "https://w3id.org/linkml/minimum_value": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 0
+      }
+    ]
+  },
+  {
+    "@id": "_:N7c65118cc9774819827e180499b0e10c",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2002/07/owl#onDatatype": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#withRestrictions": [
+      {
+        "@list": [
+          {
+            "@id": "_:Nb1ad7d00d467408d8b19357c188b7da4"
+          },
+          {
+            "@id": "_:Nb0c153e0db404548bb992c674e140770"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:Nb1ad7d00d467408d8b19357c188b7da4",
+    "http://www.w3.org/2001/XMLSchema#minInclusive": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 0
+      }
+    ]
+  },
+  {
+    "@id": "_:Nb0c153e0db404548bb992c674e140770",
+    "http://www.w3.org/2001/XMLSchema#maxInclusive": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 999
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/Container",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Container"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "_:Nd3a3e1f8f34341d299cead8133a69aad"
+      },
+      {
+        "@id": "_:Nbb7621af59b6456aaf0795d2a8560c0a"
+      }
+    ],
+    "https://w3id.org/linkml/tree_root": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "_:Nd3a3e1f8f34341d299cead8133a69aad",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#allValuesFrom": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/persons"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nbb7621af59b6456aaf0795d2a8560c0a",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#allValuesFrom": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/organizations"
+      }
+    ]
+  },
+  {
+    "@id": "http://schema.org/description",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/core"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "description"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A human-readable description for a thing."
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/NamedThing"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/NamedThing",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/core"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "NamedThing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "_:N29eca63085ef453483811c452732fe13"
+      },
+      {
+        "@id": "_:Na2c7851661d448b1840b6a82e8ef4b81"
+      },
+      {
+        "@id": "_:Nb7945cb2556c4d5793f7452ab616d7a5"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A generic grouping for any identifiable entity."
+      }
+    ],
+    "https://w3id.org/linkml/abstract": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "_:N29eca63085ef453483811c452732fe13",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#anyURI"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/id"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ]
+  },
+  {
+    "@id": "_:Na2c7851661d448b1840b6a82e8ef4b81",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "http://schema.org/name"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nb7945cb2556c4d5793f7452ab616d7a5",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "http://schema.org/description"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/GSSO_009253",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://w3id.org/example/personinfo/GenderType"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "nonbinary woman"
+      }
+    ],
+    "https://w3id.org/linkml/permissible_value": [
+      {
+        "@value": "nonbinary woman"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/PhoneNumberType",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/core"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "PhoneNumberType"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
+      {
+        "@id": "_:N50124aba9cb8459e9773fcaafea02573"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A phone number."
+      }
+    ]
+  },
+  {
+    "@id": "_:N50124aba9cb8459e9773fcaafea02573",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2002/07/owl#onDatatype": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#withRestrictions": [
+      {
+        "@list": [
+          {
+            "@id": "_:Nceb3b675885847149f209d5eb5a182e6"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:Nceb3b675885847149f209d5eb5a182e6",
+    "http://www.w3.org/2001/XMLSchema#pattern": [
+      {
+        "@value": "^[\\d\\(\\)\\-]+$"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/employees",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "employees"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://w3id.org/example/personinfo/employed_by"
+      }
+    ],
+    "https://w3id.org/linkml/attribute_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "https://w3id.org/linkml/multivalued": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/GSSO_000384",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://w3id.org/example/personinfo/GenderType"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "transgender woman"
+      }
+    ],
+    "https://w3id.org/linkml/permissible_value": [
+      {
+        "@value": "transgender woman"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/HasAliases",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "HasAliases"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "_:Ned72e0b5cd4e40ab97fafbde63e4b63e"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A mixin applied to any class that can have aliases."
+      }
+    ],
+    "https://w3id.org/linkml/mixin": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "_:Ned72e0b5cd4e40ab97fafbde63e4b63e",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#allValuesFrom": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/aliases"
+      }
+    ]
+  },
+  {
+    "@id": "http://schema.org/Person",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "Person"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://w3id.org/example/personinfo/NamedThing"
+      },
+      {
+        "@id": "https://w3id.org/example/personinfo/HasAliases"
+      },
+      {
+        "@id": "_:N9040f492b7164fc0bc465e0186b4d05b"
+      },
+      {
+        "@id": "_:N52d260bb9e2c4680892626fffcc21b63"
+      },
+      {
+        "@id": "_:N7945e4433e434e5ea2be6c1c54a234dd"
+      },
+      {
+        "@id": "_:Neb382082583a4399ba3c32fb3523ec85"
+      },
+      {
+        "@id": "_:N048d3dc1268c4133ab9c2c0d4f73582e"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#altLabel": [
+      {
+        "@value": "human being"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A person (alive, dead, undead, or fictional)."
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#exactMatch": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#example": [
+      {
+        "@value": "Ada Lovelace — a famous mathematician"
+      }
+    ],
+    "https://w3id.org/linkml/mixins": [
+      {
+        "@id": "https://w3id.org/example/personinfo/HasAliases"
+      }
+    ]
+  },
+  {
+    "@id": "_:N9040f492b7164fc0bc465e0186b4d05b",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "_:Nf6bad96ff8d9485984be4613f87c1b15"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "http://schema.org/email"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nf6bad96ff8d9485984be4613f87c1b15",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2002/07/owl#onDatatype": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#withRestrictions": [
+      {
+        "@list": [
+          {
+            "@id": "_:Nb1285dad12c34567a440ef45f4e30746"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:Nb1285dad12c34567a440ef45f4e30746",
+    "http://www.w3.org/2001/XMLSchema#pattern": [
+      {
+        "@value": "^\\S+@[\\S+\\.]+\\S+"
+      }
+    ]
+  },
+  {
+    "@id": "_:N52d260bb9e2c4680892626fffcc21b63",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "http://schema.org/birthDate"
+      }
+    ]
+  },
+  {
+    "@id": "_:N7945e4433e434e5ea2be6c1c54a234dd",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "_:Nc91557d264c54cc4abacfc045f720909"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/age_in_years"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nc91557d264c54cc4abacfc045f720909",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2002/07/owl#onDatatype": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#withRestrictions": [
+      {
+        "@list": [
+          {
+            "@id": "_:Na0ff56b162da48c796e99cfb40186faf"
+          },
+          {
+            "@id": "_:N6ac9cbfc439e45a59c64b7a390c3024a"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:Na0ff56b162da48c796e99cfb40186faf",
+    "http://www.w3.org/2001/XMLSchema#minInclusive": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 0
+      }
+    ]
+  },
+  {
+    "@id": "_:N6ac9cbfc439e45a59c64b7a390c3024a",
+    "http://www.w3.org/2001/XMLSchema#maxInclusive": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 999
+      }
+    ]
+  },
+  {
+    "@id": "_:Neb382082583a4399ba3c32fb3523ec85",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onClass": [
+      {
+        "@id": "https://w3id.org/example/personinfo/GenderType"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/gender"
+      }
+    ]
+  },
+  {
+    "@id": "_:N048d3dc1268c4133ab9c2c0d4f73582e",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#maxQualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onClass": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://w3id.org/example/personinfo/employed_by"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/founding_date",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "founding_date"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "When the organization was founded."
+      }
+    ],
+    "https://w3id.org/linkml/attribute_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/GSSO_009254",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://w3id.org/example/personinfo/GenderType"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "nonbinary man"
+      }
+    ],
+    "https://w3id.org/linkml/permissible_value": [
+      {
+        "@value": "nonbinary man"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/GenderType",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "GenderType"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
+      {
+        "@id": "_:Nf85826479b5646fba4c9a6c28303d175"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "Gender of a person."
+      }
+    ],
+    "https://w3id.org/linkml/kind": [
+      {
+        "@value": "enum"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nf85826479b5646fba4c9a6c28303d175",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2002/07/owl#oneOf": [
+      {
+        "@list": [
+          {
+            "@id": "http://purl.obolibrary.org/obo/GSSO_009254"
+          },
+          {
+            "@id": "http://purl.obolibrary.org/obo/GSSO_009253"
+          },
+          {
+            "@id": "http://purl.obolibrary.org/obo/GSSO_000384"
+          },
+          {
+            "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "http://schema.org/name",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/core"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "name"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A human-readable name for a thing."
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/NamedThing"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/persons",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "persons"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ],
+    "https://w3id.org/linkml/attribute_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Container"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Container"
+      }
+    ],
+    "https://w3id.org/linkml/inlined_as_list": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://w3id.org/linkml/multivalued": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "http://schema.org/birthDate",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "birth_date"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ]
+  },
+  {
     "@id": "https://w3id.org/example/personinfo/aliases",
     "@type": [
       "http://www.w3.org/2002/07/owl#DatatypeProperty"
@@ -1307,6 +1179,134 @@
       {
         "@type": "http://www.w3.org/2001/XMLSchema#boolean",
         "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/employed_by",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "employed_by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#deprecated": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#historyNote": [
+      {
+        "@value": "Use employment history instead."
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "http://schema.org/Person"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/organizations",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "organizations"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Organization"
+      }
+    ],
+    "https://w3id.org/linkml/attribute_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Container"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "https://w3id.org/example/personinfo/Container"
+      }
+    ],
+    "https://w3id.org/linkml/inlined_as_list": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ],
+    "https://w3id.org/linkml/multivalued": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": true
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://w3id.org/example/personinfo/GenderType"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "cisgender man"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@value": "A man whose gender matches the sex assigned at birth."
+      }
+    ],
+    "https://w3id.org/linkml/permissible_value": [
+      {
+        "@value": "cisgender man"
+      }
+    ]
+  },
+  {
+    "@id": "https://w3id.org/example/personinfo/gender",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": [
+      {
+        "@id": "https://w3id.org/example/personinfo"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@value": "gender"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://w3id.org/example/personinfo/GenderType"
+      }
+    ],
+    "https://w3id.org/linkml/domain_of": [
+      {
+        "@id": "http://schema.org/Person"
       }
     ]
   }

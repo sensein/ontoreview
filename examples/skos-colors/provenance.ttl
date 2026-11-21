@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
-    prov:generatedAtTime "2026-11-21T17:44:51+00:00"^^xsd:dateTime ;
+    prov:generatedAtTime "2026-11-21T18:02:04+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <https://example.org/colors/scheme> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -12,8 +12,8 @@
     dcterms:title "Colour thesaurus" .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-21T17:44:51+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-11-21T17:44:48+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:02:04+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:01:57+00:00"^^xsd:dateTime ;
     prov:used <urn:sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310>,
         <urn:sha256:4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e>,
         <urn:sha256:78e9c6edf7f88e0f59bee43081f7ade98fee6741d36667e759222c4306b3e518>,

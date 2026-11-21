@@ -227,6 +227,8 @@ class SiteRenderer:
                                         "index": cfg.ui.term_index in ("section", "both")}))
         if self.has_graph():
             out.append(Section("graph", t("graph"), "graph.html", page=page("graph")))
+        if st.namespaces and onto.prefixes:      # before the terms: readers meet the prefixes first
+            out.append(Section("namespaces", t("namespaces"), "namespaces.html"))
         if st.terms:
             kinds = onto.kinds_present()
             for i, kind in enumerate(kinds):
@@ -239,8 +241,6 @@ class SiteRenderer:
             if cs.position == "after-terms":
                 out.append(self._custom(cs))
         out += [s for s in self.plugin_sections if s.context.get("position") == "after-terms"]
-        if st.namespaces and onto.prefixes:
-            out.append(Section("namespaces", t("namespaces"), "namespaces.html"))
         if st.changelog and self.changelog is not None:
             out.append(Section("changelog", t("changelog"), "changelog.html", page=page("changelog"),
                                context={"log": self.changelog}))

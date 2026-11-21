@@ -75,9 +75,9 @@
     "schema:Person"
    ],
    "restrictions": [
+    "schema:name max 1 xsd:string",
     "personinfo:id exactly 1 xsd:anyURI",
-    "schema:description max 1 xsd:string",
-    "schema:name max 1 xsd:string"
+    "schema:description max 1 xsd:string"
    ]
   },
   {
@@ -90,8 +90,8 @@
     "personinfo:NamedThing"
    ],
    "restrictions": [
-    "personinfo:founding_date max 1 xsd:date",
-    "personinfo:employees only schema:Person"
+    "personinfo:employees only schema:Person",
+    "personinfo:founding_date max 1 xsd:date"
    ]
   },
   {
@@ -113,9 +113,9 @@
    "restrictions": [
     "personinfo:gender max 1 personinfo:GenderType",
     "schema:email exactly 1 xsd:string[pattern \"^\\S+@[\\S+\\.]+\\S+\"]",
-    "personinfo:age_in_years max 1 xsd:integer[>= 0, <= 999]",
+    "schema:birthDate max 1 xsd:date",
     "personinfo:employed_by max 1 personinfo:Organization",
-    "schema:birthDate max 1 xsd:date"
+    "personinfo:age_in_years max 1 xsd:integer[>= 0, <= 999]"
    ]
   },
   {

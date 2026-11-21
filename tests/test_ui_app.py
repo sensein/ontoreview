@@ -312,3 +312,60 @@ async def test_history_shows_config_and_reruns(isolated, fixtures):
         await user.should_see("New build")
         await user.should_see("Settings from that run loaded", retries=20)
         await user.should_see("a new folder each run")
+
+
+@pytest.mark.anyio
+@pytest.mark.real_cdi
+async def test_interoperability_page(isolated, fixtures, monkeypatch):
+    from ontoreview.quality_checks import cdi
+    from ontoreview.quality_checks.cdi import core
+    from ontoreview.ui import SESSION
+
+    monkeypatch.setattr(cdi, "generality_backend", lambda ev: (core.CallableBackend(
+        lambda t: [0.1, 0.2, 0.4, 0.2, 0.1] if len(t) > 60 else [0.5, 0.3, 0.1, 0.05, 0.05]), ""))
+    d = fixtures / "cdi"
+    SESSION.interop["s"] = ui_core.Settings(
+        source=str(d / "toy_onto.ttl"), task="interop", output=str(isolated / "iop.json"),
+        cdi_references=f"{d / 'toy_ref.ttl'}\n{d / 'toy_to_bfo.sssom.tsv'}", cdi_ontoaligner="off",
+        si_home_domain="4.1", si_domain_map="file:toy_ref.ttl = 1.5", iri_network=False)
+    async with user_simulation(root=build_page) as user:
+        await user.open("/interoperability")
+        await user.should_see("No interoperability check yet")
+        await user.should_see("Find on OLS or BioPortal")
+        user.find(marker="interop-run").click()
+        for _ in range(100):
+            if not SESSION.interop["running"] and SESSION.interop["last"] is not None:
+                break
+            await asyncio.sleep(0.1)
+        await user.should_see("Scientific interoperability (SI)", retries=20)
+        await user.should_see(marker="iop-metrics")
+        await user.should_see("of 41 domains: 1.5 Earth and related environmental sciences")
+        user.find(marker="iop-new").click()
+        await user.should_see("No interoperability check yet")
+    rep = json.loads((isolated / "iop.json").read_text())["toy_onto.ttl"]
+    assert [x["tool"] for x in rep["external"]] == ["Cross-domain interoperability", "Scientific interoperability"]
+    assert rep["findings"] == []                                  # interoperability only: no built-in rules
+    assert json.loads(ui_core.HISTORY_FILE.read_text())[0]["task"] == "interop"
+
+
+@pytest.mark.anyio
+async def test_domain_rows_add_themselves(isolated):
+    async with user_simulation(root=build_page) as user:
+        await user.open("/settings")
+        await user.should_see("Scientific interoperability")
+        assert len(user.find(marker="si-domain-id").elements) == 1
+        user.find(marker="si-domain-id").type("ols:emi")
+        await user.should_see(marker="si-domain-id")
+        assert len(user.find(marker="si-domain-id").elements) == 2     # a new empty row appeared
+
+
+def test_interop_task_settings(fixtures):
+    s = ui_core.Settings(source=str(fixtures / "pizza.ttl"), task="interop", si_references="ols:envo")
+    ev = s.evaluation()
+    assert (ev["robot"], ev["oops"], ev["ontocheck"], ev["iri_checks"], ev["reasoner"]) == ("off",) * 5
+    assert ev["si_references"] == ["ols:envo"]
+    assert "--interop-only" in s.cli() and "--si-ref ols:envo" in s.cli()
+    assert s.default_output().endswith("interoperability.json")
+    assert ui_core.task_kind("interop") == "check"
+    off = ui_core.Settings(source=str(fixtures / "pizza.ttl"), task="interop", cdi=False, si=False)
+    assert any("cross-domain or scientific" in p for p in off.validate())

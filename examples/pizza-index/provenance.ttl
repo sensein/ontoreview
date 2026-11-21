@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
-    prov:generatedAtTime "2026-11-21T17:44:00+00:00"^^xsd:dateTime ;
+    prov:generatedAtTime "2026-11-21T18:01:00+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <https://example.org/pizza/1.2.0> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -71,8 +71,8 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-21T17:44:00+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-11-21T17:43:19+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:01:00+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:00:23+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/chebi/257/chebi.owl>,
         <http://purl.obolibrary.org/obo/fobi/fobi.owl>,

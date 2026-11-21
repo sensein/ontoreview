@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01d87d">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dc78">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,10 +52,61 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Food",
-   "name": "Food",
-   "description": "Anything that can be eaten.",
-   "termCode": "pizza:Food"
+   "@id": "https://example.org/pizza#PizzaTopping",
+   "name": "Pizza topping",
+   "description": "Something placed on a pizza.",
+   "termCode": "pizza:PizzaTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasBase",
+   "name": "has base",
+   "termCode": "pizza:hasBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#MeatTopping",
+   "name": "Meat topping",
+   "termCode": "pizza:MeatTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#PizzaBase",
+   "name": "Pizza base",
+   "description": "The bread base of a pizza.",
+   "termCode": "pizza:PizzaBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Pizza",
+   "name": "Pizza",
+   "description": "A flat **baked** dish topped with ingredients.",
+   "termCode": "pizza:Pizza"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
   },
   {
    "@type": "DefinedTerm",
@@ -73,61 +124,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasBase",
-   "name": "has base",
-   "termCode": "pizza:hasBase"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#VegetarianPizza",
-   "name": "Vegetarian pizza",
-   "description": "A pizza with no meat toppings.",
-   "termCode": "pizza:VegetarianPizza"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#MeatTopping",
-   "name": "Meat topping",
-   "termCode": "pizza:MeatTopping"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaTopping",
-   "name": "Pizza topping",
-   "description": "Something placed on a pizza.",
-   "termCode": "pizza:PizzaTopping"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaBase",
-   "name": "Pizza base",
-   "description": "The bread base of a pizza.",
-   "termCode": "pizza:PizzaBase"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Pizza",
-   "name": "Pizza",
-   "description": "A flat **baked** dish topped with ingredients.",
-   "termCode": "pizza:Pizza"
+   "@id": "https://example.org/pizza#Food",
+   "name": "Food",
+   "description": "Anything that can be eaten.",
+   "termCode": "pizza:Food"
   },
   {
    "@type": "DefinedTerm",
@@ -138,16 +138,16 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#isToppingOf",
-   "name": "is topping of",
-   "termCode": "pizza:isToppingOf"
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
   },
   {
    "@type": "DefinedTerm",
@@ -163,15 +163,15 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2002/07/owl#deprecated",
-   "name": "deprecated",
-   "termCode": "owl:deprecated"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#example",
    "name": "example",
    "termCode": "skos:example"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2002/07/owl#deprecated",
+   "name": "deprecated",
+   "termCode": "owl:deprecated"
   },
   {
    "@type": "DefinedTerm",
@@ -284,42 +284,42 @@
         <a href="graph.html#graph" data-section="graph"><span class="secno">3</span><span class="toc-label">Visualization</span></a>
       </li>
       <li>
-        <a href="classes.html#classes" data-section="classes"><span class="secno">4</span><span class="toc-label">Terms</span></a>
+        <a href="#namespaces" data-section="namespaces"><span class="secno">4</span><span class="toc-label">Namespaces</span></a>
+      </li>
+      <li>
+        <a href="classes.html#classes" data-section="classes"><span class="secno">5</span><span class="toc-label">Terms</span></a>
         <ol>
           <li class="toc-kind">
             <details>
-              <summary><a href="classes.html#classes" data-section="classes"><span class="secno">4.1</span><span class="toc-label">Classes</span><span class="toc-count">8</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="classes.html#classes" data-section="classes"><span class="secno">5.1</span><span class="toc-label">Classes</span><span class="toc-count">8</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><details><summary><a href="classes.html#Food" class="ref" title="pizza:Food">Food</a></summary><ul class="tree"><li><details><summary><a href="classes.html#Pizza" class="ref" title="pizza:Pizza">Pizza</a></summary><ul class="tree"><li><span class="leaf"><a href="classes.html#Calzone" class="ref" title="pizza:Calzone">Calzone</a></span></li></ul></details></li><li><span class="leaf"><a href="classes.html#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li><li><details><summary><a href="classes.html#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></summary><ul class="tree"><li><span class="leaf"><a href="classes.html#CheeseTopping" class="ref" title="pizza:CheeseTopping">Cheese topping</a></span></li><li><span class="leaf"><a href="classes.html#MeatTopping" class="ref" title="pizza:MeatTopping">Meat topping</a></span></li></ul></details></li></ul></details></li><li><span class="leaf"><a href="classes.html#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="object-properties.html#object-properties" data-section="object-properties"><span class="secno">4.2</span><span class="toc-label">Object properties</span><span class="toc-count">4</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="object-properties.html#object-properties" data-section="object-properties"><span class="secno">5.2</span><span class="toc-label">Object properties</span><span class="toc-count">4</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><details><summary><a href="object-properties.html#hasIngredient" class="ref" title="pizza:hasIngredient">has ingredient</a></summary><ul class="tree"><li><span class="leaf"><a href="object-properties.html#hasBase" class="ref" title="pizza:hasBase">has base</a></span></li></ul></details></li><li><span class="leaf"><a href="object-properties.html#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></span></li><li><span class="leaf"><a href="object-properties.html#isToppingOf" class="ref" title="pizza:isToppingOf">is topping of</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="datatype-properties.html#datatype-properties" data-section="datatype-properties"><span class="secno">4.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">2</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="datatype-properties.html#datatype-properties" data-section="datatype-properties"><span class="secno">5.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">2</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="datatype-properties.html#hasCalories" class="ref" title="pizza:hasCalories">has calories</a></span></li><li><span class="leaf"><a href="datatype-properties.html#Name" class="ref" title="pizza:Name">Pizza</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="annotation-properties.html#annotation-properties" data-section="annotation-properties"><span class="secno">4.4</span><span class="toc-label">Annotation properties</span><span class="toc-count">17</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="annotation-properties.html#annotation-properties" data-section="annotation-properties"><span class="secno">5.4</span><span class="toc-label">Annotation properties</span><span class="toc-count">17</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="annotation-properties.html#abstract" class="ref" title="dcterms:abstract">abstract</a></span></li><li><span class="leaf"><a href="annotation-properties.html#contributor" class="ref" title="dcterms:contributor">contributor</a></span></li><li><span class="leaf"><a href="annotation-properties.html#created" class="ref" title="dcterms:created">created</a></span></li><li><span class="leaf"><a href="annotation-properties.html#creator" class="ref" title="dcterms:creator">creator</a></span></li><li><span class="leaf"><a href="annotation-properties.html#definition" class="ref" title="skos:definition">definition</a></span></li><li><span class="leaf"><a href="annotation-properties.html#deprecated" class="ref" title="owl:deprecated">deprecated</a></span></li><li><span class="leaf"><a href="annotation-properties.html#description" class="ref" title="dcterms:description">description</a></span></li><li><span class="leaf"><a href="annotation-properties.html#example" class="ref" title="skos:example">example</a></span></li><li><span class="leaf"><a href="annotation-properties.html#keywords" class="ref" title="schema:keywords">keywords</a></span></li><li><span class="leaf"><a href="annotation-properties.html#label" class="ref" title="rdfs:label">label</a></span></li><li><span class="leaf"><a href="annotation-properties.html#license" class="ref" title="dcterms:license">license</a></span></li><li><span class="leaf"><a href="annotation-properties.html#modified" class="ref" title="dcterms:modified">modified</a></span></li><li><span class="leaf"><a href="annotation-properties.html#preferredNamespacePrefix" class="ref" title="vann:preferredNamespacePrefix">preferredNamespacePrefix</a></span></li><li><span class="leaf"><a href="annotation-properties.html#preferredNamespaceUri" class="ref" title="vann:preferredNamespaceUri">preferredNamespaceUri</a></span></li><li><span class="leaf"><a href="annotation-properties.html#priorVersion" class="ref" title="owl:priorVersion">priorVersion</a></span></li><li><span class="leaf"><a href="annotation-properties.html#title" class="ref" title="dcterms:title">title</a></span></li><li><span class="leaf"><a href="annotation-properties.html#versionInfo" class="ref" title="owl:versionInfo">versionInfo</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="individuals.html#individuals" data-section="individuals"><span class="secno">4.5</span><span class="toc-label">Named individuals</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="individuals.html#individuals" data-section="individuals"><span class="secno">5.5</span><span class="toc-label">Named individuals</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="individuals.html#Margherita" class="ref" title="pizza:Margherita">Margherita</a></span></li></ul></div>
             </details>
           </li>
         </ol>
-      </li>
-      <li>
-        <a href="#namespaces" data-section="namespaces"><span class="secno">5</span><span class="toc-label">Namespaces</span></a>
       </li>
       <li>
         <a href="changelog.html#changelog" data-section="changelog"><span class="secno">6</span><span class="toc-label">Changelog</span></a>
@@ -396,7 +396,7 @@
   </ul>
 
 </section><section class="section" id="namespaces">
-  <h2><span class="secno">5</span> Namespaces</h2>
+  <h2><span class="secno">4</span> Namespaces</h2>
   <table class="plain">
     <thead><tr><th>Prefix</th><th>Namespace</th></tr></thead>
     <tbody>
@@ -466,23 +466,23 @@
       <div class="prov-what"><span class="prov-title">Ontology last modified</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T17:44:00+00:00">2026-11-21 17:44:00 UTC</time>
+      <time datetime="2026-11-21T18:01:00+00:00">2026-11-21 18:01:00 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From pizza-v2.ttl</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T17:44:04+00:00">2026-11-21 17:44:04 UTC</time>
+      <time datetime="2026-11-21T18:01:02+00:00">2026-11-21 18:01:02 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 6 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T17:44:04+00:00">2026-11-21 17:44:04 UTC</time>
+      <time datetime="2026-11-21T18:01:02+00:00">2026-11-21 18:01:02 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.44; verified against 10 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T17:44:04+00:00">2026-11-21 17:44:04 UTC</time>
+      <time datetime="2026-11-21T18:01:02+00:00">2026-11-21 18:01:02 UTC</time>
       <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 2 of 41 scientific domains</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T17:44:29+00:00">2026-11-21 17:44:29 UTC</time>
+      <time datetime="2026-11-21T18:01:28+00:00">2026-11-21 18:01:28 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
     </li>
   </ol>
@@ -491,8 +491,8 @@
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>pizza-v2.ttl (3.8 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T17:44:00+00:00">2026-11-21 17:44:00 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T17:44:29+00:00">2026-11-21 17:44:29 UTC</time> <span class="muted">(28.8 s)</span></td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:01:00+00:00">2026-11-21 18:01:00 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:01:28+00:00">2026-11-21 18:01:28 UTC</time> <span class="muted">(27.5 s)</span></td></tr>
 <tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
@@ -512,8 +512,8 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01d87d"></script>
+<script src="ontoreview-data.js?v=6b01dc78"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6b01d87d"></script>
+<script src="assets/ontoreview.js?v=6b01dc78"></script>
 </body>
 </html>

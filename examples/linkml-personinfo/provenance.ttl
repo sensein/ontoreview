@@ -6,7 +6,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
-    prov:generatedAtTime "2026-11-21T17:44:48+00:00"^^xsd:dateTime ;
+    prov:generatedAtTime "2026-11-21T18:01:56+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <https://w3id.org/example/personinfo> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -59,8 +59,8 @@
     prov:wasAttributedTo <https://orcid.org/0000-0000-0000-0002> .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-21T17:44:48+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-11-21T17:44:29+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:01:56+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:01:28+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl>,
         <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,

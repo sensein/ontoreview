@@ -1,5 +1,33 @@
 [
   {
+    "@id": "https://example.org/colors/scheme",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "A tiny SKOS vocabulary of colours."
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://creativecommons.org/publicdomain/zero/1.0/"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Colour thesaurus"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#hasTopConcept": [
+      {
+        "@id": "https://example.org/colors/color"
+      }
+    ]
+  },
+  {
     "@id": "https://example.org/colors/red",
     "@type": [
       "http://www.w3.org/2004/02/skos/core#Concept"
@@ -46,34 +74,6 @@
       {
         "@language": "en",
         "@value": "maroon"
-      }
-    ]
-  },
-  {
-    "@id": "https://example.org/colors/scheme",
-    "@type": [
-      "http://www.w3.org/2004/02/skos/core#ConceptScheme"
-    ],
-    "http://purl.org/dc/terms/description": [
-      {
-        "@language": "en",
-        "@value": "A tiny SKOS vocabulary of colours."
-      }
-    ],
-    "http://purl.org/dc/terms/license": [
-      {
-        "@id": "https://creativecommons.org/publicdomain/zero/1.0/"
-      }
-    ],
-    "http://purl.org/dc/terms/title": [
-      {
-        "@language": "en",
-        "@value": "Colour thesaurus"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#hasTopConcept": [
-      {
-        "@id": "https://example.org/colors/color"
       }
     ]
   },

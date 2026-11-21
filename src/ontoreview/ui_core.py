@@ -25,13 +25,14 @@ else:  # pragma: no cover
 
 log = logging.getLogger(__name__)
 
-Task = Literal["site", "single", "markdown", "myst", "check", "diff"]
+Task = Literal["site", "single", "markdown", "myst", "check", "interop", "diff"]
 TASKS: dict[str, str] = {
     "site": "Website",
     "single": "Single HTML file",
     "markdown": "Markdown",
     "myst": "MyST (Sphinx)",
     "check": "Quality check",
+    "interop": "Interoperability check",
     "diff": "Compare versions",
 }
 SETTINGS_FILE = Path(os.environ.get("ONTOREVIEW_UI_SETTINGS",
@@ -73,6 +74,7 @@ class Settings:
     cdi_top_n: int = 10
     cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
     si: bool = True                 # scientific interoperability (same run and references as cdi)
+    si_references: str = ""         # one per line; empty = the cross-domain references (same run)
     si_home_domain: str = ""        # OECD field code or name; empty = classify the ontology's title/description
     si_theta_s: float = 0.3
     si_domain_map: str = ""         # one per line: "ols:emi = 1.5; 1.6"
@@ -100,12 +102,12 @@ class Settings:
         if self.default_root.strip():
             root = Path(self.default_root.strip()).expanduser()
             stem = (self.source_path.name if self.is_folder else self.source_path.stem) if self.source_path else "ontology"
-            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json",
+            name = {"single": f"{stem}.html", "check": f"{stem}-quality.json", "interop": f"{stem}-interoperability.json",
                     "diff": f"{stem}-changes.md"}.get(self.task, stem)
             return str(root / name)
         base = self.source_path.parent if self.source_path and not self.is_folder else (self.source_path or Path.cwd())
         name = {"site": "docs", "single": "docs", "markdown": "docs-md", "myst": "docs-myst",
-                "check": "quality", "diff": "changes"}[self.task]
+                "check": "quality", "interop": "interoperability", "diff": "changes"}[self.task]
         if self.task == "diff":
             return str(base / "changes.md")
         if self.task == "single" and not self.is_folder:
@@ -113,6 +115,8 @@ class Settings:
             return str(base / f"{stem}.html")
         if self.task == "check":
             return str(base / "quality.json")
+        if self.task == "interop":
+            return str(base / "interoperability.json")
         return str(base / name)
 
     def output_path(self) -> Path:
@@ -170,6 +174,8 @@ class Settings:
                 ev["si_theta_s"] = float(self.si_theta_s)
             if self.si_domain_map_dict():
                 ev["si_domain_map"] = self.si_domain_map_dict()
+            if self.si_reference_list():
+                ev["si_references"] = self.si_reference_list()
         if self.cdi or self.si:     # on by default: only what differs from the defaults (SI uses the same run)
             refs = self.cdi_reference_list()
             if refs != ["ols"]:
@@ -188,11 +194,17 @@ class Settings:
                 ev["cdi_api_keys"] = {k: v for k, v in keys.items() if v}
             if self.hf_token.strip():
                 ev["cdi_hf_token"] = self.hf_token.strip()
+        if self.task == "interop":       # only the interoperability checks
+            ev.update(robot="off", oops="off", ontocheck="off", iri_checks="off", reasoner="off")
         from .quality_checks.oops import OOPS_ENDPOINT
 
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
             ev["oops_endpoint"] = self.oops_endpoint.strip()
         return ev
+
+    def si_reference_list(self) -> list[str]:
+        """SI's own references, one per line; [] = the cross-domain references."""
+        return [x.strip() for x in self.si_references.splitlines() if x.strip()]
 
     def si_domain_map_dict(self) -> dict[str, list[str]]:
         """``ols:emi = 1.5; Biological sciences`` per line -> {"ols:emi": ["1.5", "Biological sciences"]}."""
@@ -233,7 +245,9 @@ class Settings:
             for v in [x.strip() for x in val.split(",") if x.strip()]:
                 if not v.startswith(("http://", "https://")) and not Path(v).expanduser().exists():
                     problems.append(f"{label} file not found: {v}")
-        if self.si and self.task in ("site", "single", "check"):
+        if self.task == "interop" and not (self.cdi or self.si):
+            problems.append("Turn on cross-domain or scientific interoperability (or both) to run this check.")
+        if self.si and self.task in ("site", "single", "check", "interop"):
             from .quality_checks.cdi.si import resolve_fos
 
             for label, spec in [("Own scientific domain", self.si_home_domain)] + [
@@ -246,10 +260,11 @@ class Settings:
             bad = [ln.strip() for ln in self.si_domain_map.splitlines() if ln.strip() and "=" not in ln]
             if bad:
                 problems.append(f"Domain map lines need 'ontology id = field', e.g. 'ols:emi = 1.5': {bad[0]}")
-        if (self.cdi or self.si) and self.task in ("site", "single", "check"):
+        if (self.cdi or self.si) and self.task in ("site", "single", "check", "interop"):
             from .quality_checks.cdi import parse_reference
 
             refs = [r for r in self.cdi_references.splitlines() if r.strip()]
+            refs += self.si_reference_list() if self.si else []
             if not refs:
                 problems.append("Cross-domain and scientific interoperability need at least one reference (e.g. ols).")
             for r in refs:
@@ -266,6 +281,7 @@ class Settings:
                "markdown": ["ontoreview", "export", "--format", "markdown"],
                "myst": ["ontoreview", "export", "--format", "myst"],
                "check": ["ontoreview", "check", "--format", "json"],
+               "interop": ["ontoreview", "check", "--format", "json", "--interop-only"],
                "diff": ["ontoreview", "diff"]}[self.task]
         if self.task == "diff":
             return " ".join(cmd + [q(self.previous_version.strip() or "<previous>"), q(self.source or "<source>"),
@@ -286,6 +302,8 @@ class Settings:
                 args.append("--no-individuals")
             if not self.is_folder and self.previous_version.strip():
                 args += ["--previous", q(self.previous_version.strip())]
+        if self.task == "interop":
+            self._cli_interop(args, q)
         if self.task in ("site", "single", "check"):
             if not self.is_folder:
                 for c in [x.strip() for x in self.competency_questions.split(",") if x.strip()]:
@@ -302,28 +320,34 @@ class Settings:
                 args.append("--no-iri")
             elif not self.iri_network:
                 args.append("--offline")
-            if not self.cdi:
-                args.append("--no-cdi")
-            if not self.si:
-                args.append("--no-si")
-            else:
-                if self.si_home_domain.strip():
-                    args += ["--si-home-domain", q(self.si_home_domain.strip())]
-                if float(self.si_theta_s or 0.3) != 0.3:
-                    args += ["--si-theta-s", str(float(self.si_theta_s))]
-                for k, ds in self.si_domain_map_dict().items():
-                    args += ["--si-domain", q(f"{k}={';'.join(ds)}")]
-            if self.cdi or self.si:
-                refs = self.cdi_reference_list()
-                for r in refs if refs != ["ols"] else []:
-                    args += ["--cdi", q(r)]
-                for d in [x.strip() for x in self.cdi_domains.split(",") if x.strip()]:
-                    args += ["--cdi-domain", q(d)]
-                if self.cdi_ontoaligner != "sbert":
-                    args += ["--cdi-ontoaligner", self.cdi_ontoaligner]
+            self._cli_interop(args, q)
         if self.task == "check" and self.fail_on != "error":
             args += ["--fail-on", self.fail_on]
         return " ".join(args)
+
+    def _cli_interop(self, args: list[str], q) -> None:
+        """Cross-domain and scientific interoperability options of the command line."""
+        if not self.cdi:
+            args.append("--no-cdi")
+        if not self.si:
+            args.append("--no-si")
+        else:
+            if self.si_home_domain.strip():
+                args += ["--si-home-domain", q(self.si_home_domain.strip())]
+            if float(self.si_theta_s or 0.3) != 0.3:
+                args += ["--si-theta-s", str(float(self.si_theta_s))]
+            for k, ds in self.si_domain_map_dict().items():
+                args += ["--si-domain", q(f"{k}={';'.join(ds)}")]
+            for r in self.si_reference_list():
+                args += ["--si-ref", q(r)]
+        if self.cdi or self.si:
+            refs = self.cdi_reference_list()
+            for r in refs if refs != ["ols"] else []:
+                args += ["--cdi", q(r)]
+            for d in [x.strip() for x in self.cdi_domains.split(",") if x.strip()]:
+                args += ["--cdi-domain", q(d)]
+            if self.cdi_ontoaligner != "sbert":
+                args += ["--cdi-ontoaligner", self.cdi_ontoaligner]
 
     def to_toml(self) -> str:
         """An ``ontoreview.toml`` with these settings (paths relative to where it is saved)."""
@@ -353,6 +377,8 @@ class Settings:
             if self.si_home_domain.strip():
                 lines.append(f"si_home_domain = {s(self.si_home_domain.strip())}")
             lines.append(f"si_theta_s = {float(self.si_theta_s or 0.3)}")
+            if self.si_reference_list():
+                lines.append(f"si_references = [{', '.join(s(x) for x in self.si_reference_list())}]")
             dm = self.si_domain_map_dict()
             if dm:
                 lines.append("si_domain_map = { " + ", ".join(f"{s(k)} = [{', '.join(s(d) for d in v)}]"
@@ -400,6 +426,8 @@ class Settings:
             cdi_domains=", ".join(ev.get("cdi_domains", [])), cdi_generality=bool(ev.get("cdi_generality", True)),
             cdi_top_n=int(ev.get("cdi_top_n", 10)), cdi_ontoaligner=ev.get("cdi_ontoaligner", "sbert"),
             si=ev.get("si", "on") not in ("off", False), si_home_domain=str(ev.get("si_home_domain") or ""),
+            si_references="\n".join(r if r.startswith(("ols", "bioportal", "ontoportal", "http://", "https://"))
+                                     else rel(r) for r in ev.get("si_references", [])),
             si_theta_s=float(ev.get("si_theta_s", 0.3)),
             si_domain_map="\n".join(f"{k} = {'; '.join(v if isinstance(v, list) else [v])}"
                                      for k, v in (ev.get("si_domain_map") or {}).items()),
@@ -516,6 +544,15 @@ def run_folder(out: Path, now: float | None = None) -> Path:
     return folder / out.name if is_file else folder
 
 
+def interop_only(report) -> None:
+    """Keep only the cross-domain and scientific interoperability sections of a quality report."""
+    from .report.models import TOOLS
+
+    keep = {TOOLS["cdi"].name, TOOLS["si"].name}
+    report.findings, report.rules_run = [], []
+    report.external = [x for x in report.external if x.tool in keep]
+
+
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
     from .build import build, build_single_file, check, load, resolve_config
@@ -563,7 +600,7 @@ def run_task(settings: Settings) -> TaskResult:
         coll = export_collection(src, out, myst=s.task == "myst")
         res.rows = [_row_from_entry(e, out, "index.md") for e in coll.entries]
         res.skipped, res.index = coll.skipped, str(out / "index.md")
-    elif s.task == "check":
+    elif s.task in ("check", "interop"):
         files = [Path(src)] if not s.is_folder else find_ontologies(src)[0]
         report_json: dict[str, Any] = {}
         for f in files:
@@ -572,6 +609,8 @@ def run_task(settings: Settings) -> TaskResult:
                 onto, rep = check(f, **{k: v for k, v in ov.items()
                                         if k in ("evaluation", "competency_questions", "load_imports",
                                                  "include_individuals", "reason")})
+                if s.task == "interop":
+                    interop_only(rep)
                 sm = rep.totals
                 res.rows.append(Row(name, onto.metadata.title or f.stem, len(onto.terms), sm["error"],
                                     sm["warning"], sm["info"], _external_text(rep.external),
@@ -582,7 +621,7 @@ def run_task(settings: Settings) -> TaskResult:
                 res.rows.append(Row(name, problem=str(e)))
                 report_json[name] = {"error": str(e)}
         if out.suffix.lower() != ".json":
-            out = out / "quality.json"
+            out = out / ("interoperability.json" if s.task == "interop" else "quality.json")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(report_json, indent=2, ensure_ascii=False), "utf-8")
         for r in res.rows:
@@ -807,7 +846,9 @@ def run_config_rows(settings: dict[str, Any]) -> list[tuple[str, str]]:
                      + (f" · domains: {g('cdi_domains')}" if g("cdi_domains") else "")
                      + f" · OntoAligner: {g('cdi_ontoaligner', 'sbert')}" if cdi else "off"))
         rows.append(("Scientific interoperability",
-                     ("on · own domain: " + (g("si_home_domain") or "classified") + f" · θ_s = {g('si_theta_s', 0.3)}"
+                     ("on · references: " + (", ".join(x.strip() for x in str(g("si_references", "")).splitlines()
+                                                         if x.strip()) or "same as cross-domain")
+                      + " · own domain: " + (g("si_home_domain") or "classified") + f" · θ_s = {g('si_theta_s', 0.3)}"
                       + (" · domain map: " + "; ".join(x.strip() for x in str(g("si_domain_map", "")).splitlines()
                                                          if x.strip()) if g("si_domain_map") else ""))
                      if g("si", True) else "off"))
@@ -976,7 +1017,7 @@ def issues_text(entry: HistoryEntry) -> str:
 
 
 def task_kind(task: str) -> str:
-    return {"check": "check", "diff": "diff"}.get(task, "docs")
+    return {"check": "check", "interop": "check", "diff": "diff"}.get(task, "docs")
 
 
 # ------------------------------------------------------------------ preferences
@@ -1016,6 +1057,7 @@ class Prefs:
     si_home_domain: str = ""
     si_theta_s: float = 0.3
     si_domain_map: str = ""
+    si_references: str = ""
     cdi_bioportal_key: str = field(default="", repr=False)
     cdi_ontoportal_key: str = field(default="", repr=False)
     hf_token: str = field(default="", repr=False)
@@ -1071,7 +1113,7 @@ class Prefs:
         s.ontocheck, s.ontocheck_network, s.ontocheck_search = self.ontocheck, self.ontocheck_network, self.ontocheck_search
         for k in ("iri_checks", "iri_network", "iri_repositories", "iri_resolve",
                   "cdi", "cdi_references", "cdi_domains", "cdi_generality", "cdi_top_n", "cdi_ontoaligner",
-                  "si", "si_home_domain", "si_theta_s", "si_domain_map",
+                  "si", "si_home_domain", "si_theta_s", "si_domain_map", "si_references",
                   "cdi_bioportal_key", "cdi_ontoportal_key", "hf_token"):
             setattr(s, k, getattr(self, k))
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",

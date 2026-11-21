@@ -161,6 +161,10 @@ si_theta_s = 0.3
 si_domain_map = { "ols:emi" = ["1.5"], "file:mine.owl" = ["Biological sciences"] }
 ```
 
+**Its own reference ontologies.** By default SI uses the cross-domain references from the same run. Give it a different list with `si_references` (or `--si-ref`, repeatable; same forms as `--cdi`: files, SSSOM, `ols`, `ols:envo`, `bioportal:NCIT`); it then aligns against that list separately and records those releases too.
+
+**Interoperability only.** The app's **Interoperability** page (and **Interoperability check only** on Build) runs just CDI and SI: choose the ontology, upload reference ontologies, find and add them from OLS or BioPortal by name (no upload needed; BioPortal needs an API key), or let OntoReview discover them. Results appear on the page, go to Run history and can be exported. On the command line: `ontoreview check my.ttl --interop-only --format json -o interoperability.json`. The domain of a reference ontology is set row by row in a small form (id + fields); a new row appears when the last one is used.
+
 It runs by default with cross-domain interoperability (`--no-si` or `evaluation.si = "off"` to skip it). In the app it is under **Settings → Quality checks → Scientific interoperability**. The docs show SI in the Overview and in the quality report (per-domain scores and the domain of every reference ontology), and write the full record to `si.json`. SI needs Gen, so it needs the language model (`ontoreview[cdi]`); without it the review says so.
 
 ## For LLMs and agents

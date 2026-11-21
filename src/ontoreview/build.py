@@ -299,12 +299,16 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
         (out_dir / "iri-checks.json").write_text(json.dumps(iri_prov, indent=2, ensure_ascii=False), "utf-8")
     if cfg.sections.provenance:
         pg = provenance_graph(onto, Path(cfg.source or "").name, __version__, prov)
-        if iri_prov or cdi_rec:
+        if iri_prov or cdi_rec or (si_rec and si_rec.get("releases")):
             from rdflib import URIRef
 
             from .report.iri import add_iri_provenance
             if iri_prov:
                 add_iri_provenance(pg, iri_prov, URIRef("urn:ontoreview:build"))
+            if si_rec and si_rec.get("releases"):   # SI with its own reference ontologies
+                add_iri_provenance(pg, si_rec, URIRef("urn:ontoreview:build"),
+                                   purpose="Reference release used for the scientific interoperability degree "
+                                           "({terms} correspondence(s), via {source}).")
             if cdi_rec:     # the reference ontology releases the CDI score was computed against
                 add_iri_provenance(pg, cdi_rec, URIRef("urn:ontoreview:build"),
                                    purpose="Reference release used for the cross-domain interoperability score "

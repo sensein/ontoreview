@@ -1,11 +1,12 @@
 {
-  "checked_at": "2026-11-21T17:42:46.008810+00:00",
+  "checked_at": "2026-11-21T17:59:46.525683+00:00",
   "references": [
     "ols"
   ],
-  "cdi_run_id": 60,
+  "cdi_run_id": 79,
   "settings": {
     "si": "on",
+    "si_references": [],
     "si_home_domain": null,
     "si_theta_s": 0.3,
     "si_classifier": true,
@@ -541,5 +542,7 @@
   ],
   "n_correspondences_without_upper": 78,
   "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
-  "record_file": "si.json"
+  "record_file": "si.json",
+  "own_references": false,
+  "notes": []
 }

@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T17:44:36.427364+00:00",
+  "checked_at": "2026-11-21T18:01:35.450913+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 20 repository ontologies came from the term database."
   ],
-  "run_id": 64,
+  "run_id": 83,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -34,6 +34,7 @@
     "cdi_timeout": 30,
     "cdi_budget": 600,
     "si": "on",
+    "si_references": [],
     "si_home_domain": null,
     "si_theta_s": 0.3,
     "si_classifier": true,
@@ -385,7 +386,7 @@
         "version_iri": "http://www.w3.org/ns/prov-o-20130430",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-        "retrieved": "2026-11-21T17:38:33.645152+00:00",
+        "retrieved": "2026-11-21T17:47:58.239000+00:00",
         "identified_by": "version IRI"
       }
     },

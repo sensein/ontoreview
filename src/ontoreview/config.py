@@ -201,6 +201,11 @@ class EvaluationConfig(BaseModel):
                                                        "(OECD fields of science), other than the ontology's own, it is "
                                                        "interoperable. Reuses the cross-domain run and its reference "
                                                        "ontologies (cdi_references); upper-level ontologies are ignored")
+    si_references: list[str] = Field(default_factory=list, description="Reference ontologies for scientific "
+                                                                       "interoperability, in the same forms as "
+                                                                       "cdi_references (files, SSSOM, 'ols', 'ols:envo', "
+                                                                       "'bioportal:NCIT', …). Empty: the cross-domain "
+                                                                       "references, from the same run")
     si_home_domain: str | None = Field(None, description="The ontology's own scientific domain D: an OECD field code "
                                                          "(e.g. '1.2') or name (e.g. 'Computer and information "
                                                          "sciences'). Default: classify the ontology's title and "

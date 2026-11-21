@@ -6,8 +6,8 @@
   },
   "totals": {
     "error": 8,
-    "warning": 25,
-    "info": 32
+    "warning": 22,
+    "info": 25
   },
   "external": [
     {
@@ -144,7 +144,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "0.2s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #84 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "0.2s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #106 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -212,8 +212,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:42:44.416017+00:00",
-        "run_id": 84,
+        "checked_at": "2026-11-21T17:59:44.229485+00:00",
+        "run_id": 106,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -834,7 +834,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 60 in the term database. Details of 12 repository ontologies came from the term database.",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 79 in the term database. Details of 12 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -942,14 +942,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:42:46.008810+00:00",
+        "checked_at": "2026-11-21T17:59:46.525683+00:00",
         "references": [
           "ols"
         ],
         "notes": [
           "Details of 12 repository ontologies came from the term database."
         ],
-        "run_id": 60,
+        "run_id": 79,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -977,6 +977,7 @@
           "cdi_timeout": 30,
           "cdi_budget": 600,
           "si": "on",
+          "si_references": [],
           "si_home_domain": null,
           "si_theta_s": 0.3,
           "si_classifier": true,
@@ -2774,13 +2775,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T17:42:46.008810+00:00",
+        "checked_at": "2026-11-21T17:59:46.525683+00:00",
         "references": [
           "ols"
         ],
-        "cdi_run_id": 60,
+        "cdi_run_id": 79,
         "settings": {
           "si": "on",
+          "si_references": [],
           "si_home_domain": null,
           "si_theta_s": 0.3,
           "si_classifier": true,
@@ -3316,7 +3318,9 @@
         ],
         "n_correspondences_without_upper": 78,
         "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
-        "record_file": "si.json"
+        "record_file": "si.json",
+        "own_references": false,
+        "notes": []
       },
       "summary": {
         "error": 0,
@@ -3327,59 +3331,16 @@
     {
       "tool": "OOPS!",
       "url": "https://oops.linkeddata.es",
-      "items": [
-        {
-          "code": "P11",
-          "name": "Missing domain or range in properties",
-          "severity": "warning",
-          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
-          "affected": [
-            "https://example.org/pizza#Name",
-            "https://example.org/pizza#hasIngredient",
-            "https://example.org/pizza#isToppingOf"
-          ],
-          "note": ""
-        },
-        {
-          "code": "P08",
-          "name": "Missing annotations",
-          "severity": "info",
-          "description": "This pitfall consists in creating an ontology element and failing to provide human readable annotations attached to it. Consequently, ontology elements lack annotation properties that label them (e.g. rdfs:label, lemon:LexicalEntry, skos:prefLabel or skos:altLabel) or that define them (e.g. rdfs:comment or dc:description). This pitfall is related to the guidelines provided in [5].",
-          "affected": [
-            "https://example.org/pizza#MeatTopping",
-            "https://example.org/pizza#Name",
-            "https://example.org/pizza#hasBase",
-            "https://example.org/pizza#hasCalories",
-            "https://example.org/pizza#isToppingOf"
-          ],
-          "note": ""
-        },
-        {
-          "code": "P13",
-          "name": "Inverse relationships not explicitly declared",
-          "severity": "info",
-          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
-          "affected": [],
-          "note": ""
-        },
-        {
-          "code": "P22",
-          "name": "Using different naming conventions in the ontology",
-          "severity": "info",
-          "description": "The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &quot;-&quot; or &quot;_&quot;) . Some notions about naming conventions are provided in [2].",
-          "affected": [],
-          "note": "There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name"
-        }
-      ],
-      "error": null,
+      "items": [],
+      "error": "OOPS! request failed: HTTP Error 503: Service Unavailable",
       "note": "",
       "scope": "Full pitfall catalogue.",
       "metrics": [],
       "provenance": {},
       "summary": {
         "error": 0,
-        "warning": 3,
-        "info": 7
+        "warning": 0,
+        "info": 0
       }
     }
   ],

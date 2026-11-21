@@ -230,7 +230,8 @@ def run_cdi(graph: Graph, ev, source: str | None = None, namespace: str | None =
 
 
 def run_interoperability(graph: Graph, ev, source: str | None = None, namespace: str | None = None,
-                         backend=None, classifier=None, with_si: bool = True) -> list[ExternalReport]:
+                         backend=None, classifier=None, with_si: bool = True,
+                         with_cdi: bool = True) -> list[ExternalReport]:
     """Cross-domain and (``with_si``) scientific interoperability from one run: SI reuses the
     reference set, the correspondences and Gen of the cross-domain score, so repositories are
     queried and the language model is loaded once. Returns [CDI report, SI report].
@@ -261,7 +262,19 @@ def run_interoperability(graph: Graph, ev, source: str | None = None, namespace:
             return failed("No classes or properties in the ontology's namespace to score.")
         stores = _open_stores(ev)
         try:
-            reports, ctx = _score(graph, ev, source, onto, work, deadline, stores, backend, checked_at)
+            own = [r for r in ev.si_references if r.strip()]
+            separate = with_si and own and own != list(ev.cdi_references)
+            if separate and not with_cdi:       # only SI, on its own references: no cross-domain run
+                reports, ctx = [cdi_report(None, error="Not run (turned off).")], {"backend": backend}
+            else:
+                reports, ctx = _score(graph, ev, source, onto, work, deadline, stores, backend, checked_at)
+            if separate:
+                # SI against its own reference ontologies: a second alignment, same language model
+                ctx = _align_only(graph, ev, own, onto, work, deadline, stores,
+                                  (ctx or {}).get("backend", backend))
+                if isinstance(ctx, str):
+                    reports.append(si_report(None, error=f"Not computed: {ctx}"))
+                    return reports
             if with_si:
                 reports.append(_scientific(ev, src_path, onto, ctx, classifier, checked_at) if ctx
                                else si_report(None, error=f"Not computed: {reports[0].error}"))
@@ -343,6 +356,33 @@ def _score(graph, ev, source, onto, work: Path, deadline: float, stores, backend
     return [cdi_report(record)], ctx
 
 
+def _align_only(graph, ev, refs: list[str], onto, work: Path, deadline: float, stores, backend) -> dict | str:
+    """Correspondences and Gen against ``refs`` only (SI's own reference ontologies); an error
+    message when nothing usable is left."""
+    cache = dict(stores).get("cache")
+    info_cache = termdb.InfoCache(cache, ev.iri_cache_days) if cache else None
+    sources, notes = build_sources(refs, ev, work, deadline, cache, info_cache)
+    if not sources:
+        return "No usable reference ontologies for scientific interoperability. " + " ".join(notes)
+    why_no_gen = ""
+    try:
+        with hf_token(ev):
+            if backend is None:
+                backend, why_no_gen = generality_backend(ev)
+            result, _, onto_rows, corr = core.evaluate(
+                onto, sources, backend, ev.cdi_domains, ev.cdi_top_n, ev.cdi_exclude, ev.cdi_tau,
+                ev.cdi_rho_sub, ev.cdi_gamma, ev.cdi_k_max, ev.cdi_beta, ev.cdi_theta)
+    except Exception as e:  # noqa: BLE001
+        return f"Scoring failed: {type(e).__name__}: {e}"
+    releases: dict[str, dict] = {}
+    for src in sources:
+        releases.update(getattr(src, "releases", {}) or {})
+    for row in onto_rows:
+        row["release"] = releases.get(row["id"])
+    return {"result": result, "onto_rows": onto_rows, "corr": corr, "backend": backend, "why_no_gen": why_no_gen,
+            "run_id": None, "references": refs, "notes": notes, "own_references": True}
+
+
 def _scientific(ev, src_path: Path, onto, ctx: dict, classifier, checked_at: str) -> ExternalReport:
     """SI on the cross-domain run in ``ctx`` (Definition "Scientific interoperability")."""
     from ...report.si import si_report
@@ -373,7 +413,11 @@ def _scientific(ev, src_path: Path, onto, ctx: dict, classifier, checked_at: str
               "settings": ev.model_dump(include={k for k in type(ev).model_fields if k.startswith("si")}),
               "summary": summary, "per_domain": domain_rows, "domain_assignments": assign_rows,
               "n_correspondences_without_upper": len(m_no_u), "taxonomy": "OECD Fields of Science and "
-              "Technology (Frascati Manual 2015), level 2", "record_file": "si.json"}
+              "Technology (Frascati Manual 2015), level 2", "record_file": "si.json",
+              "own_references": bool(ctx.get("own_references")), "notes": ctx.get("notes", [])}
+    if ctx.get("own_references"):       # not the cross-domain run: record what SI was checked against
+        record["releases"], record["label"] = checked_against(ctx["onto_rows"]), "Checked against"
+        record["per_ontology"] = ctx["onto_rows"]
     return si_report(record)
 
 
@@ -405,7 +449,7 @@ def check_cdi(graph: Graph, ev, source: str | None = None, namespace: str | None
     default; SI needs the cross-domain run, which then runs even when only SI is wanted)."""
     if ev.cdi == "off" and ev.si == "off":
         return []
-    reports = run_interoperability(graph, ev, source, namespace, with_si=ev.si != "off")
+    reports = run_interoperability(graph, ev, source, namespace, with_si=ev.si != "off", with_cdi=ev.cdi != "off")
     return reports if ev.cdi != "off" else reports[1:]
 
 

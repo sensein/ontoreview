@@ -103,9 +103,12 @@ def _items(record: dict) -> list[ExternalItem]:
 
 def _scope(record: dict) -> str:
     s = record["summary"]
-    return (f"Δ = OECD fields of science ({s['taxonomy_size']} fields; the ontology's own is not counted); "
-            f"θ_s = {s['theta_s']}; the same reference ontologies and correspondences as the cross-domain "
-            "score, without upper-level ontologies. Full record in si.json.")
+    refs = (f"its own reference ontologies ({', '.join(record.get('references', []))})"
+            if record.get("own_references") else
+            "the same reference ontologies and correspondences as the cross-domain score")
+    text = (f"Δ = OECD fields of science ({s['taxonomy_size']} fields; the ontology's own is not counted); "
+            f"θ_s = {s['theta_s']}; {refs}, without upper-level ontologies. Full record in si.json.")
+    return " ".join([text, *record.get("notes", [])])
 
 
 def si_report(record: dict | None, error: str | None = None) -> ExternalReport:
