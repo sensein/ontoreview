@@ -9,7 +9,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
-    prov:generatedAtTime "2026-11-21T18:07:33+00:00"^^xsd:dateTime ;
+    prov:generatedAtTime "2026-11-21T18:31:52+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <http://www.w3.org/ns/dcat3> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -18,7 +18,7 @@
     dcterms:hasVersion "26.02d" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/ncit.owl> ;
     dcterms:title "NCI Thesaurus OBO Edition" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (37 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (37 correspondence(s), via ols)." .
 
 <http://purl.org/spar/datacite/2026-10-05> a prov:Entity ;
     dcterms:date "2026-11-21T17:40:46.656861+00:00"^^xsd:string ;
@@ -26,7 +26,7 @@
     dcterms:isVersionOf <http://purl.org/spar/datacite> ;
     dcterms:source <https://sparontologies.github.io/datacite/current/datacite.xml> ;
     dcterms:title "The DataCite Ontology (DataCite)" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (7 correspondence(s), via term database (cache)).",
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (7 correspondence(s), via term database (cache)).",
         "Release used to verify 4 external term(s) (via cache)." .
 
 <http://semanticscience.org/ontology/sio/v1.62/sio-release.owl> a prov:Entity ;
@@ -34,16 +34,16 @@
     dcterms:hasVersion "1.62" ;
     dcterms:isVersionOf <http://semanticscience.org/ontology/sio.owl> ;
     dcterms:title "Semanticscience Integrated Ontology" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (9 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (9 correspondence(s), via ols)." .
 
 <http://snomed.info/sct/900000000000207008/version/20251017> a prov:Entity ;
     dcterms:date "2026-11-21T17:30:09Z"^^xsd:string ;
     dcterms:isVersionOf <http://snomed.info/sct/9000000000002070081231> ;
     dcterms:title "SNOMED CT (International Edition)" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (8 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (8 correspondence(s), via ols)." .
 
 <http://www.w3.org/ns/prov-o-20130430> a prov:Entity ;
-    dcterms:date "2026-11-21T18:06:54.762737+00:00"^^xsd:string ;
+    dcterms:date "2026-11-21T18:31:21.194786+00:00"^^xsd:string ;
     dcterms:identifier "sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96" ;
     dcterms:isVersionOf prov: ;
     dcterms:source <https://www.w3.org/ns/prov-o.ttl> ;
@@ -56,20 +56,20 @@
     dcterms:hasVersion "1.2.0" ;
     dcterms:isVersionOf <https://w3id.org/evorao/> ;
     dcterms:title "ols:evorao" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (9 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (9 correspondence(s), via ols)." .
 
 <https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn> a prov:Entity ;
     dcterms:date "2026-11-21T17:30:13Z"^^xsd:string ;
     dcterms:hasVersion "2025" ;
     dcterms:isVersionOf <https://w3id.org/biopragmatics/resources/mesh/mesh.ofn> ;
     dcterms:title "Medical Subject Headings" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (7 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (7 correspondence(s), via ols)." .
 
 <https://www.w3.org/groups/wg/dx> a prov:Agent .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-21T18:07:33+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-11-21T18:06:37+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:31:52+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:31:06+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
         <http://purl.org/spar/datacite/2026-10-05>,
@@ -142,13 +142,13 @@
     dcterms:date "2026-11-21T17:30:08Z"^^xsd:string ;
     dcterms:isVersionOf schema: ;
     dcterms:title "ols:schemaorg_https" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (14 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (14 correspondence(s), via ols)." .
 
 <urn:sha256:7b645a0e1b0379b6f24ed719797f26f0f2b7a8f6ece6861fa159ffbf70a9e904> a prov:Entity ;
     dcterms:date "2026-11-21T17:30:03Z"^^xsd:string ;
     dcterms:isVersionOf <http://schema.org/> ;
     dcterms:title "ols:schemaorg_http" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (14 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (14 correspondence(s), via ols)." .
 
 <urn:sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392> a prov:Entity ;
     dcterms:date "2026-11-18T01:08:30.672748+00:00"^^xsd:string ;
@@ -183,7 +183,7 @@
     dcterms:hasVersion "REC/2026/09" ;
     dcterms:isVersionOf <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> ;
     dcterms:title "Allotrope Merged Ontology Suite" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (8 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (8 correspondence(s), via ols)." .
 
 <http://www.w3.org/ns/dcat3> a prov:Entity ;
     dcterms:date "2026-11-21T17:35:04Z"^^xsd:string ;
@@ -192,7 +192,7 @@
     dcterms:modified "2020-11-30" ;
     dcterms:title "The data catalog vocabulary",
         "ols:dcat" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (9 correspondence(s), via ols)." ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (9 correspondence(s), via ols)." ;
     prov:wasAttributedTo <https://www.w3.org/groups/wg/dx> ;
     prov:wasRevisionOf <http://www.w3.org/ns/dcat2> .
 

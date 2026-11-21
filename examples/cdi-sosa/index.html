@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dd85">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e340">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -31,210 +31,9 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest",
-   "name": "Feature Of Interest",
-   "description": "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.",
-   "termCode": "sosa:FeatureOfInterest"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://purl.org/dc/terms/title",
    "name": "title",
    "termCode": "dcterms:title"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/isFeatureOfInterestOf",
-   "name": "is feature of interest of",
-   "description": "A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it.",
-   "termCode": "sosa:isFeatureOfInterestOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#definition",
-   "name": "definition",
-   "termCode": "skos:definition"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Procedure",
-   "name": "Procedure",
-   "description": "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many Observations, Samplings, or Actuations. It explains the steps to be carried out to arrive at reproducible results.",
-   "termCode": "sosa:Procedure"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Result",
-   "name": "Result",
-   "description": "The Result of an Observation, Actuation, or act of Sampling. To store an observation's simple result value one can use the hasSimpleResult property.",
-   "termCode": "sosa:Result"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Sampling",
-   "name": "Sampling",
-   "description": "An act of Sampling carries out a sampling Procedure to create or transform one or more samples.",
-   "termCode": "sosa:Sampling"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/isHostedBy",
-   "name": "is hosted by",
-   "description": "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by.",
-   "termCode": "sosa:isHostedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/madeSampling",
-   "name": "made sampling",
-   "description": "Relation between a Sampler (sampling device or entity) and the Sampling act it performed.",
-   "termCode": "sosa:madeSampling"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/hasFeatureOfInterest",
-   "name": "has feature of interest",
-   "description": "A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled.",
-   "termCode": "sosa:hasFeatureOfInterest"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://schema.org/rangeIncludes",
-   "name": "rangeIncludes",
-   "termCode": "schema1:rangeIncludes"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/madeByActuator",
-   "name": "made by actuator",
-   "description": "Relation linking an Actuation to the Actuator that made that Actuation.",
-   "termCode": "sosa:madeByActuator"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/vocab/vann/preferredNamespaceUri",
-   "name": "preferredNamespaceUri",
-   "termCode": "vann:preferredNamespaceUri"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Sampler",
-   "name": "Sampler",
-   "description": "A device that is used by, or implements, a Sampling Procedure to create or transform one or more samples.",
-   "termCode": "sosa:Sampler"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/terms/created",
-   "name": "created",
-   "termCode": "dcterms:created"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/actsOnProperty",
-   "name": "acts on property",
-   "description": "Relation between an Actuation and the property of a FeatureOfInterest it is acting upon.",
-   "termCode": "sosa:actsOnProperty"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/hosts",
-   "name": "hosts",
-   "description": "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it.",
-   "termCode": "sosa:hosts"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Observation",
-   "name": "Observation",
-   "description": "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest. Links to a Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with.",
-   "termCode": "sosa:Observation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/resultTime",
-   "name": "result time",
-   "description": "The result time is the instant of time when the Observation, Actuation or Sampling activity was completed.",
-   "termCode": "sosa:resultTime"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/madeActuation",
-   "name": "made actuation",
-   "description": "Relation between an Actuator and the Actuation it has made.",
-   "termCode": "sosa:madeActuation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/ObservableProperty",
-   "name": "Observable Property",
-   "description": "An observable quality (property, characteristic) of a FeatureOfInterest.",
-   "termCode": "sosa:ObservableProperty"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/vocab/vann/preferredNamespacePrefix",
-   "name": "preferredNamespacePrefix",
-   "termCode": "vann:preferredNamespacePrefix"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/terms/license",
-   "name": "license",
-   "termCode": "dcterms:license"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/isObservedBy",
-   "name": "is observed by",
-   "description": "Relation between an ObservableProperty and the Sensor able to observe it.",
-   "termCode": "sosa:isObservedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/ActuatableProperty",
-   "name": "Actuatable Property",
-   "description": "An actuatable quality (property, characteristic) of a FeatureOfInterest.",
-   "termCode": "sosa:ActuatableProperty"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/madeBySensor",
-   "name": "made by sensor",
-   "description": "Relation between an Observation and the Sensor which made the Observation.",
-   "termCode": "sosa:madeBySensor"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#note",
-   "name": "note",
-   "termCode": "skos:note"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/hasSample",
-   "name": "has sample",
-   "description": "Relation between a FeatureOfInterest and the Sample used to represent it.",
-   "termCode": "sosa:hasSample"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://schema.org/domainIncludes",
-   "name": "domainIncludes",
-   "termCode": "schema1:domainIncludes"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/terms/description",
-   "name": "description",
-   "termCode": "dcterms:description"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/isActedOnBy",
-   "name": "is acted on by",
-   "description": "Relation between an ActuatableProperty of a FeatureOfInterest and an Actuation changing its state.",
-   "termCode": "sosa:isActedOnBy"
   },
   {
    "@type": "DefinedTerm",
@@ -250,63 +49,23 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/observedProperty",
-   "name": "observed property",
-   "description": "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation.",
-   "termCode": "sosa:observedProperty"
+   "@id": "http://www.w3.org/ns/sosa/Observation",
+   "name": "Observation",
+   "description": "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest. Links to a Sensor to describe what made the Observation and how; links to an ObservableProperty to describe what the result is an estimate of, and to a FeatureOfInterest to detail what that property was associated with.",
+   "termCode": "sosa:Observation"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/isResultOf",
-   "name": "is result of",
-   "description": "Relation linking a Result to the Observation or Actuation or act of Sampling that created or caused it.",
-   "termCode": "sosa:isResultOf"
+   "@id": "http://www.w3.org/ns/sosa/isFeatureOfInterestOf",
+   "name": "is feature of interest of",
+   "description": "A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it.",
+   "termCode": "sosa:isFeatureOfInterestOf"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2006/time#TemporalEntity",
-   "name": "TemporalEntity",
-   "termCode": "time:TemporalEntity"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.org/dc/terms/rights",
-   "name": "rights",
-   "termCode": "dcterms:rights"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#example",
-   "name": "example",
-   "termCode": "skos:example"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Sensor",
-   "name": "Sensor",
-   "description": "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms.",
-   "termCode": "sosa:Sensor"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Platform",
-   "name": "Platform",
-   "description": "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms.",
-   "termCode": "sosa:Platform"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/hasSimpleResult",
-   "name": "has simple result",
-   "description": "The simple value of an Observation or Actuation or act of Sampling.",
-   "termCode": "sosa:hasSimpleResult"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/Sample",
-   "name": "Sample",
-   "description": "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.",
-   "termCode": "sosa:Sample"
+   "@id": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+   "name": "preferredNamespacePrefix",
+   "termCode": "vann:preferredNamespacePrefix"
   },
   {
    "@type": "DefinedTerm",
@@ -317,6 +76,46 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/madeActuation",
+   "name": "made actuation",
+   "description": "Relation between an Actuator and the Actuation it has made.",
+   "termCode": "sosa:madeActuation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/isResultOf",
+   "name": "is result of",
+   "description": "Relation linking a Result to the Observation or Actuation or act of Sampling that created or caused it.",
+   "termCode": "sosa:isResultOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/observedProperty",
+   "name": "observed property",
+   "description": "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation.",
+   "termCode": "sosa:observedProperty"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/madeSampling",
+   "name": "made sampling",
+   "description": "Relation between a Sampler (sampling device or entity) and the Sampling act it performed.",
+   "termCode": "sosa:madeSampling"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/vocab/vann/preferredNamespaceUri",
+   "name": "preferredNamespaceUri",
+   "termCode": "vann:preferredNamespaceUri"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/license",
+   "name": "license",
+   "termCode": "dcterms:license"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/ns/sosa/Actuator",
    "name": "Actuator",
    "description": "A device that is used by, or implements, an (Actuation) Procedure that changes the state of the world.",
@@ -324,24 +123,23 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/madeBySampler",
-   "name": "made by sampler",
-   "description": "Relation linking an act of Sampling to the Sampler (sampling device or entity) that made it.",
-   "termCode": "sosa:madeBySampler"
+   "@id": "http://www.w3.org/ns/sosa/ActuatableProperty",
+   "name": "Actuatable Property",
+   "description": "An actuatable quality (property, characteristic) of a FeatureOfInterest.",
+   "termCode": "sosa:ActuatableProperty"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/hasResult",
-   "name": "has result",
-   "description": "Relation linking an Observation or Actuation or act of Sampling and a Result or Sample.",
-   "termCode": "sosa:hasResult"
+   "@id": "http://www.w3.org/ns/sosa/Platform",
+   "name": "Platform",
+   "description": "A Platform is an entity that hosts other entities, particularly Sensors, Actuators, Samplers, and other Platforms.",
+   "termCode": "sosa:Platform"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/phenomenonTime",
-   "name": "phenomenon time",
-   "description": "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest. Not necessarily the same as the resultTime. May be an Interval or an Instant, or some other compound TemporalEntity.",
-   "termCode": "sosa:phenomenonTime"
+   "@id": "http://schema.org/domainIncludes",
+   "name": "domainIncludes",
+   "termCode": "schema1:domainIncludes"
   },
   {
    "@type": "DefinedTerm",
@@ -352,16 +150,97 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://purl.org/vocommons/voaf#Vocabulary",
-   "name": "Vocabulary",
-   "termCode": "voaf:Vocabulary"
+   "@id": "http://purl.org/dc/terms/rights",
+   "name": "rights",
+   "termCode": "dcterms:rights"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/sosa/isSampleOf",
-   "name": "is sample of",
-   "description": "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of.",
-   "termCode": "sosa:isSampleOf"
+   "@id": "http://www.w3.org/ns/sosa/hasSample",
+   "name": "has sample",
+   "description": "Relation between a FeatureOfInterest and the Sample used to represent it.",
+   "termCode": "sosa:hasSample"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/isActedOnBy",
+   "name": "is acted on by",
+   "description": "Relation between an ActuatableProperty of a FeatureOfInterest and an Actuation changing its state.",
+   "termCode": "sosa:isActedOnBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/Result",
+   "name": "Result",
+   "description": "The Result of an Observation, Actuation, or act of Sampling. To store an observation's simple result value one can use the hasSimpleResult property.",
+   "termCode": "sosa:Result"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/hosts",
+   "name": "hosts",
+   "description": "Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it.",
+   "termCode": "sosa:hosts"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://xmlns.com/foaf/0.1/Agent",
+   "name": "Agent",
+   "termCode": "foaf:Agent"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/Sampler",
+   "name": "Sampler",
+   "description": "A device that is used by, or implements, a Sampling Procedure to create or transform one or more samples.",
+   "termCode": "sosa:Sampler"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/Sampling",
+   "name": "Sampling",
+   "description": "An act of Sampling carries out a sampling Procedure to create or transform one or more samples.",
+   "termCode": "sosa:Sampling"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/description",
+   "name": "description",
+   "termCode": "dcterms:description"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/madeBySampler",
+   "name": "made by sampler",
+   "description": "Relation linking an act of Sampling to the Sampler (sampling device or entity) that made it.",
+   "termCode": "sosa:madeBySampler"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/Procedure",
+   "name": "Procedure",
+   "description": "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator). A Procedure is re-usable, and might be involved in many Observations, Samplings, or Actuations. It explains the steps to be carried out to arrive at reproducible results.",
+   "termCode": "sosa:Procedure"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest",
+   "name": "Feature Of Interest",
+   "description": "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling.",
+   "termCode": "sosa:FeatureOfInterest"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#example",
+   "name": "example",
+   "termCode": "skos:example"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/madeByActuator",
+   "name": "made by actuator",
+   "description": "Relation linking an Actuation to the Actuator that made that Actuation.",
+   "termCode": "sosa:madeByActuator"
   },
   {
    "@type": "DefinedTerm",
@@ -372,9 +251,104 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://xmlns.com/foaf/0.1/Agent",
-   "name": "Agent",
-   "termCode": "foaf:Agent"
+   "@id": "http://www.w3.org/ns/sosa/Sensor",
+   "name": "Sensor",
+   "description": "Device, agent (including humans), or software (simulation) involved in, or implementing, a Procedure. Sensors respond to a stimulus, e.g., a change in the environment, or input data composed from the results of prior Observations, and generate a Result. Sensors can be hosted by Platforms.",
+   "termCode": "sosa:Sensor"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#note",
+   "name": "note",
+   "termCode": "skos:note"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/Sample",
+   "name": "Sample",
+   "description": "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.",
+   "termCode": "sosa:Sample"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/ObservableProperty",
+   "name": "Observable Property",
+   "description": "An observable quality (property, characteristic) of a FeatureOfInterest.",
+   "termCode": "sosa:ObservableProperty"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/phenomenonTime",
+   "name": "phenomenon time",
+   "description": "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest. Not necessarily the same as the resultTime. May be an Interval or an Instant, or some other compound TemporalEntity.",
+   "termCode": "sosa:phenomenonTime"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/isHostedBy",
+   "name": "is hosted by",
+   "description": "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by.",
+   "termCode": "sosa:isHostedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/rangeIncludes",
+   "name": "rangeIncludes",
+   "termCode": "schema1:rangeIncludes"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/madeBySensor",
+   "name": "made by sensor",
+   "description": "Relation between an Observation and the Sensor which made the Observation.",
+   "termCode": "sosa:madeBySensor"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/actsOnProperty",
+   "name": "acts on property",
+   "description": "Relation between an Actuation and the property of a FeatureOfInterest it is acting upon.",
+   "termCode": "sosa:actsOnProperty"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/created",
+   "name": "created",
+   "termCode": "dcterms:created"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/isObservedBy",
+   "name": "is observed by",
+   "description": "Relation between an ObservableProperty and the Sensor able to observe it.",
+   "termCode": "sosa:isObservedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/hasResult",
+   "name": "has result",
+   "description": "Relation linking an Observation or Actuation or act of Sampling and a Result or Sample.",
+   "termCode": "sosa:hasResult"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/isSampleOf",
+   "name": "is sample of",
+   "description": "Relation from a Sample to the FeatureOfInterest that it is intended to be representative of.",
+   "termCode": "sosa:isSampleOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/hasFeatureOfInterest",
+   "name": "has feature of interest",
+   "description": "A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled.",
+   "termCode": "sosa:hasFeatureOfInterest"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2006/time#TemporalEntity",
+   "name": "TemporalEntity",
+   "termCode": "time:TemporalEntity"
   },
   {
    "@type": "DefinedTerm",
@@ -382,6 +356,32 @@
    "name": "observes",
    "description": "Relation between a Sensor and an ObservableProperty that it is capable of sensing.",
    "termCode": "sosa:observes"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/hasSimpleResult",
+   "name": "has simple result",
+   "description": "The simple value of an Observation or Actuation or act of Sampling.",
+   "termCode": "sosa:hasSimpleResult"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/sosa/resultTime",
+   "name": "result time",
+   "description": "The result time is the instant of time when the Observation, Actuation or Sampling activity was completed.",
+   "termCode": "sosa:resultTime"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/vocommons/voaf#Vocabulary",
+   "name": "Vocabulary",
+   "termCode": "voaf:Vocabulary"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#definition",
+   "name": "definition",
+   "termCode": "skos:definition"
   },
   {
    "@type": "DefinedTerm",
@@ -709,8 +709,8 @@
   </header>
   <p class="term-iri"><code>http://www.w3.org/ns/sosa/Sample</code> <button class="copy" data-copy="http://www.w3.org/ns/sosa/Sample" aria-label="Copy IRI">copy</button></p>
 <div class="definition"><p>Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.</p>
-</div><div class="comment"><p>A Sample is the result from an act of Sampling.</p>
 </div><div class="comment"><p>Physical samples are sometimes known as 'specimens'.</p>
+</div><div class="comment"><p>A Sample is the result from an act of Sampling.</p>
 </div><div class="comment"><p>Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.</p>
 <p>A Sample is intended to sample some FatureOfInterest, so there is an expectation of at least one isSampleOf property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features.</p>
 </div><div class="comment"><p>Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.</p>
@@ -743,7 +743,7 @@
 </div><div class="comment"><p>An act of Sampling carries out a sampling Procedure to create or transform one or more samples.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:Sampling</code></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasFeatureOfInterest" class="ref" title="sosa:hasFeatureOfInterest">has feature of interest</a>, <a href="#hasResult" class="ref" title="sosa:hasResult">has result</a>, <a href="#hasSimpleResult" class="ref" title="sosa:hasSimpleResult">has simple result</a>, <a href="#madeBySampler" class="ref" title="sosa:madeBySampler">made by sampler</a>, <a href="#phenomenonTime" class="ref" title="sosa:phenomenonTime">phenomenon time</a>, <a href="#resultTime" class="ref" title="sosa:resultTime">result time</a>, <a href="#usedProcedure" class="ref" title="sosa:usedProcedure">used procedure</a></div><div class="usage"><span class="muted">in range of</span> <a href="#isFeatureOfInterestOf" class="ref" title="sosa:isFeatureOfInterestOf">is feature of interest of</a>, <a href="#isResultOf" class="ref" title="sosa:isResultOf">is result of</a>, <a href="#madeSampling" class="ref" title="sosa:madeSampling">made sampling</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Establishing a station for environmental monitoring.</code><br><code class="example">Drilling an observation well.</code><br><code class="example">Sieving a powder to separate the subset finer than 100-mesh.</code><br><code class="example">Dividing a field site into quadrants.</code><br><code class="example">Drawing blood from a patient.</code><br><code class="example">Selecting a subset of a population.</code><br><code class="example">Taking a diamond-drill core from a rock outcrop.</code><br><code class="example">Crushing a rock sample in a ball mill.</code><br><code class="example">Digging a pit through a soil sequence.</code><br><code class="example">Registering an image of the landscape.</code><br><code class="example">Splitting a piece of drill-core to create two new samples.</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:Sampling</code></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasFeatureOfInterest" class="ref" title="sosa:hasFeatureOfInterest">has feature of interest</a>, <a href="#hasResult" class="ref" title="sosa:hasResult">has result</a>, <a href="#hasSimpleResult" class="ref" title="sosa:hasSimpleResult">has simple result</a>, <a href="#madeBySampler" class="ref" title="sosa:madeBySampler">made by sampler</a>, <a href="#phenomenonTime" class="ref" title="sosa:phenomenonTime">phenomenon time</a>, <a href="#resultTime" class="ref" title="sosa:resultTime">result time</a>, <a href="#usedProcedure" class="ref" title="sosa:usedProcedure">used procedure</a></div><div class="usage"><span class="muted">in range of</span> <a href="#isFeatureOfInterestOf" class="ref" title="sosa:isFeatureOfInterestOf">is feature of interest of</a>, <a href="#isResultOf" class="ref" title="sosa:isResultOf">is result of</a>, <a href="#madeSampling" class="ref" title="sosa:madeSampling">made sampling</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Taking a diamond-drill core from a rock outcrop.</code><br><code class="example">Splitting a piece of drill-core to create two new samples.</code><br><code class="example">Registering an image of the landscape.</code><br><code class="example">Digging a pit through a soil sequence.</code><br><code class="example">Drilling an observation well.</code><br><code class="example">Selecting a subset of a population.</code><br><code class="example">Establishing a station for environmental monitoring.</code><br><code class="example">Sieving a powder to separate the subset finer than 100-mesh.</code><br><code class="example">Crushing a rock sample in a ball mill.</code><br><code class="example">Drawing blood from a patient.</code><br><code class="example">Dividing a field site into quadrants.</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/ns/sosa/Sampling">Show in figure</a></p></article>
 <article class="term" id="Sensor" data-kind="class">
@@ -795,7 +795,7 @@
 </div><div class="comment"><p>Relation between an Actuation and the property of a FeatureOfInterest it is acting upon.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:actsOnProperty</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#ActuatableProperty" class="ref" title="sosa:ActuatableProperty">Actuatable Property</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isActedOnBy" class="ref" title="sosa:isActedOnBy">is acted on by</a></span></td></tr><tr><th scope="row">Examples</th><td><code class="example">In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degrees Celsius, the property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. </code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#ActuatableProperty" class="ref" title="sosa:ActuatableProperty">ActuatableProperty</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:actsOnProperty</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#ActuatableProperty" class="ref" title="sosa:ActuatableProperty">Actuatable Property</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isActedOnBy" class="ref" title="sosa:isActedOnBy">is acted on by</a></span></td></tr><tr><th scope="row">Examples</th><td><code class="example">In the activity (Actuation) of automatically closing a window if the temperature in a room drops below 20 degrees Celsius, the property on which the Actuator acts upon is the state of the window as it changes from being open to being closed. </code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#ActuatableProperty" class="ref" title="sosa:ActuatableProperty">Actuatable Property</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="hasFeatureOfInterest" data-kind="object_property">
@@ -808,7 +808,7 @@
 </div><div class="comment"><p>A relation between an Observation and the entity whose quality was observed, or between an Actuation and the entity whose property was modified, or between an act of Sampling and the entity that was sampled.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:hasFeatureOfInterest</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isFeatureOfInterestOf" class="ref" title="sosa:isFeatureOfInterestOf">is feature of interest of</a></span></td></tr><tr><th scope="row">Examples</th><td><code class="example">For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the property is its weight.</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:hasFeatureOfInterest</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isFeatureOfInterestOf" class="ref" title="sosa:isFeatureOfInterestOf">is feature of interest of</a></span></td></tr><tr><th scope="row">Examples</th><td><code class="example">For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the property is its weight.</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="hasResult" data-kind="object_property">
@@ -821,7 +821,7 @@
 </div><div class="comment"><p>Relation linking an Observation or Actuation or act of Sampling and a Result or Sample.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:hasResult</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isResultOf" class="ref" title="sosa:isResultOf">is result of</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:hasResult</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isResultOf" class="ref" title="sosa:isResultOf">is result of</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="hasSample" data-kind="object_property">
@@ -834,7 +834,7 @@
 </div><div class="comment"><p>Relation between a FeatureOfInterest and the Sample used to represent it.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:hasSample</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isSampleOf" class="ref" title="sosa:isSampleOf">is sample of</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:hasSample</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isSampleOf" class="ref" title="sosa:isSampleOf">is sample of</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">FeatureOfInterest</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="hosts" data-kind="object_property">
@@ -847,7 +847,7 @@
 </div><div class="comment"><p>Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted or mounted on it.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:hosts</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isHostedBy" class="ref" title="sosa:isHostedBy">is hosted by</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:hosts</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#isHostedBy" class="ref" title="sosa:isHostedBy">is hosted by</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="isActedOnBy" data-kind="object_property">
@@ -873,7 +873,7 @@
 </div><div class="comment"><p>A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:isFeatureOfInterestOf</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hasFeatureOfInterest" class="ref" title="sosa:hasFeatureOfInterest">has feature of interest</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:isFeatureOfInterestOf</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">Feature Of Interest</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hasFeatureOfInterest" class="ref" title="sosa:hasFeatureOfInterest">has feature of interest</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#FeatureOfInterest" class="ref" title="sosa:FeatureOfInterest">FeatureOfInterest</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="isHostedBy" data-kind="object_property">
@@ -886,7 +886,7 @@
 </div><div class="comment"><p>Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:isHostedBy</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hosts" class="ref" title="sosa:hosts">hosts</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:isHostedBy</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hosts" class="ref" title="sosa:hosts">hosts</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></li><li><span class="expr"><a href="#Sampler" class="ref" title="sosa:Sampler">Sampler</a></span></li><li><span class="expr"><a href="#Sensor" class="ref" title="sosa:Sensor">Sensor</a></span></li><li><span class="expr"><a href="#Actuator" class="ref" title="sosa:Actuator">Actuator</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#Platform" class="ref" title="sosa:Platform">Platform</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="isObservedBy" data-kind="object_property">
@@ -912,7 +912,7 @@
 </div><div class="comment"><p>Relation linking a Result to the Observation or Actuation or act of Sampling that created or caused it.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:isResultOf</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hasResult" class="ref" title="sosa:hasResult">has result</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:isResultOf</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Inverse of</th><td><span class="expr"><a href="#hasResult" class="ref" title="sosa:hasResult">has result</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sample" class="ref" title="sosa:Sample">Sample</a></span></li><li><span class="expr"><a href="#Result" class="ref" title="sosa:Result">Result</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="isSampleOf" data-kind="object_property">
@@ -1016,7 +1016,7 @@
 </div><div class="comment"><p>Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest (linked by hasFeatureOfInterest) of this Observation.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:observedProperty</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#ObservableProperty" class="ref" title="sosa:ObservableProperty">Observable Property</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#ObservableProperty" class="ref" title="sosa:ObservableProperty">Observable Property</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:observedProperty</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#ObservableProperty" class="ref" title="sosa:ObservableProperty">Observable Property</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#ObservableProperty" class="ref" title="sosa:ObservableProperty">ObservableProperty</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="observes" data-kind="object_property">
@@ -1042,7 +1042,7 @@
 </div><div class="comment"><p>The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest. Not necessarily the same as the resultTime. May be an Interval or an Instant, or some other compound TemporalEntity.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:phenomenonTime</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#TemporalEntity" class="ref" title="time:TemporalEntity">TemporalEntity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#TemporalEntity" class="ref" title="time:TemporalEntity">TemporalEntity</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:phenomenonTime</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#TemporalEntity" class="ref" title="time:TemporalEntity">TemporalEntity</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#TemporalEntity" class="ref" title="time:TemporalEntity">TemporalEntity</a></span></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="usedProcedure" data-kind="object_property">
@@ -1055,7 +1055,7 @@
 </div><div class="comment"><p>A relation to link to a re-usable Procedure used in making an Observation, an Actuation, or a Sample, typically through a Sensor, Actuator or Sampler.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:usedProcedure</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Procedure" class="ref" title="sosa:Procedure">Procedure</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#Procedure" class="ref" title="sosa:Procedure">Procedure</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:usedProcedure</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="#Procedure" class="ref" title="sosa:Procedure">Procedure</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li></ul></td></tr><tr><th scope="row"><a href="#rangeIncludes" class="ref" title="schema1:rangeIncludes">rangeIncludes</a></th><td><span class="expr"><a href="#Procedure" class="ref" title="sosa:Procedure">Procedure</a></span></td></tr>    </tbody>
   </table>
 </article>
 </section><section class="section section-terms" id="datatype-properties">
@@ -1072,7 +1072,7 @@
 </div><div class="comment"><p>The simple value of an Observation or Actuation or act of Sampling.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:hasSimpleResult</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row">Examples</th><td><code class="example">For instance, the values 23 or true.</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:hasSimpleResult</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr><tr><th scope="row">Examples</th><td><code class="example">For instance, the values 23 or true.</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 <article class="term" id="resultTime" data-kind="datatype_property">
@@ -1085,7 +1085,7 @@
 </div><div class="comment"><p>The result time is the instant of time when the Observation, Actuation or Sampling activity was completed.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>sosa:resultTime</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ref ext" title="xsd:dateTime">xsd:dateTime</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li></ul></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>sosa:resultTime</code></td></tr><tr><th scope="row">Domain</th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/2001/XMLSchema#dateTime" class="ref ext" title="xsd:dateTime">xsd:dateTime</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/sosa/" class="ref ext" title="http://www.w3.org/ns/sosa/">Sensor, Observation, Sample, and Actuator (SOSA) Ontology</a></td></tr><tr><th scope="row"><a href="#domainIncludes" class="ref" title="schema1:domainIncludes">domainIncludes</a></th><td><ul class="vlist"><li><span class="expr"><a href="#Observation" class="ref" title="sosa:Observation">Observation</a></span></li><li><span class="expr"><a href="#Sampling" class="ref" title="sosa:Sampling">Sampling</a></span></li><li><span class="expr"><a href="#Actuation" class="ref" title="sosa:Actuation">Actuation</a></span></li></ul></td></tr>    </tbody>
   </table>
 </article>
 </section><section class="section section-terms" id="annotation-properties">
@@ -1357,7 +1357,7 @@
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
   <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
-<p class="muted small">0.4s. Own namespaces (not checked as external): http://www.w3.org/ns/sosa/, http://www.w3.org/ns/sosa#. Run #117 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+<p class="muted small">0.2s. Own namespaces (not checked as external): http://www.w3.org/ns/sosa/, http://www.w3.org/ns/sosa#. Run #138 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
     <caption class="sr-only">IRI checks metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1372,7 +1372,7 @@
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:05:30 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:29:55 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
       <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
@@ -1443,7 +1443,7 @@
 <li><a href="#ActuatableProperty">Actuatable Property</a> <code class="muted">sosa:ActuatableProperty</code></li><li><a href="#Procedure">Procedure</a> <code class="muted">sosa:Procedure</code></li><li><a href="#Sample">Sample</a> <code class="muted">sosa:Sample</code></li><li><a href="#isActedOnBy">is acted on by</a> <code class="muted">sosa:isActedOnBy</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
-<p class="muted small">11 reference ontologies (1 given, 10 discovered); left out: 19 below the top N. Full record in cdi.json, and as CDI run 90 in the term database. Details of 26 repository ontologies came from the term database.</p>  <table class="plain metrics">
+<p class="muted small">11 reference ontologies (1 given, 10 discovered); left out: 20 below the top N. Full record in cdi.json, and as CDI run 110 in the term database. Details of 26 repository ontologies came from the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Cross-domain interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1464,42 +1464,42 @@
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:05:32 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:29:56 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
     <tbody>
       <tr><td>The Earth Metabolome Initiative (EMI) ontology<br><code class="small">https://w3id.org/emi/version/1.0</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>13</td></tr>
+      <td class="small">2026-11-21</td><td>13</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>21</td></tr>
+      <td class="small">2026-11-21</td><td>21</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>15</td></tr>
+      <td class="small">2026-11-21</td><td>15</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>TransformON<br><code class="small">tfo 33.0</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>7</td></tr>
+      <td class="small">2026-11-21</td><td>7</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Semanticscience Integrated Ontology<br><code class="small">http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>5</td></tr>
+      <td class="small">2026-11-21</td><td>5</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>http://www.w3.org/ns/ssn/<br><code class="small">http://www.w3.org/ns/ssn/</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 184d86189191146e…</span></td>
       <td class="small">term database (bundled)<br><span class="muted">https://www.w3.org/ns/ssn/ssn.ttl</span></td>
-      <td class="small">2026-11-18</td><td>3</td></tr>
+      <td class="small">2026-11-18</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>ols:schemaorg_http<br><code class="small">schemaorg_http</code><br><span class="muted small">version not reported; identified by release/load date (2026-11-21T00:09:03)</span><br><span class="muted small">version not reported by the source; identified by release/load date</span></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>3</td></tr>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>ols:schemaorg_https<br><code class="small">schemaorg_https</code><br><span class="muted small">version not reported; identified by release/load date (2026-11-21T00:09:05)</span><br><span class="muted small">version not reported by the source; identified by release/load date</span></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>3</td></tr>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Toxic Process Ontology<br><code class="small">http://purl.obolibrary.org/obo/txpo/releases/2022-12-07/txpo.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>3</td></tr>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>W3C PROVenance Interchange Ontology (PROV-O)<br><code class="small">http://www.w3.org/ns/prov-o-20130430</code><br><span class="muted small">sha256 7d203989f67b38bc…</span></td>
       <td class="small">file<br><span class="muted">file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl</span></td>
-      <td class="small">2026-11-21</td><td>0</td></tr>
+      <td class="small">2026-11-21</td><td>0</td><td class="small">Cross-domain, Scientific</td></tr>
     </tbody>
   </table>
   <details class="finding sev-info">
@@ -1513,7 +1513,7 @@
 <li><a href="#Actuation">Actuation</a> <code class="muted">sosa:Actuation</code></li><li><a href="#Actuator">Actuator</a> <code class="muted">sosa:Actuator</code></li><li><a href="#FeatureOfInterest">Feature Of Interest</a> <code class="muted">sosa:FeatureOfInterest</code></li><li><a href="#Observation">Observation</a> <code class="muted">sosa:Observation</code></li><li><a href="#Procedure">Procedure</a> <code class="muted">sosa:Procedure</code></li><li><a href="#Sampler">Sampler</a> <code class="muted">sosa:Sampler</code></li><li><a href="#Sampling">Sampling</a> <code class="muted">sosa:Sampling</code></li><li><a href="#Sensor">Sensor</a> <code class="muted">sosa:Sensor</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
-<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.</p>  <table class="plain metrics">
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 110 in the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Scientific interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1540,6 +1540,8 @@
       <tr class="metric-info"><td>Semanticscience Integrated Ontology <code class="muted small">ols:sio</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
     </tbody>
   </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
 <p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:afo&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:afo, ols:sio, db:http://www.w3.org/ns/ssn/, ols:schemaorg_http, ols:schemaorg_https, file:prov-o.ttl</p>  </details>
@@ -1625,23 +1627,23 @@
       <div class="prov-what"><span class="prov-title">Ontology created</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:05:27+00:00">2026-11-21 18:05:27 UTC</time>
+      <time datetime="2026-11-21T18:29:51+00:00">2026-11-21 18:29:51 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From sosa.ttl</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:05:30+00:00">2026-11-21 18:05:30 UTC</time>
+      <time datetime="2026-11-21T18:29:55+00:00">2026-11-21 18:29:55 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 5 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:05:32+00:00">2026-11-21 18:05:32 UTC</time>
+      <time datetime="2026-11-21T18:29:56+00:00">2026-11-21 18:29:56 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.40; verified against 11 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:05:32+00:00">2026-11-21 18:05:32 UTC</time>
+      <time datetime="2026-11-21T18:29:56+00:00">2026-11-21 18:29:56 UTC</time>
       <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 1 of 41 scientific domains</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:05:57+00:00">2026-11-21 18:05:57 UTC</time>
+      <time datetime="2026-11-21T18:30:24+00:00">2026-11-21 18:30:24 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
     </li>
   </ol>
@@ -1650,8 +1652,8 @@
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>sosa.ttl (26.7 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:05:27+00:00">2026-11-21 18:05:27 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:05:57+00:00">2026-11-21 18:05:57 UTC</time> <span class="muted">(30.1 s)</span></td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:29:51+00:00">2026-11-21 18:29:51 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:30:24+00:00">2026-11-21 18:30:24 UTC</time> <span class="muted">(32.5 s)</span></td></tr>
 <tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
@@ -1671,10 +1673,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dd85"></script>
+<script src="ontoreview-data.js?v=6b01e340"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01dd85"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01e340"></script>
 </body>
 </html>

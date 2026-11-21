@@ -6,26 +6,21 @@
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
 >
-  <rdf:Description rdf:about="http://example.org/toy/Process">
+  <rdf:Description rdf:about="http://example.org/toy/Tractor">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">process</rdfs:label>
-    <skos:definition xml:lang="en">Something that happens over time and has participants.</skos:definition>
+    <rdfs:subClassOf rdf:resource="http://example.org/toy/Machine"/>
+    <rdfs:label xml:lang="en">tractor</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/toy/Sensor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">sensor</rdfs:label>
+    <skos:definition xml:lang="en">A device that detects a physical property and produces an output signal.</skos:definition>
   </rdf:Description>
   <rdf:Description rdf:about="http://example.org/toy/SoilSample">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:label xml:lang="en">soil sample</rdfs:label>
     <oio:hasBroadSynonym>sample</oio:hasBroadSynonym>
     <skos:definition xml:lang="en">A sample of topsoil collected for agronomic analysis of a field.</skos:definition>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/toy/Tractor">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/toy/Machine"/>
-    <rdfs:label xml:lang="en">tractor</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/toy/SoilPHReading">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/toy/PHReading"/>
-    <rdfs:label xml:lang="en">soil pH reading</rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://example.org/toy/PHReading">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -38,10 +33,15 @@
     <rdfs:label xml:lang="en">measurement</rdfs:label>
     <obo:IAO_0000115 xml:lang="en">An act of determining the value of a quantity.</obo:IAO_0000115>
   </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/toy/Sensor">
+  <rdf:Description rdf:about="http://example.org/toy/SoilPHReading">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">sensor</rdfs:label>
-    <skos:definition xml:lang="en">A device that detects a physical property and produces an output signal.</skos:definition>
+    <rdfs:subClassOf rdf:resource="http://example.org/toy/PHReading"/>
+    <rdfs:label xml:lang="en">soil pH reading</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/toy/Process">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">process</rdfs:label>
+    <skos:definition xml:lang="en">Something that happens over time and has participants.</skos:definition>
   </rdf:Description>
   <rdf:Description rdf:about="http://example.org/toy/Machine">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>

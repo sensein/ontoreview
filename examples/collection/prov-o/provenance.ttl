@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
-    prov:generatedAtTime "2026-11-21T18:09:09+00:00"^^xsd:dateTime ;
+    prov:generatedAtTime "2026-11-21T18:33:25+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <http://www.w3.org/ns/prov-o-20130430> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -46,8 +46,8 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-21T18:09:09+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-11-21T18:08:37+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:33:25+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:32:55+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl>,
         <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,

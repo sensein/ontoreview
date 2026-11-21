@@ -1,5 +1,17 @@
 [
   {
+    "@id": "http://example.org/toy/hasParticipant",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has participant"
+      }
+    ]
+  },
+  {
     "@id": "http://example.org/toy/PHReading",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
@@ -23,19 +35,19 @@
     ]
   },
   {
-    "@id": "http://example.org/toy/Tractor",
+    "@id": "http://example.org/toy/Machine",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
     ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "tractor"
+        "@value": "farm machine"
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
       {
-        "@id": "http://example.org/toy/Machine"
+        "@id": "http://example.org/ref/Device"
       }
     ]
   },
@@ -53,24 +65,6 @@
     "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
       {
         "@id": "http://example.org/toy/PHReading"
-      }
-    ]
-  },
-  {
-    "@id": "http://example.org/toy/Process",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "process"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@language": "en",
-        "@value": "Something that happens over time and has participants."
       }
     ]
   },
@@ -98,31 +92,37 @@
     ]
   },
   {
-    "@id": "http://example.org/toy/hasParticipant",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "has participant"
-      }
-    ]
-  },
-  {
-    "@id": "http://example.org/toy/Machine",
+    "@id": "http://example.org/toy/Process",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
     ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "farm machine"
+        "@value": "process"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Something that happens over time and has participants."
+      }
+    ]
+  },
+  {
+    "@id": "http://example.org/toy/Tractor",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "tractor"
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
       {
-        "@id": "http://example.org/ref/Device"
+        "@id": "http://example.org/toy/Machine"
       }
     ]
   },

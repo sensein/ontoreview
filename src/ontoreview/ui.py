@@ -29,9 +29,11 @@ from .ui_core import (
     TASKS,
     Prefs,
     Settings,
+    add_deploy,
     browse,
     change_counts,
     clear_history,
+    deploys_for,
     describe_source,
     existing_output,
     export_output,
@@ -183,9 +185,16 @@ DROP_JS = r"""
 """
 
 # ---------------------------------------------------------------------------- look
-LOGO_SVG = """<svg width="{s}" height="{s}" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="#2F4FD8"/>
-<circle cx="10" cy="10" r="3" fill="#fff"/><circle cx="20" cy="15" r="3" fill="#fff"/><circle cx="10" cy="21" r="3" fill="#fff"/>
-<path d="M12.6 11.3 17.4 13.7M12.6 19.7 17.4 16.3" stroke="#fff" stroke-width="1.6"/></svg>"""
+BRAND = Path(__file__).parent / "ui_assets" / "brand"
+TAGLINE = "Docs, review & fixes"
+
+
+def logo_svg(size: int, small: bool = False) -> str:
+    """The OntoReview icon from the brand kit (favicon.svg is the simplified small-size version)."""
+    svg = (BRAND / ("favicon.svg" if small else "icon.svg")).read_text("utf-8")
+    gid = f"or-logo-{'s' if small else 'l'}{size}"            # unique gradient id per use on a page
+    return svg.replace('id="g"', f'id="{gid}"').replace("url(#g)", f"url(#{gid})").replace(
+        "<svg ", f'<svg width="{size}" height="{size}" aria-hidden="true" ', 1)
 
 NAV = [  # key, path, label, svg path data
     ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
@@ -378,6 +387,37 @@ HELP = [
         "The other row buttons open the output, show it in its folder, or remove the entry (files are kept). API keys "
         "are never stored in the history, so re-runs use the keys currently set in Settings.",
     ], "", [("Open Run history", "/history")]),
+    ("deploy", "Deploy: GitHub Pages, Docker, any server", "deploy.png", [
+        "Every website folder includes a deployment kit: <code>DEPLOY.md</code> (step-by-step), a "
+        "<code>Dockerfile</code> and <code>docker-compose.yml</code> (nginx, content negotiation included), "
+        "<code>deploy/nginx.conf</code> for nginx without Docker, <code>.htaccess</code> for Apache, "
+        "<code>deploy/serve.sh</code> / <code>serve.bat</code> for a local preview, and "
+        "<code>.github/workflows/pages.yml</code>, which publishes the folder on GitHub Pages on every push.",
+        "<b>Deploy to GitHub Pages from the app:</b> press <b>Deploy</b> on a website result, or the cloud icon / "
+        "<b>Deploy</b> of a website run in Run history. Enter the repository (create it on GitHub first; it can be "
+        "empty, or let OntoReview create it with a token) and the branch, and press Deploy. The app pushes the "
+        "website; GitHub Actions publishes it at "
+        "<code>https://&lt;you&gt;.github.io/&lt;repo&gt;/</code> a minute or two later.",
+        "Deploying again (a newer build, or the same run after changes) updates the same site and keeps the "
+        "repository history; nothing is force-pushed. Each deploy is listed with its link on the run in Run history.",
+        "<b>Signing in:</b> add a <b>GitHub token</b> in Settings › General › Publishing, or use your git login "
+        "(<code>gh auth login</code>, a credential helper or an SSH address). With a token OntoReview also turns on "
+        "Pages and, if allowed, creates the repository.",
+        "<b>You control what the token can reach.</b> A fine-grained token with <b>Only select repositories</b> "
+        "reaches just the docs repositories you pick (create them on GitHub first); <b>All repositories</b> also "
+        "lets OntoReview create new ones. Permissions: Contents, Pages, Workflows (and Administration to create "
+        "repositories): read and write. A classic token needs the repo and workflow scopes. <b>Check token</b> in "
+        "Settings says whose token it is and what is missing.",
+        "<b>Turn on GitHub Pages</b> sets the repository's Pages source to GitHub Actions (with the token, or the "
+        "GitHub CLI). Otherwise the result tells you the one setting to change (Settings › Pages › Source: GitHub "
+        "Actions). With the token it also lets your branch deploy to the <code>github-pages</code> environment; "
+        "if a run fails with “Branch main is not allowed to deploy to github-pages”, add the branch under "
+        "Settings › Environments › github-pages › Deployment branches and tags, and re-run it.",
+        "<b>Docker:</b> <code>docker compose up -d</code> in the website folder serves it at http://localhost:8080/. "
+        "<b>Elsewhere:</b> upload the folder to any static host; see DEPLOY.md.",
+    ], "The token is kept on this computer only (like the API keys) and sent to GitHub as a request header; it is "
+       "never written to reports, the run history or the repository. A public repository makes the site public.",
+     [("Open Run history", "/history"), ("Publishing settings", "settings:general")]),
     ("si", "Scientific interoperability", ("si-settings.png", "si-results.png"), [
         "<b>What it measures:</b> in how many scientific domains, other than the ontology's own, it is interoperable. "
         "Domains are the 41 OECD Fields of Science (Frascati Manual), e.g. 1.2 Computer and information sciences, "
@@ -673,10 +713,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
     nav_busy: dict = {}
     with ui.left_drawer(value=True, fixed=True).classes("or-side").props("width=232 breakpoint=900") as drawer:
         with ui.row().classes("items-center gap-3 no-wrap").style("padding: 0 10px 26px"):
-            ui.html(LOGO_SVG.format(s=30), sanitize=False)
+            ui.html(logo_svg(34, small=True), sanitize=False)
             with ui.column().classes("gap-0"):
                 ui.label("OntoReview").style("font-weight:700;font-size:16px;color:#fff;letter-spacing:-.2px")
-                ui.label("Docs & quality review").style("font-size:11px;color:var(--or-side-muted)")
+                ui.label(TAGLINE).style("font-size:11px;color:var(--or-side-muted)")
         with ui.element("nav").props('aria-label="Main"').classes("column gap-1 w-full"):
             for key, path, label, icon in NAV:
                 with ui.link(target=path).classes("or-nav") as link:
@@ -1041,6 +1081,100 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             add(r)
         add({"id": "", "doms": []})
 
+    def deploy_dialog(site: str) -> None:
+        """Push a website run to a GitHub repository; its Pages workflow publishes it."""
+        from .publish.github import DeployError, deploy_site, pages_url, parse_remote
+
+        with ui.dialog() as d, ui.card().classes("or-card").style("width:min(40rem,94vw);max-height:90vh;overflow-y:auto"):
+            with ui.row().classes("w-full items-start justify-between no-wrap"):
+                with ui.column().classes("gap-0"):
+                    ui.label("Deploy to GitHub Pages").classes("or-h2")
+                    ui.label(Path(site).name).classes("or-hint or-mono")
+                ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
+            ui.label("Pushes this website to a GitHub repository. The workflow included in every website "
+                     "(.github/workflows/pages.yml) publishes it on GitHub Pages; later deploys to the same "
+                     "repository update the site and keep its history.").classes("or-hint")
+            ui.label("Repository").classes("or-label")
+            remote = ui.input(placeholder="https://github.com/you/ontology-docs", value=prefs.deploy_remote) \
+                .props('outlined dense clearable aria-label="GitHub repository"').classes("w-full or-mono") \
+                .mark("deploy-remote")
+            url_hint = ui.label().classes("or-hint")
+            with ui.row().classes("gap-4 items-end"):
+                with ui.column().classes("gap-1"):
+                    ui.label("Branch").classes("or-label")
+                    branch = ui.input(value=prefs.deploy_branch or "main") \
+                        .props('outlined dense aria-label="Branch"').classes("w-40 or-mono")
+                pages = ui.checkbox("Turn on GitHub Pages", value=prefs.deploy_enable_pages)
+            has_token = bool((prefs.deploy_token or "").strip())
+            create = ui.checkbox("Create the repository if it does not exist"
+                                 + (" (private)" if prefs.deploy_private else ""),
+                                 value=prefs.deploy_create and has_token).mark("deploy-create")
+            create.set_enabled(has_token)
+            with ui.row().classes("items-center gap-1"):
+                ui.icon("key" if has_token else "key_off", size="16px").classes("or-muted")
+                ui.label("Signs in with the GitHub token from Settings." if has_token else
+                         "No GitHub token set: pushes with your git login (gh auth login, credential helper or SSH) "
+                         "and the repository must exist. Add a token to create it and turn on Pages for you.") \
+                    .classes("or-hint")
+                ui.link("Settings", "/settings").classes("or-hint text-primary")
+            ui.label("A public repository makes the site public.").classes("or-hint")
+            past = deploys_for(site)
+            if past:
+                ui.label("Earlier deploys of this run").classes("or-label q-mt-sm")
+                for x in past[:5]:
+                    with ui.row().classes("items-center gap-2"):
+                        ui.icon("cloud_done", size="16px").classes("or-muted")
+                        ui.label(f"{x.get('when', '')[:16].replace('T', ' ')} UTC → ").classes("or-hint")
+                        ui.link(x.get("pages_url", ""), x.get("pages_url", ""), new_tab=True).classes("or-hint")
+            result_box = ui.column().classes("w-full gap-1")
+            with ui.row().classes("w-full justify-end gap-2 q-mt-sm"):
+                ui.button("Cancel", on_click=d.close).props("flat no-caps")
+                go = ui.button("Deploy", icon="cloud_upload").props("unelevated no-caps").mark("deploy-go")
+
+            def show_url() -> None:
+                try:
+                    o, r = parse_remote(remote.value or "")
+                    url_hint.text = f"The site will be at {pages_url(o, r)}"
+                except DeployError:
+                    url_hint.text = "A GitHub address: https://github.com/<you>/<repo> or git@github.com:<you>/<repo>.git"
+            remote.on_value_change(lambda _: show_url())
+            show_url()
+
+            async def run_deploy() -> None:
+                result_box.clear()
+                prefs.deploy_remote, prefs.deploy_branch = (remote.value or "").strip(), (branch.value or "main").strip()
+                prefs.deploy_enable_pages = bool(pages.value)
+                prefs.save()
+                go.disable()
+                with result_box:
+                    with ui.row().classes("items-center gap-2"):
+                        ui.spinner(size="18px")
+                        ui.label("Pushing to GitHub…").classes("or-hint")
+                try:
+                    res = await run.io_bound(lambda: deploy_site(
+                        site, prefs.deploy_remote, prefs.deploy_branch, None, prefs.deploy_enable_pages,
+                        token=prefs.deploy_token or None, create=bool(create.value), private=prefs.deploy_private))
+                except Exception as e:  # noqa: BLE001 - DeployError and anything git says
+                    result_box.clear()
+                    with result_box:
+                        ui.label(f"Deploy failed: {e}").classes("or-hint text-negative").style("word-break:break-word")
+                    go.enable()
+                    return
+                add_deploy(site, res.to_dict())
+                result_box.clear()
+                with result_box:
+                    with ui.row().classes("items-center gap-2"):
+                        badge("ok", "Deployed" if res.changed else "Up to date")
+                        ui.link(res.pages_url, res.pages_url, new_tab=True).classes("text-weight-medium")
+                    ui.label(f"Commit {res.commit} on {res.branch} · {res.repo_url}").classes("or-hint or-mono")
+                    for n in res.notes:
+                        ui.label(n).classes("or-hint").style("word-break:break-word")
+                go.enable()
+                notify("Deployed to GitHub" if res.changed else "Already up to date", "positive")
+
+            go.on_click(run_deploy)
+        d.open()
+
     def metrics_grid(metrics: list[dict], title: str = "Quality metrics", mark: str = "ontocheck-metrics") -> None:
         dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
         with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
@@ -1385,6 +1519,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 if res.index and res.task not in ("check", "interop"):
                                     ui.button("Open docs", icon="open_in_new", on_click=lambda: open_result(res.index)) \
                                         .props("unelevated no-caps")
+                                if res.task == "site" and res.ok:
+                                    ui.button("Deploy", icon="cloud_upload",
+                                              on_click=lambda: deploy_dialog(str(res.output))) \
+                                        .props("outline no-caps").mark("deploy-output") \
+                                        .tooltip("Publish this website on GitHub Pages")
                                 ui.button("Export", icon="download", on_click=lambda: export(str(res.output))) \
                                     .props("outline no-caps").mark("export-output") \
                                     .tooltip("Download the output" + (" as a .zip" if Path(res.output).is_dir() else ""))
@@ -1702,7 +1841,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             rows = [{"id": e.id, "status": "failed" if e.failed else ("ok" if e.exists else "gone"),
                      "name": run_name(e), "out": e.output, "task": TASKS.get(e.task, e.task),
                      "issues": issues_text(e), "when": when_text(e.when), "index": e.index or "",
-                     "exists": e.exists} for e in shown]
+                     "exists": e.exists, "site": e.task == "site" and not e.failed,
+                     "deployed": (e.deploys[0].get("when", "")[:10] if e.deploys else "")} for e in shown]
             tbl = ui.table(rows=rows, row_key="id", pagination={"rowsPerPage": 20}, columns=[
                 {"name": "status", "label": "Status", "field": "status", "align": "left"},
                 {"name": "name", "label": "Ontology", "field": "name", "align": "left"},
@@ -1724,6 +1864,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                   aria-label="Open output" @click.stop="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="download" :disable="!props.row.exists"
                   aria-label="Export output" @click.stop="() => $parent.$emit('export', props.row)"><q-tooltip>Export output (folders as .zip)</q-tooltip></q-btn>
+                <q-btn v-if="props.row.site" flat round dense size="sm" icon="cloud_upload" :disable="!props.row.exists"
+                  aria-label="Deploy to GitHub Pages" @click.stop="() => $parent.$emit('deploy', props.row)"><q-tooltip>Deploy to GitHub Pages{{ props.row.deployed ? ' (deployed ' + props.row.deployed + ')' : '' }}</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="folder_open" :disable="!props.row.exists"
                   aria-label="Show in folder" @click.stop="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="delete_outline" color="negative"
@@ -1734,6 +1876,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             tbl.on("reveal", lambda e: reveal(e.args.get("out")))
             tbl.on("details", lambda e: details(by_id[e.args["id"]]))
             tbl.on("export", lambda e: export(by_id[e.args["id"]].output))
+            tbl.on("deploy", lambda e: deploy_dialog(by_id[e.args["id"]].output))
             tbl.on("rowClick", lambda e: details(by_id[e.args[1]["id"]]))
             tbl.props("row-click-cursor").classes("or-clickable-rows")
             tbl.on("forget", lambda e: (forget_run(e.args["id"]), table.refresh()))
@@ -1787,6 +1930,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 ui.label("This run's output: " + entry.output + ("" if entry.exists else " (deleted)")) \
                     .classes("or-hint or-mono").style("word-break:break-all")
                 with ui.row().classes("w-full justify-end gap-2 q-mt-sm"):
+                    if entry.task == "site" and entry.exists and not entry.failed:
+                        ui.button("Deploy", icon="cloud_upload", on_click=lambda: (d.close(), deploy_dialog(entry.output))) \
+                            .props("outline no-caps").tooltip("Publish this website on GitHub Pages")
                     ui.button("Export", icon="download", on_click=lambda: export(entry.output)) \
                         .props("outline no-caps").set_enabled(entry.exists)
                     ui.button("Edit and run", icon="edit", on_click=lambda: (d.close(), rerun(entry))) \
@@ -1861,6 +2007,64 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                         work, "history_limit", forward=lambda v: int(v or 50)) \
                                         .props('outlined dense aria-label="Number of runs to remember"').classes("w-28")
                                     ui.label("runs").classes("or-hint")
+                    with ui.card().classes("or-card w-full q-mt-md").props("flat"):
+                        with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
+                            ui.label("Publishing (GitHub Pages)").classes("or-h2 q-pt-md")
+                            ui.label("Used by Deploy on website results and in Run history.").classes("or-hint")
+                            with row("GitHub token (optional)",
+                                     "Lets OntoReview push and turn on Pages without other tools, and create the "
+                                     "repository if you allow it. Kept on this computer only; never in reports or "
+                                     "the history. Without it, your git login (gh auth login, credential helper, "
+                                     "SSH) is used."):
+                                with ui.column().classes("gap-1").style("flex: 1 1 320px"):
+                                    with ui.row().classes("no-wrap gap-2 w-full"):
+                                        ui.input(password=True, password_toggle_button=True) \
+                                            .bind_value(work, "deploy_token").mark("deploy-token") \
+                                            .props('outlined dense clearable autocomplete="off" aria-label="GitHub token"') \
+                                            .classes("grow or-mono")
+                                        tok_btn = ui.button("Check token").props("outline no-caps")
+                                    tok_info = ui.label().classes("or-hint").style("word-break:break-word")
+                                    ui.html(
+                                        '<div class="or-hint" style="line-height:1.5"><b>You choose what it can reach.</b> '
+                                        '<a class="text-primary" href="https://github.com/settings/personal-access-tokens/new" target="_blank" '
+                                        'rel="noopener">Fine-grained token</a> (recommended), Repository access:'
+                                        '<ul style="margin:.2em 0 .3em 1.1em;padding:0">'
+                                        '<li><b>Only select repositories</b>: just the docs repositories you pick. '
+                                        'Create the repository on GitHub first; OntoReview pushes to it.</li>'
+                                        '<li><b>All repositories</b>: also lets OntoReview create new repositories '
+                                        'for you.</li></ul>'
+                                        'Permissions: Contents, Pages, Workflows and Administration: read '
+                                        'and write (Administration lets it create repositories and allow your '
+                                        'branch to deploy to Pages). '
+                                        'Or a <a class="text-primary" href="https://github.com/settings/tokens/new?scopes=repo,workflow&amp;'
+                                        'description=OntoReview%20deploy" target="_blank" rel="noopener">classic '
+                                        'token</a> with the repo and workflow scopes (all your repositories). Set an '
+                                        'expiry date; revoke it on GitHub any time.</div>', sanitize=False)
+
+                                    async def check_token() -> None:
+                                        from .publish.github import token_status
+                                        if not (work.deploy_token or "").strip():
+                                            tok_info.text = "Paste a token first."
+                                            return
+                                        tok_info.text = "Checking…"
+                                        try:
+                                            tok_info.text = await run.io_bound(token_status, work.deploy_token)
+                                        except Exception as e:  # noqa: BLE001
+                                            tok_info.text = str(e)
+                                    tok_btn.on_click(check_token)
+                            with row("Repository", "Pre-filled in the Deploy dialog."):
+                                ui.input(placeholder="https://github.com/you/ontology-docs") \
+                                    .bind_value(work, "deploy_remote") \
+                                    .props('outlined dense clearable aria-label="Default repository"') \
+                                    .classes("or-mono").style("flex: 1 1 320px")
+                            with row("Branch", "The workflow publishes from this branch."):
+                                ui.input().bind_value(work, "deploy_branch") \
+                                    .props('outlined dense aria-label="Branch"').classes("w-40 or-mono")
+                            with row("Create the repository if it does not exist", "Needs the token."):
+                                ui.checkbox().bind_value(work, "deploy_create").props('aria-label="Create the repository"')
+                            with row("New repositories are private", "GitHub Pages on private repositories needs a paid "
+                                                                     "GitHub plan; the site itself is public either way."):
+                                ui.checkbox().bind_value(work, "deploy_private").props('aria-label="Private repository"')
                 with ui.tab_panel(t_docs).classes("q-pa-none"):
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
@@ -2237,11 +2441,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         page_head("About", "What this tool does, what it runs on, and where to get help.")
         with ui.element("div").classes("or-body column gap-4"):
             with ui.row().classes("or-hero items-center gap-6 w-full"):
-                ui.html(LOGO_SVG.format(s=72), sanitize=False)
+                ui.html(logo_svg(80), sanitize=False)
                 with ui.column().classes("gap-1").style("flex: 1 1 320px"):
                     ui.label("OntoReview").style("font-size:28px;font-weight:700;letter-spacing:-.6px")
-                    ui.label("Turn ontology files into documentation and review their quality with ROBOT and "
-                             "OOPS! — from one window or the command line.").style(
+                    ui.label(TAGLINE).style("font-size:15px;font-weight:600;color:#93C5FD")
+                    ui.label("Turn ontology files into self-contained documentation, review their quality (built-in "
+                             "rules, ROBOT, reasoner, IRI checks, OntoCheck, OOPS!), score cross-domain and scientific "
+                             "interoperability, and publish the result — from one window or the command line.").style(
                         "font-size:15px;line-height:1.55;color:#C9D1DB;max-width:560px")
                     with ui.row().classes("gap-2 q-mt-sm"):
                         for chip in (f"Version {__version__}", "MIT License", "CAIR-Nepal"):
@@ -3206,17 +3412,33 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
     # ------------------------------------------------------------------ Help
     def help_view() -> None:
         set_active("help")
+        import html as _html
+        import re as _re
+
         page_head("Help", "How to build, read, publish and configure your ontology documentation.")
+        cards: dict[str, object] = {}
+        navs: dict[str, object] = {}
+        # what a search matches: title, steps and note, without HTML
+        texts = {a: _html.unescape(_re.sub(r"<[^>]+>", " ", " ".join([t, *st, nt]))).lower()
+                 for a, t, _, st, nt, _ in HELP}
         with ui.element("div").classes("or-body"):
+            with ui.row().classes("w-full items-center gap-3 q-mb-md"):
+                search = ui.input(placeholder="Search help, e.g. deploy, scientific, export, θ_s, OLS") \
+                    .props('outlined dense clearable autofocus aria-label="Search help"') \
+                    .classes("grow").style("max-width: 640px").mark("help-search")
+                search.add_slot("prepend", '<q-icon name="search" />')
+                found = ui.label().classes("or-hint").props('aria-live="polite"')
             with ui.row().classes("w-full gap-6 items-start no-wrap max-lg:flex-wrap"):
                 with ui.element("nav").props('aria-label="Help topics"').classes("column gap-1 flex-none lg:sticky") \
                         .style("top: 16px; width: 230px"):
                     ui.label("On this page").classes("or-hint text-uppercase q-mb-xs").style("letter-spacing:.6px")
                     for anchor, title, *_ in HELP:
-                        ui.link(title, f"#{anchor}").classes("or-hint").style("color: var(--or-ink-2)")
+                        navs[anchor] = ui.link(title, f"#{anchor}").classes("or-hint").style("color: var(--or-ink-2)")
                 with ui.column().classes("gap-4 grow min-w-0"):
+                    nothing = ui.label().classes("or-hint q-pa-md")
                     for n, (anchor, title, shot, steps, note, links) in enumerate(HELP, 1):
-                        with ui.card().classes("or-card w-full").props(f'flat id="{anchor}"'):
+                        with ui.card().classes("or-card w-full").props(f'flat id="{anchor}"') as card:
+                            cards[anchor] = card
                             with ui.column().classes("or-sec gap-3"):
                                 with ui.row().classes("items-center gap-2"):
                                     ui.html(f'<span class="or-step">{n}</span>', sanitize=False)
@@ -3243,6 +3465,21 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                                     .props(f'alt="Screenshot: {title}" fit=contain no-spinner') \
                                                     .classes("or-shot cursor-pointer w-full")
                                                 img.on("click", lambda x=x, title=title: zoom(x, title))
+
+        def filter_topics(text: str | None) -> None:
+            words = [w for w in (text or "").lower().split() if w]
+            shown = 0
+            for a in cards:
+                ok = all(w in texts[a] for w in words)
+                cards[a].set_visibility(ok)
+                navs[a].set_visibility(ok)
+                shown += ok
+            found.text = f"{shown} of {len(cards)} topics" if words else ""
+            nothing.text = f"No help topic mentions “{text.strip()}”." if words and not shown else ""
+            nothing.set_visibility(bool(words and not shown))
+
+        search.on_value_change(lambda e: filter_topics(e.value))
+        filter_topics("")
 
         def go(target: str) -> None:
             if target.startswith("http"):

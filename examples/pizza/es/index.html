@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="../ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="../ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="../index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="../llms.txt" title="llms.txt"><link rel="stylesheet" href="../assets/ontoreview.css?v=6b01dc37">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="llms.txt"><link rel="stylesheet" href="../assets/ontoreview.css?v=6b01e1f7">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,16 +52,17 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaTopping",
-   "name": "Pizza topping",
-   "description": "Something placed on a pizza.",
-   "termCode": "pizza:PizzaTopping"
+   "@id": "https://example.org/pizza#hasIngredient",
+   "name": "has ingredient",
+   "description": "Any ingredient.",
+   "termCode": "pizza:hasIngredient"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
   },
   {
    "@type": "DefinedTerm",
@@ -71,29 +72,22 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#MeatTopping",
-   "name": "Meat topping",
-   "termCode": "pizza:MeatTopping"
+   "@id": "https://example.org/pizza#PizzaTopping",
+   "name": "Pizza topping",
+   "description": "Something placed on a pizza.",
+   "termCode": "pizza:PizzaTopping"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaBase",
-   "name": "Pizza base",
-   "description": "The bread base of a pizza.",
-   "termCode": "pizza:PizzaBase"
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
   },
   {
    "@type": "DefinedTerm",
@@ -104,12 +98,6 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#isToppingOf",
-   "name": "is topping of",
-   "termCode": "pizza:isToppingOf"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://example.org/pizza#CheeseTopping",
    "name": "Cheese topping",
    "description": "Cheese.",
@@ -117,17 +105,21 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasIngredient",
-   "name": "has ingredient",
-   "description": "Any ingredient.",
-   "termCode": "pizza:hasIngredient"
+   "@id": "https://example.org/pizza#MeatTopping",
+   "name": "Meat topping",
+   "termCode": "pizza:MeatTopping"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Food",
-   "name": "Comida",
-   "description": "Cualquier cosa comestible.",
-   "termCode": "pizza:Food"
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   },
   {
    "@type": "DefinedTerm",
@@ -138,16 +130,24 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#VegetarianPizza",
-   "name": "Vegetarian pizza",
-   "description": "A pizza with no meat toppings.",
-   "termCode": "pizza:VegetarianPizza"
+   "@id": "https://example.org/pizza#PizzaBase",
+   "name": "Pizza base",
+   "description": "The bread base of a pizza.",
+   "termCode": "pizza:PizzaBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Food",
+   "name": "Comida",
+   "description": "Cualquier cosa comestible.",
+   "termCode": "pizza:Food"
   },
   {
    "@type": "DefinedTerm",
@@ -337,7 +337,7 @@
           <li><a href="#quality-ontocheck"><span class="secno">8.5</span><span class="toc-label">OntoCheck</span><span class="toc-count">10</span></a></li>
           <li><a href="#quality-cross-domain-interoperability"><span class="secno">8.6</span><span class="toc-label">Cross-domain interoperability</span><span class="toc-count">5</span></a></li>
           <li><a href="#quality-scientific-interoperability"><span class="secno">8.7</span><span class="toc-label">Scientific interoperability</span><span class="toc-count">2</span></a></li>
-          <li><a href="#quality-oops"><span class="secno">8.8</span><span class="toc-label">OOPS!</span><span class="toc-count" title="OOPS! request failed: HTTP Error 503: Service Unavailable">!</span></a></li>
+          <li><a href="#quality-oops"><span class="secno">8.8</span><span class="toc-label">OOPS!</span><span class="toc-count">10</span></a></li>
         </ol>
       </li>
       <li>
@@ -477,7 +477,7 @@
     <li class="stat"><a class="stat-body" href="#datatype-properties"><span class="stat-num">2</span><span class="stat-label">Propiedades de datos</span></a></li>
     <li class="stat"><a class="stat-body" href="#annotation-properties"><span class="stat-num">17</span><span class="stat-label">Propiedades de anotación</span></a></li>
     <li class="stat"><a class="stat-body" href="#individuals"><span class="stat-num">1</span><span class="stat-label">Individuos</span></a></li>
-    <li class="stat stat-quality"><a class="stat-body" href="#quality"><span class="stat-num">7</span><span class="stat-label">quality checks run</span></a></li>
+    <li class="stat stat-quality"><a class="stat-body" href="#quality"><span class="stat-num">8</span><span class="stat-label">quality checks run</span></a></li>
     <li class="stat stat-score stat-warn"><a class="stat-body" href="#quality-cross-domain-interoperability"><span class="stat-num">0.44</span><span class="stat-label">Cross-domain interoperability</span><span class="stat-sub">below θ = 0.5</span></a></li>
     <li class="stat stat-score stat-ok"><a class="stat-body" href="#quality-scientific-interoperability"><span class="stat-num">2</span><span class="stat-label">Scientific interoperability</span><span class="stat-sub">of 41 domains (θ_s = 0.3)</span></a></li>
   </ul>
@@ -588,7 +588,7 @@
 <div class="definition"><p>A flat <strong>baked</strong> dish topped with ingredients.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>pizza:Pizza</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Restricciones</th><td><ul class="vlist"><li><span class="expr"><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a> <span class="kw">some</span> <a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li><li><span class="expr"><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a> <span class="kw">max</span> <span class="lit">1</span></span></li></ul></td></tr><tr><th scope="row">Subclases</th><td><a href="#Calzone" class="ref" title="pizza:Calzone">Calzone</a></td></tr><tr><th scope="row">Disjunta con</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Instancias</th><td><a href="#Margherita" class="ref" title="pizza:Margherita">Margherita</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasBase" class="ref" title="pizza:hasBase">has base</a>, <a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Ejemplos</th><td><code class="example">Margherita</code></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ4">CQ4</a></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>pizza:Pizza</code></td></tr><tr><th scope="row">Superclases</th><td><a href="#Food" class="ref" title="pizza:Food">Comida</a></td></tr><tr><th scope="row">Restricciones</th><td><ul class="vlist"><li><span class="expr"><a href="#hasCalories" class="ref" title="pizza:hasCalories">has calories</a> <span class="kw">max</span> <span class="lit">1</span></span></li><li><span class="expr"><a href="#hasBase" class="ref" title="pizza:hasBase">has base</a> <span class="kw">some</span> <a href="#PizzaBase" class="ref" title="pizza:PizzaBase">Pizza base</a></span></li></ul></td></tr><tr><th scope="row">Subclases</th><td><a href="#Calzone" class="ref" title="pizza:Calzone">Calzone</a></td></tr><tr><th scope="row">Disjunta con</th><td><a href="#PizzaTopping" class="ref" title="pizza:PizzaTopping">Pizza topping</a></td></tr><tr><th scope="row">Instancias</th><td><a href="#Margherita" class="ref" title="pizza:Margherita">Margherita</a></td></tr><tr><th scope="row">Usado en</th><td><div class="usage"><span class="muted">in domain of</span> <a href="#hasBase" class="ref" title="pizza:hasBase">has base</a>, <a href="#hasTopping" class="ref" title="pizza:hasTopping">has topping</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#VegetarianPizza" class="ref" title="pizza:VegetarianPizza">Vegetarian pizza</a></div></td></tr><tr><th scope="row">Ejemplos</th><td><code class="example">Margherita</code></td></tr><tr><th scope="row">Competency questions</th><td><a href="#cq-CQ4">CQ4</a></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://example.org/pizza#Pizza">Ver en la figura</a></p></article>
 <article class="term" id="PizzaBase" data-kind="class">
@@ -948,8 +948,8 @@
       <td class="check-count">2</td>
       <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:8.7%"></span></span></td></tr>
       <tr><td><a href="#quality-oops">OOPS!</a></td>
-      <td class="check-count"><span class="muted">Did not run</span></td>
-      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:0.0%"></span></span></td></tr>
+      <td class="check-count">10</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:43.5%"></span></span></td></tr>
     </tbody>
   </table>
 
@@ -1047,7 +1047,7 @@
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
   <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
-<p class="muted small">0.2s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #106 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+<p class="muted small">0.2s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #127 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
     <caption class="sr-only">IRI checks metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1062,7 +1062,7 @@
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 17:59:44 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:24:20 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
       <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
@@ -1135,7 +1135,7 @@
 <li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
-<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 79 in the term database. Details of 12 repository ontologies came from the term database.</p>  <table class="plain metrics">
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 100 in the term database. Details of 12 repository ontologies came from the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Cross-domain interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1164,30 +1164,30 @@ The most current version of MicrO can be downloaded from https://github.com/carr
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 17:59:46 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:24:21 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
     <tbody>
       <tr><td>Food Ontology<br><code class="small">http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>6</td></tr>
+      <td class="small">2026-11-21</td><td>6</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>5</td></tr>
+      <td class="small">2026-11-21</td><td>5</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Chemical Entities of Biological Interest<br><code class="small">http://purl.obolibrary.org/obo/chebi/257/chebi.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Food-Biomarker Ontology<br><code class="small">http://purl.obolibrary.org/obo/fobi/fobi.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Medical Subject Headings<br><code class="small">https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology of Prokaryotic Phenotypic and Metabolic Characters<br><code class="small">micro MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.
 
 Includes terms and term synonyms extracted from &gt; 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.
@@ -1199,13 +1199,13 @@ https://github.com/biosemantics/micropie2
 
 The most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology of units of Measure (OM)<br><code class="small">om 2.0.60</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology for MIRNA Target<br><code class="small">http://purl.obolibrary.org/obo/omit/dev/omit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
     </tbody>
   </table>
   <details class="finding sev-info">
@@ -1214,7 +1214,7 @@ The most current version of MicrO can be downloaded from https://github.com/carr
 <li><a href="#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li><li><a href="#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="#hasTopping">has topping</a> <code class="muted">pizza:hasTopping</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
-<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.</p>  <table class="plain metrics">
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 100 in the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Scientific interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1242,6 +1242,8 @@ The most current version of MicrO can be downloaded from https://github.com/carr
       <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
     </tbody>
   </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
 <p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:afo&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:afo</p>  </details>
@@ -1249,7 +1251,22 @@ The most current version of MicrO can be downloaded from https://github.com/carr
     <summary><span class="sev">info</span> Own domain guessed by the classifier <span class="muted">SI-H</span></summary>
 <p class="muted rule-desc">D = 3.1 Basic medicine was inferred from the ontology&#39;s title and description (classifier (p = 0.04)). Set evaluation.si_home_domain if it is wrong: that domain is never counted.</p><p class="rule-desc">3.1 Basic medicine</p>  </details>
   <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
-<p class="muted small">Full pitfall catalogue.</p><p class="note-line">OOPS! request failed: HTTP Error 503: Service Unavailable</p>
+<p class="muted small">Full pitfall catalogue.</p>  <details class="finding sev-warning">
+    <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(3) P11</span></summary>
+<p class="muted rule-desc">Object and/or datatype properties without domain or range (or none of them) are included in the ontology.</p>    <ul class="findings">
+<li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Missing annotations <span class="muted">(5) P08</span></summary>
+<p class="muted rule-desc">This pitfall consists in creating an ontology element and failing to provide human readable annotations attached to it. Consequently, ontology elements lack annotation properties that label them (e.g. rdfs:label, lemon:LexicalEntry, skos:prefLabel or skos:altLabel) or that define them (e.g. rdfs:comment or dc:description). This pitfall is related to the guidelines provided in [5].</p>    <ul class="findings">
+<li><a href="#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="#hasBase">has base</a> <code class="muted">pizza:hasBase</code></li><li><a href="#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Inverse relationships not explicitly declared <span class="muted">P13</span></summary>
+<p class="muted rule-desc">This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.</p>  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Using different naming conventions in the ontology <span class="muted">P22</span></summary>
+<p class="muted rule-desc">The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &amp;quot;-&amp;quot; or &amp;quot;_&amp;quot;) . Some notions about naming conventions are provided in [2].</p><p class="rule-desc">There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name</p>  </details>
 </section><section class="section" id="downloads">
   <h2><span class="secno">9</span> Descargar</h2>
   <p class="prose">Descargue la ontología en su formato preferido:</p>
@@ -1314,24 +1331,24 @@ The most current version of MicrO can be downloaded from https://github.com/carr
       <div class="prov-what"><span class="prov-title">Ontology last modified</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T17:59:39+00:00">2026-11-21 17:59:39 UTC</time>
+      <time datetime="2026-11-21T18:24:18+00:00">2026-11-21 18:24:18 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From pizza-v2.ttl</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T17:59:44+00:00">2026-11-21 17:59:44 UTC</time>
+      <time datetime="2026-11-21T18:24:20+00:00">2026-11-21 18:24:20 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 6 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T17:59:46+00:00">2026-11-21 17:59:46 UTC</time>
+      <time datetime="2026-11-21T18:24:21+00:00">2026-11-21 18:24:21 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.44; verified against 10 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T17:59:46+00:00">2026-11-21 17:59:46 UTC</time>
+      <time datetime="2026-11-21T18:24:21+00:00">2026-11-21 18:24:21 UTC</time>
       <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 2 of 41 scientific domains</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:00:23+00:00">2026-11-21 18:00:23 UTC</time>
-      <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability</span></div>
+      <time datetime="2026-11-21T18:24:55+00:00">2026-11-21 18:24:55 UTC</time>
+      <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
     </li>
   </ol>
 
@@ -1339,9 +1356,9 @@ The most current version of MicrO can be downloaded from https://github.com/carr
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>pizza-v2.ttl (3.8 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T17:59:39+00:00">2026-11-21 17:59:39 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:00:23+00:00">2026-11-21 18:00:23 UTC</time> <span class="muted">(43.5 s)</span></td></tr>
-<tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability</td></tr>    </tbody>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:24:18+00:00">2026-11-21 18:24:18 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:24:55+00:00">2026-11-21 18:24:55 UTC</time> <span class="muted">(37.1 s)</span></td></tr>
+<tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="../provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
 </section>    <footer class="colophon">
@@ -1360,10 +1377,10 @@ The most current version of MicrO can be downloaded from https://github.com/carr
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dc37"></script>
+<script src="ontoreview-data.js?v=6b01e1f7"></script>
 <script src="../assets/vendor/minisearch.min.js"></script>
 <script src="../assets/vendor/cytoscape.min.js"></script>
 <script src="../assets/vendor/dagre.min.js"></script>
-<script src="../assets/vendor/cytoscape-dagre.js"></script><script src="../assets/ontoreview.js?v=6b01dc37"></script>
+<script src="../assets/vendor/cytoscape-dagre.js"></script><script src="../assets/ontoreview.js?v=6b01e1f7"></script>
 </body>
 </html>

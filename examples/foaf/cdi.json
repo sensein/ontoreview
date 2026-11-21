@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T18:02:38.330526+00:00",
+  "checked_at": "2026-11-21T18:27:08.088595+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 59 repository ontologies came from the term database."
   ],
-  "run_id": 85,
+  "run_id": 105,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -41,7 +41,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.6322739726027398,
@@ -479,7 +483,7 @@
         "version_iri": "http://www.w3.org/ns/prov-o-20130430",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-        "retrieved": "2026-11-21T17:47:58.239000+00:00",
+        "retrieved": "2026-11-21T18:05:32.091904+00:00",
         "identified_by": "version IRI"
       }
     },
@@ -708,7 +712,7 @@
         "document": "http://www.w3.org/2000/10/swap/pim/contact",
         "sha256": "57ea4c540cb432a58aaa09f0d982d0aaae6294e370847cb09f7ed732bdb257f3",
         "source_url": "https://www.w3.org/2000/10/swap/pim/contact",
-        "retrieved": "2026-11-21T18:02:37.439109+00:00",
+        "retrieved": "2026-11-21T18:27:07.056420+00:00",
         "identified_by": "content hash"
       }
     },
@@ -5886,6 +5890,16 @@
     },
     {
       "source": "http://xmlns.com/foaf/0.1/Person",
+      "target": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
+      "target_ontology": "db:http://purl.org/spar/datacite/identifier",
+      "via": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"
+    },
+    {
+      "source": "http://xmlns.com/foaf/0.1/Person",
       "target": "http://xmlns.com/foaf/0.1/Agent",
       "relation": "⊑",
       "confidence": 1.0,
@@ -6043,16 +6057,6 @@
       "method": "lexical:exact/exact",
       "target_ontology": "ols:ncit",
       "via": "http://xmlns.com/foaf/0.1/Agent"
-    },
-    {
-      "source": "http://xmlns.com/foaf/0.1/Person",
-      "target": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing",
-      "relation": "⊑",
-      "confidence": 1.0,
-      "depth": 1,
-      "method": "shared-iri",
-      "target_ontology": "db:http://purl.org/spar/datacite/identifier",
-      "via": "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"
     },
     {
       "source": "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
@@ -6328,7 +6332,11 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 57
+      "terms": 57,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Allotrope Merged Ontology Suite",
@@ -6342,7 +6350,11 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 22
+      "terms": 22,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:schemaorg_http",
@@ -6356,7 +6368,11 @@
       "identified_by": "release/load date",
       "terms": 19,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:schemaorg_https",
@@ -6370,7 +6386,11 @@
       "identified_by": "release/load date",
       "terms": 16,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "http://purl.org/ontology/bibo/doi",
@@ -6383,7 +6403,11 @@
       "identified_by": "content hash",
       "terms": 16,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:uniprotrdfs",
@@ -6396,7 +6420,11 @@
       "retrieved": "2026-11-21T17:35:43Z",
       "metadata_sha256": "e3c77e2341c216f7d72d1e8ee63f4997b63eb7ef66cdc7bea9bc57e8b903f969",
       "identified_by": "version",
-      "terms": 13
+      "terms": 13,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology for vCard",
@@ -6409,7 +6437,11 @@
       "identified_by": "content hash",
       "terms": 15,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Semanticscience Integrated Ontology",
@@ -6423,7 +6455,11 @@
       "retrieved": "2026-11-21T17:30:12Z",
       "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
       "identified_by": "version IRI",
-      "terms": 12
+      "terms": 12,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "SNOMED CT (International Edition)",
@@ -6436,7 +6472,11 @@
       "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
-      "terms": 14
+      "terms": 14,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "The DataCite Ontology (DataCite)",
@@ -6448,7 +6488,11 @@
       "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
       "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
       "identified_by": "version IRI",
-      "terms": 11
+      "terms": 11,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     }
   ],
   "record_file": "cdi.json",

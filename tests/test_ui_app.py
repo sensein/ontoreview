@@ -381,3 +381,49 @@ def test_help_screenshots_exist():
     for _, _, shot, *_ in HELP:
         for name in [n for n in ((shot,) if isinstance(shot, str) else shot) if n]:
             assert (ASSETS / "help" / name).is_file(), name
+
+
+@pytest.mark.anyio
+async def test_deploy_dialog_from_results(isolated, fixtures, monkeypatch):
+    from ontoreview.publish import github
+    from ontoreview.publish.github import DeployResult
+
+    calls = []
+
+    def fake_deploy(site, remote, branch="main", message=None, enable_pages=True, **kw):
+        calls.append((site, remote, branch))
+        return DeployResult(remote, branch, "https://you.github.io/onto-docs/", "https://github.com/you/onto-docs",
+                            commit="abc1234")
+    monkeypatch.setattr(github, "deploy_site", fake_deploy)
+    s = ui_core.Settings(source=str(fixtures / "pizza.ttl"), output=str(isolated / "d"), oops="off", cdi=False,
+                         si=False)
+    res = ui_core.run_task(s)
+    ui_core.record_run(s, res)
+    async with user_simulation(root=build_page) as user:
+        await user.open("/history")
+        await user.should_see("1 of 1 runs shown")
+        entry = ui_core.load_history()[0]
+        user.find(ui.table).trigger("deploy", {"id": entry.id})
+        await user.should_see("Deploy to GitHub Pages")
+        user.find(marker="deploy-remote").clear().type("https://github.com/you/onto-docs")
+        await user.should_see("The site will be at https://you.github.io/onto-docs/")
+        user.find(marker="deploy-go").click()
+        await user.should_see("Deployed", retries=50)
+        await user.should_see("Commit abc1234 on main")
+    assert calls == [(str(res.output), "https://github.com/you/onto-docs", "main")]
+    assert ui_core.load_history()[0].deploys[0]["pages_url"] == "https://you.github.io/onto-docs/"
+    assert ui_core.Prefs.load().deploy_remote == "https://github.com/you/onto-docs"
+
+
+@pytest.mark.anyio
+async def test_help_search(isolated):
+    async with user_simulation(root=build_page) as user:
+        await user.open("/help")
+        await user.should_see("Getting started")
+        user.find(marker="help-search").type("github pages")
+        await user.should_see("Deploy: GitHub Pages, Docker, any server")
+        await user.should_not_see("How the comparison works")
+        user.find(marker="help-search").clear().type("θ_s")
+        await user.should_see("Scientific interoperability")
+        user.find(marker="help-search").clear().type("zzzz-nothing")
+        await user.should_see("No help topic mentions")

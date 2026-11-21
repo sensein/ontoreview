@@ -10,9 +10,9 @@ The simple value of an Observation or Actuation or act of Sampling.
 
 | | |
 |---|---|
-| Domain | [Actuation](classes.md#actuation); [Observation](classes.md#observation); [Sampling](classes.md#sampling) |
+| Domain | [Observation](classes.md#observation); [Sampling](classes.md#sampling); [Actuation](classes.md#actuation) |
 | Examples | `For instance, the values 23 or true.` |
-| domainIncludes | sosa:Actuation; sosa:Observation; sosa:Sampling |
+| domainIncludes | sosa:Observation; sosa:Sampling; sosa:Actuation |
 
 ### result time
 
@@ -24,7 +24,7 @@ The result time is the instant of time when the Observation, Actuation or Sampli
 
 | | |
 |---|---|
-| Domain | [Actuation](classes.md#actuation); [Observation](classes.md#observation); [Sampling](classes.md#sampling) |
+| Domain | [Observation](classes.md#observation); [Sampling](classes.md#sampling); [Actuation](classes.md#actuation) |
 | Range | [xsd:dateTime](http://www.w3.org/2001/XMLSchema#dateTime) |
-| domainIncludes | sosa:Actuation; sosa:Observation; sosa:Sampling |
+| domainIncludes | sosa:Observation; sosa:Sampling; sosa:Actuation |
 

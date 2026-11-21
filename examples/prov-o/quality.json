@@ -245,7 +245,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "0.0s. Own namespaces (not checked as external): http://www.w3.org/ns/prov#, http://www.w3.org/ns/prov/, http://www.w3.org/ns/prov-o# and 3 more. Run #111 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "0.0s. Own namespaces (not checked as external): http://www.w3.org/ns/prov#, http://www.w3.org/ns/prov/, http://www.w3.org/ns/prov-o# and 3 more. Run #132 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -289,8 +289,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T18:02:10.686979+00:00",
-        "run_id": 111,
+        "checked_at": "2026-11-21T18:26:37.042548+00:00",
+        "run_id": 132,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -707,7 +707,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 52 below the top N. Full record in cdi.json, and as CDI run 84 in the term database. Details of 50 repository ontologies came from the term database.",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 52 below the top N. Full record in cdi.json, and as CDI run 104 in the term database. Details of 50 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -815,14 +815,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T18:02:13.105030+00:00",
+        "checked_at": "2026-11-21T18:26:40.322757+00:00",
         "references": [
           "ols"
         ],
         "notes": [
           "Details of 50 repository ontologies came from the term database."
         ],
-        "run_id": 84,
+        "run_id": 104,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -857,7 +857,11 @@
           "si_p_min": 0.15,
           "si_domain_map": {},
           "si_upper_ontologies": [],
-          "si_upper_namespaces": []
+          "si_upper_namespaces": [],
+          "used_for": [
+            "cdi",
+            "si"
+          ]
         },
         "summary": {
           "align": 0.44375,
@@ -10595,7 +10599,10 @@
             "retrieved": "2026-11-21T17:35:04Z",
             "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
             "identified_by": "version IRI",
-            "terms": 30
+            "terms": 30,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "The Earth Metabolome Initiative (EMI) ontology",
@@ -10609,7 +10616,10 @@
             "retrieved": "2026-11-21T17:30:04Z",
             "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
             "identified_by": "version IRI",
-            "terms": 30
+            "terms": 30,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "Model Card Report Ontology",
@@ -10623,7 +10633,10 @@
             "retrieved": "2026-11-21T17:35:02Z",
             "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
             "identified_by": "version IRI",
-            "terms": 30
+            "terms": 30,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "MIAPA Ontology",
@@ -10637,7 +10650,10 @@
             "identified_by": "release/load date",
             "terms": 30,
             "note": "version not reported by the source; identified by release/load date",
-            "release_recorded": true
+            "release_recorded": true,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "Provenance Ontology (PROV-O)",
@@ -10651,7 +10667,10 @@
             "identified_by": "release/load date",
             "terms": 30,
             "note": "version not reported by the source; identified by release/load date",
-            "release_recorded": true
+            "release_recorded": true,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "REPRODUCE-ME Ontology",
@@ -10664,7 +10683,10 @@
             "retrieved": "2026-11-21T17:30:04Z",
             "metadata_sha256": "ddd9159098c46f5e9c79010e8b09b092e94b7e617fced634bfad08d510e3f75f",
             "identified_by": "version",
-            "terms": 30
+            "terms": 30,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "NCI Thesaurus OBO Edition",
@@ -10678,7 +10700,10 @@
             "retrieved": "2026-11-21T17:30:07Z",
             "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
             "identified_by": "version IRI",
-            "terms": 69
+            "terms": 69,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "SNOMED CT (International Edition)",
@@ -10691,7 +10716,10 @@
             "retrieved": "2026-11-21T17:30:09Z",
             "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
             "identified_by": "version IRI",
-            "terms": 14
+            "terms": 14,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "Allotrope Merged Ontology Suite",
@@ -10705,7 +10733,10 @@
             "retrieved": "2026-11-21T17:30:08Z",
             "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
             "identified_by": "version IRI",
-            "terms": 18
+            "terms": 18,
+            "used_in": [
+              "cdi"
+            ]
           },
           {
             "title": "ols:schemaorg_http",
@@ -10719,7 +10750,10 @@
             "identified_by": "release/load date",
             "terms": 13,
             "note": "version not reported by the source; identified by release/load date",
-            "release_recorded": true
+            "release_recorded": true,
+            "used_in": [
+              "cdi"
+            ]
           }
         ],
         "record_file": "cdi.json",

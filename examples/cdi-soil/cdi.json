@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-21T18:06:02.145409+00:00",
+  "checked_at": "2026-11-21T18:30:32.060905+00:00",
   "references": [
     "ols",
     "/Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
@@ -8,7 +8,7 @@
   "notes": [
     "Details of 29 repository ontologies came from the term database."
   ],
-  "run_id": 91,
+  "run_id": 111,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -47,7 +47,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.7317777777777779,
@@ -61,12 +65,12 @@
     "n_classes": 8,
     "n_defined_classes": 5,
     "reference_ontologies": [
+      "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
       "db:http://www.w3.org/ns/sosa/",
       "file:toy_ref.ttl",
       "ols:addicto",
       "ols:afo",
       "ols:bao",
-      "ols:bfo",
       "ols:exo",
       "ols:ncit",
       "ols:sio",
@@ -143,6 +147,26 @@
       }
     },
     {
+      "id": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "source": "termdb",
+      "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "domain": "",
+      "given": false,
+      "description": "",
+      "coverage": 0.3333333333333333,
+      "n_correspondences": 3,
+      "status": "selected",
+      "align_d": 0.3400000000000001,
+      "release": {
+        "source": "term database (cache)",
+        "document": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+        "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+        "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+        "retrieved": "2026-11-21T18:10:59.470954+00:00",
+        "identified_by": "content hash"
+      }
+    },
+    {
       "id": "file:toy_ref.ttl",
       "source": "file",
       "title": "toy_ref.ttl",
@@ -157,7 +181,7 @@
         "source": "file",
         "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
-        "retrieved": "2026-11-21T18:06:02.152004+00:00",
+        "retrieved": "2026-11-21T18:30:32.069107+00:00",
         "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
         "database": "cache",
         "terms_indexed": 4,
@@ -229,7 +253,7 @@
         "title": "toy_to_bfo.sssom.tsv",
         "sha256": "ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv",
-        "retrieved": "2026-11-21T18:06:02.153117+00:00",
+        "retrieved": "2026-11-21T18:30:32.070396+00:00",
         "identified_by": "content hash"
       }
     },
@@ -353,30 +377,6 @@
       }
     },
     {
-      "id": "ols:bfo",
-      "source": "ols",
-      "title": "Basic Formal Ontology",
-      "domain": "upper",
-      "given": false,
-      "description": "The upper level ontology upon which OBO Foundry ontologies are built.",
-      "coverage": 0.1111111111111111,
-      "n_correspondences": 1,
-      "status": "selected",
-      "align_d": 0.1,
-      "release": {
-        "source": "ols",
-        "ontology": "bfo",
-        "title": "Basic Formal Ontology",
-        "ontology_iri": "http://purl.obolibrary.org/obo/bfo.owl",
-        "version_iri": "http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl",
-        "released": "2026-11-21T00:08:26.833422261",
-        "retrieved": "2026-11-21T17:35:01Z",
-        "metadata_sha256": "815bf5efc094317bc65253aaf7c0b829c6c83b7710745bea16a9bc8ac8003e64",
-        "identified_by": "version IRI",
-        "cached": "2026-11-21T17:35:01.219511+00:00"
-      }
-    },
-    {
       "id": "ols:agro",
       "source": "ols",
       "title": "Agronomy Ontology",
@@ -398,6 +398,30 @@
         "metadata_sha256": "69eeed4def7c5923cbee0fe4d3619fa29949c1ef5efb3b488a0c1892ec20d2da",
         "identified_by": "version IRI",
         "cached": "2026-11-21T17:39:09.840896+00:00"
+      }
+    },
+    {
+      "id": "ols:bfo",
+      "source": "ols",
+      "title": "Basic Formal Ontology",
+      "domain": "upper",
+      "given": false,
+      "description": "The upper level ontology upon which OBO Foundry ontologies are built.",
+      "coverage": 0.1111111111111111,
+      "n_correspondences": 1,
+      "status": "below-top-N",
+      "align_d": 0.0,
+      "release": {
+        "source": "ols",
+        "ontology": "bfo",
+        "title": "Basic Formal Ontology",
+        "ontology_iri": "http://purl.obolibrary.org/obo/bfo.owl",
+        "version_iri": "http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl",
+        "released": "2026-11-21T00:08:26.833422261",
+        "retrieved": "2026-11-21T17:35:01Z",
+        "metadata_sha256": "815bf5efc094317bc65253aaf7c0b829c6c83b7710745bea16a9bc8ac8003e64",
+        "identified_by": "version IRI",
+        "cached": "2026-11-21T17:35:01.219511+00:00"
       }
     },
     {
@@ -1037,7 +1061,7 @@
       "confidence": 1.0,
       "depth": 1,
       "method": "asserted:subClassOf",
-      "target_ontology": "file:toy_ref.ttl",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
       "via": "http://example.org/toy/Machine",
       "best_strength": 0.64,
       "gen": 0.0,
@@ -1075,6 +1099,16 @@
   ],
   "correspondences": [
     {
+      "source": "http://example.org/toy/Machine",
+      "target": "http://example.org/ref/Device",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 0,
+      "method": "asserted:subClassOf",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "via": ""
+    },
+    {
       "source": "http://example.org/toy/Sensor",
       "target": "http://www.w3.org/ns/sosa/Sensor",
       "relation": "≡",
@@ -1085,6 +1119,16 @@
       "via": ""
     },
     {
+      "source": "http://example.org/toy/Sensor",
+      "target": "http://example.org/ref/Sensor",
+      "relation": "≡",
+      "confidence": 0.9,
+      "depth": 0,
+      "method": "lexical:exact/exact",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "via": ""
+    },
+    {
       "source": "http://example.org/toy/SoilSample",
       "target": "http://www.w3.org/ns/sosa/Sample",
       "relation": "⊑",
@@ -1092,6 +1136,16 @@
       "depth": 0,
       "method": "lexical:broad/exact",
       "target_ontology": "db:http://www.w3.org/ns/sosa/",
+      "via": ""
+    },
+    {
+      "source": "http://example.org/toy/SoilSample",
+      "target": "http://example.org/ref/Sample",
+      "relation": "⊑",
+      "confidence": 0.9,
+      "depth": 0,
+      "method": "lexical:broad/exact",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
       "via": ""
     },
     {
@@ -1192,16 +1246,6 @@
       "depth": 0,
       "method": "lexical:exact/exact",
       "target_ontology": "ols:ncit",
-      "via": ""
-    },
-    {
-      "source": "http://example.org/toy/Process",
-      "target": "http://purl.obolibrary.org/obo/BFO_0000015",
-      "relation": "≡",
-      "confidence": 0.9,
-      "depth": 0,
-      "method": "lexical:exact/exact",
-      "target_ontology": "ols:bfo",
       "via": ""
     },
     {
@@ -1441,6 +1485,16 @@
       "confidence": 1.0,
       "depth": 1,
       "method": "shared-iri",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "via": "http://example.org/ref/Device"
+    },
+    {
+      "source": "http://example.org/toy/Machine",
+      "target": "http://example.org/ref/Device",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "shared-iri",
       "target_ontology": "file:toy_ref.ttl",
       "via": "http://example.org/ref/Device"
     },
@@ -1583,6 +1637,16 @@
       "method": "sssom",
       "target_ontology": "sssom:toy_to_bfo.sssom.tsv",
       "via": "http://example.org/toy/Measurement"
+    },
+    {
+      "source": "http://example.org/toy/Tractor",
+      "target": "http://example.org/ref/Device",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 1,
+      "method": "asserted:subClassOf",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "via": "http://example.org/toy/Machine"
     },
     {
       "source": "http://example.org/toy/Tractor",
@@ -1611,6 +1675,16 @@
       "confidence": 1.0,
       "depth": 2,
       "method": "shared-iri",
+      "target_ontology": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "via": "http://example.org/ref/Device"
+    },
+    {
+      "source": "http://example.org/toy/Tractor",
+      "target": "http://example.org/ref/Device",
+      "relation": "⊑",
+      "confidence": 1.0,
+      "depth": 2,
+      "method": "shared-iri",
       "target_ontology": "file:toy_ref.ttl",
       "via": "http://example.org/ref/Device"
     }
@@ -1628,7 +1702,10 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 8
+      "terms": 8,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Semanticscience Integrated Ontology",
@@ -1642,19 +1719,40 @@
       "retrieved": "2026-11-21T17:30:12Z",
       "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi"
+      ]
+    },
+    {
+      "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "id": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "source": "term database (cache)",
+      "retrieved": "2026-11-21T18:10:59.470954+00:00",
+      "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+      "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "identified_by": "content hash",
+      "terms": 3,
+      "note": "version not reported by the source; identified by content hash",
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "toy_ref.ttl",
       "id": "file:toy_ref.ttl",
       "source": "file",
-      "retrieved": "2026-11-21T18:06:02.152004+00:00",
+      "retrieved": "2026-11-21T18:30:32.069107+00:00",
       "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
       "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
       "identified_by": "content hash",
       "terms": 4,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Allotrope Merged Ontology Suite",
@@ -1668,7 +1766,10 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "SNOMED CT (International Edition)",
@@ -1681,19 +1782,25 @@
       "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "toy_to_bfo.sssom.tsv",
       "id": "sssom:toy_to_bfo.sssom.tsv",
       "source": "file",
-      "retrieved": "2026-11-21T18:06:02.153117+00:00",
+      "retrieved": "2026-11-21T18:30:32.070396+00:00",
       "sha256": "ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185",
       "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv",
       "identified_by": "content hash",
       "terms": 3,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "http://www.w3.org/ns/sosa/",
@@ -1706,7 +1813,10 @@
       "identified_by": "content hash",
       "terms": 2,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Exposure ontology",
@@ -1720,7 +1830,10 @@
       "retrieved": "2026-11-21T17:34:11Z",
       "metadata_sha256": "3cb5416d002bdbc7144a9cb8265dcf54713d5ddadf84c4c32641ecb1abcd0c21",
       "identified_by": "version IRI",
-      "terms": 2
+      "terms": 2,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Uberon multi-species anatomy ontology",
@@ -1733,7 +1846,10 @@
       "retrieved": "2026-11-21T17:30:14Z",
       "metadata_sha256": "d6cd8e7b27faebc173306644e61560a54ff00a6dd470b49973f0e3a67ac02567",
       "identified_by": "version IRI",
-      "terms": 2
+      "terms": 2,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Addiction Ontology",
@@ -1746,7 +1862,10 @@
       "retrieved": "2026-11-21T17:35:45Z",
       "metadata_sha256": "019e3e12eff52147b169c8f77af313b96c391e0f3ff9c7d64005e2d1e8127790",
       "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "BioAssay Ontology",
@@ -1760,20 +1879,10 @@
       "retrieved": "2026-11-21T17:30:11Z",
       "metadata_sha256": "450eb27e5250ddedcf49b6e7d7bb216e86086a113356445c0ae976228f86cc04",
       "identified_by": "version IRI",
-      "terms": 1
-    },
-    {
-      "title": "Basic Formal Ontology",
-      "id": "ols:bfo",
-      "source": "ols",
-      "ontology": "bfo",
-      "ontology_iri": "http://purl.obolibrary.org/obo/bfo.owl",
-      "version_iri": "http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl",
-      "released": "2026-11-21T00:08:26.833422261",
-      "retrieved": "2026-11-21T17:35:01Z",
-      "metadata_sha256": "815bf5efc094317bc65253aaf7c0b829c6c83b7710745bea16a9bc8ac8003e64",
-      "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi"
+      ]
     }
   ],
   "record_file": "cdi.json",

@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dc94">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e252">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -44,102 +44,21 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/Organization",
-   "name": "Organization",
-   "description": "An organization such as a company or university.",
-   "termCode": "personinfo:Organization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/id",
-   "name": "id",
-   "description": "A unique identifier for a thing.",
-   "termCode": "personinfo:id"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://schema.org/email",
-   "name": "primary_email",
-   "description": "The main email address of a person.",
-   "termCode": "schema:email"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/age_in_years",
-   "name": "age_in_years",
-   "termCode": "personinfo:age_in_years"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://w3id.org/example/personinfo/Container",
    "name": "Container",
    "termCode": "personinfo:Container"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://schema.org/description",
-   "name": "description",
-   "description": "A human-readable description for a thing.",
-   "termCode": "schema:description"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/NamedThing",
-   "name": "NamedThing",
-   "description": "A generic grouping for any identifiable entity.",
-   "termCode": "personinfo:NamedThing"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.obolibrary.org/obo/GSSO_009253",
-   "name": "nonbinary woman",
-   "termCode": "GSSO:009253"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/PhoneNumberType",
-   "name": "PhoneNumberType",
-   "description": "A phone number.",
-   "termCode": "personinfo:PhoneNumberType"
+   "@id": "https://w3id.org/example/personinfo/gender",
+   "name": "gender",
+   "termCode": "personinfo:gender"
   },
   {
    "@type": "DefinedTerm",
    "@id": "https://w3id.org/example/personinfo/employees",
    "name": "employees",
    "termCode": "personinfo:employees"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.obolibrary.org/obo/GSSO_000384",
-   "name": "transgender woman",
-   "termCode": "GSSO:000384"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/HasAliases",
-   "name": "HasAliases",
-   "description": "A mixin applied to any class that can have aliases.",
-   "termCode": "personinfo:HasAliases"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://schema.org/Person",
-   "name": "Person",
-   "description": "A person (alive, dead, undead, or fictional).",
-   "termCode": "schema:Person"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/founding_date",
-   "name": "founding_date",
-   "description": "When the organization was founded.",
-   "termCode": "personinfo:founding_date"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://purl.obolibrary.org/obo/GSSO_009254",
-   "name": "nonbinary man",
-   "termCode": "GSSO:009254"
   },
   {
    "@type": "DefinedTerm",
@@ -150,40 +69,29 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://schema.org/name",
-   "name": "name",
-   "description": "A human-readable name for a thing.",
-   "termCode": "schema:name"
+   "@id": "http://purl.obolibrary.org/obo/GSSO_009253",
+   "name": "nonbinary woman",
+   "termCode": "GSSO:009253"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/persons",
-   "name": "persons",
-   "termCode": "personinfo:persons"
+   "@id": "https://w3id.org/example/personinfo/NamedThing",
+   "name": "NamedThing",
+   "description": "A generic grouping for any identifiable entity.",
+   "termCode": "personinfo:NamedThing"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://schema.org/birthDate",
-   "name": "birth_date",
-   "termCode": "schema:birthDate"
+   "@id": "https://w3id.org/example/personinfo/id",
+   "name": "id",
+   "description": "A unique identifier for a thing.",
+   "termCode": "personinfo:id"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/aliases",
-   "name": "aliases",
-   "termCode": "personinfo:aliases"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/employed_by",
-   "name": "employed_by",
-   "termCode": "personinfo:employed_by"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
-   "name": "cisgender man",
-   "description": "A man whose gender matches the sex assigned at birth."
+   "@id": "https://w3id.org/example/personinfo/age_in_years",
+   "name": "age_in_years",
+   "termCode": "personinfo:age_in_years"
   },
   {
    "@type": "DefinedTerm",
@@ -193,9 +101,101 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/example/personinfo/gender",
-   "name": "gender",
-   "termCode": "personinfo:gender"
+   "@id": "http://schema.org/name",
+   "name": "name",
+   "description": "A human-readable name for a thing.",
+   "termCode": "schema:name"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/Person",
+   "name": "Person",
+   "description": "A person (alive, dead, undead, or fictional).",
+   "termCode": "schema:Person"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/aliases",
+   "name": "aliases",
+   "termCode": "personinfo:aliases"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/Organization",
+   "name": "Organization",
+   "description": "An organization such as a company or university.",
+   "termCode": "personinfo:Organization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/description",
+   "name": "description",
+   "description": "A human-readable description for a thing.",
+   "termCode": "schema:description"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.obolibrary.org/obo/GSSO_009254",
+   "name": "nonbinary man",
+   "termCode": "GSSO:009254"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/employed_by",
+   "name": "employed_by",
+   "termCode": "personinfo:employed_by"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/founding_date",
+   "name": "founding_date",
+   "description": "When the organization was founded.",
+   "termCode": "personinfo:founding_date"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/email",
+   "name": "primary_email",
+   "description": "The main email address of a person.",
+   "termCode": "schema:email"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.obolibrary.org/obo/GSSO_000384",
+   "name": "transgender woman",
+   "termCode": "GSSO:000384"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/GenderType#cisgender%20man",
+   "name": "cisgender man",
+   "description": "A man whose gender matches the sex assigned at birth."
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/HasAliases",
+   "name": "HasAliases",
+   "description": "A mixin applied to any class that can have aliases.",
+   "termCode": "personinfo:HasAliases"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://schema.org/birthDate",
+   "name": "birth_date",
+   "termCode": "schema:birthDate"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/persons",
+   "name": "persons",
+   "termCode": "personinfo:persons"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/example/personinfo/PhoneNumberType",
+   "name": "PhoneNumberType",
+   "description": "A phone number.",
+   "termCode": "personinfo:PhoneNumberType"
   },
   {
    "@type": "DefinedTerm",
@@ -205,57 +205,15 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#definition",
-   "name": "definition",
-   "termCode": "skos:definition"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
    "name": "isDefinedBy",
    "termCode": "rdfs:isDefinedBy"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/identifier",
-   "name": "identifier",
-   "termCode": "linkml:identifier"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/pattern",
-   "name": "pattern",
-   "termCode": "linkml:pattern"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/minimum_value",
-   "name": "minimum_value",
-   "termCode": "linkml:minimum_value"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/maximum_value",
-   "name": "maximum_value",
-   "termCode": "linkml:maximum_value"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://w3id.org/linkml/tree_root",
    "name": "tree_root",
    "termCode": "linkml:tree_root"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/abstract",
-   "name": "abstract",
-   "termCode": "linkml:abstract"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/permissible_value",
-   "name": "permissible_value",
-   "termCode": "linkml:permissible_value"
   },
   {
    "@type": "DefinedTerm",
@@ -271,9 +229,45 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/mixin",
-   "name": "mixin",
-   "termCode": "linkml:mixin"
+   "@id": "http://www.w3.org/2004/02/skos/core#definition",
+   "name": "definition",
+   "termCode": "skos:definition"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/permissible_value",
+   "name": "permissible_value",
+   "termCode": "linkml:permissible_value"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/abstract",
+   "name": "abstract",
+   "termCode": "linkml:abstract"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/identifier",
+   "name": "identifier",
+   "termCode": "linkml:identifier"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/minimum_value",
+   "name": "minimum_value",
+   "termCode": "linkml:minimum_value"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/maximum_value",
+   "name": "maximum_value",
+   "termCode": "linkml:maximum_value"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/inlined_as_list",
+   "name": "inlined_as_list",
+   "termCode": "linkml:inlined_as_list"
   },
   {
    "@type": "DefinedTerm",
@@ -301,12 +295,6 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://w3id.org/linkml/inlined_as_list",
-   "name": "inlined_as_list",
-   "termCode": "linkml:inlined_as_list"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2002/07/owl#deprecated",
    "name": "deprecated",
    "termCode": "owl:deprecated"
@@ -316,6 +304,18 @@
    "@id": "http://www.w3.org/2004/02/skos/core#historyNote",
    "name": "historyNote",
    "termCode": "skos:historyNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/pattern",
+   "name": "pattern",
+   "termCode": "linkml:pattern"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://w3id.org/linkml/mixin",
+   "name": "mixin",
+   "termCode": "linkml:mixin"
   },
   {
    "@type": "DefinedTerm",
@@ -616,7 +616,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <div class="definition"><p>A generic grouping for any identifiable entity.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>personinfo:NamedThing</code></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#name" class="ref" title="schema:name">name</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#id" class="ref" title="personinfo:id">id</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#anyURI" class="ref ext" title="xsd:anyURI">xsd:anyURI</a></span></li><li><span class="expr"><a href="#description" class="ref" title="schema:description">description</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li></ul></td></tr><tr><th scope="row">Subclasses</th><td><a href="#Organization" class="ref" title="personinfo:Organization">Organization</a>, <a href="#Person" class="ref" title="schema:Person">Person</a></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/core" class="ref ext" title="https://w3id.org/example/core">core</a></td></tr><tr><th scope="row"><a href="#abstract" class="ref" title="linkml:abstract">abstract (LinkML)</a></th><td><span class="expr"><span class="lit">true</span></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>personinfo:NamedThing</code></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#name" class="ref" title="schema:name">name</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#description" class="ref" title="schema:description">description</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a></span></li><li><span class="expr"><a href="#id" class="ref" title="personinfo:id">id</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#anyURI" class="ref ext" title="xsd:anyURI">xsd:anyURI</a></span></li></ul></td></tr><tr><th scope="row">Subclasses</th><td><a href="#Organization" class="ref" title="personinfo:Organization">Organization</a>, <a href="#Person" class="ref" title="schema:Person">Person</a></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/core" class="ref ext" title="https://w3id.org/example/core">core</a></td></tr><tr><th scope="row"><a href="#abstract" class="ref" title="linkml:abstract">abstract (LinkML)</a></th><td><span class="expr"><span class="lit">true</span></span></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://w3id.org/example/personinfo/NamedThing">Show in figure</a></p></article>
 <article class="term" id="Organization" data-kind="class">
@@ -628,7 +628,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <div class="definition"><p>An organization such as a company or university.</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>personinfo:Organization</code></td></tr><tr><th scope="row">Superclasses</th><td><a href="#NamedThing" class="ref" title="personinfo:NamedThing">NamedThing</a></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#employees" class="ref" title="personinfo:employees">employees</a> <span class="kw">only</span> <a href="#Person" class="ref" title="schema:Person">Person</a></span></li><li><span class="expr"><a href="#founding_date" class="ref" title="personinfo:founding_date">founding_date</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#date" class="ref ext" title="xsd:date">xsd:date</a></span></li></ul></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#employed_by" class="ref" title="personinfo:employed_by">employed_by</a>, <a href="#organizations" class="ref" title="personinfo:organizations">organizations</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Container" class="ref" title="personinfo:Container">Container</a>, <a href="#Person" class="ref" title="schema:Person">Person</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>personinfo:Organization</code></td></tr><tr><th scope="row">Superclasses</th><td><a href="#NamedThing" class="ref" title="personinfo:NamedThing">NamedThing</a></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#founding_date" class="ref" title="personinfo:founding_date">founding_date</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#date" class="ref ext" title="xsd:date">xsd:date</a></span></li><li><span class="expr"><a href="#employees" class="ref" title="personinfo:employees">employees</a> <span class="kw">only</span> <a href="#Person" class="ref" title="schema:Person">Person</a></span></li></ul></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#employed_by" class="ref" title="personinfo:employed_by">employed_by</a>, <a href="#organizations" class="ref" title="personinfo:organizations">organizations</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Container" class="ref" title="personinfo:Container">Container</a>, <a href="#Person" class="ref" title="schema:Person">Person</a></div></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="https://w3id.org/example/personinfo/Organization">Show in figure</a></p></article>
 <article class="term" id="Person" data-kind="class">
@@ -640,7 +640,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <div class="definition"><p>A person (alive, dead, undead, or fictional).</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>schema:Person</code></td></tr><tr><th scope="row">Also known as</th><td>human being</td></tr><tr><th scope="row">Superclasses</th><td><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a>, <a href="#NamedThing" class="ref" title="personinfo:NamedThing">NamedThing</a></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#gender" class="ref" title="personinfo:gender">gender</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#GenderType" class="ref" title="personinfo:GenderType">GenderType</a></span></li><li><span class="expr"><a href="#email" class="ref" title="schema:email">primary_email</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a>[<span class="kw">pattern</span> <span class="lit">&#34;^\S+@[\S+\.]+\S+&#34;</span>]</span></li><li><span class="expr"><a href="#birthDate" class="ref" title="schema:birthDate">birth_date</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#date" class="ref ext" title="xsd:date">xsd:date</a></span></li><li><span class="expr"><a href="#employed_by" class="ref" title="personinfo:employed_by">employed_by</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></span></li><li><span class="expr"><a href="#age_in_years" class="ref" title="personinfo:age_in_years">age_in_years</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#integer" class="ref ext" title="xsd:integer">xsd:integer</a>[<span class="kw">&gt;=</span> <span class="lit">0</span>, <span class="kw">&lt;=</span> <span class="lit">999</span>]</span></li></ul></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#employees" class="ref" title="personinfo:employees">employees</a>, <a href="#persons" class="ref" title="personinfo:persons">persons</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Container" class="ref" title="personinfo:Container">Container</a>, <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Ada Lovelace — a famous mathematician</code></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr><tr><th scope="row"><a href="#mixins" class="ref" title="linkml:mixins">mixins (LinkML)</a></th><td><span class="expr"><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>schema:Person</code></td></tr><tr><th scope="row">Also known as</th><td>human being</td></tr><tr><th scope="row">Superclasses</th><td><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a>, <a href="#NamedThing" class="ref" title="personinfo:NamedThing">NamedThing</a></td></tr><tr><th scope="row">Restrictions</th><td><ul class="vlist"><li><span class="expr"><a href="#employed_by" class="ref" title="personinfo:employed_by">employed_by</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></span></li><li><span class="expr"><a href="#email" class="ref" title="schema:email">primary_email</a> <span class="kw">exactly</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#string" class="ref ext" title="xsd:string">xsd:string</a>[<span class="kw">pattern</span> <span class="lit">&#34;^\S+@[\S+\.]+\S+&#34;</span>]</span></li><li><span class="expr"><a href="#birthDate" class="ref" title="schema:birthDate">birth_date</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#date" class="ref ext" title="xsd:date">xsd:date</a></span></li><li><span class="expr"><a href="#gender" class="ref" title="personinfo:gender">gender</a> <span class="kw">max</span> <span class="lit">1</span> <a href="#GenderType" class="ref" title="personinfo:GenderType">GenderType</a></span></li><li><span class="expr"><a href="#age_in_years" class="ref" title="personinfo:age_in_years">age_in_years</a> <span class="kw">max</span> <span class="lit">1</span> <a href="http://www.w3.org/2001/XMLSchema#integer" class="ref ext" title="xsd:integer">xsd:integer</a>[<span class="kw">&gt;=</span> <span class="lit">0</span>, <span class="kw">&lt;=</span> <span class="lit">999</span>]</span></li></ul></td></tr><tr><th scope="row">Used in</th><td><div class="usage"><span class="muted">in range of</span> <a href="#employees" class="ref" title="personinfo:employees">employees</a>, <a href="#persons" class="ref" title="personinfo:persons">persons</a></div><div class="usage"><span class="muted">used in axioms of</span> <a href="#Container" class="ref" title="personinfo:Container">Container</a>, <a href="#Organization" class="ref" title="personinfo:Organization">Organization</a></div></td></tr><tr><th scope="row">Examples</th><td><code class="example">Ada Lovelace — a famous mathematician</code></td></tr><tr><th scope="row">Defined by</th><td><a href="https://w3id.org/example/personinfo" class="ref ext" title="https://w3id.org/example/personinfo">Person Information Model</a></td></tr><tr><th scope="row"><a href="#mixins" class="ref" title="linkml:mixins">mixins (LinkML)</a></th><td><span class="expr"><a href="#HasAliases" class="ref" title="personinfo:HasAliases">HasAliases</a></span></td></tr>    </tbody>
   </table>
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://schema.org/Person">Show in figure</a></p></article>
 </section><section class="section section-terms" id="object-properties">
@@ -1281,7 +1281,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
   <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
-<p class="muted small">2.5s. Own namespaces (not checked as external): https://w3id.org/example/personinfo/, https://w3id.org/example/personinfo#, https://w3id.org/example/personinfo/GenderType#. Run #109 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+<p class="muted small">2.9s. Own namespaces (not checked as external): https://w3id.org/example/personinfo/, https://w3id.org/example/personinfo#, https://w3id.org/example/personinfo/GenderType#. Run #130 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
     <caption class="sr-only">IRI checks metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1296,7 +1296,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:01:32 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:26:07 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
       <tr><td>Simple Knowledge Organization System<br><code class="small">http://www.w3.org/2004/02/skos/core</code><br><span class="muted small">sha256 e79633b8d0564816…</span></td>
@@ -1374,7 +1374,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <li><a href="#GSSO_009253">nonbinary woman</a> <code class="muted">GSSO:009253</code></li><li><a href="#GSSO_009254">nonbinary man</a> <code class="muted">GSSO:009254</code></li><li><a href="#cisgender_20man">cisgender man</a> <code class="muted">https://w3id.org/example/personinfo/GenderType#cisgender%20man</code></li><li><a href="#HasAliases">HasAliases</a> <code class="muted">personinfo:HasAliases</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
-<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 83 in the term database. Details of 20 repository ontologies came from the term database.</p>  <table class="plain metrics">
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 103 in the term database. Details of 20 repository ontologies came from the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Cross-domain interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1394,39 +1394,39 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:01:35 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:26:11 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
     <tbody>
       <tr><td>Medical Subject Headings<br><code class="small">https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>6</td></tr>
+      <td class="small">2026-11-21</td><td>6</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>ols:schemaorg_http<br><code class="small">schemaorg_http</code><br><span class="muted small">version not reported; identified by release/load date (2026-11-21T00:09:03)</span><br><span class="muted small">version not reported by the source; identified by release/load date</span></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>ols:schemaorg_https<br><code class="small">schemaorg_https</code><br><span class="muted small">version not reported; identified by release/load date (2026-11-21T00:09:05)</span><br><span class="muted small">version not reported by the source; identified by release/load date</span></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>3</td></tr>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>9</td></tr>
+      <td class="small">2026-11-21</td><td>9</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology for MIRNA Target<br><code class="small">http://purl.obolibrary.org/obo/omit/dev/omit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>3</td></tr>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology for vCard<br><code class="small">http://www.w3.org/2006/vcard/ns</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 2442baf3d07d6609…</span></td>
       <td class="small">term database (cache)<br><span class="muted">https://www.w3.org/2006/vcard/ns</span></td>
-      <td class="small">2026-11-19</td><td>3</td></tr>
+      <td class="small">2026-11-19</td><td>3</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Friend of a Friend (FOAF) vocabulary<br><code class="small">http://xmlns.com/foaf/0.1/</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 3d859b5d92a2c3d0…</span></td>
       <td class="small">term database (cache)<br><span class="muted">https://xmlns.com/foaf/spec/</span></td>
-      <td class="small">2026-11-19</td><td>2</td></tr>
+      <td class="small">2026-11-19</td><td>2</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Exposure ontology<br><code class="small">http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>2</td></tr>
+      <td class="small">2026-11-21</td><td>2</td><td class="small">Cross-domain, Scientific</td></tr>
     </tbody>
   </table>
   <details class="finding sev-info">
@@ -1440,7 +1440,7 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
 <li><a href="#Organization">Organization</a> <code class="muted">personinfo:Organization</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
-<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.</p>  <table class="plain metrics">
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 103 in the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Scientific interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1466,6 +1466,8 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
       <tr class="metric-info"><td>ols:schemaorg_https <code class="muted small">ols:schemaorg_https</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
     </tbody>
   </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
 <p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:schemaorg_http&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:schemaorg_http, ols:schemaorg_https, ols:afo, db:http://xmlns.com/foaf/0.1/page</p>  </details>
@@ -1538,23 +1540,23 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
       <div class="prov-what"><span class="prov-title">Ontology last modified</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:01:28+00:00">2026-11-21 18:01:28 UTC</time>
+      <time datetime="2026-11-21T18:26:02+00:00">2026-11-21 18:26:02 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From personinfo.yaml</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:01:32+00:00">2026-11-21 18:01:32 UTC</time>
+      <time datetime="2026-11-21T18:26:07+00:00">2026-11-21 18:26:07 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 6 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:01:35+00:00">2026-11-21 18:01:35 UTC</time>
+      <time datetime="2026-11-21T18:26:11+00:00">2026-11-21 18:26:11 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.46; verified against 10 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:01:35+00:00">2026-11-21 18:01:35 UTC</time>
+      <time datetime="2026-11-21T18:26:11+00:00">2026-11-21 18:26:11 UTC</time>
       <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 2 of 41 scientific domains</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:01:56+00:00">2026-11-21 18:01:56 UTC</time>
+      <time datetime="2026-11-21T18:26:26+00:00">2026-11-21 18:26:26 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
     </li>
   </ol>
@@ -1563,8 +1565,8 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>personinfo.yaml (2.5 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">386b41c9109c89f76003495dcb53af2f911dcac9b40de6230b0b90d79ce569b6</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:01:28+00:00">2026-11-21 18:01:28 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:01:56+00:00">2026-11-21 18:01:56 UTC</time> <span class="muted">(28.5 s)</span></td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:26:02+00:00">2026-11-21 18:26:02 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:26:26+00:00">2026-11-21 18:26:26 UTC</time> <span class="muted">(24.5 s)</span></td></tr>
 <tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from a LinkML schema with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
@@ -1584,10 +1586,10 @@ Used to test <strong>OntoReview</strong>'s LinkML support.</p>
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dc94"></script>
+<script src="ontoreview-data.js?v=6b01e252"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01dc94"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01e252"></script>
 </body>
 </html>

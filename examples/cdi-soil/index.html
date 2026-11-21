@@ -10,46 +10,13 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dd8e">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e34d">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org/",
  "@type": "DefinedTermSet",
  "hasDefinedTerm": [
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://example.org/toy/PHReading",
-   "name": "pH reading",
-   "description": "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units.",
-   "termCode": "ex:PHReading"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://example.org/toy/Tractor",
-   "name": "tractor",
-   "termCode": "ex:Tractor"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://example.org/toy/SoilPHReading",
-   "name": "soil pH reading",
-   "termCode": "ex:SoilPHReading"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://example.org/toy/Process",
-   "name": "process",
-   "description": "Something that happens over time and has participants.",
-   "termCode": "ex:Process"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://example.org/toy/SoilSample",
-   "name": "soil sample",
-   "description": "A sample of topsoil collected for agronomic analysis of a field.",
-   "termCode": "ex:SoilSample"
-  },
   {
    "@type": "DefinedTerm",
    "@id": "http://example.org/toy/hasParticipant",
@@ -61,6 +28,39 @@
    "@id": "http://example.org/toy/Machine",
    "name": "farm machine",
    "termCode": "ex:Machine"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://example.org/toy/PHReading",
+   "name": "pH reading",
+   "description": "A soil pH value measured at 20 cm depth with a glass electrode, reported to 0.01 units.",
+   "termCode": "ex:PHReading"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://example.org/toy/SoilPHReading",
+   "name": "soil pH reading",
+   "termCode": "ex:SoilPHReading"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://example.org/toy/SoilSample",
+   "name": "soil sample",
+   "description": "A sample of topsoil collected for agronomic analysis of a field.",
+   "termCode": "ex:SoilSample"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://example.org/toy/Process",
+   "name": "process",
+   "description": "Something that happens over time and has participants.",
+   "termCode": "ex:Process"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://example.org/toy/Tractor",
+   "name": "tractor",
+   "termCode": "ex:Tractor"
   },
   {
    "@type": "DefinedTerm",
@@ -90,15 +90,15 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#definition",
-   "name": "definition",
-   "termCode": "skos:definition"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym",
    "name": "hasBroadSynonym",
    "termCode": "oio:hasBroadSynonym"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#definition",
+   "name": "definition",
+   "termCode": "skos:definition"
   },
   {
    "@type": "DefinedTerm",
@@ -554,7 +554,7 @@
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
   <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
-<p class="muted small">0.0s. Own namespaces (not checked as external): http://example.org/toy/. Run #118 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+<p class="muted small">0.0s. Own namespaces (not checked as external): http://example.org/toy/. Run #139 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
     <caption class="sr-only">IRI checks metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -568,7 +568,7 @@
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:06:02 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:30:32 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
       <tr><td>Simple Knowledge Organization System<br><code class="small">http://www.w3.org/2004/02/skos/core</code><br><span class="muted small">sha256 e79633b8d0564816…</span></td>
@@ -636,7 +636,7 @@
 <li><a href="#hasParticipant">has participant</a> <code class="muted">ex:hasParticipant</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
-<p class="muted small">12 reference ontologies (2 given, 10 discovered); left out: 1 same domain, 19 below the top N. Full record in cdi.json, and as CDI run 91 in the term database. Details of 29 repository ontologies came from the term database.</p>  <table class="plain metrics">
+<p class="muted small">12 reference ontologies (2 given, 10 discovered); left out: 1 same domain, 20 below the top N. Full record in cdi.json, and as CDI run 111 in the term database. Details of 29 repository ontologies came from the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Cross-domain interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -645,6 +645,7 @@
       <tr class="metric-warn"><td>Generality <code class="muted small">Gen</code></td><td><span class="mstat" aria-hidden="true"></span> 0.22 = definition coverage 0.62 (5/8) × mean generality 0.36<span class="sr-only"> (warn)</span></td><td class="muted small">How domain-neutral the class definitions are (zero-shot language model)</td></tr>
       <tr class="metric-group"><th colspan="3" scope="colgroup">Alignment by reference ontology</th></tr>      <tr class="metric-info"><td>NCI Thesaurus OBO Edition <code class="muted small">ols:ncit</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.44, coverage 0.44, 8 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</td></tr>
       <tr class="metric-info"><td>Semanticscience Integrated Ontology <code class="muted small">ols:sio</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.44, coverage 0.44, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:sio; release http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</td></tr>
+      <tr class="metric-info"><td>file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl <code class="muted small">db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.34, coverage 0.33, 3 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl; version not reported (identified by content hash)</td></tr>
       <tr class="metric-info"><td>toy_ref.ttl <code class="muted small">file:toy_ref.ttl</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.35, coverage 0.33, 4 correspondences (given)<span class="sr-only"> (info)</span></td><td class="muted small">file:toy_ref.ttl; version not reported (identified by content hash)</td></tr>
       <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.34, coverage 0.33, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</td></tr>
       <tr class="metric-info"><td>SNOMED CT (International Edition) <code class="muted small">ols:snomed</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.43, coverage 0.33, 4 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:snomed; release http://snomed.info/sct/900000000000207008/version/20251017</td></tr>
@@ -654,49 +655,48 @@
       <tr class="metric-info"><td>Uberon multi-species anatomy ontology <code class="muted small">ols:uberon</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.20, coverage 0.22, 2 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:uberon; domain: anatomy and development; release http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl</td></tr>
       <tr class="metric-info"><td>Addiction Ontology <code class="muted small">ols:addicto</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.16, coverage 0.11, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:addicto; release http://addictovocab.org/addicto.owl/2026-10-08</td></tr>
       <tr class="metric-info"><td>BioAssay Ontology <code class="muted small">ols:bao</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.10, coverage 0.11, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:bao; release http://www.bioassayontology.org/bao/bao_complete.owl</td></tr>
-      <tr class="metric-info"><td>Basic Formal Ontology <code class="muted small">ols:bfo</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.10, coverage 0.11, 1 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:bfo; domain: upper; release http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl</td></tr>
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:06:02 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:30:32 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
     <tbody>
       <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>8</td></tr>
+      <td class="small">2026-11-21</td><td>8</td><td class="small">Cross-domain</td></tr>
       <tr><td>Semanticscience Integrated Ontology<br><code class="small">http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain</td></tr>
+      <tr><td>file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl<br><code class="small">release not recorded</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 da76f84a349093ef…</span></td>
+      <td class="small">term database (cache)<br><span class="muted">file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl</span></td>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain</td></tr>
       <tr><td>toy_ref.ttl<br><code class="small">release not recorded</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 da76f84a349093ef…</span></td>
       <td class="small">file<br><span class="muted">file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl</span></td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain</td></tr>
       <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain</td></tr>
       <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain</td></tr>
       <tr><td>toy_to_bfo.sssom.tsv<br><code class="small">release not recorded</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 ae83102ae516d6f0…</span></td>
       <td class="small">file<br><span class="muted">file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv</span></td>
-      <td class="small">2026-11-21</td><td>3</td></tr>
+      <td class="small">2026-11-21</td><td>3</td><td class="small">Cross-domain</td></tr>
       <tr><td>http://www.w3.org/ns/sosa/<br><code class="small">http://www.w3.org/ns/sosa/</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 c70b0d1c843c0047…</span></td>
       <td class="small">term database (bundled)<br><span class="muted">https://www.w3.org/ns/sosa/sosa.ttl</span></td>
-      <td class="small">2026-11-18</td><td>2</td></tr>
+      <td class="small">2026-11-18</td><td>2</td><td class="small">Cross-domain</td></tr>
       <tr><td>Exposure ontology<br><code class="small">http://purl.obolibrary.org/obo/exo/releases/2026-11-20/exo.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>2</td></tr>
+      <td class="small">2026-11-21</td><td>2</td><td class="small">Cross-domain</td></tr>
       <tr><td>Uberon multi-species anatomy ontology<br><code class="small">http://purl.obolibrary.org/obo/uberon/releases/2026-11-05/uberon.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>2</td></tr>
+      <td class="small">2026-11-21</td><td>2</td><td class="small">Cross-domain</td></tr>
       <tr><td>Addiction Ontology<br><code class="small">http://addictovocab.org/addicto.owl/2026-10-08</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain</td></tr>
       <tr><td>BioAssay Ontology<br><code class="small">http://www.bioassayontology.org/bao/bao_complete.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
-      <tr><td>Basic Formal Ontology<br><code class="small">http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl</code></td>
-      <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain</td></tr>
     </tbody>
   </table>
   <details class="finding sev-info">
@@ -796,19 +796,19 @@
   <h3 class="subhead" id="provenance-timeline">Timeline</h3>
   <ol class="prov-timeline">
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:05:58+00:00">2026-11-21 18:05:58 UTC</time>
+      <time datetime="2026-11-21T18:30:24+00:00">2026-11-21 18:30:24 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From toy_onto.ttl</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:06:02+00:00">2026-11-21 18:06:02 UTC</time>
+      <time datetime="2026-11-21T18:30:32+00:00">2026-11-21 18:30:32 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 4 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:06:02+00:00">2026-11-21 18:06:02 UTC</time>
+      <time datetime="2026-11-21T18:30:32+00:00">2026-11-21 18:30:32 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.34; verified against 12 reference releases</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:06:06+00:00">2026-11-21 18:06:06 UTC</time>
+      <time datetime="2026-11-21T18:30:37+00:00">2026-11-21 18:30:37 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, OOPS!</span></div>
     </li>
   </ol>
@@ -817,8 +817,8 @@
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>toy_onto.ttl (1.4 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:05:58+00:00">2026-11-21 18:05:58 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:06:06+00:00">2026-11-21 18:06:06 UTC</time> <span class="muted">(8.2 s)</span></td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:30:24+00:00">2026-11-21 18:30:24 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:30:37+00:00">2026-11-21 18:30:37 UTC</time> <span class="muted">(12.2 s)</span></td></tr>
 <tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
@@ -838,10 +838,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dd8e"></script>
+<script src="ontoreview-data.js?v=6b01e34d"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01dd8e"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01e34d"></script>
 </body>
 </html>

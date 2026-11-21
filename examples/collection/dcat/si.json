@@ -1,9 +1,11 @@
 {
-  "checked_at": "2026-11-21T18:06:58.607000+00:00",
+  "checked_at": "2026-11-21T18:31:23.277101+00:00",
   "references": [
     "ols"
   ],
-  "cdi_run_id": 93,
+  "run_id": 113,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "cdi_run_id": 113,
   "settings": {
     "si": "on",
     "si_references": [],
@@ -525,5 +527,8 @@
   "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
   "record_file": "si.json",
   "own_references": false,
-  "notes": []
+  "notes": [],
+  "releases": [],
+  "label": "Checked against",
+  "releases_in": "cdi.json"
 }

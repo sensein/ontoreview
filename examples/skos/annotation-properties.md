@@ -6,9 +6,9 @@
 
 An alternative lexical label for a resource.
 
-The range of skos:altLabel is the class of RDF plain literals.
-
 skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.
+
+The range of skos:altLabel is the class of RDF plain literals.
 
 | | |
 |---|---|
@@ -123,9 +123,9 @@ A general note, for any purpose.
 
 The preferred lexical label for a resource, in a given language.
 
-The range of skos:prefLabel is the class of RDF plain literals.
-
 A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.
+
+The range of skos:prefLabel is the class of RDF plain literals.
 
 skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise
       disjoint properties.

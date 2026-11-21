@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dc78">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e239">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -52,16 +52,17 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaTopping",
-   "name": "Pizza topping",
-   "description": "Something placed on a pizza.",
-   "termCode": "pizza:PizzaTopping"
+   "@id": "https://example.org/pizza#hasIngredient",
+   "name": "has ingredient",
+   "description": "Any ingredient.",
+   "termCode": "pizza:hasIngredient"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Name",
-   "name": "Pizza",
-   "termCode": "pizza:Name"
+   "@id": "https://example.org/pizza#VegetarianPizza",
+   "name": "Vegetarian pizza",
+   "description": "A pizza with no meat toppings.",
+   "termCode": "pizza:VegetarianPizza"
   },
   {
    "@type": "DefinedTerm",
@@ -71,29 +72,22 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#MeatTopping",
-   "name": "Meat topping",
-   "termCode": "pizza:MeatTopping"
+   "@id": "https://example.org/pizza#PizzaTopping",
+   "name": "Pizza topping",
+   "description": "Something placed on a pizza.",
+   "termCode": "pizza:PizzaTopping"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#PizzaBase",
-   "name": "Pizza base",
-   "description": "The bread base of a pizza.",
-   "termCode": "pizza:PizzaBase"
+   "@id": "https://example.org/pizza#isToppingOf",
+   "name": "is topping of",
+   "termCode": "pizza:isToppingOf"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasTopping",
-   "name": "has topping",
-   "description": "Relates a pizza to its toppings.",
-   "termCode": "pizza:hasTopping"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasCalories",
-   "name": "has calories",
-   "termCode": "pizza:hasCalories"
+   "@id": "https://example.org/pizza#Name",
+   "name": "Pizza",
+   "termCode": "pizza:Name"
   },
   {
    "@type": "DefinedTerm",
@@ -104,12 +98,6 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#isToppingOf",
-   "name": "is topping of",
-   "termCode": "pizza:isToppingOf"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "https://example.org/pizza#CheeseTopping",
    "name": "Cheese topping",
    "description": "Cheese.",
@@ -117,17 +105,21 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#hasIngredient",
-   "name": "has ingredient",
-   "description": "Any ingredient.",
-   "termCode": "pizza:hasIngredient"
+   "@id": "https://example.org/pizza#MeatTopping",
+   "name": "Meat topping",
+   "termCode": "pizza:MeatTopping"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Food",
-   "name": "Food",
-   "description": "Anything that can be eaten.",
-   "termCode": "pizza:Food"
+   "@id": "https://example.org/pizza#hasCalories",
+   "name": "has calories",
+   "termCode": "pizza:hasCalories"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Margherita",
+   "name": "Margherita",
+   "termCode": "pizza:Margherita"
   },
   {
    "@type": "DefinedTerm",
@@ -138,16 +130,24 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#Margherita",
-   "name": "Margherita",
-   "termCode": "pizza:Margherita"
+   "@id": "https://example.org/pizza#hasTopping",
+   "name": "has topping",
+   "description": "Relates a pizza to its toppings.",
+   "termCode": "pizza:hasTopping"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "https://example.org/pizza#VegetarianPizza",
-   "name": "Vegetarian pizza",
-   "description": "A pizza with no meat toppings.",
-   "termCode": "pizza:VegetarianPizza"
+   "@id": "https://example.org/pizza#PizzaBase",
+   "name": "Pizza base",
+   "description": "The bread base of a pizza.",
+   "termCode": "pizza:PizzaBase"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://example.org/pizza#Food",
+   "name": "Food",
+   "description": "Anything that can be eaten.",
+   "termCode": "pizza:Food"
   },
   {
    "@type": "DefinedTerm",
@@ -466,23 +466,23 @@
       <div class="prov-what"><span class="prov-title">Ontology last modified</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:01:00+00:00">2026-11-21 18:01:00 UTC</time>
+      <time datetime="2026-11-21T18:25:28+00:00">2026-11-21 18:25:28 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From pizza-v2.ttl</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:01:02+00:00">2026-11-21 18:01:02 UTC</time>
+      <time datetime="2026-11-21T18:25:32+00:00">2026-11-21 18:25:32 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 6 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:01:02+00:00">2026-11-21 18:01:02 UTC</time>
+      <time datetime="2026-11-21T18:25:32+00:00">2026-11-21 18:25:32 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.44; verified against 10 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:01:02+00:00">2026-11-21 18:01:02 UTC</time>
+      <time datetime="2026-11-21T18:25:32+00:00">2026-11-21 18:25:32 UTC</time>
       <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 2 of 41 scientific domains</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:01:28+00:00">2026-11-21 18:01:28 UTC</time>
+      <time datetime="2026-11-21T18:26:01+00:00">2026-11-21 18:26:01 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
     </li>
   </ol>
@@ -491,8 +491,8 @@
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>pizza-v2.ttl (3.8 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:01:00+00:00">2026-11-21 18:01:00 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:01:28+00:00">2026-11-21 18:01:28 UTC</time> <span class="muted">(27.5 s)</span></td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:25:28+00:00">2026-11-21 18:25:28 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:26:01+00:00">2026-11-21 18:26:01 UTC</time> <span class="muted">(32.6 s)</span></td></tr>
 <tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
@@ -512,8 +512,8 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dc78"></script>
+<script src="ontoreview-data.js?v=6b01e239"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6b01dc78"></script>
+<script src="assets/ontoreview.js?v=6b01e239"></script>
 </body>
 </html>

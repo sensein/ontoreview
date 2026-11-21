@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T18:01:02.916922+00:00",
+  "checked_at": "2026-11-21T18:25:32.246169+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 12 repository ontologies came from the term database."
   ],
-  "run_id": 81,
+  "run_id": 102,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -41,7 +41,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.5091428571428571,
@@ -1496,7 +1500,11 @@
       "retrieved": "2026-11-21T17:32:34Z",
       "metadata_sha256": "93eeb6caa7a84aaddf5e478f34ee5121a67b352c1f5a31860a3b77572566bf9f",
       "identified_by": "version IRI",
-      "terms": 6
+      "terms": 6,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "SNOMED CT (International Edition)",
@@ -1509,7 +1517,11 @@
       "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "NCI Thesaurus OBO Edition",
@@ -1523,7 +1535,11 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 5
+      "terms": 5,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Allotrope Merged Ontology Suite",
@@ -1537,7 +1553,11 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Chemical Entities of Biological Interest",
@@ -1551,7 +1571,11 @@
       "retrieved": "2026-11-21T17:30:14Z",
       "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
       "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Food-Biomarker Ontology",
@@ -1564,7 +1588,11 @@
       "retrieved": "2026-11-21T17:32:35Z",
       "metadata_sha256": "5e0451a5eac7687564e363c144087687440191c38adc8cf829a3c6304092c51a",
       "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Medical Subject Headings",
@@ -1578,7 +1606,11 @@
       "retrieved": "2026-11-21T17:30:13Z",
       "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
       "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
@@ -1591,7 +1623,11 @@
       "retrieved": "2026-11-21T17:32:35Z",
       "metadata_sha256": "24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3",
       "identified_by": "version",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology of units of Measure (OM)",
@@ -1604,7 +1640,11 @@
       "retrieved": "2026-11-21T17:32:34Z",
       "metadata_sha256": "94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59",
       "identified_by": "version",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology for MIRNA Target",
@@ -1617,7 +1657,11 @@
       "retrieved": "2026-11-21T17:30:11Z",
       "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
       "identified_by": "version IRI",
-      "terms": 1
+      "terms": 1,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     }
   ],
   "record_file": "cdi.json",

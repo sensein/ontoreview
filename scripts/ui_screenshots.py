@@ -1,7 +1,8 @@
 """Regenerate the screenshots on the app's Help page (src/ontoreview/ui_assets/help/*.png).
 
     uv run --extra ui --with playwright python scripts/ui_screenshots.py            # all
-    uv run --extra ui --extra cdi --with playwright python scripts/ui_screenshots.py --only cdi   # or --only si
+    uv run --extra ui --extra cdi --with playwright python scripts/ui_screenshots.py --only cdi   # or si, docs
+(docs: the generated example site for the README, in guide/images; run build_examples.py first)
 
 Uses Playwright with the Chrome already installed on this machine (no browser download) and demo
 ontologies copied to a temporary folder, so no personal paths end up in the images. Docker should be
@@ -43,7 +44,8 @@ def prepare(demo: Path) -> dict[str, Path]:
     cfg = demo / "config"
     cfg.mkdir()
     # cross-domain interoperability gets its own server and screenshots (cdi_shots); keep the others fast
-    (cfg / "prefs.json").write_text(json.dumps({"open_when_done": False, "oops": "off", "cdi": False}))
+    (cfg / "prefs.json").write_text(json.dumps({"open_when_done": False, "oops": "off", "cdi": False, "si": False,
+                                                 "deploy_remote": "https://github.com/you/pizza-docs"}))
     (demo / "soil").mkdir()
     for f in ("toy_onto.ttl", "toy_ref.ttl", "toy_to_bfo.sssom.tsv"):
         shutil.copy(FIX / "cdi" / f, demo / "soil" / f)
@@ -175,11 +177,43 @@ def si_shots(browser, demo: Path, paths: dict) -> None:
         server.wait(timeout=10)
 
 
+GUIDE = ROOT / "guide" / "images"
+
+
+def docs_shots(browser) -> None:
+    """The generated documentation (examples/cdi-sosa) for the README: run build_examples.py first."""
+    site = ROOT / "examples" / "cdi-sosa" / "index.html"
+    if not site.is_file():
+        print("skip docs shots: run scripts/build_examples.py first")
+        return
+    GUIDE.mkdir(parents=True, exist_ok=True)
+    page = browser.new_page(viewport=VIEW, color_scheme="light")
+    page.goto(site.as_uri())
+    page.wait_for_timeout(800)
+    page.screenshot(path=str(GUIDE / "docs-overview.png"))
+    for anchor, name, off in (("#graph", "docs-graph.png", -20), ("#quality", "docs-quality.png", -20),
+                              ("#quality-scientific-interoperability", "docs-si.png", -30),
+                              ("#provenance", "docs-provenance.png", -20)):
+        page.locator(anchor).first.evaluate("e => e.scrollIntoView({block: 'start'})")
+        page.mouse.wheel(0, off)
+        page.wait_for_timeout(1200 if anchor == "#graph" else 400)
+        page.screenshot(path=str(GUIDE / name))
+        print("✓", name)
+    page.close()
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
     demo = Path(tempfile.mkdtemp(prefix="ontoreview-demo-", dir="/tmp" if os.name != "nt" else None))
     paths = prepare(demo)
+    if only == "docs":
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(channel="chrome")
+            docs_shots(browser)
+            browser.close()
+        shutil.rmtree(demo, ignore_errors=True)
+        return
     if only in ("cdi", "si"):
         try:
             with sync_playwright() as pw:
@@ -244,6 +278,10 @@ def main() -> None:
             page.goto(url + "/history")
             wait_text(page, "runs shown")
             shoot(page, "history.png")
+            page.get_by_label("Deploy to GitHub Pages").first.click()      # the dialog only; nothing is pushed
+            wait_text(page, "The site will be at")
+            shoot(page, "deploy.png")
+            page.keyboard.press("Escape")
 
             page.goto(url + "/settings")
             wait_text(page, "Default output folder")
@@ -252,6 +290,7 @@ def main() -> None:
             shoot(page, "settings.png")
             cdi_shots(browser, demo, paths)
             si_shots(browser, demo, paths)
+            docs_shots(browser)
             browser.close()
     finally:
         server.terminate()

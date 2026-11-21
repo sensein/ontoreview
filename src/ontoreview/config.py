@@ -283,6 +283,10 @@ class Config(BaseModel):
     # Output
     output: str = "docs"
     layout: Literal["single", "multi"] = "single"
+    deploy_files: bool = Field(True, description="Also write a deployment kit in the output folder: DEPLOY.md, "
+                                                 "Dockerfile + docker-compose.yml, deploy/nginx.conf, a local preview "
+                                                 "script and a GitHub Pages workflow (.github/workflows/pages.yml)")
+    deploy_branch: str = Field("main", description="Branch the GitHub Pages workflow publishes from")
     standalone: bool = Field(True, description="Also write standalone.html in the output folder: the whole "
                                                "documentation in one file (CSS, JS, data and downloads inlined)")
     languages: list[str] = Field(default_factory=lambda: ["en"])

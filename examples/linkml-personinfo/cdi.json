@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T18:01:35.450913+00:00",
+  "checked_at": "2026-11-21T18:26:11.187238+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 20 repository ontologies came from the term database."
   ],
-  "run_id": 83,
+  "run_id": 103,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -41,7 +41,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.5142857142857143,
@@ -386,7 +390,7 @@
         "version_iri": "http://www.w3.org/ns/prov-o-20130430",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-        "retrieved": "2026-11-21T17:47:58.239000+00:00",
+        "retrieved": "2026-11-21T18:05:32.091904+00:00",
         "identified_by": "version IRI"
       }
     },
@@ -1434,7 +1438,11 @@
       "retrieved": "2026-11-21T17:30:13Z",
       "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
       "identified_by": "version IRI",
-      "terms": 6
+      "terms": 6,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:schemaorg_http",
@@ -1448,7 +1456,11 @@
       "identified_by": "release/load date",
       "terms": 4,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:schemaorg_https",
@@ -1462,7 +1474,11 @@
       "identified_by": "release/load date",
       "terms": 4,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Allotrope Merged Ontology Suite",
@@ -1476,7 +1492,11 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 3
+      "terms": 3,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "NCI Thesaurus OBO Edition",
@@ -1490,7 +1510,11 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 9
+      "terms": 9,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology for MIRNA Target",
@@ -1503,7 +1527,11 @@
       "retrieved": "2026-11-21T17:30:11Z",
       "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
       "identified_by": "version IRI",
-      "terms": 3
+      "terms": 3,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "SNOMED CT (International Edition)",
@@ -1516,7 +1544,11 @@
       "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology for vCard",
@@ -1529,7 +1561,11 @@
       "identified_by": "content hash",
       "terms": 3,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Friend of a Friend (FOAF) vocabulary",
@@ -1542,7 +1578,11 @@
       "identified_by": "content hash",
       "terms": 2,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Exposure ontology",
@@ -1556,7 +1596,11 @@
       "retrieved": "2026-11-21T17:34:11Z",
       "metadata_sha256": "3cb5416d002bdbc7144a9cb8265dcf54713d5ddadf84c4c32641ecb1abcd0c21",
       "identified_by": "version IRI",
-      "terms": 2
+      "terms": 2,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     }
   ],
   "record_file": "cdi.json",

@@ -127,9 +127,9 @@ The Result of an Observation, Actuation, or act of Sampling. To store an observa
 
 Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.
 
-A Sample is the result from an act of Sampling.
-
 Physical samples are sometimes known as 'specimens'.
+
+A Sample is the result from an act of Sampling.
 
 Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.
 
@@ -166,7 +166,7 @@ An act of Sampling carries out a sampling Procedure to create or transform one o
 | | |
 |---|---|
 | Used in | in domain of [has feature of interest](object-properties.md#hasfeatureofinterest); in domain of [has result](object-properties.md#hasresult); in domain of [has simple result](datatype-properties.md#hassimpleresult); in domain of [made by sampler](object-properties.md#madebysampler); in domain of [phenomenon time](object-properties.md#phenomenontime); in domain of [result time](datatype-properties.md#resulttime); in domain of [used procedure](object-properties.md#usedprocedure); in range of [is feature of interest of](object-properties.md#isfeatureofinterestof); in range of [is result of](object-properties.md#isresultof); in range of [made sampling](object-properties.md#madesampling) |
-| Examples | `Establishing a station for environmental monitoring.`; `Drilling an observation well.`; `Sieving a powder to separate the subset finer than 100-mesh.`; `Dividing a field site into quadrants.`; `Drawing blood from a patient.`; `Selecting a subset of a population.`; `Taking a diamond-drill core from a rock outcrop.`; `Crushing a rock sample in a ball mill.`; `Digging a pit through a soil sequence.`; `Registering an image of the landscape.`; `Splitting a piece of drill-core to create two new samples.` |
+| Examples | `Taking a diamond-drill core from a rock outcrop.`; `Splitting a piece of drill-core to create two new samples.`; `Registering an image of the landscape.`; `Digging a pit through a soil sequence.`; `Drilling an observation well.`; `Selecting a subset of a population.`; `Establishing a station for environmental monitoring.`; `Sieving a powder to separate the subset finer than 100-mesh.`; `Crushing a rock sample in a ball mill.`; `Drawing blood from a patient.`; `Dividing a field site into quadrants.` |
 
 ### Sensor
 

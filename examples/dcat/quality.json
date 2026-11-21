@@ -262,7 +262,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "28.9s. Own namespaces (not checked as external): http://www.w3.org/ns/dcat#, http://www.w3.org/ns/dcat/. Run #115 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "24.2s. Own namespaces (not checked as external): http://www.w3.org/ns/dcat#, http://www.w3.org/ns/dcat/. Run #136 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -330,8 +330,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T18:03:58.874657+00:00",
-        "run_id": 115,
+        "checked_at": "2026-11-21T18:28:28.199657+00:00",
+        "run_id": 136,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -463,7 +463,7 @@
             "ontology": null,
             "version_iri": "http://www.w3.org/ns/prov-o-20130430",
             "version": null,
-            "retrieved": "2026-11-21T18:04:27.763715+00:00",
+            "retrieved": "2026-11-21T18:28:52.345783+00:00",
             "terms": 1,
             "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
             "source_url": "https://www.w3.org/ns/prov-o.ttl"
@@ -475,7 +475,7 @@
             "ontology": null,
             "version_iri": "http://www.w3.org/ns/prov-o-20130430",
             "version": null,
-            "retrieved": "2026-11-21T18:04:27.763715+00:00",
+            "retrieved": "2026-11-21T18:28:52.345783+00:00",
             "terms": 1,
             "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
             "source_url": "https://www.w3.org/ns/prov-o.ttl"
@@ -1332,7 +1332,7 @@
               "document": "http://www.w3.org/ns/prov-o#",
               "version_iri": "http://www.w3.org/ns/prov-o-20130430",
               "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
-              "fetched_at": "2026-11-21T18:04:27.763715+00:00",
+              "fetched_at": "2026-11-21T18:28:52.345783+00:00",
               "source_url": "https://www.w3.org/ns/prov-o.ttl"
             },
             "attempts": [
@@ -1370,7 +1370,7 @@
               "document": "http://www.w3.org/ns/prov-o#",
               "version_iri": "http://www.w3.org/ns/prov-o-20130430",
               "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
-              "fetched_at": "2026-11-21T18:04:27.763715+00:00",
+              "fetched_at": "2026-11-21T18:28:52.345783+00:00",
               "source_url": "https://www.w3.org/ns/prov-o.ttl"
             }
           },
@@ -1901,7 +1901,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 40 below the top N. Full record in cdi.json, and as CDI run 88 in the term database. Details of 39 repository ontologies came from the term database.",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 40 below the top N. Full record in cdi.json, and as CDI run 108 in the term database. Details of 39 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -2009,14 +2009,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T18:04:29.893168+00:00",
+        "checked_at": "2026-11-21T18:28:54.553304+00:00",
         "references": [
           "ols"
         ],
         "notes": [
           "Details of 39 repository ontologies came from the term database."
         ],
-        "run_id": 88,
+        "run_id": 108,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -2051,7 +2051,11 @@
           "si_p_min": 0.15,
           "si_domain_map": {},
           "si_upper_ontologies": [],
-          "si_upper_namespaces": []
+          "si_upper_namespaces": [],
+          "used_for": [
+            "cdi",
+            "si"
+          ]
         },
         "summary": {
           "align": 0.5673913043478261,
@@ -2532,7 +2536,7 @@
               "version_iri": "http://www.w3.org/ns/prov-o-20130430",
               "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
               "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-              "retrieved": "2026-11-21T17:47:58.239000+00:00",
+              "retrieved": "2026-11-21T18:05:32.091904+00:00",
               "identified_by": "version IRI"
             }
           },
@@ -2863,7 +2867,7 @@
               "document": "http://www.w3.org/2000/10/swap/pim/contact",
               "sha256": "57ea4c540cb432a58aaa09f0d982d0aaae6294e370847cb09f7ed732bdb257f3",
               "source_url": "https://www.w3.org/2000/10/swap/pim/contact",
-              "retrieved": "2026-11-21T18:02:37.439109+00:00",
+              "retrieved": "2026-11-21T18:27:07.056420+00:00",
               "identified_by": "content hash"
             }
           },
@@ -6007,7 +6011,11 @@
             "retrieved": "2026-11-21T17:30:07Z",
             "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
             "identified_by": "version IRI",
-            "terms": 37
+            "terms": 37,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "ols:dcat",
@@ -6021,7 +6029,11 @@
             "retrieved": "2026-11-21T17:35:04Z",
             "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
             "identified_by": "version IRI",
-            "terms": 9
+            "terms": 9,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "ols:evorao",
@@ -6035,7 +6047,11 @@
             "retrieved": "2026-11-21T17:34:58Z",
             "metadata_sha256": "ebf61e8ff414d6b2aa4c14255c15722afdde3478ccfbc79c9729160a076874b2",
             "identified_by": "version IRI",
-            "terms": 9
+            "terms": 9,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "ols:schemaorg_http",
@@ -6049,7 +6065,11 @@
             "identified_by": "release/load date",
             "terms": 14,
             "note": "version not reported by the source; identified by release/load date",
-            "release_recorded": true
+            "release_recorded": true,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "ols:schemaorg_https",
@@ -6063,7 +6083,11 @@
             "identified_by": "release/load date",
             "terms": 14,
             "note": "version not reported by the source; identified by release/load date",
-            "release_recorded": true
+            "release_recorded": true,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "Semanticscience Integrated Ontology",
@@ -6077,7 +6101,11 @@
             "retrieved": "2026-11-21T17:30:12Z",
             "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
             "identified_by": "version IRI",
-            "terms": 9
+            "terms": 9,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "SNOMED CT (International Edition)",
@@ -6090,7 +6118,11 @@
             "retrieved": "2026-11-21T17:30:09Z",
             "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
             "identified_by": "version IRI",
-            "terms": 8
+            "terms": 8,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "Medical Subject Headings",
@@ -6104,7 +6136,11 @@
             "retrieved": "2026-11-21T17:30:13Z",
             "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
             "identified_by": "version IRI",
-            "terms": 7
+            "terms": 7,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "The DataCite Ontology (DataCite)",
@@ -6116,7 +6152,11 @@
             "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
             "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
             "identified_by": "version IRI",
-            "terms": 7
+            "terms": 7,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           },
           {
             "title": "Allotrope Merged Ontology Suite",
@@ -6130,7 +6170,11 @@
             "retrieved": "2026-11-21T17:30:08Z",
             "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
             "identified_by": "version IRI",
-            "terms": 8
+            "terms": 8,
+            "used_in": [
+              "cdi",
+              "si"
+            ]
           }
         ],
         "record_file": "cdi.json",
@@ -6165,7 +6209,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.",
+      "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 108 in the term database.",
       "metrics": [
         {
           "group": "Scientific interoperability",
@@ -6321,11 +6365,13 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-21T18:04:29.893168+00:00",
+        "checked_at": "2026-11-21T18:28:54.553304+00:00",
         "references": [
           "ols"
         ],
-        "cdi_run_id": 88,
+        "run_id": 108,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "cdi_run_id": 108,
         "settings": {
           "si": "on",
           "si_references": [],
@@ -6847,7 +6893,10 @@
         "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
         "record_file": "si.json",
         "own_references": false,
-        "notes": []
+        "notes": [],
+        "releases": [],
+        "label": "Checked against",
+        "releases_in": "cdi.json"
       },
       "summary": {
         "error": 0,
@@ -6975,6 +7024,105 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
+      "message": "Label “سجل” @ar is used by `dcat:CatalogRecord`, `dcat:record`.",
+      "subject": "http://www.w3.org/ns/dcat#CatalogRecord",
+      "subject_label": "Catalog Record",
+      "anchor": "CatalogRecord"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “カタログ・レコード” @ja is used by `dcat:CatalogRecord`, `dcat:record`.",
+      "subject": "http://www.w3.org/ns/dcat#CatalogRecord",
+      "subject_label": "Catalog Record",
+      "anchor": "CatalogRecord"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “conjunto de datos” @es is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “dataset” @en is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “dataset” @it is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “datasæt” @da is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “datová sada” @cs is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “jeu de données” @fr is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “σύνολο δεδομένων” @el is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “قائمة بيانات” @ar is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “データセット” @ja is used by `dcat:Dataset`, `dcat:dataset`.",
+      "subject": "http://www.w3.org/ns/dcat#Dataset",
+      "subject_label": "Dataset",
+      "anchor": "Dataset"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
       "message": "Label “distribuce” @cs is used by `dcat:Distribution`, `dcat:distribution`.",
       "subject": "http://www.w3.org/ns/dcat#Distribution",
       "subject_label": "Distribution",
@@ -7038,105 +7186,6 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “conjunto de datos” @es is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “dataset” @en is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “dataset” @it is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “datasæt” @da is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “datová sada” @cs is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “jeu de données” @fr is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “σύνολο δεδομένων” @el is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “قائمة بيانات” @ar is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “データセット” @ja is used by `dcat:dataset`, `dcat:Dataset`.",
-      "subject": "http://www.w3.org/ns/dcat#dataset",
-      "subject_label": "dataset",
-      "anchor": "dataset"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “سجل” @ar is used by `dcat:record`, `dcat:CatalogRecord`.",
-      "subject": "http://www.w3.org/ns/dcat#record",
-      "subject_label": "record",
-      "anchor": "record"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
-      "message": "Label “カタログ・レコード” @ja is used by `dcat:record`, `dcat:CatalogRecord`.",
-      "subject": "http://www.w3.org/ns/dcat#record",
-      "subject_label": "record",
-      "anchor": "record"
-    },
-    {
-      "rule": "OB016",
-      "title": "Duplicate labels",
-      "severity": "warning",
       "message": "Label “datatjeneste” @da is used by `dcat:service`, `dcat:DataService`.",
       "subject": "http://www.w3.org/ns/dcat#service",
       "subject_label": "service",
@@ -7182,9 +7231,9 @@
       "rule": "OB012",
       "title": "Property without domain",
       "severity": "info",
-      "message": "Property “resolución espacial (metros)” has no domain.",
+      "message": "Property “risoluzione spaziale (metri)” has no domain.",
       "subject": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
-      "subject_label": "resolución espacial (metros)",
+      "subject_label": "risoluzione spaziale (metri)",
       "anchor": "spatialResolutionInMeters"
     },
     {

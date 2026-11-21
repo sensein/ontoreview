@@ -1,41 +1,85 @@
 [
   {
-    "@id": "https://example.org/pizza#PizzaTopping",
+    "@id": "https://example.org/pizza#hasIngredient",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#TransitiveProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has ingredient"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Any ingredient."
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/pizza#VegetarianPizza",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
     ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Pizza topping"
+        "@value": "Vegetarian pizza"
       }
     ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
       {
-        "@id": "https://example.org/pizza#Food"
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b5"
       }
     ],
     "http://www.w3.org/2004/02/skos/core#definition": [
       {
         "@language": "en",
-        "@value": "Something placed on a pizza."
+        "@value": "A pizza with no meat toppings."
       }
     ]
   },
   {
-    "@id": "https://example.org/pizza#Name",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#DatatypeProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b5",
+    "http://www.w3.org/2002/07/owl#intersectionOf": [
       {
-        "@language": "en",
-        "@value": "Pizza"
+        "@list": [
+          {
+            "@id": "https://example.org/pizza#Pizza"
+          },
+          {
+            "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b6"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b6",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2002/07/owl#complementOf": [
+      {
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b7"
+      }
+    ]
+  },
+  {
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b7",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://example.org/pizza#hasTopping"
       }
     ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
       {
-        "@id": "https://example.org/pizza#PizzaBase"
+        "@id": "https://example.org/pizza#MeatTopping"
       }
     ]
   },
@@ -68,31 +112,14 @@
     ]
   },
   {
-    "@id": "https://example.org/pizza#MeatTopping",
+    "@id": "https://example.org/pizza#PizzaTopping",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
     ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Meat topping"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
-      {
-        "@id": "https://example.org/pizza#PizzaTopping"
-      }
-    ]
-  },
-  {
-    "@id": "https://example.org/pizza#PizzaBase",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Pizza base"
+        "@value": "Pizza topping"
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
@@ -103,91 +130,36 @@
     "http://www.w3.org/2004/02/skos/core#definition": [
       {
         "@language": "en",
-        "@value": "The bread base of a pizza."
+        "@value": "Something placed on a pizza."
       }
     ]
   },
   {
-    "@id": "https://example.org/pizza#hasTopping",
+    "@id": "https://example.org/pizza#isToppingOf",
     "@type": [
       "http://www.w3.org/2002/07/owl#ObjectProperty"
     ],
-    "http://www.w3.org/2000/01/rdf-schema#domain": [
-      {
-        "@id": "https://example.org/pizza#Pizza"
-      }
-    ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "has topping"
-      }
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#range": [
-      {
-        "@id": "https://example.org/pizza#PizzaTopping"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#inverseOf": [
-      {
-        "@id": "https://example.org/pizza#isToppingOf"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@language": "en",
-        "@value": "Relates a pizza to its toppings."
+        "@value": "is topping of"
       }
     ]
   },
   {
-    "@id": "https://example.org/pizza#hasCalories",
+    "@id": "https://example.org/pizza#Name",
     "@type": [
       "http://www.w3.org/2002/07/owl#DatatypeProperty"
     ],
-    "http://www.w3.org/2000/01/rdf-schema#domain": [
-      {
-        "@id": "https://example.org/pizza#Food"
-      }
-    ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "has calories"
+        "@value": "Pizza"
       }
     ],
     "http://www.w3.org/2000/01/rdf-schema#range": [
       {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b10"
-      }
-    ]
-  },
-  {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b10",
-    "@type": [
-      "http://www.w3.org/2000/01/rdf-schema#Datatype"
-    ],
-    "http://www.w3.org/2002/07/owl#onDatatype": [
-      {
-        "@id": "http://www.w3.org/2001/XMLSchema#integer"
-      }
-    ],
-    "http://www.w3.org/2002/07/owl#withRestrictions": [
-      {
-        "@list": [
-          {
-            "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b11"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b11",
-    "http://www.w3.org/2001/XMLSchema#minInclusive": [
-      {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 0
+        "@id": "https://example.org/pizza#PizzaBase"
       }
     ]
   },
@@ -211,10 +183,10 @@
         "@id": "https://example.org/pizza#Food"
       },
       {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b3"
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b3"
       },
       {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b4"
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b4"
       }
     ],
     "http://www.w3.org/2002/07/owl#disjointWith": [
@@ -235,7 +207,7 @@
     ]
   },
   {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b3",
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b3",
     "@type": [
       "http://www.w3.org/2002/07/owl#Restriction"
     ],
@@ -251,7 +223,7 @@
     ]
   },
   {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b4",
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b4",
     "@type": [
       "http://www.w3.org/2002/07/owl#Restriction"
     ],
@@ -264,39 +236,6 @@
     "http://www.w3.org/2002/07/owl#onProperty": [
       {
         "@id": "https://example.org/pizza#hasCalories"
-      }
-    ]
-  },
-  {
-    "@id": "https://orcid.org/0000-0000-0000-0001",
-    "http://xmlns.com/foaf/0.1/name": [
-      {
-        "@value": "Alice Example"
-      }
-    ],
-    "https://schema.org/affiliation": [
-      {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b2"
-      }
-    ]
-  },
-  {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b2",
-    "https://schema.org/name": [
-      {
-        "@value": "Example University"
-      }
-    ]
-  },
-  {
-    "@id": "https://example.org/pizza#isToppingOf",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "is topping of"
       }
     ]
   },
@@ -330,47 +269,23 @@
     ]
   },
   {
-    "@id": "https://example.org/pizza#hasIngredient",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#ObjectProperty",
-      "http://www.w3.org/2002/07/owl#TransitiveProperty"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
+    "@id": "https://orcid.org/0000-0000-0000-0001",
+    "http://xmlns.com/foaf/0.1/name": [
       {
-        "@language": "en",
-        "@value": "has ingredient"
+        "@value": "Alice Example"
       }
     ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
+    "https://schema.org/affiliation": [
       {
-        "@language": "en",
-        "@value": "Any ingredient."
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b2"
       }
     ]
   },
   {
-    "@id": "https://example.org/pizza#Food",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b2",
+    "https://schema.org/name": [
       {
-        "@language": "en",
-        "@value": "Food"
-      },
-      {
-        "@language": "es",
-        "@value": "Comida"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#definition": [
-      {
-        "@language": "en",
-        "@value": "Anything that can be eaten."
-      },
-      {
-        "@language": "es",
-        "@value": "Cualquier cosa comestible."
+        "@value": "Example University"
       }
     ]
   },
@@ -387,7 +302,7 @@
     ],
     "http://purl.org/dc/terms/contributor": [
       {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b1"
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b1"
       }
     ],
     "http://purl.org/dc/terms/created": [
@@ -464,10 +379,97 @@
     ]
   },
   {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b1",
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b1",
     "http://xmlns.com/foaf/0.1/name": [
       {
         "@value": "Anonymous Helper"
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/pizza#MeatTopping",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Meat topping"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://example.org/pizza#PizzaTopping"
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/pizza#hasCalories",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://example.org/pizza#Food"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has calories"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b10"
+      }
+    ]
+  },
+  {
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b10",
+    "@type": [
+      "http://www.w3.org/2000/01/rdf-schema#Datatype"
+    ],
+    "http://www.w3.org/2002/07/owl#onDatatype": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#integer"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#withRestrictions": [
+      {
+        "@list": [
+          {
+            "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b11"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:nc3a2f6ab3f3c4758af850499abf98b58b11",
+    "http://www.w3.org/2001/XMLSchema#minInclusive": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 0
+      }
+    ]
+  },
+  {
+    "@id": "https://example.org/pizza#Margherita",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://example.org/pizza#Pizza"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Margherita"
+      }
+    ],
+    "https://example.org/pizza#hasCalories": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#integer",
+        "@value": 800
       }
     ]
   },
@@ -495,86 +497,84 @@
     ]
   },
   {
-    "@id": "https://example.org/pizza#Margherita",
+    "@id": "https://example.org/pizza#hasTopping",
     "@type": [
-      "http://www.w3.org/2002/07/owl#NamedIndividual",
-      "https://example.org/pizza#Pizza"
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://example.org/pizza#Pizza"
+      }
     ],
     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
-        "@value": "Margherita"
+        "@value": "has topping"
       }
     ],
-    "https://example.org/pizza#hasCalories": [
+    "http://www.w3.org/2000/01/rdf-schema#range": [
       {
-        "@type": "http://www.w3.org/2001/XMLSchema#integer",
-        "@value": 800
-      }
-    ]
-  },
-  {
-    "@id": "https://example.org/pizza#VegetarianPizza",
-    "@type": [
-      "http://www.w3.org/2002/07/owl#Class"
-    ],
-    "http://www.w3.org/2000/01/rdf-schema#label": [
-      {
-        "@language": "en",
-        "@value": "Vegetarian pizza"
+        "@id": "https://example.org/pizza#PizzaTopping"
       }
     ],
-    "http://www.w3.org/2002/07/owl#equivalentClass": [
+    "http://www.w3.org/2002/07/owl#inverseOf": [
       {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b5"
+        "@id": "https://example.org/pizza#isToppingOf"
       }
     ],
     "http://www.w3.org/2004/02/skos/core#definition": [
       {
         "@language": "en",
-        "@value": "A pizza with no meat toppings."
+        "@value": "Relates a pizza to its toppings."
       }
     ]
   },
   {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b5",
-    "http://www.w3.org/2002/07/owl#intersectionOf": [
-      {
-        "@list": [
-          {
-            "@id": "https://example.org/pizza#Pizza"
-          },
-          {
-            "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b6"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b6",
+    "@id": "https://example.org/pizza#PizzaBase",
     "@type": [
       "http://www.w3.org/2002/07/owl#Class"
     ],
-    "http://www.w3.org/2002/07/owl#complementOf": [
+    "http://www.w3.org/2000/01/rdf-schema#label": [
       {
-        "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b7"
+        "@language": "en",
+        "@value": "Pizza base"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://example.org/pizza#Food"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The bread base of a pizza."
       }
     ]
   },
   {
-    "@id": "_:n0740d158ccbe4c92be5598e3bcee5dd5b7",
+    "@id": "https://example.org/pizza#Food",
     "@type": [
-      "http://www.w3.org/2002/07/owl#Restriction"
+      "http://www.w3.org/2002/07/owl#Class"
     ],
-    "http://www.w3.org/2002/07/owl#onProperty": [
+    "http://www.w3.org/2000/01/rdf-schema#label": [
       {
-        "@id": "https://example.org/pizza#hasTopping"
+        "@language": "en",
+        "@value": "Food"
+      },
+      {
+        "@language": "es",
+        "@value": "Comida"
       }
     ],
-    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+    "http://www.w3.org/2004/02/skos/core#definition": [
       {
-        "@id": "https://example.org/pizza#MeatTopping"
+        "@language": "en",
+        "@value": "Anything that can be eaten."
+      },
+      {
+        "@language": "es",
+        "@value": "Cualquier cosa comestible."
       }
     ]
   }

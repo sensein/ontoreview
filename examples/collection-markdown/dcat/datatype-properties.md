@@ -64,11 +64,11 @@ A keyword or tag describing a resource.
 |---|---|
 | Range | [rdfs:Literal](http://www.w3.org/2000/01/rdf-schema#Literal) |
 
-### resolución espacial (metros)
+### risoluzione spaziale (metri)
 
 **IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
 
-mínima separacíon espacial disponible en un conjunto de datos, medida en metros.
+separazione spaziale minima risolvibile in un set di dati, misurata in metri.
 
 | | |
 |---|---|

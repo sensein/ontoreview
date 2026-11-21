@@ -54,9 +54,9 @@ An agent is something that bears some form of responsibility for an activity tak
 
 **IRI:** `http://www.w3.org/ns/prov#AgentInfluence` · `prov:AgentInfluence`
 
-AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
-
 It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.
+
+AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
 
 | | |
 |---|---|
@@ -248,9 +248,9 @@ An entity is a physical, digital, conceptual, or other kind of thing with some f
 
 **IRI:** `http://www.w3.org/ns/prov#EntityInfluence` · `prov:EntityInfluence`
 
-It is not recommended that the type EntityInfluence be asserted without also asserting one of its more specific subclasses.
-
 EntityInfluence provides additional descriptions of an Entity's binary influence upon any other kind of resource. Instances of EntityInfluence use the prov:entity property to cite the influencing Entity.
+
+It is not recommended that the type EntityInfluence be asserted without also asserting one of its more specific subclasses.
 
 | | |
 |---|---|
@@ -389,7 +389,7 @@ There exist no prescriptive requirement on the nature of plans, their representa
 |---|---|
 | Superclasses | [Entity](classes.md#entity) |
 | Used in | in range of [hadPlan](object-properties.md#hadplan) |
-| category | expanded; qualified |
+| category | qualified; expanded |
 | component | agents-responsibility |
 | dm | http://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Association |
 | n | http://www.w3.org/TR/2013/REC-prov-n-20130430/#expression-Association |

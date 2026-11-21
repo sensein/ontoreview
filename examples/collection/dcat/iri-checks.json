@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-21T18:06:48.310923+00:00",
-  "run_id": 120,
+  "checked_at": "2026-11-21T18:31:14.923858+00:00",
+  "run_id": 141,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "offline": false,
@@ -132,7 +132,7 @@
       "ontology": null,
       "version_iri": "http://www.w3.org/ns/prov-o-20130430",
       "version": null,
-      "retrieved": "2026-11-21T18:06:54.762737+00:00",
+      "retrieved": "2026-11-21T18:31:21.194786+00:00",
       "terms": 1,
       "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
       "source_url": "https://www.w3.org/ns/prov-o.ttl"
@@ -144,7 +144,7 @@
       "ontology": null,
       "version_iri": "http://www.w3.org/ns/prov-o-20130430",
       "version": null,
-      "retrieved": "2026-11-21T18:06:54.762737+00:00",
+      "retrieved": "2026-11-21T18:31:21.194786+00:00",
       "terms": 1,
       "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
       "source_url": "https://www.w3.org/ns/prov-o.ttl"
@@ -1001,7 +1001,7 @@
         "document": "http://www.w3.org/ns/prov-o#",
         "version_iri": "http://www.w3.org/ns/prov-o-20130430",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
-        "fetched_at": "2026-11-21T18:06:54.762737+00:00",
+        "fetched_at": "2026-11-21T18:31:21.194786+00:00",
         "source_url": "https://www.w3.org/ns/prov-o.ttl"
       },
       "attempts": [
@@ -1039,7 +1039,7 @@
         "document": "http://www.w3.org/ns/prov-o#",
         "version_iri": "http://www.w3.org/ns/prov-o-20130430",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
-        "fetched_at": "2026-11-21T18:06:54.762737+00:00",
+        "fetched_at": "2026-11-21T18:31:21.194786+00:00",
         "source_url": "https://www.w3.org/ns/prov-o.ttl"
       }
     },

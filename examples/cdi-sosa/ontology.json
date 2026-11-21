@@ -161,8 +161,8 @@
    "label": "Sample",
    "definition": "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.",
    "comments": [
-    "A Sample is the result from an act of Sampling.",
     "Physical samples are sometimes known as 'specimens'.",
+    "A Sample is the result from an act of Sampling.",
     "Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.\n\nA Sample is intended to sample some FatureOfInterest, so there is an expectation of at least one isSampleOf property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features.",
     "Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made."
    ],
@@ -194,17 +194,17 @@
     "An act of Sampling carries out a sampling Procedure to create or transform one or more samples."
    ],
    "examples": [
-    "Establishing a station for environmental monitoring.",
-    "Drilling an observation well.",
-    "Sieving a powder to separate the subset finer than 100-mesh.",
-    "Dividing a field site into quadrants.",
-    "Drawing blood from a patient.",
-    "Selecting a subset of a population.",
     "Taking a diamond-drill core from a rock outcrop.",
-    "Crushing a rock sample in a ball mill.",
-    "Digging a pit through a soil sequence.",
+    "Splitting a piece of drill-core to create two new samples.",
     "Registering an image of the landscape.",
-    "Splitting a piece of drill-core to create two new samples."
+    "Digging a pit through a soil sequence.",
+    "Drilling an observation well.",
+    "Selecting a subset of a population.",
+    "Establishing a station for environmental monitoring.",
+    "Sieving a powder to separate the subset finer than 100-mesh.",
+    "Crushing a rock sample in a ball mill.",
+    "Drawing blood from a patient.",
+    "Dividing a field site into quadrants."
    ]
   },
   {
@@ -267,13 +267,13 @@
     "For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the property is its weight."
    ],
    "domain": [
-    "sosa:Observation",
     "sosa:Sampling",
-    "sosa:Actuation"
+    "sosa:Actuation",
+    "sosa:Observation"
    ],
    "range": [
-    "sosa:Sample",
-    "sosa:FeatureOfInterest"
+    "sosa:FeatureOfInterest",
+    "sosa:Sample"
    ],
    "inverse_of": [
     "sosa:isFeatureOfInterestOf"
@@ -294,8 +294,8 @@
     "sosa:Observation"
    ],
    "range": [
-    "sosa:Result",
-    "sosa:Sample"
+    "sosa:Sample",
+    "sosa:Result"
    ],
    "inverse_of": [
     "sosa:isResultOf"
@@ -333,9 +333,9 @@
     "sosa:Platform"
    ],
    "range": [
-    "sosa:Sampler",
-    "sosa:Platform",
     "sosa:Actuator",
+    "sosa:Platform",
+    "sosa:Sampler",
     "sosa:Sensor"
    ],
    "inverse_of": [
@@ -374,13 +374,13 @@
     "A relation between a FeatureOfInterest and an Observation about it, an Actuation acting on it, or an act of Sampling that sampled it."
    ],
    "domain": [
-    "sosa:FeatureOfInterest",
-    "sosa:Sample"
+    "sosa:Sample",
+    "sosa:FeatureOfInterest"
    ],
    "range": [
+    "sosa:Sampling",
     "sosa:Actuation",
-    "sosa:Observation",
-    "sosa:Sampling"
+    "sosa:Observation"
    ],
    "inverse_of": [
     "sosa:hasFeatureOfInterest"
@@ -396,10 +396,10 @@
     "Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that it is mounted on or hosted by."
    ],
    "domain": [
-    "sosa:Actuator",
-    "sosa:Sensor",
     "sosa:Platform",
-    "sosa:Sampler"
+    "sosa:Sampler",
+    "sosa:Sensor",
+    "sosa:Actuator"
    ],
    "range": [
     "sosa:Platform"
@@ -441,9 +441,9 @@
     "sosa:Result"
    ],
    "range": [
-    "sosa:Observation",
     "sosa:Sampling",
-    "sosa:Actuation"
+    "sosa:Actuation",
+    "sosa:Observation"
    ],
    "inverse_of": [
     "sosa:hasResult"
@@ -627,9 +627,9 @@
     "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest. Not necessarily the same as the resultTime. May be an Interval or an Instant, or some other compound TemporalEntity."
    ],
    "domain": [
+    "sosa:Sampling",
     "sosa:Actuation",
-    "sosa:Observation",
-    "sosa:Sampling"
+    "sosa:Observation"
    ],
    "range": [
     "time:TemporalEntity"
@@ -645,9 +645,9 @@
     "A relation to link to a re-usable Procedure used in making an Observation, an Actuation, or a Sample, typically through a Sensor, Actuator or Sampler."
    ],
    "domain": [
+    "sosa:Sampling",
     "sosa:Actuation",
-    "sosa:Observation",
-    "sosa:Sampling"
+    "sosa:Observation"
    ],
    "range": [
     "sosa:Procedure"
@@ -666,9 +666,9 @@
     "For instance, the values 23 or true."
    ],
    "domain": [
-    "sosa:Actuation",
     "sosa:Observation",
-    "sosa:Sampling"
+    "sosa:Sampling",
+    "sosa:Actuation"
    ]
   },
   {
@@ -681,9 +681,9 @@
     "The result time is the instant of time when the Observation, Actuation or Sampling activity was completed."
    ],
    "domain": [
-    "sosa:Actuation",
     "sosa:Observation",
-    "sosa:Sampling"
+    "sosa:Sampling",
+    "sosa:Actuation"
    ],
    "range": [
     "xsd:dateTime"

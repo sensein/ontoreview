@@ -282,6 +282,10 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             (out_dir / "w3id.htaccess").write_text(w3id_htaccess(cfg.base_url, downloads), "utf-8")
     if cfg.sections.citation:
         (out_dir / "CITATION.cff").write_text(citation_cff(onto.metadata, cfg.base_url), "utf-8")
+    if cfg.deploy_files:            # DEPLOY.md, Docker, nginx, preview script, GitHub Pages workflow
+        from .publish.deploy import write_deploy_files
+        files += write_deploy_files(out_dir, onto.metadata.title or "", downloads, cfg.base_url,
+                                    cfg.deploy_branch, cfg.conneg)
     write_records(out_dir, onto, report, prov, Path(cfg.source or "").name, provenance=cfg.sections.provenance)
     if report is not None:
         (out_dir / "quality.json").write_text(report.to_json(), "utf-8")

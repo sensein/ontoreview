@@ -60,8 +60,8 @@
     "A record in a data catalog, describing the registration of a single dataset or data service."
    ],
    "restrictions": [
-    "foaf:primaryTopic exactly 1",
-    "foaf:primaryTopic only dcat:Resource"
+    "foaf:primaryTopic only dcat:Resource",
+    "foaf:primaryTopic exactly 1"
    ]
   },
   {
@@ -765,8 +765,8 @@
    "iri": "http://www.w3.org/ns/dcat#spatialResolutionInMeters",
    "curie": "dcat:spatialResolutionInMeters",
    "kind": "datatype_property",
-   "label": "resolución espacial (metros)",
-   "definition": "mínima separacíon espacial disponible en un conjunto de datos, medida en metros.",
+   "label": "risoluzione spaziale (metri)",
+   "definition": "separazione spaziale minima risolvibile in un set di dati, misurata in metri.",
    "range": [
     "xsd:decimal"
    ]

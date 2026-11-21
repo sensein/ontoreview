@@ -95,8 +95,8 @@
     "pizza:Calzone"
    ],
    "restrictions": [
-    "pizza:hasCalories max 1",
-    "pizza:hasBase some pizza:PizzaBase"
+    "pizza:hasBase some pizza:PizzaBase",
+    "pizza:hasCalories max 1"
    ],
    "disjoint_with": [
     "pizza:PizzaTopping"

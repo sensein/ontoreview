@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
-    prov:generatedAtTime "2026-11-21T18:01:28+00:00"^^xsd:dateTime ;
+    prov:generatedAtTime "2026-11-21T18:26:01+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <https://example.org/pizza/1.2.0> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -13,33 +13,33 @@
     dcterms:hasVersion "257" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/chebi.owl> ;
     dcterms:title "Chemical Entities of Biological Interest" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 
 <http://purl.obolibrary.org/obo/fobi/fobi.owl> a prov:Entity ;
     dcterms:date "2026-11-21T17:32:35Z"^^xsd:string ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/fobi.owl> ;
     dcterms:title "Food-Biomarker Ontology" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 
 <http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl> a prov:Entity ;
     dcterms:date "2026-11-21T17:32:34Z"^^xsd:string ;
     dcterms:hasVersion "2026-02-02" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/foodon.owl> ;
     dcterms:title "Food Ontology" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (6 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (6 correspondence(s), via ols)." .
 
 <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl> a prov:Entity ;
     dcterms:date "2026-11-21T17:30:07Z"^^xsd:string ;
     dcterms:hasVersion "26.02d" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/ncit.owl> ;
     dcterms:title "NCI Thesaurus OBO Edition" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (5 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (5 correspondence(s), via ols)." .
 
 <http://purl.obolibrary.org/obo/omit/dev/omit.owl> a prov:Entity ;
     dcterms:date "2026-11-21T17:30:11Z"^^xsd:string ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/omit.owl> ;
     dcterms:title "Ontology for MIRNA Target" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 
 <http://purl.org/spar/datacite/2026-10-05> a prov:Entity ;
     dcterms:date "2026-11-21T17:40:46.656861+00:00"^^xsd:string ;
@@ -53,7 +53,7 @@
     dcterms:date "2026-11-21T17:30:09Z"^^xsd:string ;
     dcterms:isVersionOf <http://snomed.info/sct/9000000000002070081231> ;
     dcterms:title "SNOMED CT (International Edition)" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (4 correspondence(s), via ols)." .
 
 <https://example.org/pizza/1.2.0> a prov:Entity ;
     dcterms:modified "2026-11-01" ;
@@ -68,11 +68,11 @@
     dcterms:hasVersion "2025" ;
     dcterms:isVersionOf <https://w3id.org/biopragmatics/resources/mesh/mesh.ofn> ;
     dcterms:title "Medical Subject Headings" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-21T18:01:28+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-11-21T18:01:00+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T18:26:01+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T18:25:28+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/chebi/257/chebi.owl>,
         <http://purl.obolibrary.org/obo/fobi/fobi.owl>,
@@ -115,7 +115,7 @@ https://github.com/biosemantics/micropie2
 The most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.""" ;
     dcterms:isVersionOf <http://purl.obolibrary.org/obo/MicrO.owl> ;
     dcterms:title "Ontology of Prokaryotic Phenotypic and Metabolic Characters" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 
 <urn:sha256:2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310> a prov:Entity ;
     dcterms:date "2026-11-18T03:50:03.244033+00:00"^^xsd:string ;
@@ -138,7 +138,7 @@ The most current version of MicrO can be downloaded from https://github.com/carr
     dcterms:hasVersion "2.0.60" ;
     dcterms:isVersionOf <http://www.ontology-of-units-of-measure.org/resource/om-2> ;
     dcterms:title "Ontology of units of Measure (OM)" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 
 <urn:sha256:c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89> a prov:Entity ;
     dcterms:identifier "sha256:c993de246bdfd47c31cdc557fcb2aa82816a8e039b4bd27482662cd3a272fc89" ;
@@ -157,5 +157,5 @@ The most current version of MicrO can be downloaded from https://github.com/carr
     dcterms:hasVersion "REC/2026/09" ;
     dcterms:isVersionOf <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> ;
     dcterms:title "Allotrope Merged Ontology Suite" ;
-    rdfs:comment "Reference release used for the cross-domain interoperability score (1 correspondence(s), via ols)." .
+    rdfs:comment "Reference release used for the cross-domain interoperability score and the scientific interoperability degree (1 correspondence(s), via ols)." .
 

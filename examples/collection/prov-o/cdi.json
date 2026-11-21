@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T18:08:46.093439+00:00",
+  "checked_at": "2026-11-21T18:33:05.283301+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 50 repository ontologies came from the term database."
   ],
-  "run_id": 96,
+  "run_id": 116,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -41,7 +41,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.44375,
@@ -9779,7 +9783,10 @@
       "retrieved": "2026-11-21T17:35:04Z",
       "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
       "identified_by": "version IRI",
-      "terms": 30
+      "terms": 30,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "The Earth Metabolome Initiative (EMI) ontology",
@@ -9793,7 +9800,10 @@
       "retrieved": "2026-11-21T17:30:04Z",
       "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
       "identified_by": "version IRI",
-      "terms": 30
+      "terms": 30,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Model Card Report Ontology",
@@ -9807,7 +9817,10 @@
       "retrieved": "2026-11-21T17:35:02Z",
       "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
       "identified_by": "version IRI",
-      "terms": 30
+      "terms": 30,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "MIAPA Ontology",
@@ -9821,7 +9834,10 @@
       "identified_by": "release/load date",
       "terms": 30,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Provenance Ontology (PROV-O)",
@@ -9835,7 +9851,10 @@
       "identified_by": "release/load date",
       "terms": 30,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "REPRODUCE-ME Ontology",
@@ -9848,7 +9867,10 @@
       "retrieved": "2026-11-21T17:30:04Z",
       "metadata_sha256": "ddd9159098c46f5e9c79010e8b09b092e94b7e617fced634bfad08d510e3f75f",
       "identified_by": "version",
-      "terms": 30
+      "terms": 30,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "NCI Thesaurus OBO Edition",
@@ -9862,7 +9884,10 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 69
+      "terms": 69,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "SNOMED CT (International Edition)",
@@ -9875,7 +9900,10 @@
       "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
-      "terms": 14
+      "terms": 14,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "Allotrope Merged Ontology Suite",
@@ -9889,7 +9917,10 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 18
+      "terms": 18,
+      "used_in": [
+        "cdi"
+      ]
     },
     {
       "title": "ols:schemaorg_http",
@@ -9903,7 +9934,10 @@
       "identified_by": "release/load date",
       "terms": 13,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi"
+      ]
     }
   ],
   "record_file": "cdi.json",

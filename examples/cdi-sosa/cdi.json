@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-21T18:05:32.043966+00:00",
+  "checked_at": "2026-11-21T18:29:56.900316+00:00",
   "references": [
     "ols",
     "/Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl"
@@ -7,7 +7,7 @@
   "notes": [
     "Details of 26 repository ontologies came from the term database."
   ],
-  "run_id": 90,
+  "run_id": 110,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -45,7 +45,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.4361111111111111,
@@ -346,7 +350,7 @@
         "version": "Recommendation version 2013-04-30",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-        "retrieved": "2026-11-21T18:05:32.091904+00:00",
+        "retrieved": "2026-11-21T18:29:56.956588+00:00",
         "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
         "database": "cache",
         "terms_indexed": 103,
@@ -369,7 +373,27 @@
         "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
         "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
-        "retrieved": "2026-11-21T17:48:30.911309+00:00",
+        "retrieved": "2026-11-21T18:09:37.871692+00:00",
+        "identified_by": "content hash"
+      }
+    },
+    {
+      "id": "db:file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "source": "termdb",
+      "title": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+      "domain": "",
+      "given": false,
+      "description": "",
+      "coverage": 0.05555555555555555,
+      "n_correspondences": 2,
+      "status": "below-top-N",
+      "align_d": 0.0,
+      "release": {
+        "source": "term database (cache)",
+        "document": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+        "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
+        "source_url": "file:///private/tmp/ontoreview-demo-qzqrfwo_/soil/toy_ref.ttl",
+        "retrieved": "2026-11-21T18:10:59.470954+00:00",
         "identified_by": "content hash"
       }
     },
@@ -2427,7 +2451,11 @@
       "retrieved": "2026-11-21T17:30:04Z",
       "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
       "identified_by": "version IRI",
-      "terms": 13
+      "terms": 13,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "NCI Thesaurus OBO Edition",
@@ -2441,7 +2469,11 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 21
+      "terms": 21,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Allotrope Merged Ontology Suite",
@@ -2455,7 +2487,11 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 15
+      "terms": 15,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "TransformON",
@@ -2468,7 +2504,11 @@
       "retrieved": "2026-11-21T17:30:10Z",
       "metadata_sha256": "2af2ead0b4260b62da6c8db1e53a706ae3fff083e2a4c6149084f2e83f3f851c",
       "identified_by": "version",
-      "terms": 7
+      "terms": 7,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Semanticscience Integrated Ontology",
@@ -2482,7 +2522,11 @@
       "retrieved": "2026-11-21T17:30:12Z",
       "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
       "identified_by": "version IRI",
-      "terms": 5
+      "terms": 5,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "SNOMED CT (International Edition)",
@@ -2495,7 +2539,11 @@
       "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "http://www.w3.org/ns/ssn/",
@@ -2508,7 +2556,11 @@
       "identified_by": "content hash",
       "terms": 3,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:schemaorg_http",
@@ -2522,7 +2574,11 @@
       "identified_by": "release/load date",
       "terms": 3,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:schemaorg_https",
@@ -2536,7 +2592,11 @@
       "identified_by": "release/load date",
       "terms": 3,
       "note": "version not reported by the source; identified by release/load date",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Toxic Process Ontology",
@@ -2550,7 +2610,11 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "b0ee3c6e3a667867cc55a37c43d98f633c8ece3202588f4c24037c95afa985ce",
       "identified_by": "version IRI",
-      "terms": 3
+      "terms": 3,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "W3C PROVenance Interchange Ontology (PROV-O)",
@@ -2559,11 +2623,15 @@
       "ontology_iri": "http://www.w3.org/ns/prov#",
       "version_iri": "http://www.w3.org/ns/prov-o-20130430",
       "version": "Recommendation version 2013-04-30",
-      "retrieved": "2026-11-21T18:05:32.091904+00:00",
+      "retrieved": "2026-11-21T18:29:56.956588+00:00",
       "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
       "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
       "identified_by": "version IRI",
-      "terms": 0
+      "terms": 0,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     }
   ],
   "record_file": "cdi.json",

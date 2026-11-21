@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dd06">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e2c3">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -47,160 +47,6 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#related",
-   "name": "has related",
-   "description": "Relates a concept to a concept with which there is an associative semantic relationship.",
-   "termCode": "skos:related"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#definition",
-   "name": "definition",
-   "description": "A statement or formal explanation of the meaning of a concept.",
-   "termCode": "skos:definition"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#changeNote",
-   "name": "change note",
-   "description": "A note about a modification to a concept.",
-   "termCode": "skos:changeNote"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
-   "name": "has broader transitive",
-   "description": "skos:broaderTransitive is a transitive superproperty of skos:broader.",
-   "termCode": "skos:broaderTransitive"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#topConceptOf",
-   "name": "is top concept in scheme",
-   "description": "Relates a concept to the concept scheme that it is a top level concept of.",
-   "termCode": "skos:topConceptOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
-   "name": "has top concept",
-   "description": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
-   "termCode": "skos:hasTopConcept"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#narrower",
-   "name": "has narrower",
-   "description": "Relates a concept to a concept that is more specific in meaning.",
-   "termCode": "skos:narrower"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#semanticRelation",
-   "name": "is in semantic relation with",
-   "description": "Links a concept to a concept related by meaning.",
-   "termCode": "skos:semanticRelation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#memberList",
-   "name": "has member list",
-   "description": "Relates an ordered collection to the RDF list containing its members.",
-   "termCode": "skos:memberList"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#broader",
-   "name": "has broader",
-   "description": "Relates a concept to a concept that is more general in meaning.",
-   "termCode": "skos:broader"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#narrowMatch",
-   "name": "has narrower match",
-   "description": "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
-   "termCode": "skos:narrowMatch"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#inScheme",
-   "name": "is in scheme",
-   "description": "Relates a resource (for example a concept) to a concept scheme in which it is included.",
-   "termCode": "skos:inScheme"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#notation",
-   "name": "notation",
-   "description": "A notation, also known as classification code, is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.",
-   "termCode": "skos:notation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#note",
-   "name": "note",
-   "description": "A general note, for any purpose.",
-   "termCode": "skos:note"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
-   "name": "preferred label",
-   "description": "The preferred lexical label for a resource, in a given language.",
-   "termCode": "skos:prefLabel"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#editorialNote",
-   "name": "editorial note",
-   "description": "A note for an editor, translator or maintainer of the vocabulary.",
-   "termCode": "skos:editorialNote"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
-   "name": "Concept Scheme",
-   "description": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
-   "termCode": "skos:ConceptScheme"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#Concept",
-   "name": "Concept",
-   "description": "An idea or notion; a unit of thought.",
-   "termCode": "skos:Concept"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#example",
-   "name": "example",
-   "description": "An example of the use of a concept.",
-   "termCode": "skos:example"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#closeMatch",
-   "name": "has close match",
-   "description": "skos:closeMatch is used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of \"compound errors\" when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property.",
-   "termCode": "skos:closeMatch"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#mappingRelation",
-   "name": "is in mapping relation with",
-   "description": "Relates two concepts coming, by convention, from different schemes, and that have comparable meanings",
-   "termCode": "skos:mappingRelation"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
-   "name": "has narrower transitive",
-   "description": "skos:narrowerTransitive is a transitive superproperty of skos:narrower.",
-   "termCode": "skos:narrowerTransitive"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#altLabel",
    "name": "alternative label",
    "description": "An alternative lexical label for a resource.",
@@ -212,34 +58,6 @@
    "name": "has member",
    "description": "Relates a collection to one of its members.",
    "termCode": "skos:member"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#scopeNote",
-   "name": "scope note",
-   "description": "A note that helps to clarify the meaning and/or the use of a concept.",
-   "termCode": "skos:scopeNote"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
-   "name": "Ordered Collection",
-   "description": "An ordered collection of concepts, where both the grouping and the ordering are meaningful.",
-   "termCode": "skos:OrderedCollection"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#Collection",
-   "name": "Collection",
-   "description": "A meaningful collection of concepts.",
-   "termCode": "skos:Collection"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/2004/02/skos/core#broadMatch",
-   "name": "has broader match",
-   "description": "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
-   "termCode": "skos:broadMatch"
   },
   {
    "@type": "DefinedTerm",
@@ -257,6 +75,90 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#inScheme",
+   "name": "is in scheme",
+   "description": "Relates a resource (for example a concept) to a concept scheme in which it is included.",
+   "termCode": "skos:inScheme"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#semanticRelation",
+   "name": "is in semantic relation with",
+   "description": "Links a concept to a concept related by meaning.",
+   "termCode": "skos:semanticRelation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broaderTransitive",
+   "name": "has broader transitive",
+   "description": "skos:broaderTransitive is a transitive superproperty of skos:broader.",
+   "termCode": "skos:broaderTransitive"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+   "name": "has top concept",
+   "description": "Relates, by convention, a concept scheme to a concept which is topmost in the broader/narrower concept hierarchies for that scheme, providing an entry point to these hierarchies.",
+   "termCode": "skos:hasTopConcept"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#notation",
+   "name": "notation",
+   "description": "A notation, also known as classification code, is a string of characters such as \"T58.5\" or \"303.4833\" used to uniquely identify a concept within the scope of a given concept scheme.",
+   "termCode": "skos:notation"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broader",
+   "name": "has broader",
+   "description": "Relates a concept to a concept that is more general in meaning.",
+   "termCode": "skos:broader"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#scopeNote",
+   "name": "scope note",
+   "description": "A note that helps to clarify the meaning and/or the use of a concept.",
+   "termCode": "skos:scopeNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+   "name": "Concept Scheme",
+   "description": "A set of concepts, optionally including statements about semantic relationships between those concepts.",
+   "termCode": "skos:ConceptScheme"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#memberList",
+   "name": "has member list",
+   "description": "Relates an ordered collection to the RDF list containing its members.",
+   "termCode": "skos:memberList"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrower",
+   "name": "has narrower",
+   "description": "Relates a concept to a concept that is more specific in meaning.",
+   "termCode": "skos:narrower"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrowerTransitive",
+   "name": "has narrower transitive",
+   "description": "skos:narrowerTransitive is a transitive superproperty of skos:narrower.",
+   "termCode": "skos:narrowerTransitive"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#mappingRelation",
+   "name": "is in mapping relation with",
+   "description": "Relates two concepts coming, by convention, from different schemes, and that have comparable meanings",
+   "termCode": "skos:mappingRelation"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#exactMatch",
    "name": "has exact match",
    "description": "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications. skos:exactMatch is a transitive property, and is a sub-property of skos:closeMatch.",
@@ -264,10 +166,108 @@
   },
   {
    "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#example",
+   "name": "example",
+   "description": "An example of the use of a concept.",
+   "termCode": "skos:example"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
+   "name": "preferred label",
+   "description": "The preferred lexical label for a resource, in a given language.",
+   "termCode": "skos:prefLabel"
+  },
+  {
+   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/2004/02/skos/core#historyNote",
    "name": "history note",
    "description": "A note about the past state/use/meaning of a concept.",
    "termCode": "skos:historyNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#OrderedCollection",
+   "name": "Ordered Collection",
+   "description": "An ordered collection of concepts, where both the grouping and the ordering are meaningful.",
+   "termCode": "skos:OrderedCollection"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#Collection",
+   "name": "Collection",
+   "description": "A meaningful collection of concepts.",
+   "termCode": "skos:Collection"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#note",
+   "name": "note",
+   "description": "A general note, for any purpose.",
+   "termCode": "skos:note"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#editorialNote",
+   "name": "editorial note",
+   "description": "A note for an editor, translator or maintainer of the vocabulary.",
+   "termCode": "skos:editorialNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#narrowMatch",
+   "name": "has narrower match",
+   "description": "skos:narrowMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:narrowMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#related",
+   "name": "has related",
+   "description": "Relates a concept to a concept with which there is an associative semantic relationship.",
+   "termCode": "skos:related"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+   "name": "is top concept in scheme",
+   "description": "Relates a concept to the concept scheme that it is a top level concept of.",
+   "termCode": "skos:topConceptOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#changeNote",
+   "name": "change note",
+   "description": "A note about a modification to a concept.",
+   "termCode": "skos:changeNote"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#closeMatch",
+   "name": "has close match",
+   "description": "skos:closeMatch is used to link two concepts that are sufficiently similar that they can be used interchangeably in some information retrieval applications. In order to avoid the possibility of \"compound errors\" when combining mappings across more than two concept schemes, skos:closeMatch is not declared to be a transitive property.",
+   "termCode": "skos:closeMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#broadMatch",
+   "name": "has broader match",
+   "description": "skos:broadMatch is used to state a hierarchical mapping link between two conceptual resources in different concept schemes.",
+   "termCode": "skos:broadMatch"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#Concept",
+   "name": "Concept",
+   "description": "An idea or notion; a unit of thought.",
+   "termCode": "skos:Concept"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#definition",
+   "name": "definition",
+   "description": "A statement or formal explanation of the meaning of a concept.",
+   "termCode": "skos:definition"
   },
   {
    "@type": "DefinedTerm",
@@ -794,8 +794,8 @@ skos:memberList property is also a value of the skos:member property.</p>
   </header>
   <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#altLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#altLabel" aria-label="Copy IRI">copy</button></p>
 <div class="definition"><p>An alternative lexical label for a resource.</p>
-</div><div class="comment"><p>The range of skos:altLabel is the class of RDF plain literals.</p>
 </div><div class="comment"><p>skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.</p>
+</div><div class="comment"><p>The range of skos:altLabel is the class of RDF plain literals.</p>
 </div>  <table class="rel">
     <tbody>
 <tr><th scope="row">CURIE</th><td><code>skos:altLabel</code></td></tr><tr><th scope="row">Super-properties</th><td><a href="#label" class="ref" title="rdfs:label">label</a></td></tr><tr><th scope="row">Examples</th><td><code class="example">Acronyms, abbreviations, spelling variants, and irregular plural/singular forms may be included among the alternative labels for a concept. Mis-spelled terms are normally included as hidden labels (see skos:hiddenLabel).</code></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/2004/02/skos/core" class="ref ext" title="http://www.w3.org/2004/02/skos/core">SKOS Vocabulary</a></td></tr>    </tbody>
@@ -961,8 +961,8 @@ skos:memberList property is also a value of the skos:member property.</p>
   </header>
   <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#prefLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#prefLabel" aria-label="Copy IRI">copy</button></p>
 <div class="definition"><p>The preferred lexical label for a resource, in a given language.</p>
-</div><div class="comment"><p>The range of skos:prefLabel is the class of RDF plain literals.</p>
 </div><div class="comment"><p>A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag.</p>
+</div><div class="comment"><p>The range of skos:prefLabel is the class of RDF plain literals.</p>
 </div><div class="comment"><p>skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise
 disjoint properties.</p>
 </div>  <table class="rel">
@@ -1082,7 +1082,7 @@ disjoint properties.</p>
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
   <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
-<p class="muted small">0.3s. Own namespaces (not checked as external): http://www.w3.org/2004/02/skos/core#, http://www.w3.org/2004/02/skos/core/. Run #114 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+<p class="muted small">0.3s. Own namespaces (not checked as external): http://www.w3.org/2004/02/skos/core#, http://www.w3.org/2004/02/skos/core/. Run #135 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
     <caption class="sr-only">IRI checks metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1096,7 +1096,7 @@ disjoint properties.</p>
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:03:34 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:28:03 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
       <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
@@ -1148,7 +1148,7 @@ disjoint properties.</p>
 <li><a href="#altLabel">alternative label</a> <code class="muted">skos:altLabel</code></li><li><a href="#broadMatch">has broader match</a> <code class="muted">skos:broadMatch</code></li><li><a href="#broaderTransitive">has broader transitive</a> <code class="muted">skos:broaderTransitive</code></li><li><a href="#closeMatch">has close match</a> <code class="muted">skos:closeMatch</code></li><li><a href="#exactMatch">has exact match</a> <code class="muted">skos:exactMatch</code></li><li><a href="#hiddenLabel">hidden label</a> <code class="muted">skos:hiddenLabel</code></li><li><a href="#mappingRelation">is in mapping relation with</a> <code class="muted">skos:mappingRelation</code></li><li><a href="#memberList">has member list</a> <code class="muted">skos:memberList</code></li><li><a href="#narrowMatch">has narrower match</a> <code class="muted">skos:narrowMatch</code></li><li><a href="#narrowerTransitive">has narrower transitive</a> <code class="muted">skos:narrowerTransitive</code></li><li><a href="#prefLabel">preferred label</a> <code class="muted">skos:prefLabel</code></li><li><a href="#related">has related</a> <code class="muted">skos:related</code></li><li><a href="#relatedMatch">has related match</a> <code class="muted">skos:relatedMatch</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
-<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 87 in the term database. Details of 17 repository ontologies came from the term database.</p>  <table class="plain metrics">
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 16 below the top N. Full record in cdi.json, and as CDI run 107 in the term database. Details of 17 repository ontologies came from the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Cross-domain interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1168,39 +1168,39 @@ disjoint properties.</p>
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:03:35 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:28:04 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
     <tbody>
       <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>9</td></tr>
+      <td class="small">2026-11-21</td><td>9</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>http://www.w3.org/ns/odrl/2/<br><code class="small">http://www.w3.org/ns/odrl/2/</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 7895765e80d86d1d…</span></td>
       <td class="small">term database (bundled)<br><span class="muted">https://www.w3.org/ns/odrl/2/ODRL22.ttl</span></td>
-      <td class="small">2026-11-18</td><td>6</td></tr>
+      <td class="small">2026-11-18</td><td>6</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>The DataCite Ontology (DataCite)<br><code class="small">http://purl.org/spar/datacite/2026-10-05</code><br><span class="muted small">sha256 129a4981e894ff69…</span></td>
       <td class="small">term database (cache)<br><span class="muted">https://sparontologies.github.io/datacite/current/datacite.xml</span></td>
-      <td class="small">2026-11-21</td><td>5</td></tr>
+      <td class="small">2026-11-21</td><td>5</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>ols:dcat<br><code class="small">http://www.w3.org/ns/dcat3</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>The Earth Metabolome Initiative (EMI) ontology<br><code class="small">https://w3id.org/emi/version/1.0</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Model Card Report Ontology<br><code class="small">http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Semanticscience Integrated Ontology<br><code class="small">http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>ols:uniprotrdfs<br><code class="small">uniprotrdfs 2026_03</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>8</td></tr>
+      <td class="small">2026-11-21</td><td>8</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology for vCard<br><code class="small">http://www.w3.org/2006/vcard/ns</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 2442baf3d07d6609…</span></td>
       <td class="small">term database (cache)<br><span class="muted">https://www.w3.org/2006/vcard/ns</span></td>
-      <td class="small">2026-11-19</td><td>2</td></tr>
+      <td class="small">2026-11-19</td><td>2</td><td class="small">Cross-domain, Scientific</td></tr>
     </tbody>
   </table>
   <details class="finding sev-info">
@@ -1209,7 +1209,7 @@ disjoint properties.</p>
 <li><a href="#broaderTransitive">has broader transitive</a> <code class="muted">skos:broaderTransitive</code></li><li><a href="#mappingRelation">is in mapping relation with</a> <code class="muted">skos:mappingRelation</code></li><li><a href="#memberList">has member list</a> <code class="muted">skos:memberList</code></li><li><a href="#narrowMatch">has narrower match</a> <code class="muted">skos:narrowMatch</code></li><li><a href="#narrower">has narrower</a> <code class="muted">skos:narrower</code></li><li><a href="#narrowerTransitive">has narrower transitive</a> <code class="muted">skos:narrowerTransitive</code></li><li><a href="#semanticRelation">is in semantic relation with</a> <code class="muted">skos:semanticRelation</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
-<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.</p>  <table class="plain metrics">
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 107 in the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Scientific interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -1235,6 +1235,8 @@ disjoint properties.</p>
       <tr class="metric-info"><td>ols:uniprotrdfs <code class="muted small">ols:uniprotrdfs</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
     </tbody>
   </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
 <p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:afo&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:afo, db:http://www.w3.org/ns/odrl/2/, ols:dcat, ols:sio, ols:uniprotrdfs</p>  </details>
@@ -1310,23 +1312,23 @@ disjoint properties.</p>
   <h3 class="subhead" id="provenance-timeline">Timeline</h3>
   <ol class="prov-timeline">
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:03:29+00:00">2026-11-21 18:03:29 UTC</time>
+      <time datetime="2026-11-21T18:27:59+00:00">2026-11-21 18:27:59 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From skos.rdf</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:03:34+00:00">2026-11-21 18:03:34 UTC</time>
+      <time datetime="2026-11-21T18:28:03+00:00">2026-11-21 18:28:03 UTC</time>
       <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 1 reference release</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:03:35+00:00">2026-11-21 18:03:35 UTC</time>
+      <time datetime="2026-11-21T18:28:04+00:00">2026-11-21 18:28:04 UTC</time>
       <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.51; verified against 10 reference releases</span></div>
     </li>
     <li class="prov-ev prov-check">
-      <time datetime="2026-11-21T18:03:35+00:00">2026-11-21 18:03:35 UTC</time>
+      <time datetime="2026-11-21T18:28:04+00:00">2026-11-21 18:28:04 UTC</time>
       <div class="prov-what"><span class="prov-title">Scientific interoperability run</span><span class="prov-detail">SI 1 of 41 scientific domains</span></div>
     </li>
     <li class="prov-ev prov-build">
-      <time datetime="2026-11-21T18:03:50+00:00">2026-11-21 18:03:50 UTC</time>
+      <time datetime="2026-11-21T18:28:19+00:00">2026-11-21 18:28:19 UTC</time>
       <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</span></div>
     </li>
   </ol>
@@ -1335,8 +1337,8 @@ disjoint properties.</p>
   <table class="rel">
     <tbody>
 <tr><th scope="row">Source file</th><td>skos.rdf (28.3 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
-    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:03:29+00:00">2026-11-21 18:03:29 UTC</time></td></tr>
-    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:03:50+00:00">2026-11-21 18:03:50 UTC</time> <span class="muted">(21.1 s)</span></td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T18:27:59+00:00">2026-11-21 18:27:59 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T18:28:19+00:00">2026-11-21 18:28:19 UTC</time> <span class="muted">(19.2 s)</span></td></tr>
 <tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, Scientific interoperability, OOPS!</td></tr>    </tbody>
   </table>
   <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
@@ -1356,10 +1358,10 @@ disjoint properties.</p>
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dd06"></script>
+<script src="ontoreview-data.js?v=6b01e2c3"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01dd06"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01e2c3"></script>
 </body>
 </html>

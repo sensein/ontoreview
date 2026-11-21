@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T18:03:35.255985+00:00",
+  "checked_at": "2026-11-21T18:28:04.431381+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 17 repository ontologies came from the term database."
   ],
-  "run_id": 87,
+  "run_id": 107,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -41,7 +41,11 @@
     "si_p_min": 0.15,
     "si_domain_map": {},
     "si_upper_ontologies": [],
-    "si_upper_namespaces": []
+    "si_upper_namespaces": [],
+    "used_for": [
+      "cdi",
+      "si"
+    ]
   },
   "summary": {
     "align": 0.6161818181818183,
@@ -339,7 +343,7 @@
         "version_iri": "http://www.w3.org/ns/prov-o-20130430",
         "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/real/prov-o.ttl",
-        "retrieved": "2026-11-21T17:47:58.239000+00:00",
+        "retrieved": "2026-11-21T18:05:32.091904+00:00",
         "identified_by": "version IRI"
       }
     },
@@ -1893,7 +1897,11 @@
       "retrieved": "2026-11-21T17:30:08Z",
       "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
-      "terms": 9
+      "terms": 9,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "http://www.w3.org/ns/odrl/2/",
@@ -1906,7 +1914,11 @@
       "identified_by": "content hash",
       "terms": 6,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "The DataCite Ontology (DataCite)",
@@ -1918,7 +1930,11 @@
       "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
       "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
       "identified_by": "version IRI",
-      "terms": 5
+      "terms": 5,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:dcat",
@@ -1932,7 +1948,11 @@
       "retrieved": "2026-11-21T17:35:04Z",
       "metadata_sha256": "aee699f63dfd4ef1832ce9e8f9b7a3673625ae1db00275f7150063c513f4e091",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "The Earth Metabolome Initiative (EMI) ontology",
@@ -1946,7 +1966,11 @@
       "retrieved": "2026-11-21T17:30:04Z",
       "metadata_sha256": "2e85f623723c6b686ad25c39fae1427961b38f88d46d7a1683d432d4f1577604",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Model Card Report Ontology",
@@ -1960,7 +1984,11 @@
       "retrieved": "2026-11-21T17:35:02Z",
       "metadata_sha256": "6dfaa5f0cc9b8b6b2945d0c15e83cdb63c2de3082da4f7495484290c1c554b9c",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Semanticscience Integrated Ontology",
@@ -1974,7 +2002,11 @@
       "retrieved": "2026-11-21T17:30:12Z",
       "metadata_sha256": "cfbad165d5b41ce223aeb4693b0788889d68882a8efe730d81b2294b4456ecc9",
       "identified_by": "version IRI",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "ols:uniprotrdfs",
@@ -1987,7 +2019,11 @@
       "retrieved": "2026-11-21T17:35:43Z",
       "metadata_sha256": "e3c77e2341c216f7d72d1e8ee63f4997b63eb7ef66cdc7bea9bc57e8b903f969",
       "identified_by": "version",
-      "terms": 4
+      "terms": 4,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "NCI Thesaurus OBO Edition",
@@ -2001,7 +2037,11 @@
       "retrieved": "2026-11-21T17:30:07Z",
       "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
-      "terms": 8
+      "terms": 8,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     },
     {
       "title": "Ontology for vCard",
@@ -2014,7 +2054,11 @@
       "identified_by": "content hash",
       "terms": 2,
       "note": "version not reported by the source; identified by content hash",
-      "release_recorded": true
+      "release_recorded": true,
+      "used_in": [
+        "cdi",
+        "si"
+      ]
     }
   ],
   "record_file": "cdi.json",

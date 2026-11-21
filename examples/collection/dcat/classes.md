@@ -23,7 +23,7 @@ A record in a data catalog, describing the registration of a single dataset or d
 
 | | |
 |---|---|
-| Restrictions | [primaryTopic](object-properties.md#primarytopic) *exactly* `1`; [primaryTopic](object-properties.md#primarytopic) *only* [Catalogued resource](classes.md#resource) |
+| Restrictions | [primaryTopic](object-properties.md#primarytopic) *only* [Catalogued resource](classes.md#resource); [primaryTopic](object-properties.md#primarytopic) *exactly* `1` |
 | Used in | in range of [record](object-properties.md#record) |
 
 ### Catalogued resource

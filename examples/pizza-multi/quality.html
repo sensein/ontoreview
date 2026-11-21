@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="quality.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01dc78">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01e239">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 </head>
@@ -235,7 +235,7 @@
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
   <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
-<p class="muted small">0.1s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #108 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+<p class="muted small">0.1s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #129 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
     <caption class="sr-only">IRI checks metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -250,7 +250,7 @@
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:01:02 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 18:25:32 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
       <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
@@ -323,7 +323,7 @@
 <li><a href="datatype-properties.html#Name">Pizza</a> <code class="muted">pizza:Name</code></li><li><a href="object-properties.html#hasIngredient">has ingredient</a> <code class="muted">pizza:hasIngredient</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
-<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 81 in the term database. Details of 12 repository ontologies came from the term database.</p>  <table class="plain metrics">
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 102 in the term database. Details of 12 repository ontologies came from the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Cross-domain interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -352,30 +352,30 @@ The most current version of MicrO can be downloaded from https://github.com/carr
     </tbody>
   </table>
   <table class="plain metrics">
-    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:01:02 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
-    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 18:25:32 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th><th scope="col">Used in</th></tr></thead>
     <tbody>
       <tr><td>Food Ontology<br><code class="small">http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>6</td></tr>
+      <td class="small">2026-11-21</td><td>6</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>4</td></tr>
+      <td class="small">2026-11-21</td><td>4</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>5</td></tr>
+      <td class="small">2026-11-21</td><td>5</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Chemical Entities of Biological Interest<br><code class="small">http://purl.obolibrary.org/obo/chebi/257/chebi.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Food-Biomarker Ontology<br><code class="small">http://purl.obolibrary.org/obo/fobi/fobi.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Medical Subject Headings<br><code class="small">https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology of Prokaryotic Phenotypic and Metabolic Characters<br><code class="small">micro MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.
 
 Includes terms and term synonyms extracted from &gt; 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.
@@ -387,13 +387,13 @@ https://github.com/biosemantics/micropie2
 
 The most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology of units of Measure (OM)<br><code class="small">om 2.0.60</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
       <tr><td>Ontology for MIRNA Target<br><code class="small">http://purl.obolibrary.org/obo/omit/dev/omit.owl</code></td>
       <td class="small">ols</td>
-      <td class="small">2026-11-21</td><td>1</td></tr>
+      <td class="small">2026-11-21</td><td>1</td><td class="small">Cross-domain, Scientific</td></tr>
     </tbody>
   </table>
   <details class="finding sev-info">
@@ -402,7 +402,7 @@ The most current version of MicrO can be downloaded from https://github.com/carr
 <li><a href="classes.html#CheeseTopping">Cheese topping</a> <code class="muted">pizza:CheeseTopping</code></li><li><a href="classes.html#MeatTopping">Meat topping</a> <code class="muted">pizza:MeatTopping</code></li><li><a href="datatype-properties.html#hasCalories">has calories</a> <code class="muted">pizza:hasCalories</code></li><li><a href="object-properties.html#hasTopping">has topping</a> <code class="muted">pizza:hasTopping</code></li><li><a href="object-properties.html#isToppingOf">is topping of</a> <code class="muted">pizza:isToppingOf</code></li>    </ul>
   </details>
   <h3 class="subhead" id="quality-scientific-interoperability">Scientific interoperability</h3>
-<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.</p>  <table class="plain metrics">
+<p class="muted small">Δ = OECD fields of science (42 fields; the ontology&#39;s own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json, and as run 102 in the term database.</p>  <table class="plain metrics">
     <caption class="sr-only">Scientific interoperability metrics</caption>
     <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
     <tbody>
@@ -430,6 +430,8 @@ The most current version of MicrO can be downloaded from https://github.com/carr
       <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> –<span class="sr-only"> (info)</span></td><td class="muted small">no domain, ignored</td></tr>
     </tbody>
   </table>
+  <p class="muted small">Checked against: the releases listed under
+    <a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a> (column “Used in”); recorded once, in cdi.json.</p>
   <details class="finding sev-info">
     <summary><span class="sev">info</span> Reference ontology without a scientific domain <span class="muted">SI-D</span></summary>
 <p class="muted rule-desc">Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {&#34;ols:afo&#34; = [&#34;1.5&#34;]}.</p><p class="rule-desc">ols:afo</p>  </details>
@@ -464,8 +466,8 @@ The most current version of MicrO can be downloaded from https://github.com/carr
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6b01dc78"></script>
+<script src="ontoreview-data.js?v=6b01e239"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
-<script src="assets/ontoreview.js?v=6b01dc78"></script>
+<script src="assets/ontoreview.js?v=6b01e239"></script>
 </body>
 </html>
