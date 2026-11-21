@@ -893,22 +893,105 @@ def _fix_session(source: str, config: Path | None):
         raise typer.Exit(2) from e
 
 
+AI_PANEL = "AI suggestions"
+
+
+def _ai_config(cfg_ai, priority: str | None, ollama_model: str | None, ollama_url: str | None, hf_model: str | None,
+               api_provider: str | None, api_model: str | None, api_base_url: str | None, timeout: float | None):
+    """The [ai] settings with the command-line choices applied (the API key only from the environment)."""
+    from .config import AIConfig
+    ov = {k: v for k, v in {"ollama_model": ollama_model, "ollama_url": ollama_url, "hf_model": hf_model,
+                            "api_provider": api_provider, "api_model": api_model, "api_base_url": api_base_url,
+                            "timeout": timeout}.items() if v is not None}
+    if priority:
+        ov["priority"] = [x.strip() for x in priority.split(",") if x.strip()]
+    try:
+        return AIConfig(**{**cfg_ai.model_dump(), **ov, "enabled": True})
+    except Exception as e:  # noqa: BLE001 - pydantic ValidationError
+        raise typer.BadParameter(str(e)) from e
+
+
+def _source_info(source: str) -> dict:
+    import hashlib
+    p = Path(source)
+    return {"location": source, "name": p.name,
+            "sha256": hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else None}
+
+
 @fix_app.command("list")
 def fix_list(source: str = typer.Argument(..., help="Ontology file."), config: Path | None = ConfigOpt,
-             json_out: bool = typer.Option(False, "--json", help="Print the suggestions as JSON."),
-             ai: bool = typer.Option(False, "--ai", help="Also draft missing definitions with the configured AI source.")):
-    """List suggested fixes, required metadata first. Nothing is changed."""
+             json_out: bool = typer.Option(False, "--json", help="Print the result as JSON (schema ontoreview.fixes/1)."),
+             output: Path | None = typer.Option(None, "--output", "-o", help="Write the JSON result to this file "
+                                                "(then `fix apply --from FILE` applies suggestions from it)."),
+             ai: bool = typer.Option(False, "--ai", help="Ask the AI source for suggestions: definitions for terms "
+                                     "without one, ranked domains and ranges.", rich_help_panel=AI_PANEL),
+             ai_limit: int = typer.Option(20, "--ai-limit", help="At most this many AI suggestions.",
+                                          rich_help_panel=AI_PANEL),
+             refine: list[str] | None = typer.Option(None, "--refine", help="Also suggest a clearer definition for "
+                                                     "this term (IRI or label). Repeatable.", rich_help_panel=AI_PANEL),
+             refine_instruction: str | None = typer.Option(None, "--refine-instruction", help="How to refine, e.g. "
+                                                           "'shorter' or 'for non-experts'.", rich_help_panel=AI_PANEL),
+             ai_description: bool = typer.Option(False, "--ai-description", help="Draft the ontology description "
+                                                 "when it is missing.", rich_help_panel=AI_PANEL),
+             ai_priority: str | None = typer.Option(None, "--ai-priority", help="Sources to try, in order: "
+                                                    "ollama,hf,api.", rich_help_panel=AI_PANEL),
+             ai_ollama_model: str | None = typer.Option(None, "--ai-ollama-model", rich_help_panel=AI_PANEL,
+                                                        help="Ollama model, e.g. qwen3.5:4b."),
+             ai_ollama_url: str | None = typer.Option(None, "--ai-ollama-url", rich_help_panel=AI_PANEL,
+                                                      help="Ollama server (default http://localhost:11434)."),
+             ai_hf_model: str | None = typer.Option(None, "--ai-hf-model", rich_help_panel=AI_PANEL,
+                                                    help="Hugging Face model (downloaded on first use)."),
+             ai_api_provider: str | None = typer.Option(None, "--ai-api-provider", rich_help_panel=AI_PANEL,
+                                                        help="openai, anthropic, openrouter, gemini, mistral, groq or "
+                                                             "custom. The key comes from the provider's environment "
+                                                             "variable (OPENAI_API_KEY, ANTHROPIC_API_KEY, …)."),
+             ai_api_model: str | None = typer.Option(None, "--ai-api-model", rich_help_panel=AI_PANEL,
+                                                     help="Model id at the provider."),
+             ai_api_base_url: str | None = typer.Option(None, "--ai-api-base-url", rich_help_panel=AI_PANEL,
+                                                        help="OpenAI-compatible base URL (for custom)."),
+             ai_timeout: float | None = typer.Option(None, "--ai-timeout", rich_help_panel=AI_PANEL,
+                                                     help="Seconds per AI request.")):
+    """List suggested fixes, required metadata first; with --ai, AI suggestions too. Nothing is changed."""
     import json as _json
+    from datetime import datetime, timezone
+
+    from . import __version__
     s = _fix_session(source, config)
     s.precheck()
-    if ai:
-        from .fixes.ai import AIError, ai_suggestions, pick_source
+    ai_info: dict = {"used": False}
+    if ai or refine or ai_description:
+        from .fixes.ai import AIError, ai_suggestions, draft_description, pick_source, refine_definition
+        cfg_ai = _ai_config(s.cfg.ai, ai_priority, ai_ollama_model, ai_ollama_url, ai_hf_model, ai_api_provider,
+                            ai_api_model, ai_api_base_url, ai_timeout)
         try:
-            ai_suggestions(s, pick_source(s.cfg.ai, s.cfg.evaluation.cdi_hf_token))
+            src = pick_source(cfg_ai, s.cfg.evaluation.cdi_hf_token)
+            ai_info = {"used": True, **{k: v for k, v in src.describe().items() if "key" not in k}}
+            if ai:
+                ai_suggestions(s, src, limit=ai_limit)
+            for t in refine or []:
+                iri = t if t in s.onto.terms else next((k for k, v in s.onto.terms.items() if v.label == t), None)
+                if iri is None:
+                    err.print(f"[yellow]--refine:[/] no term {escape(t)}")
+                    continue
+                s.add(refine_definition(s, iri, src, refine_instruction or ""))
+            if ai_description:
+                d = next((x for x in s.suggestions if x.rule == "OB002" and x.fields), None)
+                if d is not None:
+                    text, prov = draft_description(s, src)
+                    d.fields[0].value, d.made_by = text, prov | {"field": "description"}
         except AIError as e:
+            ai_info = {"used": False, "error": str(e)}
             err.print(f"[yellow]AI:[/] {escape(str(e))}")
+    result = {"schema": "ontoreview.fixes/1", "tool": {"name": "OntoReview", "version": __version__},
+              "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "source": _source_info(source),
+              "format": "linkml" if s.is_linkml else "rdf", "ai": ai_info,
+              "required": [x.id for x in s.required_open()],
+              "suggestions": [x.to_dict() | {"writes_to": "yaml" if s.yaml_writable(x) else "owl"} if s.is_linkml
+                              else x.to_dict() for x in s.suggestions]}
+    if output:
+        output.write_text(_json.dumps(result, indent=2, ensure_ascii=False) + "\n", "utf-8")
     if json_out:
-        console.print_json(_json.dumps([x.to_dict() for x in s.suggestions], ensure_ascii=False))
+        sys.stdout.write(_json.dumps(result, indent=2, ensure_ascii=False) + "\n")
         return
     t = Table(title=f"{len(s.suggestions)} suggested fixes for {Path(source).name}")
     for col in ("id", "kind", "rule", "fix", "term", "flags"):
@@ -918,6 +1001,10 @@ def fix_list(source: str = typer.Argument(..., help="Ontology file."), config: P
                   escape(s.onto.terms[x.subject].label if x.subject in s.onto.terms else (x.subject or "ontology")),
                   ", ".join(x.flags))
     console.print(t)
+    if ai_info.get("used"):
+        console.print(f"AI: {ai_info.get('provider', ai_info.get('source'))} · {ai_info.get('model')}")
+    if output:
+        console.print(f"Saved to {output}; apply with: ontoreview fix apply {source} --from {output} --accept ID")
     if s.required_open():
         console.print("[bold]Required before docs:[/] " + ", ".join(x.title.lower() for x in s.required_open())
                       + ". Use: ontoreview fix apply SOURCE --set title=… --set license=… …")
@@ -925,32 +1012,76 @@ def fix_list(source: str = typer.Argument(..., help="Ontology file."), config: P
 
 @fix_app.command("apply")
 def fix_apply(source: str = typer.Argument(..., help="Ontology file."), config: Path | None = ConfigOpt,
+              from_: Path | None = typer.Option(None, "--from", help="Suggestions saved by `fix list -o FILE` "
+                                                "(needed to apply AI suggestions: they are not re-generated)."),
               accept: list[str] | None = typer.Option(None, "--accept", help="Suggestion id to apply (option 1); "
                                                                             "ID:N picks option N. Repeatable."),
               accept_safe: bool = typer.Option(False, "--accept-safe", help="Apply every fix flagged safe."),
-              set_: list[str] | None = typer.Option(None, "--set", help="A required value: title=…, description=…, "
-                                                                       "license=URL, creators='Name ORCID; Name', version=…"),
+              set_: list[str] | None = typer.Option(None, "--set", help="Required metadata: title=…, description=…, "
+                                                                       "license=URL, creators='Name | ORCID | email; …', version=…"),
+              value: list[str] | None = typer.Option(None, "--value", metavar="ID=TEXT", help="The value for a "
+                                                     "suggestion that asks for one (e.g. a definition). Repeatable."),
+              text: list[str] | None = typer.Option(None, "--text", metavar="ID=TEXT", help="Your edited text for an "
+                                                    "AI suggestion (instead of the AI's wording). Repeatable."),
+              json_out: bool = typer.Option(False, "--json", help="Print the result as JSON (schema "
+                                                                  "ontoreview.fix-result/1)."),
               output: Path | None = typer.Option(None, "--output", "-o", help="Default: the next version, e.g. a-v1.ttl.")):
-    """Apply chosen fixes: writes a new file (a-v1.ttl), a SPARQL patch and a record; the original is unchanged."""
+    """Apply chosen fixes: writes a new file (a-v1.ttl), a patch and a record; the original is unchanged."""
+    import json as _json
+
     from .fixes import FixError
+    from .fixes.model import suggestion_from_dict
     s = _fix_session(source, config)
+    if from_:
+        saved = _json.loads(from_.read_text("utf-8"))
+        want = (saved.get("source") or {}).get("sha256")
+        have = _source_info(source)["sha256"]
+        if want and have and want != have:
+            err.print(f"[bold red]Error:[/] {escape(str(from_))} was made for another version of {Path(source).name}; "
+                      "run `fix list` again.")
+            raise typer.Exit(2)
+        known = {x.id for x in s.suggestions}
+        for d in saved.get("suggestions", []):
+            x = suggestion_from_dict({k: v for k, v in d.items() if k != "writes_to"})
+            if x.id not in known:
+                s.replace(x) if x.kind == "L" else s.add(x)
     values = dict(v.split("=", 1) for v in (set_ or []) if "=" in v)
     if "creators" in values:
         values["creators"] = values["creators"].replace(";", "\n")
+    per_id = dict(v.split("=", 1) for v in (value or []) if "=" in v)
+    texts = dict(v.split("=", 1) for v in (text or []) if "=" in v)
     try:
-        for x in s.suggestions:
+        for x in s.suggestions:          # --set fills required metadata only (not every term's definition)
             names = [f.name for f in x.fields]
-            if names and all(values.get(n) for n in names):
+            if x.required and names and all(values.get(n) for n in names):
                 s.accept(x.id, values=values)
+        for sid, val in per_id.items():
+            x = s.get(sid)
+            if not x.fields:
+                raise FixError(f"{sid} does not ask for a value; use --accept.")
+            s.accept(sid, values={x.fields[0].name: val})
         for item in accept or []:
             sid, _, opt = item.partition(":")
-            s.accept(sid, option=max(int(opt) - 1, 0) if opt else 0)
+            s.accept(sid, option=max(int(opt) - 1, 0) if opt else 0, text=texts.get(sid))
+        for sid, t_ in texts.items():
+            if sid not in s.accepted:
+                s.accept(sid, text=t_)
         if accept_safe:
             s.accept_safe()
         r = s.write(output)
     except FixError as e:
         err.print(f"[bold red]Error:[/] {escape(str(e))}")
         raise typer.Exit(2) from e
+    if json_out:
+        rec = _json.loads(r.record.read_text("utf-8"))
+        sys.stdout.write(_json.dumps({
+            "schema": "ontoreview.fix-result/1", "source": _source_info(source),
+            "output": {"path": str(r.path), "format": r.path.suffix.lstrip("."), "sha256": rec["output"]["sha256"]},
+            "patch": str(r.patch), "record": str(r.record), "applied": r.applied, "not_applied": r.not_applied,
+            "ai_assisted": sum(1 for a in rec["applied"] if a.get("ai_assisted")), "converted": rec.get("converted"),
+            "fixed": r.fixed, "new_findings": r.new_findings, "before": r.before, "after": r.after,
+            "still_required": [x.title for x in s.required_open()]}, indent=2, ensure_ascii=False) + "\n")
+        return
     console.print(f"[green]✓[/] {r.path}  ({r.applied} fixes; {r.not_applied} not applied)")
     console.print(f"  patch {r.patch.name} · record {r.record.name}")
     console.print(f"  fixed: {len(r.fixed)} findings" + (f"; new: {', '.join(r.new_findings)}" if r.new_findings else ""))
