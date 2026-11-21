@@ -14,10 +14,10 @@ from rdflib import Literal, URIRef
 from rdflib.namespace import DCTERMS, RDFS, SKOS
 
 from ..model import Option, Suggestion, n3
+from .prompts import prompt
 from .sources import AIError, extract_json, make_source, pick_source
 
-SYSTEM = ("You help ontology authors. You write precise, neutral English for ontology annotations. "
-          "You never invent facts beyond what the context implies.")
+# the prompt texts live in prompts.md (editable; ONTOREVIEW_PROMPTS overrides sections)
 DEF_SCHEMA = {"type": "object", "properties": {"definition": {"type": "string"}, "reason": {"type": "string"}},
               "required": ["definition"]}
 DESC_SCHEMA = {"type": "object", "properties": {"description": {"type": "string"}}, "required": ["description"]}
@@ -30,7 +30,7 @@ def _ask(source, user: str, schema: dict, key: str) -> tuple[dict, dict]:
     last = None
     for _ in range(2):
         try:
-            ans = source.generate(SYSTEM, user, schema)
+            ans = source.generate(prompt("system"), user, schema)
             text = ans.get(key)
             if (isinstance(text, str) and text.strip()) or (isinstance(text, list) and text):
                 prov = source.describe() | {"type": "llm",
@@ -63,8 +63,7 @@ def _context(onto, t) -> str:
 def draft_definition(session, iri: str, source) -> Suggestion:
     """A definition for a term that has none (genus–differentia: "A <parent> that …")."""
     t = session.onto.terms[iri]
-    user = (f"{_context(session.onto, t)}\n\nWrite one definition for this term, in the form "
-            "\"A <parent> that <distinguishing features>.\" One sentence, no circular wording.")
+    user = prompt("definition", context=_context(session.onto, t))
     ans, prov = _ask(source, user, DEF_SCHEMA, "definition")
     text = ans["definition"].strip()
     return Suggestion("OB011", iri, "L", "Add a definition (AI draft)",
@@ -82,9 +81,8 @@ def refine_definition(session, iri: str, source, instruction: str = "") -> Sugge
     if old is None:
         return draft_definition(session, iri, source)
     p, o = old
-    how = instruction or "clearer and more precise, in genus–differentia form, keeping its meaning"
-    user = (f"{_context(session.onto, t)}\nCurrent definition: {o}\n\nRewrite the definition to be {how}. "
-            "One or two sentences.")
+    how = instruction or prompt("refine_default")
+    user = prompt("refine", context=_context(session.onto, t), current=str(o), how=how)
     ans, prov = _ask(source, user, DEF_SCHEMA, "definition")
     text = ans["definition"].strip()
     s = Suggestion("FX010", iri, "L", "Refined definition: AI draft",
@@ -100,9 +98,8 @@ def draft_description(session, source) -> tuple[str, dict]:
     """Text for the ontology description (the required-metadata field), from its title and classes."""
     onto = session.onto
     classes = [t.label for t in onto.terms.values() if t.kind == "class" and not t.imported][:25]
-    user = (f"Ontology title: {onto.metadata.title or '(none)'}\nNamespace: {onto.namespace}\n"
-            f"Some classes: {', '.join(classes)}\n\nWrite a 1–2 sentence description of what this ontology covers "
-            "and who it is for.")
+    user = prompt("description", title=onto.metadata.title or "(none)", namespace=onto.namespace,
+                  classes=", ".join(classes))
     ans, prov = _ask(source, user, DESC_SCHEMA, "description")
     return ans["description"].strip(), prov
 
@@ -126,9 +123,8 @@ def suggest_domain_range(session, iri: str, which: str, source) -> Suggestion:
     if not cands:
         raise AIError("No classes to choose from.")
     listing = "\n".join(f"{k} | {v}" for k, v in list(cands.items())[:80])
-    user = (f"{_context(session.onto, t)}\nDefinition: {t.definition or '(none)'}\n\nWhich class is the {which} of this "
-            f"property ({'the things it describes' if which == 'domain' else 'the values it points to'})? Choose up to "
-            f"three from this list (IRI | label), best first, with a short reason each:\n{listing}")
+    user = prompt("domain_range", context=_context(session.onto, t), definition=t.definition or "(none)",
+                  which=which, role=prompt(f"role_{which}"), listing=listing)
     ans, prov = _ask(source, user, CHOICE_SCHEMA, "choices")
     pred = _RDFS.domain if which == "domain" else _RDFS.range
     opts = []

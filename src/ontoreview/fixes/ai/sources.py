@@ -134,7 +134,8 @@ class HFSource:
 
     def generate(self, system: str, user: str, schema: dict) -> dict:
         kind, pipe = self._pipe()
-        prompt = f"{user}\n\nAnswer with one JSON object only, matching: {json.dumps(schema)}"
+        from .prompts import prompt as _prompt
+        prompt = f"{user}\n\n" + _prompt("json_answer", schema=json.dumps(schema))
         if kind == "text":
             msgs = [{"role": "system", "content": system}, {"role": "user", "content": prompt}]
         else:
@@ -267,7 +268,8 @@ class OpenAICompatSource:
             if "response_format" not in str(e) and "json_schema" not in str(e):
                 raise
             body.pop("response_format")
-            body["messages"][1]["content"] += f"\n\nAnswer with one JSON object matching: {json.dumps(schema)}"
+            from .prompts import prompt as _prompt
+            body["messages"][1]["content"] += "\n\n" + _prompt("json_answer", schema=json.dumps(schema))
             r = _post(f"{self.base}/chat/completions", body, headers, self.timeout)
         self._reported = r.get("model", "") or self.model
         return extract_json(r["choices"][0]["message"]["content"])
