@@ -75,8 +75,13 @@ def shoot(page: Page, name: str) -> None:
 
 def serve(settings: Path, demo: Path) -> tuple[subprocess.Popen, str]:
     port = free_port()
+    # these shots show build results: skip the Quality issues review step (it has screenshots of its own)
+    prefs = settings.with_name("prefs.json")
+    data = json.loads(prefs.read_text()) if prefs.exists() else {}
+    prefs.write_text(json.dumps({**data, "fix_review": False}))
     # a term database of its own: no personal paths or earlier runs in the images
-    env = {**os.environ, "ONTOREVIEW_UI_SETTINGS": str(settings), "ONTOREVIEW_IRI_DB": str(demo / "iri.sqlite3")}
+    env = {**os.environ, "ONTOREVIEW_UI_SETTINGS": str(settings), "ONTOREVIEW_IRI_DB": str(demo / "iri.sqlite3"),
+           "ONTOREVIEW_REQUIRE_METADATA": "0"}
     server = subprocess.Popen([sys.executable, "-m", "ontoreview.ui", "--port", str(port), "--no-browser"],
                               env=env, cwd=demo, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for _ in range(150):
@@ -181,8 +186,8 @@ GUIDE = ROOT / "guide" / "images"
 
 
 def docs_shots(browser) -> None:
-    """The generated documentation (examples/cdi-sosa) for the README: run build_examples.py first."""
-    site = ROOT / "examples" / "cdi-sosa" / "index.html"
+    """The generated documentation (examples/site/cdi-sosa) for the README: run build_examples.py first."""
+    site = ROOT / "examples" / "site" / "cdi-sosa" / "index.html"
     if not site.is_file():
         print("skip docs shots: run scripts/build_examples.py first")
         return

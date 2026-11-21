@@ -273,6 +273,24 @@ def provenance_record(onto: Ontology, source: str | Path, tool_version: str, sta
     if report is not None:
         checks.insert(0, "OntoReview checks")
     name = src.name if src else str(source or "")
+    fixes = None
+    if src is not None:                 # a fixed version (a-v1.ttl) carries the record of its fixes
+        from ..fixes.session import fixes_record
+        rec = fixes_record(src)
+        if rec and rec.get("output", {}).get("sha256") in (None, sha):    # only if the file is unchanged
+            applied = rec.get("applied", [])
+            kinds = {}
+            for a in applied:
+                kinds[a.get("source", a.get("kind"))] = kinds.get(a.get("source", a.get("kind")), 0) + 1
+            fixes = {"derived_from": rec.get("source", {}), "created_at": rec.get("created_at"),
+                     "applied": applied, "not_applied": len(rec.get("not_applied", [])),
+                     "checks": rec.get("checks", {}), "kinds": kinds}
+            n_ai = sum(1 for a in applied if a.get("ai_assisted"))
+            fixes["ai_assisted"] = n_ai
+            event(rec.get("created_at"), f"{len(applied)} fix{'es' if len(applied) != 1 else ''} applied",
+                  f"From {rec.get('source', {}).get('name', 'the original')}: "
+                  + ", ".join(f"{n} {k.lower()}" for k, n in kinds.items())
+                  + (f" · {n_ai} AI-assisted" if n_ai else ""), "fix")
     event(started, "Documentation build started", f"From {name}" if name else "", "build")
     event(generated, "Documentation generated",
           f"OntoReview {tool_version}" + (f"; checks: {', '.join(checks)}" if checks else ""), "build")
@@ -283,7 +301,7 @@ def provenance_record(onto: Ontology, source: str | Path, tool_version: str, sta
             "tool": {"name": "OntoReview", "version": tool_version},
             "started": _iso(started), "generated": _iso(generated),
             "seconds": round((generated - started).total_seconds(), 1),
-            "checks": checks, "events": events}
+            "checks": checks, "events": events, "fixes": fixes}
 
 
 def provenance_graph(onto: Ontology, source: str, tool_version: str, record: dict | None = None) -> Graph:
@@ -334,4 +352,50 @@ def provenance_graph(onto: Ontology, source: str, tool_version: str, record: dic
         g.add((src, DCTERMS.title, Literal(source)))
         g.add((act, PROV.used, src))
     g.add((act, PROV.wasAssociatedWith, ontoreview[f"v{tool_version}"]))
+    fixes = rec.get("fixes") if rec else None
+    if fixes and sha:
+        _fix_provenance(g, fixes, URIRef(f"urn:sha256:{sha}"))
     return g
+
+
+def _fix_provenance(g: Graph, fixes: dict, fixed: URIRef) -> None:
+    """The fixed file was derived from the original by an apply-fixes activity; each accepted fix is
+    an activity associated with the rule or the model (with its revision) that produced it."""
+    from rdflib.namespace import RDFS
+
+    orig = fixes.get("derived_from") or {}
+    if orig.get("sha256"):
+        src = URIRef(f"urn:sha256:{orig['sha256']}")
+        g.add((src, RDF.type, PROV.Entity))
+        g.add((src, DCTERMS.title, Literal(orig.get("name", ""))))
+        g.add((fixed, PROV.wasDerivedFrom, src))
+    apply = URIRef("urn:ontoreview:apply-fixes")
+    g.add((apply, RDF.type, PROV.Activity))
+    g.add((apply, RDFS.label, Literal(f"{len(fixes.get('applied', []))} fixes applied")))
+    if orig.get("sha256"):
+        g.add((apply, PROV.used, URIRef(f"urn:sha256:{orig['sha256']}")))
+    g.add((fixed, PROV.wasGeneratedBy, apply))
+    if fixes.get("created_at"):
+        g.add((apply, PROV.endedAtTime, Literal(fixes["created_at"], datatype=XSD.dateTime)))
+    for a in fixes.get("applied", []):
+        node = URIRef(f"urn:ontoreview:fix:{a['id']}")
+        g.add((node, RDF.type, PROV.Activity))
+        g.add((node, DCTERMS.isPartOf, apply))
+        g.add((node, RDFS.label, Literal(f"{a.get('title', '')}: {a.get('option', '')}")))
+        g.add((node, DCTERMS.description, Literal(f"{a.get('rule')} on {a.get('subject') or 'the ontology'}; "
+                                                  f"{len(a.get('add', []))} added, {len(a.get('remove', []))} removed"
+                                                  + ("; edited by the user" if a.get("edited") else ""))))
+        if a.get("accepted_at"):
+            g.add((node, PROV.endedAtTime, Literal(a["accepted_at"], datatype=XSD.dateTime)))
+        mb = a.get("made_by") or {}
+        if mb.get("type") == "llm":
+            g.add((node, DCTERMS.type, Literal("AI-assisted")))
+            agent = URIRef("urn:ontoreview:model:" + "/".join(str(mb.get(k, "")) for k in ("source", "model"))
+                           .replace(" ", "_") + (f"@{mb['revision']}" if mb.get("revision") else ""))
+            g.add((agent, RDF.type, PROV.SoftwareAgent))
+            g.add((agent, RDFS.label, Literal(f"{mb.get('provider', mb.get('source'))} · {mb.get('model')}"
+                                              + (f" ({mb['revision']})" if mb.get("revision") else ""))))
+        else:
+            agent = URIRef(f"urn:ontoreview:fixer:{mb.get('id', a.get('rule', 'rule'))}")
+            g.add((agent, RDF.type, PROV.SoftwareAgent))
+        g.add((node, PROV.wasAssociatedWith, agent))

@@ -15,6 +15,7 @@ from .config import Config, load_config
 from .cq import CQSet, attach_backlinks, load_many
 from .cq import evaluate as evaluate_cqs
 from .diff import Changelog, compare
+from .fixes.session import check_required
 from .loader import LoadedOntology, load_ontology
 from .model.entities import Ontology
 from .model.extract import extract
@@ -125,6 +126,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     loaded = load(cfg)
     plugins = PluginManager(load_plugins(cfg.plugins))
     onto = extract(loaded, cfg, (cfg.languages or ["en"])[0])
+    check_required(onto, cfg, loaded.source)    # fix first, then document
     plugins.decorate_terms(onto)
     log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
@@ -206,6 +208,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     languages = cfg.languages or ["en"]
     primary = languages[0]
     onto = extract(loaded, cfg, primary)
+    check_required(onto, cfg, loaded.source)    # fix first, then document
     log.info("Parsed %d terms; running quality checks", len(onto.terms))
     report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
     if report is not None:

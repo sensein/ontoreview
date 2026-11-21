@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this ontology, please cite it as below."
-type: dataset
-title: "The data catalog vocabulary"
-version: "3"
-url: "http://www.w3.org/ns/dcat"
-date-released: 2020-11-30
-authors:
-  - name: "dx"

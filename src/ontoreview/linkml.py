@@ -27,7 +27,7 @@ from urllib.parse import quote
 import yaml
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
 from rdflib.collection import Collection
-from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
+from rdflib.namespace import DCTERMS, FOAF, OWL, RDF, RDFS, SKOS, XSD
 
 from .vocab import BIBO, SCHEMA, VANN
 
@@ -329,7 +329,18 @@ class _Converter:
         for key, pred in (("created_by", DCTERMS.creator), ("contributors", DCTERMS.contributor)):
             for who in _as_list(s.get(key)):
                 who = str(who)
-                if ":" in who and not who.startswith("http") and who.split(":", 1)[0] in self.prefixes:
+                orcid = re.search(r"https?://orcid\.org/\d{4}-\d{4}-\d{4}-\d{3}[\dX]", who)
+                if orcid and who.strip() != orcid.group(0):      # "Name <email> https://orcid.org/…"
+                    node = URIRef(orcid.group(0))
+                    rest = who.replace(orcid.group(0), "")
+                    email = re.search(r"<([^>]+@[^>]+)>", rest)
+                    name = re.sub(r"<[^>]*>", "", rest).strip(" ,;")
+                    g.add((onto, pred, node))
+                    if name:
+                        g.add((node, FOAF.name, Literal(name)))
+                    if email:
+                        g.add((node, FOAF.mbox, URIRef(f"mailto:{email.group(1)}")))
+                elif ":" in who and not who.startswith("http") and who.split(":", 1)[0] in self.prefixes:
                     g.add((onto, pred, self.expand(who)))
                 elif who.startswith("http"):
                     g.add((onto, pred, URIRef(who)))

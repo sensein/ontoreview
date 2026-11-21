@@ -9,3 +9,22 @@ docs/
 .DS_Store
 DECISIONS.md
 fix-ideation.md
+
+# Generated output: rebuild instead of committing
+# examples/ keeps only the toy ontology and its README; scripts/build_examples.py writes examples/site/
+examples/*
+!examples/README.md
+!examples/toy_onto.ttl
+# dated run folders written next to an ontology (docs-20261121-162313/, toy-20261121-152430/, …)
+*-20[0-9][0-9][0-1][0-9][0-3][0-9]-[0-2][0-9][0-5][0-9][0-5][0-9]/
+# fixed versions, patches and records written by "Apply fixes" next to the source
+*.fixes.json
+*-v[0-9]*.patch.ru
+*-v[0-9]*.patch.yaml
+tests/fixtures/**/*-v[0-9]*.yaml
+tests/fixtures/cdi/toy_onto-v[0-9]*.ttl
+# outputs of a quality check / interoperability run next to the source
+tests/fixtures/**/interoperability.json
+tests/fixtures/**/*-quality.json
+# local app state
+reviews.json

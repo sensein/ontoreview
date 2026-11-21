@@ -6,6 +6,7 @@ defaults -> ``ontoreview.toml`` / ``[tool.ontoreview]`` in ``pyproject.toml`` ->
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 from typing import Any, Literal
@@ -115,7 +116,7 @@ class EvaluationConfig(BaseModel):
         "auto", description="OOPS! pitfall scanner web service (uploads the ontology to "
                             "https://oops.linkeddata.es): auto = run alongside ROBOT, leaving out the pitfalls ROBOT "
                             "covers (full catalogue when ROBOT cannot run); on = always the full catalogue; off = never")
-    oops_timeout: int = 90
+    oops_timeout: int = Field(90, description="Seconds to wait for the OOPS! web service")
     oops_endpoint: str | None = Field(None, description="OOPS! REST endpoint (default https://oops.linkeddata.es/rest)")
     robot: Literal["auto", "on", "off"] = Field(
         "auto", description="Run `robot report` (local robot, else Docker). auto = run, falling back to OOPS! "
@@ -251,6 +252,33 @@ class EvaluationConfig(BaseModel):
         return {True: "on", False: "off"}.get(v, v) if isinstance(v, bool) else v
 
 
+AI_SOURCES = ("ollama", "hf", "api")
+
+
+class AIConfig(BaseModel):
+    """AI suggestions for fixes (definitions, descriptions, refinements). Off by default; nothing is
+    applied without the user's acceptance."""
+
+    model_config = ConfigDict(extra="forbid")
+    enabled: bool = Field(True, description="Draft and refine text (definitions, descriptions) with a language model; "
+                                            "drafts are applied only when the user accepts them")
+    priority: list[Literal["hf", "ollama", "api"]] = Field(
+        default_factory=lambda: ["ollama", "hf", "api"],
+        description="Sources in the order they are tried; unavailable ones are skipped. ollama = a local Ollama "
+                    "server (its installed models are used), hf = a local model from Hugging Face (downloaded on first "
+                    "use), api = a provider with an API key")
+    hf_model: str = Field("Qwen/Qwen3.5-4B", description="Hugging Face model (open source, runs on this computer; "
+                                                         "Qwen/Qwen3.5-2B on small machines)")
+    ollama_model: str = Field("qwen3.5:4b", description="Ollama model")
+    ollama_url: str = Field("http://localhost:11434", description="Ollama server")
+    api_provider: Literal["openai", "anthropic", "openrouter", "gemini", "mistral", "groq", "custom"] = "openai"
+    api_base_url: str = Field("", description="OpenAI-compatible base URL (preset per provider; set for custom)")
+    api_model: str = Field("", description="Model id at the provider, e.g. gpt-4o-mini or claude-sonnet-4-5")
+    api_key: str | None = Field(None, repr=False, description="API key; default: the provider's environment "
+                                                              "variable (OPENAI_API_KEY, ANTHROPIC_API_KEY, …)")
+    timeout: float = Field(120, description="Seconds per request")
+
+
 class ChecksConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
     disable: list[str] = Field(default_factory=list)
@@ -317,6 +345,11 @@ class Config(BaseModel):
     # Extensibility
     plugins: list[str] = Field(default_factory=list)
     checks: ChecksConfig = Field(default_factory=ChecksConfig)
+    ai: AIConfig = Field(default_factory=AIConfig)
+    require_metadata: bool = Field(
+        default_factory=lambda: os.environ.get("ONTOREVIEW_REQUIRE_METADATA", "1") != "0",
+        description="Do not generate docs while the title, description, license or creators are missing (from the "
+                    "ontology or [metadata]); fix them first (ontoreview fix, or the app's review step)")
     evaluation: EvaluationConfig = Field(default_factory=EvaluationConfig)
     metadata: MetadataOverrides = Field(default_factory=MetadataOverrides)
 

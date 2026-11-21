@@ -28,6 +28,7 @@ ontoreview check my-ontology.ttl --fail-on error  # quality checks only, CI exit
 ## Key features
 
 - **Documentation website.** Every class, property, individual and SKOS concept with labels, definitions, axioms in Manchester syntax and back-links; an overview with statistics; an interactive diagram (VOWL or UML); search; downloads in Turtle, RDF/XML, JSON-LD and N-Triples; how to cite. Works offline, in dark mode, on phones and in print. Also as one `standalone.html`, Markdown or MyST.
+- **Fix first, then document.** Before the docs are built, review suggested fixes (exact rule fixes, your values, AI-drafted definitions) and required metadata; fixes go to a new file (`a-v1.ttl`), never the original, and are recorded in the provenance.
 - **Quality review.** 25 built-in rules plus ROBOT, a reasoner (HermiT/ELK), IRI checks, OntoCheck metrics and OOPS!, in one report with a summary per check.
 - **Cross-domain interoperability (CDI).** How well the ontology aligns with ontologies from other domains, and how general its definitions are.
 - **Scientific interoperability (SI).** In how many scientific fields (the 41 OECD fields of science) it is interoperable, ignoring upper-level ontologies.
@@ -38,6 +39,22 @@ ontoreview check my-ontology.ttl --fail-on error  # quality checks only, CI exit
 - **Deploy in one click.** Every website includes `DEPLOY.md`, a Dockerfile, an nginx config and a GitHub Pages workflow. The app can push a website to GitHub and publish it on GitHub Pages.
 - **Also:** LinkML schemas, folders of ontologies, multilingual sites, competency questions, files for LLMs and agents (`llms.txt`), themes and plugins.
 
+## Fixes and AI suggestions
+
+Before any docs are generated, **Build docs** opens the **Quality issues** page:
+
+- **Required metadata** first: title, description, license and creators (name, ORCID, email; add as many as needed; the ORCID is looked up by name and you pick the right person). The docs are not generated without them.
+- **Suggested fixes** for each issue, with a confidence and who made them: **Rule** (exact edits), **Your input**, **Ranked** candidates or **AI**. The centre shows the Turtle change, the right side what changes in the ontology and in the docs.
+- **AI suggestions** (on by default, never applied without your acceptance): definitions to edit, ranked domains and ranges with reasons that you can pick or replace with your own choice, and a description. Accepted AI text is marked **AI-assisted** in the docs and in `provenance.ttl`.
+- **Where AI runs** (Settings › AI & fixes, reorderable): a local **Ollama** first (installed models are listed, new ones can be pulled), then an open-source **Hugging Face** model (default `Qwen/Qwen3.5-4B`, Apache-2.0, downloaded once with progress), then an **API key** (OpenAI, Anthropic, OpenRouter, …).
+- **Come back later**: the Quality issues page lists every checked ontology with its status (waiting / built), kept across restarts; each is built only when you apply or skip it, with its own settings.
+- **Apply N fixes & build** writes a new file (`a-v1.ttl`, `a-v1.yaml` for LinkML) with a patch and a record; the original is never changed. **Skip and build** uses the original.
+- **LinkML**: definitions, titles, domains and ranges of classes, slots, enums and class attributes go into the YAML copy. A fix the YAML cannot hold (e.g. on an imported term) saves the fixed version as OWL (`a-v1.ttl`, generated from the schema) plus a YAML patch of the rest.
+- **Long lists**: open issues stay on top; accepted or ignored ones move to the end.
+- **Prompts**: the exact prompts sent to the model are in [`src/ontoreview/fixes/ai/prompts.md`](src/ontoreview/fixes/ai/prompts.md); edit it, or point `ONTOREVIEW_PROMPTS` at your own copy.
+
+Command line: `ontoreview fix list a.ttl [--ai]` and `ontoreview fix apply a.ttl --accept-safe --set license=… --set creators="Name | ORCID | email"`.
+
 ## Screenshots
 
 | | |
@@ -45,7 +62,7 @@ ontoreview check my-ontology.ttl --fail-on error  # quality checks only, CI exit
 | ![The app after a build: results, Deploy, Export](src/ontoreview/ui_assets/help/results.png) | ![Interoperability page: CDI and SI](src/ontoreview/ui_assets/help/interop-results.png) |
 | **Build** – results, quality metrics and issues | **Interoperability** – CDI and SI for one ontology |
 | ![Generated docs: quality report](guide/images/docs-quality.png) | ![Generated docs: provenance timeline](guide/images/docs-provenance.png) |
-| **Docs** – quality report with a summary per check | **Docs** – provenance with timestamps |
+| **Docs** – quality report: a plain-language summary, each issue once (with the checks that found it), then each check's own report | **Docs** – provenance with timestamps |
 | ![Generated docs: diagram](guide/images/docs-graph.png) | ![Generated docs: scientific interoperability](guide/images/docs-si.png) |
 | **Docs** – interactive diagram | **Docs** – scientific interoperability per domain |
 | ![Run history: configuration, re-run and export](src/ontoreview/ui_assets/help/history-config.png) | ![Deploy to GitHub Pages](src/ontoreview/ui_assets/help/deploy.png) |
@@ -60,6 +77,8 @@ ontoreview check my-ontology.ttl --fail-on error  # quality checks only, CI exit
 | `ontoreview ui` | The app (recommended) |
 | `ontoreview build SOURCE -o docs` | Documentation website (`--single-file` for one HTML file) |
 | `ontoreview check SOURCE` | Quality checks; `--interop-only` for CDI and SI only |
+| `ontoreview evaluate SOURCE -f json` | Every evaluation and setting as an option, one JSON result (for integration) |
+| `ontoreview fix list / apply SOURCE` | Suggested fixes, written to a new version |
 | `ontoreview diff OLD NEW` | Compare two versions |
 | `ontoreview export SOURCE --format markdown` | Markdown or MyST pages |
 | `ontoreview serve SOURCE` | Live preview while you edit |
@@ -68,11 +87,55 @@ ontoreview check my-ontology.ttl --fail-on error  # quality checks only, CI exit
 `SOURCE` is a file, a URL or a folder of ontologies. Settings can live in `ontoreview.toml` next to the
 ontology, so the app, the command line and CI build exactly the same docs.
 
+## Integrate with other tools and sites
+
+`ontoreview evaluate` runs the evaluations from a script, a CI job or a web service and prints one JSON
+object, so another site (for example a schema or ontology catalogue) can show OntoReview's results.
+
+```bash
+pip install ontoreview                     # add [cdi] for the interoperability scores
+
+# all evaluations, JSON to stdout (exit 1 on errors; --fail-on never to always exit 0)
+ontoreview evaluate onto.ttl -f json
+
+# only some: rules, robot, reasoner, iri, ontocheck, oops, cdi, si
+ontoreview evaluate onto.ttl --only rules,iri,ontocheck --no-iri-network -f json -o result.json
+
+# any setting: every [evaluation] key is an option (or use --set KEY=VALUE, also on build and check)
+ontoreview evaluate onto.ttl --only cdi,si --cdi-references ols --cdi-tau 0.6 --si-theta-s 0.4 -f json
+ontoreview evaluate onto.ttl --disable-rule OB019 --severity OB011=info -f json
+
+# the options themselves, as JSON: build a form from it
+ontoreview evaluate --list-options -f json
+```
+
+**Result** (`"schema": "ontoreview.evaluation/1"`):
+
+| Key | Contents |
+|---|---|
+| `tool`, `source` | OntoReview version; the file or URL evaluated, with its SHA-256 |
+| `ontology` | IRI, title, version, license, number of terms |
+| `evaluations` | Per check: `ran`, `off`, `skipped` (e.g. no Docker for ROBOT) or `error`, with its finding count |
+| `summary` | Distinct issues by severity, raw findings, overlaps between checks, consistency, CDI/SI scores |
+| `issues` | Each problem once, with the checks that found it and the affected terms |
+| `settings` | The effective settings (API keys and tokens shown as `***`) |
+| `report` | The full report: every finding and every check's own results and metrics |
+
+Notes for services:
+
+- **Network and uploads.** OOPS! uploads the ontology to oops.linkeddata.es, and CDI/SI query OLS or
+  BioPortal. Use `--only` or `--oops off` to keep an evaluation local, and `--no-iri-network` for
+  offline IRI checks.
+- **Keys.** Pass them through the environment (`BIOPORTAL_API_KEY`, `HF_TOKEN`), not on the command line.
+- **Records.** `--records DIR` also writes `cdi.json`, `si.json`, `iri-checks.json` and `provenance.ttl`.
+- **Python.** The same in Python: `from ontoreview.build import check;
+  onto, report = check("onto.ttl", evaluation={"cdi": "off"})`.
+
 ## Learn more
 
 - **[Guide](guide/GUIDE.md):** every feature, option, check and configuration key.
 - **In the app:** Help (searchable, with screenshots).
-- **Examples:** `python scripts/build_examples.py && python -m http.server -d examples`.
+- **Examples:** `examples/toy_onto.ttl`; build the full set with `python scripts/build_examples.py && python -m http.server -d examples/site`.
 
 ## Development
 

@@ -161,19 +161,93 @@ class Report:
                 out[k] = out.get(k, 0) + v
         return out
 
+    ABOUT = {"OntoReview": "Metadata, labels, definitions and the class hierarchy (built-in rules)",
+             "ROBOT": "OBO-style quality report: labels, definitions, synonyms, references",
+             "Logical consistency": "Whether a reasoner finds contradictions or impossible classes",
+             "IRI checks": "Identifiers: syntax, the ontology header, whether external terms exist",
+             "OntoCheck": "Metrics on labeling, structure, accessibility and naming",
+             "Cross-domain interoperability": "How well the ontology connects to other domains (a score)",
+             "Scientific interoperability": "In how many scientific fields it is interoperable (a score)",
+             "OOPS!": "Common modelling pitfalls (OOPS! web service)"}
+
     def check_rows(self) -> list[dict]:
         """One row per check for the quality report's summary table. ``count`` is None when the
         check did not run (``error``) or reports a verdict rather than findings; ``share`` is the
         count relative to the largest, 0..1. The built-in row has ``tool`` None."""
-        rows = [{"tool": None, "anchor": "quality-builtin", "count": len(self.findings), "error": None}]
+        b = self.summary
+        rows = [{"tool": None, "anchor": "quality-builtin", "count": len(self.findings), "error": None,
+                 "about": self.ABOUT["OntoReview"], "errors": b["error"], "warnings": b["warning"], "infos": b["info"],
+                 "note": ""}]
         for r in self.external:
             n = sum(r.summary.values())
             rows.append({"tool": r.tool, "anchor": tool_anchor(r.tool), "error": r.error,
-                         "count": None if r.error or (not r.items and (r.note or r.metrics)) else n})
+                         "count": None if r.error or (not r.items and (r.note or r.metrics)) else n,
+                         "about": self.ABOUT.get(r.tool, ""), "errors": r.summary["error"],
+                         "warnings": r.summary["warning"], "infos": r.summary["info"],
+                         "note": (r.note or "")[:120] if not r.items else ""})
         top = max((x["count"] or 0 for x in rows), default=0)
         for x in rows:
             x["share"] = (x["count"] or 0) / top if top else 0
         return rows
+
+    def merged_issues(self) -> list[dict]:
+        """Distinct issues across all checks: the same problem found by several checks (a missing
+        definition from OntoReview, ROBOT, OntoCheck and OOPS!) is one issue that lists who found it.
+        The interoperability scores are measurements, not defects, and are left out."""
+        from ..fixes.external import INTEROP, MAP, SAME_ISSUE
+        same = {**SAME_ISSUE, **MAP}
+        titles = {r.id: r.title for r in self.rules_run}
+        groups: dict[str, dict] = {}
+
+        def add(key: str, title: str, sev: str, elems, by: str, anchor: str) -> None:
+            g = groups.setdefault(key, {"key": key, "title": title, "severity": sev, "elements": [],
+                                        "found_by": [], "anchors": []})
+            if SEVERITY_RANK.get(sev, 0) > SEVERITY_RANK.get(g["severity"], 0):
+                g["severity"] = sev
+            for e in elems:
+                if e and e not in g["elements"]:
+                    g["elements"].append(e)
+            if by not in g["found_by"]:
+                g["found_by"].append(by)
+                g["anchors"].append(anchor)
+
+        for f in self.findings:
+            add(f.rule, f.title, f.severity, [f.subject], "OntoReview", "quality-builtin")
+        for ext in self.external:
+            if ext.tool in INTEROP or ext.error:
+                continue
+            for it in ext.items:
+                targets = same.get((ext.tool, it.code)) or ()
+                if not targets:
+                    add(f"{ext.tool}:{it.code}", it.name, it.severity, it.affected, ext.tool, tool_anchor(ext.tool))
+                    continue
+                if len(targets) == 1:
+                    add(targets[0], titles.get(targets[0], it.name), it.severity, it.affected, ext.tool,
+                        tool_anchor(ext.tool))
+                    continue
+                # "domain or range", "label or definition": each element goes to the issue it already has
+                for e in it.affected or [None]:
+                    hit = [k for k in targets if k in groups and e in groups[k]["elements"]] or list(targets[:1])
+                    for key in hit:
+                        add(key, titles.get(key, it.name), it.severity, [e], ext.tool, tool_anchor(ext.tool))
+        return sorted(groups.values(), key=lambda g: (-SEVERITY_RANK.get(g["severity"], 0), -len(g["elements"]),
+                                                      g["title"]))
+
+    def plain_summary(self) -> dict:
+        """Numbers for the plain-language summary at the top of the quality report."""
+        issues = self.merged_issues()
+        raw = len(self.findings) + sum(sum(x.summary.values()) for x in self.external
+                                       if not x.error and x.tool not in ("Cross-domain interoperability",
+                                                                         "Scientific interoperability"))
+        by = {k: sum(1 for i in issues if i["severity"] == k) for k in ("error", "warning", "info")}
+        overlap = [i for i in issues if len(i["found_by"]) > 1]
+        reasoner = next((x for x in self.external if x.tool == TOOLS["reasoner"].name), None)
+        scores = self.scores()
+        return {"issues": len(issues), "raw": raw, "by": by, "checks": self.checks_run(), "top": issues[:3],
+                "overlap": len(overlap), "consistent": None if reasoner is None or reasoner.error else not any(
+                    i.severity == "error" for i in reasoner.items),
+                "reasoner_note": (reasoner.note if reasoner else ""), "scores": scores,
+                "failed": [x.tool for x in self.external if x.error]}
 
     def checks_run(self) -> int:
         """Built-in rules plus every external check that ran (did not end in an error)."""
