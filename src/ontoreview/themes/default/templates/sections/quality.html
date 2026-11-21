@@ -1,7 +1,22 @@
 <section class="section" id="{{ s.id }}">
   {% set r = s.context.report %}
   <h2><span class="secno">{{ s.number }}</span> {{ s.title }}</h2>
+  {% if r.external %}
+  <p class="prose">{{ t('quality_overview') }}</p>
+  <table class="plain check-summary">
+    <caption class="sr-only">{{ s.title }}</caption>
+    <thead><tr><th scope="col">{{ t('check') }}</th><th scope="col">{{ t('findings') }}</th><th scope="col" class="check-bar-col">{{ t('compared_largest') }}</th></tr></thead>
+    <tbody>
+    {% for row in r.check_rows() %}
+      <tr><td><a href="#{{ row.anchor }}">{{ row.tool or t('quality_builtin') }}</a></td>
+      <td class="check-count">{% if row.error %}<span class="muted">{{ t('not_run') }}</span>{% elif row.count is none %}<a href="#{{ row.anchor }}">{{ t('see_report') }}</a>{% else %}{{ row.count }}{% endif %}</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:{{ '%.1f'|format(row.share * 100) }}%"></span></span></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
   <p class="prose">{{ t('quality_builtin') }}: {{ r.summary.error }} {{ t('errors') }}, {{ r.summary.warning }} {{ t('warnings') }} {{ t('and') }} {{ r.summary.info }} {{ t('infos') }}.{% if not r.findings %} {{ t('no_findings') }}{% endif %}{% for ext in r.external %}{% if not ext.error %} {{ ext.tool }}: {{ ext.summary.error }} {{ t('errors') }}, {{ ext.summary.warning }} {{ t('warnings') }}, {{ ext.summary.info }} {{ t('infos') }}.{% endif %}{% endfor %}</p>
+  {% endif %}
 
   {% if r.external %}<h3 class="subhead" id="quality-builtin">{{ t('quality_builtin') }}</h3>{% endif %}
   {% for rule, findings in r.by_rule() %}
@@ -15,7 +30,7 @@
   {% endfor %}
 
   {% for ext in r.external %}
-  <h3 class="subhead" id="quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}">{{ ext.tool }}{% if ext.url %} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a>{% endif %}</h3>
+  <h3 class="subhead" id="{{ ext.tool|tool_anchor }}">{{ ext.tool }}{% if ext.url %} <a class="muted small" href="{{ ext.url }}">{{ ext.url }}</a>{% endif %}</h3>
   {% if ext.scope %}<p class="muted small">{{ ext.scope }}</p>{% endif %}
   {% if ext.metrics %}
   <table class="plain metrics">

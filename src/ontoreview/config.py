@@ -104,7 +104,7 @@ class UIConfig(BaseModel):
         "auto", description="Show object-property edges: true, false or auto (on for up to 40 classes)")
     graph_top_levels: int = Field(2, description="Levels shown initially for large hierarchies")
     section_order: list[str] = Field(default_factory=list, description="Section ids in display order; "
-                                     "'reference' stands for all term sections")
+                                     "'terms' (or 'reference') stands for all term sections")
 
 
 class EvaluationConfig(BaseModel):

@@ -24,7 +24,7 @@
           <li><a href="{{ qbase }}#quality-builtin"><span class="secno">{{ e.number }}.1</span><span class="toc-label">{{ t('quality_builtin') }}</span>{% if qrep.findings %}<span class="toc-count">{{ qrep.findings|length }}</span>{% endif %}</a></li>
           {% for ext in qrep.external %}
           {% set n = ext.summary.error + ext.summary.warning + ext.summary.info %}
-          <li><a href="{{ qbase }}#quality-{{ ext.tool|lower|replace('!', '')|replace(' ', '-') }}"><span class="secno">{{ e.number }}.{{ loop.index + 1 }}</span><span class="toc-label">{{ ext.tool }}</span>{% if ext.error %}<span class="toc-count" title="{{ ext.error }}">!</span>{% elif n %}<span class="toc-count">{{ n }}</span>{% endif %}</a></li>
+          <li><a href="{{ qbase }}#{{ ext.tool|tool_anchor }}"><span class="secno">{{ e.number }}.{{ loop.index + 1 }}</span><span class="toc-label">{{ ext.tool }}</span>{% if ext.error %}<span class="toc-count" title="{{ ext.error }}">!</span>{% elif n %}<span class="toc-count">{{ n }}</span>{% endif %}</a></li>
           {% endfor %}
         </ol>
         {% endif %}
