@@ -1,4 +1,9 @@
-# OntoReview
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="src/ontoreview/ui_assets/brand/logo-dark.svg">
+    <img alt="OntoReview: Docs, review &amp; fixes" src="src/ontoreview/ui_assets/brand/logo-light.svg" width="440">
+  </picture>
+</p>
 
 **Documentation, quality review and interoperability scores for OWL, RDFS, SKOS and LinkML ontologies.**
 Pure Python, no Java. One app or one command; the result is a self-contained website you can publish anywhere.

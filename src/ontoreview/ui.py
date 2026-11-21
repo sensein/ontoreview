@@ -185,9 +185,16 @@ DROP_JS = r"""
 """
 
 # ---------------------------------------------------------------------------- look
-LOGO_SVG = """<svg width="{s}" height="{s}" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" fill="#2F4FD8"/>
-<circle cx="10" cy="10" r="3" fill="#fff"/><circle cx="20" cy="15" r="3" fill="#fff"/><circle cx="10" cy="21" r="3" fill="#fff"/>
-<path d="M12.6 11.3 17.4 13.7M12.6 19.7 17.4 16.3" stroke="#fff" stroke-width="1.6"/></svg>"""
+BRAND = Path(__file__).parent / "ui_assets" / "brand"
+TAGLINE = "Docs, review & fixes"
+
+
+def logo_svg(size: int, small: bool = False) -> str:
+    """The OntoReview icon from the brand kit (favicon.svg is the simplified small-size version)."""
+    svg = (BRAND / ("favicon.svg" if small else "icon.svg")).read_text("utf-8")
+    gid = f"or-logo-{'s' if small else 'l'}{size}"            # unique gradient id per use on a page
+    return svg.replace('id="g"', f'id="{gid}"').replace("url(#g)", f"url(#{gid})").replace(
+        "<svg ", f'<svg width="{size}" height="{size}" aria-hidden="true" ', 1)
 
 NAV = [  # key, path, label, svg path data
     ("build", "/", "Build", '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>'),
@@ -706,10 +713,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
     nav_busy: dict = {}
     with ui.left_drawer(value=True, fixed=True).classes("or-side").props("width=232 breakpoint=900") as drawer:
         with ui.row().classes("items-center gap-3 no-wrap").style("padding: 0 10px 26px"):
-            ui.html(LOGO_SVG.format(s=30), sanitize=False)
+            ui.html(logo_svg(34, small=True), sanitize=False)
             with ui.column().classes("gap-0"):
                 ui.label("OntoReview").style("font-weight:700;font-size:16px;color:#fff;letter-spacing:-.2px")
-                ui.label("Docs & quality review").style("font-size:11px;color:var(--or-side-muted)")
+                ui.label(TAGLINE).style("font-size:11px;color:var(--or-side-muted)")
         with ui.element("nav").props('aria-label="Main"').classes("column gap-1 w-full"):
             for key, path, label, icon in NAV:
                 with ui.link(target=path).classes("or-nav") as link:
@@ -2434,11 +2441,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         page_head("About", "What this tool does, what it runs on, and where to get help.")
         with ui.element("div").classes("or-body column gap-4"):
             with ui.row().classes("or-hero items-center gap-6 w-full"):
-                ui.html(LOGO_SVG.format(s=72), sanitize=False)
+                ui.html(logo_svg(80), sanitize=False)
                 with ui.column().classes("gap-1").style("flex: 1 1 320px"):
                     ui.label("OntoReview").style("font-size:28px;font-weight:700;letter-spacing:-.6px")
-                    ui.label("Turn ontology files into documentation and review their quality with ROBOT and "
-                             "OOPS! — from one window or the command line.").style(
+                    ui.label(TAGLINE).style("font-size:15px;font-weight:600;color:#93C5FD")
+                    ui.label("Turn ontology files into self-contained documentation, review their quality (built-in "
+                             "rules, ROBOT, reasoner, IRI checks, OntoCheck, OOPS!), score cross-domain and scientific "
+                             "interoperability, and publish the result — from one window or the command line.").style(
                         "font-size:15px;line-height:1.55;color:#C9D1DB;max-width:560px")
                     with ui.row().classes("gap-2 q-mt-sm"):
                         for chip in (f"Version {__version__}", "MIT License", "CAIR-Nepal"):
