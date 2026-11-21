@@ -55,6 +55,7 @@ Before any docs are generated, **Build docs** opens the **Quality issues** page:
 - **Come back later**: the Quality issues page lists every checked ontology with its status (waiting / built), kept across restarts; each is built only when you apply or skip it, with its own settings.
 - **Apply N fixes & build** writes a new file (`a-v1.ttl`, `a-v1.yaml` for LinkML) with a patch and a record; the original is never changed. **Skip and build** uses the original.
 - **LinkML**: definitions, titles, domains and ranges of classes, slots, enums and class attributes go into the YAML copy. A fix the YAML cannot hold (e.g. on an imported term) saves the fixed version as OWL (`a-v1.ttl`, generated from the schema) plus a YAML patch of the rest.
+- **Missed reuse**: terms you defined that a standard vocabulary already has (e.g. your `:Sensor` next to `sosa:Sensor`) are found by label or name in the term database; you can link yours to it (`owl:equivalentClass`) or reuse the standard IRI. A shared name is not proof of the same meaning, so you decide.
 - **Long lists**: open issues stay on top; accepted or ignored ones move to the end.
 - **Prompts**: the exact prompts sent to the model are in [`src/ontoreview/fixes/ai/prompts.md`](src/ontoreview/fixes/ai/prompts.md); edit it, or point `ONTOREVIEW_PROMPTS` at your own copy.
 
@@ -161,6 +162,9 @@ Notes for services:
 - **[Guide](guide/GUIDE.md):** every feature, option, check and configuration key.
 - **In the app:** Help (searchable, with screenshots).
 - **Examples:** `examples/toy_onto.ttl`; build the full set with `python scripts/build_examples.py && python -m http.server -d examples/site`.
+
+## Contact
+tekraj@mit.edu
 
 ## Development
 
