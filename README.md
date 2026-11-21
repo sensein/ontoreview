@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="src/ontoreview/ui_assets/brand/logo-dark.svg">
-    <img alt="OntoReview: Docs, review &amp; fixes" src="src/ontoreview/ui_assets/brand/logo-light.svg" width="440">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/brand/logo-dark.svg">
+    <img alt="OntoReview: Docs, review &amp; fixes" src="https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/brand/logo-light.svg" width="440">
   </picture>
 </p>
 
@@ -25,7 +25,7 @@ authors. A formal citation will be provided when the manuscript is published.
   author  = {Chhetri, Tek Raj and Dobriy, Daniil and Mihindukulasooriya, Nandana and Ghosh, Satrajit S.},
   title   = {{OntoReview}: Ontology Quality Assessment, {LLM}-Assisted Repair and Documentation},
   year    = {2026},
-  version = {0.1.0},
+  version = {1.0.0},
   url     = {https://github.com/sensein/ontoreview}
 }
 ```
@@ -66,7 +66,7 @@ Before any docs are generated, **Build docs** opens the **Quality issues** page:
 
 | | |
 |---|---|
-| ![Quality issues: an AI-drafted definition with its Turtle change and the model that wrote it](src/ontoreview/ui_assets/help/fixes-ai.png) | ![Quality issues: ranked AI suggestions for a property's domain, with reasons](src/ontoreview/ui_assets/help/fixes-ai-domain.png) |
+| ![Quality issues: an AI-drafted definition with its Turtle change and the model that wrote it](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/fixes-ai.png) | ![Quality issues: ranked AI suggestions for a property's domain, with reasons](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/fixes-ai-domain.png) |
 | **AI draft** – a definition to edit, the Turtle change, and which model wrote it (local Ollama here) | **AI suggestion** – ranked domains with reasons; pick one or choose your own |
 
 - **Required metadata** first: title, description, license and creators (name, ORCID, email; add as many as needed; the ORCID is looked up by name and you pick the right person). The docs are not generated without them.
@@ -86,17 +86,17 @@ Command line: `ontoreview fix list a.ttl --ai -o fixes.json`, then `ontoreview f
 
 | | |
 |---|---|
-| ![Quality issues page before the docs are built: required metadata and suggested fixes](src/ontoreview/ui_assets/help/fixes.png) | ![The app after a build: results, Deploy, Export](src/ontoreview/ui_assets/help/results.png) |
+| ![Quality issues page before the docs are built: required metadata and suggested fixes](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/fixes.png) | ![The app after a build: results, Deploy, Export](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/results.png) |
 | **Quality issues** – fix first: required metadata, then suggested fixes | **Build** – results, quality metrics and issues |
-| ![Interoperability page: CDI and SI](src/ontoreview/ui_assets/help/interop-results.png) | ![Compare two versions](src/ontoreview/ui_assets/help/compare.png) |
+| ![Interoperability page: CDI and SI](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/interop-results.png) | ![Compare two versions](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/compare.png) |
 | **Interoperability** – CDI and SI for one ontology | **Compare** – what changed between versions |
-| ![Generated docs: quality report](guide/images/docs-quality.png) | ![Generated docs: provenance timeline](guide/images/docs-provenance.png) |
+| ![Generated docs: quality report](https://raw.githubusercontent.com/sensein/ontoreview/main/guide/images/docs-quality.png) | ![Generated docs: provenance timeline](https://raw.githubusercontent.com/sensein/ontoreview/main/guide/images/docs-provenance.png) |
 | **Docs** – quality report: a plain-language summary, each issue once (with the checks that found it), then each check's own report | **Docs** – provenance with timestamps |
-| ![Generated docs: diagram](guide/images/docs-graph.png) | ![Generated docs: scientific interoperability](guide/images/docs-si.png) |
+| ![Generated docs: diagram](https://raw.githubusercontent.com/sensein/ontoreview/main/guide/images/docs-graph.png) | ![Generated docs: scientific interoperability](https://raw.githubusercontent.com/sensein/ontoreview/main/guide/images/docs-si.png) |
 | **Docs** – interactive diagram | **Docs** – scientific interoperability per domain |
-| ![Run history: configuration, re-run and export](src/ontoreview/ui_assets/help/history-config.png) | ![Deploy to GitHub Pages](src/ontoreview/ui_assets/help/deploy.png) |
+| ![Run history: configuration, re-run and export](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/history-config.png) | ![Deploy to GitHub Pages](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/deploy.png) |
 | **Run history** – re-run as is or changed, export | **Deploy** – push to GitHub Pages |
-| ![Settings: scientific interoperability](src/ontoreview/ui_assets/help/si-settings.png) | |
+| ![Settings: scientific interoperability](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/si-settings.png) | |
 | **Settings** – references, domains, OLS/BioPortal search | |
 
 ## Commands

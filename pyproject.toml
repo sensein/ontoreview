@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ontoreview"
-version = "0.1.0"
-description = "Beautiful, self-contained documentation for OWL, RDFS and SKOS ontologies."
+version = "1.0.0"
+description = "OntoReview is an ontology quality assessment, AI-assisted repair, and documentation tool for OWL, RDFS, SKOS, and LinkML, supporting cross-domain and scientific interoperability evaluation."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -46,7 +46,9 @@ ontoreview = "ontoreview.cli:app"
 ontoreview-ui = "ontoreview.ui:main"
 
 [project.urls]
-Homepage = "https://github.com/tekrajchhetri/ontoreview"
+Homepage = "https://github.com/sensein/ontoreview"
+Repository = "https://github.com/sensein/ontoreview"
+Issues = "https://github.com/sensein/ontoreview/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ontoreview"]
