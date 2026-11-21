@@ -99,6 +99,52 @@ Command line: `ontoreview fix list a.ttl --ai -o fixes.json`, then `ontoreview f
 | ![Settings: scientific interoperability](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/si-settings.png) | |
 | **Settings** – references, domains, OLS/BioPortal search | |
 
+## Settings and defaults
+
+Every check runs by default and is skipped quietly when what it needs is missing (for example,
+Docker for ROBOT). You can change any setting in three places:
+
+| Where | How | Applies to |
+|---|---|---|
+| **App** | Settings › *Quality checks* and *AI & fixes* (stored in `~/.config/ontoreview/ui.json`) | Runs from the app |
+| **Project file** | `[evaluation]` and `[ai]` in `ontoreview.toml` next to the ontology (`ontoreview init` creates one) | App, command line and CI, so everyone gets the same result |
+| **Command line** | Options such as `--no-oops`, or any setting with `--set KEY=VALUE` (`ontoreview evaluate --list-options` lists them all) | That run only |
+
+Choices made in the app or on the command line override `ontoreview.toml`.
+
+| Check | Default | Leaves your machine? | Change it with |
+|---|---|---|---|
+| Built-in rules | on | no | `[checks] disable = ["OB019"]`, `--disable-rule` |
+| ROBOT report | `auto`: a local `robot`, else Docker | no | `robot = "auto" \| "on" \| "off"`, `robot_path = "/path/to/robot"` |
+| Reasoner (consistency) | `hermit` (via ROBOT) | no | `reasoner = "hermit" \| "elk" \| "off"` |
+| IRI checks | on, with OLS/BioPortal lookups | term lookups only | `iri_checks = "off"`, `iri_network = false` (offline: bundled and cached vocabularies) |
+| OntoCheck | on | only to endpoints the ontology itself declares | `ontocheck = "off"`, `ontocheck_network = false` |
+| **OOPS!** | `auto`: runs alongside ROBOT, skipping what ROBOT covers | **yes, it uploads the ontology** to oops.linkeddata.es | `oops = "off"`, or `oops_endpoint = "https://your-server/rest"` for a self-hosted OOPS! |
+| Cross-domain interoperability | on, references discovered in OLS | term searches; language models downloaded once | `cdi = "off"`, `cdi_references = ["ols", "my-ref.ttl"]` |
+| Scientific interoperability | on (reuses the cross-domain run) | as above | `si = "off"`, `si_theta_s = 0.3` |
+| Review before docs | on | no | App: Settings › *AI & fixes* |
+| AI suggestions | on; nothing applied without your acceptance | only with an API source | `[ai] enabled = false`, `priority = ["ollama", "hf", "api"]` |
+
+**Keep everything local.** Turn off OOPS! and network lookups. Use a local AI source (Ollama, or the
+Hugging Face model, which is downloaded once and then runs on your computer):
+
+```toml
+[evaluation]
+oops = "off"              # or oops_endpoint = "https://your-server/rest" for a self-hosted OOPS!
+iri_network = false       # IRI checks against the bundled and cached vocabularies only
+cdi = "off"               # cross-domain and scientific scores query OLS / BioPortal
+si = "off"
+
+[ai]
+priority = ["ollama", "hf"]   # no API
+ollama_model = "qwen3.5:4b"
+```
+
+**Keys and tokens** belong in the environment (`BIOPORTAL_API_KEY`, `ONTOPORTAL_API_KEY`, `HF_TOKEN`,
+`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`) or in the app's Settings, which keeps them in a file only you can
+read. They are never written to `ontoreview.toml`, the run history or any report.
+All settings with their descriptions: [Guide › Configuration](guide/GUIDE.md#configuration-ontoreviewtoml).
+
 ## Commands
 
 | Command | What it does |
