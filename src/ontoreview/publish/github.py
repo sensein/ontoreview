@@ -168,8 +168,8 @@ def token_status(token: str) -> str:
     except OSError as e:
         raise DeployError("Could not reach GitHub.") from e
     if scopes is None:
-        return f"Works: fine-grained token of {login}. It needs Contents, Pages and Workflows (and Administration " \
-               "to create repositories): read and write."
+        return f"Works: fine-grained token of {login}. It needs Contents, Pages, Workflows and Administration " \
+               "(to create repositories and allow your branch to deploy): read and write."
     have = {x.strip() for x in scopes.split(",") if x.strip()}
     missing = [x for x in ("repo", "workflow") if x not in have and not (x == "repo" and "public_repo" in have)]
     return f"Works: classic token of {login} (scopes: {', '.join(sorted(have)) or 'none'})." + \
@@ -213,13 +213,53 @@ def _pages_api(owner: str, repo: str, token: str) -> bool:
     return False
 
 
-def _enable_pages(owner: str, repo: str, token: str | None = None) -> str:
+ENV = "github-pages"
+
+
+def allow_branch(owner: str, repo: str, branch: str, token: str) -> str:
+    """Let ``branch`` deploy to the github-pages environment (its protection rules may allow only
+    gh-pages, which makes the workflow fail with "Branch … is not allowed to deploy"). '' when done."""
+    manual = (f"If the Actions run says \"Branch {branch} is not allowed to deploy to github-pages\": "
+              f"https://github.com/{owner}/{repo}/settings/environments > github-pages > Deployment branches "
+              f"and tags: add {branch} (or No restriction), then re-run the workflow.")
+    base = f"/repos/{owner}/{repo}/environments/{ENV}"
+    status, env = _api("GET", base, token)
+    policy = (env or {}).get("deployment_branch_policy") if status == 200 else None
+    if status == 200 and not policy:
+        return ""                                    # no restriction: any branch may deploy
+    if status == 200 and policy.get("protected_branches"):
+        # protected branches only: switch to an explicit list that keeps whatever was allowed and adds ours
+        st, _ = _api("PUT", base, token, {"deployment_branch_policy": {"protected_branches": False,
+                                                                       "custom_branch_policies": True}})
+        if st not in (200, 201):
+            return manual
+    elif status == 404:                              # first deploy: create it with an explicit list
+        st, _ = _api("PUT", base, token, {"deployment_branch_policy": {"protected_branches": False,
+                                                                       "custom_branch_policies": True}})
+        if st not in (200, 201):
+            return manual
+    elif status != 200:
+        return manual
+    st, data = _api("GET", f"{base}/deployment-branch-policies?per_page=100", token)
+    names = {x.get("name") for x in (data or {}).get("branch_policies", [])} if st == 200 else set()
+    if branch in names:
+        return ""
+    st, _ = _api("POST", f"{base}/deployment-branch-policies", token, {"name": branch, "type": "branch"})
+    return "" if st in (200, 201) else manual
+
+
+def _enable_pages(owner: str, repo: str, token: str | None = None, branch: str = "main") -> str:
     """Set the Pages source to GitHub Actions (token: REST API; else the GitHub CLI); '' when done."""
     manual = (f"Turn on GitHub Pages once: https://github.com/{owner}/{repo}/settings/pages > "
               "Build and deployment > Source: GitHub Actions.")
     if token:
-        return "" if _pages_api(owner, repo, token) else manual + " (The token could not do it: it needs Pages: " \
-                                                                  "read and write.)"
+        notes = []
+        if not _pages_api(owner, repo, token):
+            notes.append(manual + " (The token could not do it: it needs Pages: read and write.)")
+        allowed = allow_branch(owner, repo, branch, token)   # needs Administration: read and write
+        if allowed:
+            notes.append(allowed)
+        return " ".join(notes)
     gh = shutil.which("gh")
     if not gh:
         return manual + " (Or paste a GitHub token in the dialog, or install the GitHub CLI, to let OntoReview do it.)"
@@ -296,10 +336,14 @@ def _deploy(site: Path, remote: str, branch: str, message: str | None, enable_pa
             raise DeployError(f"The push did not arrive on GitHub ({branch} is not at {head[:7]}). Try again.")
     result.commit = head[:7]
     if enable_pages:
-        note = _enable_pages(owner, repo, token)
+        note = _enable_pages(owner, repo, token, branch)
         if note:
             result.notes.append(note)
     result.notes.append(f"GitHub Actions publishes it in a minute or two: https://github.com/{owner}/{repo}/actions")
+    if not token:
+        result.notes.append(f"If that run says \"Branch {branch} is not allowed to deploy to github-pages\": "
+                            f"https://github.com/{owner}/{repo}/settings/environments > github-pages > Deployment "
+                            f"branches and tags: add {branch}, then re-run it.")
     return result
 
 

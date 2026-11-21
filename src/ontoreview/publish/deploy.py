@@ -179,6 +179,10 @@ The workflow `{PAGES_WORKFLOW}` publishes this folder on every push to `{branch}
 3. In the repository: **Settings > Pages > Build and deployment > Source: GitHub Actions** (once).
 4. The site appears at `https://<you>.github.io/<repo>/` (Actions tab shows progress).
 
+If the run fails with *Branch "{branch}" is not allowed to deploy to github-pages due to environment
+protection rules*: **Settings > Environments > github-pages > Deployment branches and tags**, add
+`{branch}` (or choose No restriction), then re-run the workflow.
+
 The OntoReview app does steps 2 and 3 for you: **Deploy to GitHub Pages** on a website result or in
 Run history. Later builds push to the same repository, so the site updates with each deploy.
 

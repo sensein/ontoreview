@@ -174,3 +174,55 @@ def test_ensure_repo_existing_and_refused(monkeypatch):
     monkeypatch.setattr(github, "_api", lambda m, p, t, b=None: replies.get((m, p), (403, {"message": "Resource not accessible"})))
     with pytest.raises(github.DeployError, match="selected repositories"):
         github.ensure_repo("you", "docs", "t")
+
+
+class FakeAPI:
+    """Records GitHub API calls; answers from a table of (method, path) -> (status, body)."""
+
+    def __init__(self, replies):
+        self.replies, self.calls = replies, []
+
+    def __call__(self, method, path, token, body=None):
+        self.calls.append((method, path.split("?")[0], body))
+        return self.replies.get((method, path.split("?")[0]), (201, {}))
+
+
+ENVP = "/repos/you/docs/environments/github-pages"
+
+
+def test_allow_branch_cases(monkeypatch):
+    # no restriction: nothing to change
+    api = FakeAPI({("GET", ENVP): (200, {"deployment_branch_policy": None})})
+    monkeypatch.setattr(github, "_api", api)
+    assert github.allow_branch("you", "docs", "main", "t") == "" and len(api.calls) == 1
+    # only gh-pages allowed (the error seen live): main is added
+    api = FakeAPI({("GET", ENVP): (200, {"deployment_branch_policy": {"protected_branches": False,
+                                                                       "custom_branch_policies": True}}),
+                   ("GET", ENVP + "/deployment-branch-policies"): (200, {"branch_policies": [{"name": "gh-pages"}]})})
+    monkeypatch.setattr(github, "_api", api)
+    assert github.allow_branch("you", "docs", "main", "t") == ""
+    assert api.calls[-1] == ("POST", ENVP + "/deployment-branch-policies", {"name": "main", "type": "branch"})
+    # already allowed
+    api = FakeAPI({("GET", ENVP): (200, {"deployment_branch_policy": {"custom_branch_policies": True}}),
+                   ("GET", ENVP + "/deployment-branch-policies"): (200, {"branch_policies": [{"name": "main"}]})})
+    monkeypatch.setattr(github, "_api", api)
+    assert github.allow_branch("you", "docs", "main", "t") == "" and api.calls[-1][0] == "GET"
+    # protected branches only, and no environment yet: switched / created with an explicit list
+    for env in ((200, {"deployment_branch_policy": {"protected_branches": True}}), (404, {})):
+        api = FakeAPI({("GET", ENVP): env, ("PUT", ENVP): (200, {}),
+                       ("GET", ENVP + "/deployment-branch-policies"): (200, {"branch_policies": []})})
+        monkeypatch.setattr(github, "_api", api)
+        assert github.allow_branch("you", "docs", "main", "t") == ""
+        assert ("PUT", ENVP, {"deployment_branch_policy": {"protected_branches": False,
+                                                           "custom_branch_policies": True}}) in api.calls
+    # token without Administration: say what to do by hand
+    api = FakeAPI({("GET", ENVP): (200, {"deployment_branch_policy": {"custom_branch_policies": True}}),
+                   ("GET", ENVP + "/deployment-branch-policies"): (200, {"branch_policies": []}),
+                   ("POST", ENVP + "/deployment-branch-policies"): (403, {})})
+    monkeypatch.setattr(github, "_api", api)
+    assert "settings/environments" in github.allow_branch("you", "docs", "main", "t")
+
+
+def test_deploy_readme_mentions_environment_rule(fixtures, tmp_path):
+    ontoreview.build(fixtures / "pizza.ttl", out=tmp_path, evaluation={"oops": "off"})
+    assert 'Branch "main" is not allowed to deploy' in (tmp_path / "DEPLOY.md").read_text()

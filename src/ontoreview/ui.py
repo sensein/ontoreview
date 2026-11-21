@@ -403,7 +403,9 @@ HELP = [
         "Settings says whose token it is and what is missing.",
         "<b>Turn on GitHub Pages</b> sets the repository's Pages source to GitHub Actions (with the token, or the "
         "GitHub CLI). Otherwise the result tells you the one setting to change (Settings › Pages › Source: GitHub "
-        "Actions).",
+        "Actions). With the token it also lets your branch deploy to the <code>github-pages</code> environment; "
+        "if a run fails with “Branch main is not allowed to deploy to github-pages”, add the branch under "
+        "Settings › Environments › github-pages › Deployment branches and tags, and re-run it.",
         "<b>Docker:</b> <code>docker compose up -d</code> in the website folder serves it at http://localhost:8080/. "
         "<b>Elsewhere:</b> upload the folder to any static host; see DEPLOY.md.",
     ], "The token is kept on this computer only (like the API keys) and sent to GitHub as a request header; it is "
@@ -2024,8 +2026,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                         'Create the repository on GitHub first; OntoReview pushes to it.</li>'
                                         '<li><b>All repositories</b>: also lets OntoReview create new repositories '
                                         'for you.</li></ul>'
-                                        'Permissions: Contents, Pages and Workflows: read and write (plus '
-                                        'Administration: read and write to create repositories). '
+                                        'Permissions: Contents, Pages, Workflows and Administration: read '
+                                        'and write (Administration lets it create repositories and allow your '
+                                        'branch to deploy to Pages). '
                                         'Or a <a class="text-primary" href="https://github.com/settings/tokens/new?scopes=repo,workflow&amp;'
                                         'description=OntoReview%20deploy" target="_blank" rel="noopener">classic '
                                         'token</a> with the repo and workflow scopes (all your repositories). Set an '
