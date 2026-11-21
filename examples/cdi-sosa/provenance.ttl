@@ -7,6 +7,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
+    prov:generatedAtTime "2026-11-21T17:11:35+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom sosa: ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -24,6 +25,14 @@
     dcterms:title "Toxic Process Ontology" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (3 correspondence(s), via ols)." .
 
+<http://purl.org/spar/datacite/2026-10-05> a prov:Entity ;
+    dcterms:date "2026-11-20T02:33:51.493696+00:00"^^xsd:string ;
+    dcterms:identifier "sha256:129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f" ;
+    dcterms:isVersionOf <http://purl.org/spar/datacite> ;
+    dcterms:source <https://sparontologies.github.io/datacite/current/datacite.xml> ;
+    dcterms:title "The DataCite Ontology (DataCite)" ;
+    rdfs:comment "Release used to verify 2 external term(s) (via cache)." .
+
 <http://semanticscience.org/ontology/sio/v1.62/sio-release.owl> a prov:Entity ;
     dcterms:date "2026-11-20T01:24:38Z"^^xsd:string ;
     dcterms:hasVersion "1.62" ;
@@ -38,7 +47,7 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
 
 <http://www.w3.org/ns/prov-o-20130430> a prov:Entity ;
-    dcterms:date "2026-11-20T01:27:54.209966+00:00"^^xsd:string ;
+    dcterms:date "2026-11-21T17:11:24.682092+00:00"^^xsd:string ;
     dcterms:hasVersion "Recommendation version 2013-04-30" ;
     dcterms:identifier "sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96" ;
     dcterms:isVersionOf prov: ;
@@ -54,10 +63,12 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (13 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-20T01:28:01+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T17:11:35+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T17:11:19+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
         <http://purl.obolibrary.org/obo/txpo/releases/2022-12-07/txpo.owl>,
+        <http://purl.org/spar/datacite/2026-10-05>,
         <http://semanticscience.org/ontology/sio/v1.62/sio-release.owl>,
         <http://snomed.info/sct/900000000000207008/version/20251017>,
         <http://www.w3.org/ns/prov-o-20130430>,
@@ -121,8 +132,9 @@
     dcterms:identifier "sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392" ;
     dcterms:isVersionOf sosa: ;
     dcterms:source <https://www.w3.org/ns/sosa/sosa.ttl> ;
-    dcterms:title "Sensor, Observation, Sample, and Actuator" ;
-    rdfs:comment "Release used to verify 5 external term(s) (via bundle)." .
+    dcterms:title "Sensor, Observation, Sample, and Actuator",
+        "sosa.ttl" ;
+    rdfs:comment "Release used to verify 3 external term(s) (via bundle)." .
 
 <urn:sha256:e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6> a prov:Entity ;
     dcterms:date "2026-11-18T01:08:31.108081+00:00"^^xsd:string ;

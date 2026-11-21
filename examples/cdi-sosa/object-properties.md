@@ -27,12 +27,12 @@ A relation between an Observation and the entity whose quality was observed, or 
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
-| Range | [Feature Of Interest](classes.md#featureofinterest); [Sample](classes.md#sample) |
+| Domain | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
+| Range | [Sample](classes.md#sample); [Feature Of Interest](classes.md#featureofinterest) |
 | Inverse of | [is feature of interest of](object-properties.md#isfeatureofinterestof) |
 | Examples | `For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the property is its weight.` |
-| domainIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
-| rangeIncludes | sosa:FeatureOfInterest; sosa:Sample |
+| domainIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
+| rangeIncludes | sosa:Sample; sosa:FeatureOfInterest |
 
 ### has result
 
@@ -44,10 +44,10 @@ Relation linking an Observation or Actuation or act of Sampling and a Result or 
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Sampling](classes.md#sampling); [Actuation](classes.md#actuation) |
+| Domain | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
 | Range | [Sample](classes.md#sample); [Result](classes.md#result) |
 | Inverse of | [is result of](object-properties.md#isresultof) |
-| domainIncludes | sosa:Observation; sosa:Sampling; sosa:Actuation |
+| domainIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
 | rangeIncludes | sosa:Sample; sosa:Result |
 
 ### has sample
@@ -77,10 +77,10 @@ Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted
 | | |
 |---|---|
 | Domain | [Platform](classes.md#platform) |
-| Range | [Platform](classes.md#platform); [Sensor](classes.md#sensor); [Actuator](classes.md#actuator); [Sampler](classes.md#sampler) |
+| Range | [Sampler](classes.md#sampler); [Actuator](classes.md#actuator); [Sensor](classes.md#sensor); [Platform](classes.md#platform) |
 | Inverse of | [is hosted by](object-properties.md#ishostedby) |
 | domainIncludes | sosa:Platform |
-| rangeIncludes | sosa:Platform; sosa:Sensor; sosa:Actuator; sosa:Sampler |
+| rangeIncludes | sosa:Sampler; sosa:Actuator; sosa:Sensor; sosa:Platform |
 
 ### is acted on by
 
@@ -110,10 +110,10 @@ A relation between a FeatureOfInterest and an Observation about it, an Actuation
 | | |
 |---|---|
 | Domain | [Feature Of Interest](classes.md#featureofinterest); [Sample](classes.md#sample) |
-| Range | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
+| Range | [Actuation](classes.md#actuation); [Sampling](classes.md#sampling); [Observation](classes.md#observation) |
 | Inverse of | [has feature of interest](object-properties.md#hasfeatureofinterest) |
 | domainIncludes | sosa:FeatureOfInterest; sosa:Sample |
-| rangeIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
+| rangeIncludes | sosa:Actuation; sosa:Sampling; sosa:Observation |
 
 ### is hosted by
 
@@ -125,10 +125,10 @@ Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that
 
 | | |
 |---|---|
-| Domain | [Actuator](classes.md#actuator); [Sampler](classes.md#sampler); [Platform](classes.md#platform); [Sensor](classes.md#sensor) |
+| Domain | [Platform](classes.md#platform); [Sampler](classes.md#sampler); [Actuator](classes.md#actuator); [Sensor](classes.md#sensor) |
 | Range | [Platform](classes.md#platform) |
 | Inverse of | [hosts](object-properties.md#hosts) |
-| domainIncludes | sosa:Actuator; sosa:Sampler; sosa:Platform; sosa:Sensor |
+| domainIncludes | sosa:Platform; sosa:Sampler; sosa:Actuator; sosa:Sensor |
 | rangeIncludes | sosa:Platform |
 
 ### is observed by
@@ -157,11 +157,11 @@ Relation linking a Result to the Observation or Actuation or act of Sampling tha
 
 | | |
 |---|---|
-| Domain | [Result](classes.md#result); [Sample](classes.md#sample) |
-| Range | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
+| Domain | [Sample](classes.md#sample); [Result](classes.md#result) |
+| Range | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
 | Inverse of | [has result](object-properties.md#hasresult) |
-| domainIncludes | sosa:Result; sosa:Sample |
-| rangeIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
+| domainIncludes | sosa:Sample; sosa:Result |
+| rangeIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
 
 ### is sample of
 
@@ -316,9 +316,9 @@ The time that the Result of an Observation, Actuation or Sampling applies to the
 
 | | |
 |---|---|
-| Domain | [Actuation](classes.md#actuation); [Observation](classes.md#observation); [Sampling](classes.md#sampling) |
+| Domain | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
 | Range | [TemporalEntity](classes.md#temporalentity) |
-| domainIncludes | sosa:Actuation; sosa:Observation; sosa:Sampling |
+| domainIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
 | rangeIncludes | time:TemporalEntity |
 
 ### used procedure
@@ -331,8 +331,8 @@ A relation to link to a re-usable Procedure used in making an Observation, an Ac
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
+| Domain | [Actuation](classes.md#actuation); [Sampling](classes.md#sampling); [Observation](classes.md#observation) |
 | Range | [Procedure](classes.md#procedure) |
-| domainIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
+| domainIncludes | sosa:Actuation; sosa:Sampling; sosa:Observation |
 | rangeIncludes | sosa:Procedure |
 

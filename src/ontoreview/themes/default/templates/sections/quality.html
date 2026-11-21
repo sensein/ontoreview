@@ -47,7 +47,7 @@
   {% if ext.provenance and ext.provenance.releases %}
   <table class="plain metrics">
     {% set recfile = ext.provenance.record_file or 'iri-checks.json' %}
-    <caption class="muted small" style="text-align:left;caption-side:top">{{ ext.provenance.label or 'Verified against' }} (frozen at build time, {{ (ext.provenance.checked_at or '')[:19]|replace('T', ' ') }} UTC; full record in <a href="{{ recfile }}">{{ recfile }}</a>)</caption>
+    <caption class="muted small" style="text-align:left;caption-side:top">{{ ext.provenance.label or 'Verified against' }} (frozen at build time, {{ (ext.provenance.checked_at or '')[:19]|replace('T', ' ') }} UTC; full record in {% if inline %}<code>{{ recfile }}</code> in the documentation folder{% else %}<a href="{{ recfile }}">{{ recfile }}</a>{% endif %})</caption>
     <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
     <tbody>
     {% for rel in ext.provenance.releases %}

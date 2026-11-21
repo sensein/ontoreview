@@ -20,9 +20,9 @@ An activity is something that occurs over a period of time and acts upon or with
 
 **IRI:** `http://www.w3.org/ns/prov#ActivityInfluence` · `prov:ActivityInfluence`
 
-ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
-
 It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.
+
+ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.
 
 | | |
 |---|---|
@@ -54,9 +54,9 @@ An agent is something that bears some form of responsibility for an activity tak
 
 **IRI:** `http://www.w3.org/ns/prov#AgentInfluence` · `prov:AgentInfluence`
 
-AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
-
 It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.
+
+AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.
 
 | | |
 |---|---|
@@ -180,9 +180,9 @@ An instance of prov:Delegation provides additional descriptions about the binary
 
 A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.
 
-An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].
-
 The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.
+
+An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].
 
 | | |
 |---|---|
@@ -248,9 +248,9 @@ An entity is a physical, digital, conceptual, or other kind of thing with some f
 
 **IRI:** `http://www.w3.org/ns/prov#EntityInfluence` · `prov:EntityInfluence`
 
-It is not recommended that the type EntityInfluence be asserted without also asserting one of its more specific subclasses.
-
 EntityInfluence provides additional descriptions of an Entity's binary influence upon any other kind of resource. Instances of EntityInfluence use the prov:entity property to cite the influencing Entity.
+
+It is not recommended that the type EntityInfluence be asserted without also asserting one of its more specific subclasses.
 
 | | |
 |---|---|

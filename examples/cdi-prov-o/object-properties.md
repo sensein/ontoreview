@@ -15,7 +15,7 @@ An object property to express the accountability of an agent towards another age
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | hadDelegate |
-| qualifiedForm | prov:Delegation; prov:qualifiedDelegation |
+| qualifiedForm | prov:qualifiedDelegation; prov:Delegation |
 
 ### activity
 
@@ -198,7 +198,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Influence](classes.md#influence); [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
+| Domain | [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent); [Influence](classes.md#influence) |
 | Range | [Role](classes.md#role) |
 | category | qualified |
 | component | agents-responsibility |
@@ -698,7 +698,7 @@ An entity is derived from an original entity by copying, or 'quoting', some or a
 | category | expanded |
 | component | derivations |
 | inverse | quotedAs |
-| qualifiedForm | prov:Quotation; prov:qualifiedQuotation |
+| qualifiedForm | prov:qualifiedQuotation; prov:Quotation |
 
 ### wasRevisionOf
 
@@ -732,5 +732,5 @@ Start is when an activity is deemed to have started. A start may refer to an ent
 | category | expanded |
 | component | entities-activities |
 | inverse | started |
-| qualifiedForm | prov:Start; prov:qualifiedStart |
+| qualifiedForm | prov:qualifiedStart; prov:Start |
 

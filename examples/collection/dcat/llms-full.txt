@@ -15,6 +15,7 @@ DCAT is an RDF vocabulary designed to facilitate interoperability between data c
 - [Classes](classes.md) (9)
 - [Object properties](object-properties.md) (30)
 - [Datatype properties](datatype-properties.md) (9)
+- [Annotation properties](annotation-properties.md) (27)
 
 ---
 
@@ -43,7 +44,7 @@ A record in a data catalog, describing the registration of a single dataset or d
 
 | | |
 |---|---|
-| Restrictions | [primaryTopic](object-properties.md#primarytopic) *only* [Catalogued resource](classes.md#resource); [primaryTopic](object-properties.md#primarytopic) *exactly* `1` |
+| Restrictions | [primaryTopic](object-properties.md#primarytopic) *exactly* `1`; [primaryTopic](object-properties.md#primarytopic) *only* [Catalogued resource](classes.md#resource) |
 | Used in | in range of [record](object-properties.md#record) |
 
 ### Catalogued resource
@@ -523,7 +524,7 @@ The knowledge organization system (KOS) used to classify catalog's datasets.
 |---|---|
 | Domain | [Catalog](classes.md#catalog) |
 | Range | [rdfs:Resource](http://www.w3.org/2000/01/rdf-schema#Resource) |
-| sdo:rangeIncludes | skos:Collection; skos:ConceptScheme; owl:Ontology |
+| rangeIncludes | skos:ConceptScheme; owl:Ontology; skos:Collection |
 
 ---
 
@@ -581,16 +582,6 @@ The end of the period.
 | Domain | [dcterms:PeriodOfTime](http://purl.org/dc/terms/PeriodOfTime) |
 | Range | [rdfs:Literal](http://www.w3.org/2000/01/rdf-schema#Literal) |
 
-### geografisk opløsning (meter)
-
-**IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
-
-mindste geografiske afstand som kan resolveres i et datasæt, målt i meter.
-
-| | |
-|---|---|
-| Range | [xsd:decimal](http://www.w3.org/2001/XMLSchema#decimal) |
-
 ### keyword
 
 **IRI:** `http://www.w3.org/ns/dcat#keyword` · `dcat:keyword`
@@ -602,6 +593,16 @@ A keyword or tag describing a resource.
 | | |
 |---|---|
 | Range | [rdfs:Literal](http://www.w3.org/2000/01/rdf-schema#Literal) |
+
+### prostorové rozlišení (metry)
+
+**IRI:** `http://www.w3.org/ns/dcat#spatialResolutionInMeters` · `dcat:spatialResolutionInMeters`
+
+minimum spatial separation resolvable in a dataset, measured in meters.
+
+| | |
+|---|---|
+| Range | [xsd:decimal](http://www.w3.org/2001/XMLSchema#decimal) |
 
 ### start date
 
@@ -633,3 +634,115 @@ minimum time period resolvable in a dataset.
 The version indicator (name or identifier) of a resource.
 
 The version indicator (name or identifier) of a resource.
+
+---
+
+# Annotation properties
+
+### altLabel
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#altLabel` · `skos:altLabel`
+
+### backwardCompatibleWith
+
+**IRI:** `http://www.w3.org/2002/07/owl#backwardCompatibleWith` · `owl:backwardCompatibleWith`
+
+### changeNote
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#changeNote` · `skos:changeNote`
+
+### comment
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#comment` · `rdfs:comment`
+
+### contributor
+
+**IRI:** `http://purl.org/dc/terms/contributor` · `dcterms:contributor`
+
+### created
+
+**IRI:** `http://purl.org/dc/terms/created` · `dcterms:created`
+
+### creator
+
+**IRI:** `http://purl.org/dc/terms/creator` · `dcterms:creator`
+
+### definition
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#definition` · `skos:definition`
+
+### depiction
+
+**IRI:** `http://xmlns.com/foaf/0.1/depiction` · `foaf:depiction`
+
+### description
+
+**IRI:** `http://purl.org/dc/terms/description` · `dcterms:description`
+
+### editor
+
+**IRI:** `http://purl.org/ontology/bibo/editor` · `bibo:editor`
+
+### editorialNote
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#editorialNote` · `skos:editorialNote`
+
+### isDefinedBy
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#isDefinedBy` · `rdfs:isDefinedBy`
+
+### label
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#label` · `rdfs:label`
+
+### license
+
+**IRI:** `http://purl.org/dc/terms/license` · `dcterms:license`
+
+### modified
+
+**IRI:** `http://purl.org/dc/terms/modified` · `dcterms:modified`
+
+### preferredNamespacePrefix
+
+**IRI:** `http://purl.org/vocab/vann/preferredNamespacePrefix` · `vann:preferredNamespacePrefix`
+
+### preferredNamespaceUri
+
+**IRI:** `http://purl.org/vocab/vann/preferredNamespaceUri` · `vann:preferredNamespaceUri`
+
+### priorVersion
+
+**IRI:** `http://www.w3.org/2002/07/owl#priorVersion` · `owl:priorVersion`
+
+### publisher
+
+**IRI:** `http://purl.org/dc/terms/publisher` · `dcterms:publisher`
+
+### rangeIncludes
+
+**IRI:** `http://schema.org/rangeIncludes` · `sdo:rangeIncludes`
+
+### scopeNote
+
+**IRI:** `http://www.w3.org/2004/02/skos/core#scopeNote` · `skos:scopeNote`
+
+### seeAlso
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#seeAlso` · `rdfs:seeAlso`
+
+### title
+
+**IRI:** `http://purl.org/dc/terms/title` · `dcterms:title`
+
+### translator
+
+**IRI:** `http://purl.org/ontology/bibo/translator` · `bibo:translator`
+
+### versionInfo
+
+**IRI:** `http://www.w3.org/2002/07/owl#versionInfo` · `owl:versionInfo`
+
+### versionNotes
+
+**IRI:** `http://www.w3.org/ns/adms#versionNotes` · `adms:versionNotes`

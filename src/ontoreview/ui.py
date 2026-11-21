@@ -22,6 +22,7 @@ from pathlib import Path
 
 from . import __version__
 from .ui_core import (
+    DOCS_TASKS,
     MAX_UPLOAD_BYTES,
     TASKS,
     Prefs,
@@ -31,6 +32,7 @@ from .ui_core import (
     clear_history,
     describe_source,
     existing_output,
+    export_output,
     forget_run,
     issues_text,
     load_history,
@@ -38,6 +40,7 @@ from .ui_core import (
     open_in_file_manager,
     record_run,
     robot_status,
+    run_config_rows,
     run_name,
     run_task,
     system_info,
@@ -63,7 +66,7 @@ RECOMMENDED = "site"
 INCLUDES = {
     "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, "
             "cross-domain interoperability, OOPS!), "
-            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt",
+            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt, and standalone.html (all in one file)",
     "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
     "markdown": "Includes: one page per term type; no quality checks or diagram",
     "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
@@ -443,6 +446,7 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 /* tables */
 .or-table { width: 100%; background: transparent !important; color: var(--or-ink) !important; }
 .or-table thead tr th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--or-muted); font-weight: 600; background: var(--or-line-2); }
+.or-clickable-rows tbody tr { cursor: pointer; }
 .or-table tbody td { font-size: 13px; border-color: var(--or-line-2) !important; }
 .or-cli { font-family: var(--or-mono); font-size: 12px; white-space: pre-wrap; word-break: break-all; background: var(--or-line-2);
   border-radius: 8px; padding: 10px 12px; width: 100%; }
@@ -921,6 +925,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                     title="Choose the output folder")).props("outline no-caps")
                             output_info = ui.label().classes("or-hint or-mono w-full").style("word-break: break-all") \
                                 .props('aria-live="polite"')
+                            separate_cb = ui.checkbox("Each run in its own folder (self-contained, never overwritten)",
+                                                      on_change=changed).bind_value(s, "separate_runs") \
+                                .mark("separate-runs").tooltip(
+                                    "Adds the date and time to the folder name, so every run keeps its own docs "
+                                    "and Run history can open, export or re-run each one")
                             with ui.column().classes("w-full gap-1 q-mt-sm") as prev_box:
                                 ui.label("Previous version").classes("or-label")
                                 with ui.row().classes("w-full no-wrap gap-2 items-center"):
@@ -1026,8 +1035,15 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             render_formats()
             describe_later()
             output.props(f'placeholder="{s.default_output()}"')
-            output_info.text = f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)")
-            prior = existing_output(s.output_path())
+            per_run = s.separate_runs and s.task in DOCS_TASKS
+            op = s.output_path().resolve()
+            out_txt = (op.parent / f"{op.stem if op.suffix.lower() == '.html' else op.name}-<date>-<time>"
+                       / (op.name if op.suffix.lower() == ".html" else ""))
+            output_info.text = (f"Writes to: {out_txt}  (a new folder each run)"
+                                if per_run else
+                                f"Writes to: {s.output_path().resolve()}" + ("" if s.output.strip() else "  (default)"))
+            separate_cb.set_visibility(s.task in DOCS_TASKS)
+            prior = None if per_run else existing_output(s.output_path())
             state["prior"] = prior["index"] if prior else None
             existing_row.set_visibility(prior is not None)
             if prior:
@@ -1422,6 +1438,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         ready.append(True)
         refresh()
         render_results()
+        if state.pop("autostart", False):      # "Run again" from Run history
+            ui.timer(0.2, start, once=True)
 
     # ------------------------------------------------------------------ Run history
     def history_view() -> None:
@@ -1480,24 +1498,30 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             tbl.add_slot("body-cell-name", r'''<q-td :props="props"><div class="text-weight-medium">{{ props.value }}</div>
                 <div class="or-hint or-mono">→ {{ props.row.out }}</div></q-td>''')
             tbl.add_slot("body-cell-act", r'''<q-td :props="props" class="text-no-wrap">
+                <q-btn flat round dense size="sm" icon="tune"
+                  aria-label="View configuration" @click.stop="() => $parent.$emit('details', props.row)"><q-tooltip>View configuration, edit and re-run</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="open_in_new" :disable="!props.row.index || !props.row.exists"
-                  aria-label="Open output" @click="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
+                  aria-label="Open output" @click.stop="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
+                <q-btn flat round dense size="sm" icon="download" :disable="!props.row.exists"
+                  aria-label="Export output" @click.stop="() => $parent.$emit('export', props.row)"><q-tooltip>Export output (folders as .zip)</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="folder_open" :disable="!props.row.exists"
-                  aria-label="Show in folder" @click="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
-                <q-btn flat round dense size="sm" icon="replay"
-                  aria-label="Load settings and re-run" @click="() => $parent.$emit('rerun', props.row)"><q-tooltip>Load settings and re-run</q-tooltip></q-btn>
+                  aria-label="Show in folder" @click.stop="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="delete_outline" color="negative"
-                  aria-label="Remove from history" @click="() => $parent.$emit('forget', props.row)"><q-tooltip>Remove from history (files are kept)</q-tooltip></q-btn>
+                  aria-label="Remove from history" @click.stop="() => $parent.$emit('forget', props.row)"><q-tooltip>Remove from history (files are kept)</q-tooltip></q-btn>
                 </q-td>''')
             by_id = {e.id: e for e in shown}
             tbl.on("open", lambda e: open_result(e.args.get("index")))
             tbl.on("reveal", lambda e: reveal(e.args.get("out")))
-            tbl.on("rerun", lambda e: rerun(by_id[e.args["id"]]))
+            tbl.on("details", lambda e: details(by_id[e.args["id"]]))
+            tbl.on("export", lambda e: export(by_id[e.args["id"]]))
+            tbl.on("rowClick", lambda e: details(by_id[e.args[1]["id"]]))
+            tbl.props("row-click-cursor").classes("or-clickable-rows")
             tbl.on("forget", lambda e: (forget_run(e.args["id"]), table.refresh()))
             with ui.row().classes("w-full justify-between q-px-md q-py-sm"):
                 ui.label(f"{len(shown)} of {len(entries)} runs shown").classes("or-hint")
 
-        def rerun(entry) -> None:
+        def rerun(entry, now: bool = False) -> None:
+            """Load a run's settings into the form: to edit them (``now`` False) or to run at once."""
             if entry.task == "diff":
                 cmp.update(old=entry.settings.get("previous_version", ""), new=entry.settings.get("source", ""),
                            output=entry.settings.get("output", ""), last=None, done=None)
@@ -1510,8 +1534,55 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     setattr(s, k, v)
             prefs.apply(s)
             s.save()
+            if now:
+                state["autostart"] = True
             ui.navigate.to("/")
-            notify("Settings from that run loaded. Press Build docs to run it again.")
+            notify("Running again with the settings of that run." if now else
+                   "Settings from that run loaded. Change what you need, then press "
+                   + {"check": "Run checks"}.get(entry.task, "Build docs") + ".")
+
+        def export(entry) -> None:
+            try:
+                f = export_output(entry.output)
+            except OSError as e:
+                notify(f"Could not export: {e}", "negative")
+                return
+            ui.download.file(str(f), f.name)
+            notify(f"Exported {f.name}")
+
+        def details(entry) -> None:
+            known = set(vars(Settings()))
+            cli = Settings(**{k: v for k, v in entry.settings.items() if k in known}).cli()
+            with ui.dialog() as d, ui.card().classes("or-card").style(
+                    "width:min(46rem,94vw);max-width:94vw;max-height:90vh;overflow-y:auto"):
+                with ui.row().classes("w-full items-start justify-between no-wrap"):
+                    with ui.column().classes("gap-0"):
+                        ui.label(run_name(entry)).classes("or-h2")
+                        ui.label(f"{TASKS.get(entry.task, entry.task)} · {when_text(entry.when)} · "
+                                 + ("failed" if entry.failed else issues_text(entry))).classes("or-hint")
+                    ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
+                if entry.failed:
+                    ui.label(entry.failed).classes("or-hint text-negative")
+                ui.label("Configuration").classes("or-hint text-uppercase q-mt-sm").style("letter-spacing:.6px")
+                with ui.element("dl").classes("or-config w-full"):
+                    for k, v in run_config_rows(entry.settings):
+                        with ui.element("div").classes("row no-wrap gap-3 q-py-xs"):
+                            with ui.element("dt").classes("or-hint").style("min-width:12rem"):
+                                ui.label(k)
+                            with ui.element("dd").classes("q-ma-none or-mono").style("word-break:break-all"):
+                                ui.label(str(v))
+                ui.label("Command line").classes("or-hint text-uppercase q-mt-sm").style("letter-spacing:.6px")
+                ui.code(cli, language="bash").classes("w-full")
+                ui.label("This run's output: " + entry.output + ("" if entry.exists else " (deleted)")) \
+                    .classes("or-hint or-mono").style("word-break:break-all")
+                with ui.row().classes("w-full justify-end gap-2 q-mt-sm"):
+                    ui.button("Export", icon="download", on_click=lambda: export(entry)) \
+                        .props("outline no-caps").set_enabled(entry.exists)
+                    ui.button("Edit and run", icon="edit", on_click=lambda: (d.close(), rerun(entry))) \
+                        .props("outline no-caps").tooltip("Load this configuration into the form to change it")
+                    ui.button("Run again", icon="replay", on_click=lambda: (d.close(), rerun(entry, now=True))) \
+                        .props("unelevated no-caps")
+            d.open()
 
         def confirm_clear() -> None:
             with ui.dialog() as d, ui.card().classes("or-card"):

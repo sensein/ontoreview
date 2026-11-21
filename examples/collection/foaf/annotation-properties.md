@@ -4,6 +4,10 @@
 
 **IRI:** `http://xmlns.com/wot/0.1/assurance` · `wot:assurance`
 
+### comment
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#comment` · `rdfs:comment`
+
 ### date
 
 **IRI:** `http://purl.org/dc/elements/1.1/date` · `dc:date`
@@ -11,6 +15,18 @@
 ### description
 
 **IRI:** `http://purl.org/dc/elements/1.1/description` · `dc:description`
+
+### isDefinedBy
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#isDefinedBy` · `rdfs:isDefinedBy`
+
+### label
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#label` · `rdfs:label`
+
+| | |
+|---|---|
+| Sub-properties | [name](datatype-properties.md#name) |
 
 ### membershipClass
 

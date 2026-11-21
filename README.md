@@ -38,7 +38,8 @@ ontoreview check my-ontology.ttl --fail-on error
 
 - **Term documentation:** classes, object/datatype/annotation properties, individuals, datatypes and SKOS concepts. For each term it shows labels, definitions (Markdown supported), examples, notes, and superclasses and subclasses (asserted, plus inferred with `--reason`). Restrictions and equivalences are rendered in **Manchester syntax**. Properties get domain/range, characteristics, inverses and property chains. Every term also gets "used in" back-links, mappings and deprecation status.
 - **Metadata** comes from standard annotations (dcterms, dc, schema.org, vann, PAV, FOAF, PROV, bibo). That covers title, abstract, authors with ORCID and affiliation, license, versions, DOI, citation and logo. Anything can be overridden in `ontoreview.toml`.
-- **Generated sections:** introduction, metadata, overview with A–Z index, visualization, reference, namespaces, changelog, quality report, downloads, how to cite (text, BibTeX and `CITATION.cff`) and provenance (PROV-O).
+- **Generated sections:** introduction, metadata, overview (terms per kind, quality checks run, interoperability scores; optional A–Z index), visualization, terms, namespaces, changelog, quality report (a summary table per check, then the details), downloads, how to cite (text, BibTeX and `CITATION.cff`) and provenance (a timeline with UTC timestamps, the source file's SHA-256 and this build's details, plus `provenance.ttl` in PROV-O).
+- **Self-contained output:** every docs folder also holds `standalone.html`, the whole documentation in one file (CSS, JS, data and downloads inlined), made from the same build without running the checks again. Turn it off with `standalone = false` or `--no-standalone`.
 - **Publishing:** Turtle, RDF/XML, JSON-LD and N-Triples serializations. Content-negotiation configs for Apache (`.htaccess`), nginx and w3id.org. schema.org JSON-LD for search engines. `.nojekyll` for GitHub Pages.
 - **Multilingual:** `--lang en,es,pt` builds one site per language, each with a language switcher. Labels and definitions fall back between languages. UI strings exist for en, es, pt, fr, de, it and zh.
 - **Single or multi-page** layouts.
@@ -156,7 +157,7 @@ ontoreview ui                     # or: ontoreview-ui; opens http://127.0.0.1:87
 
 - **Build:** choose a file, a folder or a URL (or drag files and folders onto the page), pick the output (**Website** is recommended for publishing docs), and press **Build docs**. You'll see progress step by step, then the term count, errors and warnings, and a filterable list of issues from the built-in checks, ROBOT and OOPS!. **Open docs** and **Show in folder** take you to the result. The equivalent `ontoreview` command is under **Command line**, ready for CI.
 - **Compare:** drop or choose a previous and a current version of an ontology (files or URLs). The comparison runs as soon as both are there. It shows added, removed and modified terms with the exact statements that changed, and writes a standalone HTML report (open it or download it) plus `changes.md` and `changes.json`. This is the same as `ontoreview diff OLD NEW --format html|markdown|json`. On Build, **Compare versions** is a shortcut for the ontology you're documenting. To put a changelog inside the website instead, set **Previous version** in Settings › Documentation.
-- **Run history:** every run, searchable and filterable. Each can be opened, shown in its folder, re-run with the same settings or removed from the list.
+- **Run history:** every run, searchable and filterable. Click a run to see its configuration and command line. **Edit and run** loads it into Build to change it, **Run again** starts it at once, and **Export** downloads the output (a folder as `.zip`). Docs runs go into a new folder each time (`docs-YYYYMMDD-HHMMSS`), so earlier runs are never overwritten. Switch this off on Build with **Each run in its own folder**.
 - **Settings:** defaults for every build. *General* covers the output folder, default format and history. *Documentation* covers layout, languages, public URL, imports, reasoning, competency questions and previous version. *Quality checks* covers ROBOT (Docker or a local `robot`), the OOPS! service and when a check fails. *Appearance* covers the theme and compact layout. A project's `ontoreview.toml` overrides these.
 - **Project config:** the **Project config** menu on Build creates `ontoreview.toml` from a commented template, or opens the existing file in an editor that checks it before saving. It can also save what you selected, or load another config. The file keeps your settings with the ontology, so the command line, CI and teammates build the same docs.
 - **About:** version, system info for bug reports, and links. **Help:** step-by-step instructions with screenshots (regenerate them with `uv run --extra ui --with playwright python scripts/ui_screenshots.py`).
@@ -178,7 +179,7 @@ The studio is a local page with a compact toolbar: open an ontology (or drop fil
 
 ## Look and layout (`[ui]`)
 
-The default theme is a typeset, paper-like document: a white sheet with a quiet numbered table of contents. The Reference entries in the table of contents expand into class and property hierarchies. The figure uses WebVOWL-style notation by default: classes are circles sized by their number of subclasses, object properties are blue labelled boxes between domain and range, datatype properties are green boxes pointing at yellow literal boxes, inverse properties share one box, and subclass edges are dashed. Readers can switch it to a UML class diagram from the figure toolbar. Every part of this is configurable:
+The default theme is a typeset, paper-like document: a white sheet with a quiet numbered table of contents. The Terms entries in the table of contents expand into class and property hierarchies. The figure uses WebVOWL-style notation by default: classes are circles sized by their number of subclasses, object properties are blue labelled boxes between domain and range, datatype properties are green boxes pointing at yellow literal boxes, inverse properties share one box, and subclass edges are dashed. Readers can switch it to a UML class diagram from the figure toolbar. Every part of this is configurable:
 
 ```toml
 [ui]
@@ -191,7 +192,7 @@ width = "wide"                # or "normal"
 graph_notation = "vowl"       # or "uml"
 graph_layout = "auto"         # "force" | "hierarchy" | "concentric" (auto: force for VOWL, hierarchy for UML)
 graph_property_edges = "auto" # true | false | auto (on for small ontologies)
-section_order = ["introduction", "competency-questions", "reference", "graph"]
+section_order = ["introduction", "competency-questions", "terms", "graph"]
 
 [evaluation]
 robot = "auto"                # ROBOT via local robot or Docker; "on" | "off"

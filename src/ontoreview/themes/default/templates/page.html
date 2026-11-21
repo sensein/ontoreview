@@ -30,7 +30,7 @@
 
 <header class="mobilebar">
   <button class="textbtn" data-action="menu" aria-controls="sidebar" aria-expanded="false">{{ t('contents') }}</button>
-  <a class="mobilebar-title" href="index.html">{{ meta.title or "Ontology" }}</a>
+  <a class="mobilebar-title" href="{{ '#top' if inline else 'index.html' }}">{{ meta.title or "Ontology" }}</a>
   <button class="textbtn" data-action="search">{{ t('search') }}</button>
 </header>
 

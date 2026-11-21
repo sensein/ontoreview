@@ -15,7 +15,7 @@ An object property to express the accountability of an agent towards another age
 | category | starting-point |
 | component | agents-responsibility |
 | inverse | hadDelegate |
-| qualifiedForm | prov:Delegation; prov:qualifiedDelegation |
+| qualifiedForm | prov:qualifiedDelegation; prov:Delegation |
 
 ### activity
 
@@ -120,7 +120,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start); [Influence](classes.md#influence) |
+| Domain | [Influence](classes.md#influence); [Delegation](classes.md#delegation) *or* [Derivation](classes.md#derivation) *or* [End](classes.md#end) *or* [Start](classes.md#start) |
 | Range | [Activity](classes.md#activity) |
 | Used in | used in axioms of [ActivityInfluence](classes.md#activityinfluence) |
 | category | qualified |
@@ -198,7 +198,7 @@ This property has multiple RDFS domains to suit multiple OWL Profiles. See <a hr
 
 | | |
 |---|---|
-| Domain | [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent); [Influence](classes.md#influence) |
+| Domain | [Influence](classes.md#influence); [Association](classes.md#association) *or* [InstantaneousEvent](classes.md#instantaneousevent) |
 | Range | [Role](classes.md#role) |
 | category | qualified |
 | component | agents-responsibility |
@@ -538,7 +538,7 @@ A prov:Entity that was used by this prov:Activity. For example, :baking prov:use
 | category | starting-point |
 | component | entities-activities |
 | inverse | wasUsedBy |
-| qualifiedForm | prov:qualifiedUsage; prov:Usage |
+| qualifiedForm | prov:Usage; prov:qualifiedUsage |
 
 ### wasAssociatedWith
 
@@ -681,7 +681,7 @@ An activity a2 is dependent on or informed by another activity a1, by way of som
 | category | expanded |
 | component | entities-activities |
 | inverse | invalidated |
-| qualifiedForm | prov:qualifiedInvalidation; prov:Invalidation |
+| qualifiedForm | prov:Invalidation; prov:qualifiedInvalidation |
 
 ### wasQuotedFrom
 
@@ -698,7 +698,7 @@ An entity is derived from an original entity by copying, or 'quoting', some or a
 | category | expanded |
 | component | derivations |
 | inverse | quotedAs |
-| qualifiedForm | prov:Quotation; prov:qualifiedQuotation |
+| qualifiedForm | prov:qualifiedQuotation; prov:Quotation |
 
 ### wasRevisionOf
 
@@ -715,7 +715,7 @@ A revision is a derivation that revises an entity into a revised version.
 | category | expanded |
 | component | derivations |
 | inverse | hadRevision |
-| qualifiedForm | prov:qualifiedRevision; prov:Revision |
+| qualifiedForm | prov:Revision; prov:qualifiedRevision |
 
 ### wasStartedBy
 

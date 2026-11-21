@@ -4,6 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
+    prov:generatedAtTime "2026-11-21T17:11:19+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <http://www.w3.org/ns/prov-o-20130430> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -45,7 +46,8 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-20T01:28:24+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T17:11:19+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T17:10:49+00:00"^^xsd:dateTime ;
     prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl>,
         <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
@@ -54,6 +56,7 @@
         <https://w3id.org/emi/version/1.0>,
         <urn:sha256:029d4d1f9002d632622e232fc2af2162b131d37b276100b9c0847a452ad9b1cc>,
         <urn:sha256:14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914>,
+        <urn:sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96>,
         <urn:sha256:908f8d1f1c983d4c9e506488361131c6cc0984663efda6b41c8f3a98ab4eeaf5>,
         <urn:sha256:a0348f7c24e6a5d104e3c9d2ab3887de883fcb31b392dbd2c2d9a9e35398cdda>,
         "prov-o.ttl" ;
@@ -70,6 +73,10 @@
     dcterms:isVersionOf <http://schema.org/> ;
     dcterms:title "ols:schemaorg_http" ;
     rdfs:comment "Reference release used for the cross-domain interoperability score (13 correspondence(s), via ols)." .
+
+<urn:sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96> a prov:Entity ;
+    dcterms:identifier "sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96" ;
+    dcterms:title "prov-o.ttl" .
 
 <urn:sha256:908f8d1f1c983d4c9e506488361131c6cc0984663efda6b41c8f3a98ab4eeaf5> a prov:Entity ;
     dcterms:date "2026-11-20T01:25:21Z"^^xsd:string ;

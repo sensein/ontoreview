@@ -41,6 +41,17 @@ def markdown(text: str | None, inline: bool = False) -> Markup:
     return Markup(_md.render(text))
 
 
+def _prov_when(e: dict) -> str:
+    """A provenance timestamp for reading: ``2026-11-21 16:57:03 UTC``, or the date alone."""
+    import datetime as dt
+
+    try:
+        d = dt.datetime.fromisoformat(str(e["when"]).replace("Z", "+00:00"))
+    except ValueError:
+        return str(e["when"])
+    return d.strftime("%Y-%m-%d") if e.get("date_only") else d.strftime("%Y-%m-%d %H:%M:%S UTC")
+
+
 def codeticks(text: str) -> Markup:
     """Escape text, then turn `backticks` into <code> (used for check messages)."""
     esc = html.escape(text)
@@ -100,7 +111,9 @@ class SiteRenderer:
         inline: bool = False,
         cqs=None,
         llm_files: list[dict] | None = None,
+        provenance: dict | None = None,
     ):
+        self.provenance = provenance
         self.cfg = config
         self.onto = ontology
         self.out = out_dir
@@ -146,6 +159,7 @@ class SiteRenderer:
         env.filters["filesize"] = _filesize
         env.filters["badge"] = lambda k: KIND_BADGES.get(k, k)
         env.filters["tool_anchor"] = tool_anchor
+        env.filters["prov_when"] = _prov_when
         env.globals.update(
             t=self.t,
             href=self.href,
@@ -242,7 +256,8 @@ class SiteRenderer:
                                context={"cite": citation_text(onto.metadata, cfg.base_url),
                                         "bibtex": bibtex(onto.metadata, cfg.base_url)}))
         if st.provenance:
-            out.append(Section("provenance", t("provenance"), "provenance.html"))
+            out.append(Section("provenance", t("provenance"), "provenance.html",
+                               context={"record": self.provenance}))
         out = self._order(out, cfg.ui.section_order)
         self._number(out)
         return out

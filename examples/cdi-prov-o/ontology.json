@@ -37,9 +37,9 @@
    "curie": "prov:ActivityInfluence",
    "kind": "class",
    "label": "ActivityInfluence",
-   "definition": "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.",
+   "definition": "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.",
    "comments": [
-    "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses."
+    "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity."
    ],
    "superclasses": [
     "prov:Influence"
@@ -76,9 +76,9 @@
    "curie": "prov:AgentInfluence",
    "kind": "class",
    "label": "AgentInfluence",
-   "definition": "AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent.",
+   "definition": "It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses.",
    "comments": [
-    "It is not recommended that the type AgentInfluence be asserted without also asserting one of its more specific subclasses."
+    "AgentInfluence provides additional descriptions of an Agent's binary influence upon any other kind of resource. Instances of AgentInfluence use the prov:agent property to cite the influencing Agent."
    ],
    "superclasses": [
     "prov:Influence"
@@ -174,8 +174,8 @@
    "label": "Derivation",
    "definition": "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.",
    "comments": [
-    "An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].",
-    "The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply."
+    "The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.",
+    "An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ]."
    ],
    "superclasses": [
     "prov:EntityInfluence"
@@ -231,9 +231,9 @@
    "curie": "prov:EntityInfluence",
    "kind": "class",
    "label": "EntityInfluence",
-   "definition": "It is not recommended that the type EntityInfluence be asserted without also asserting one of its more specific subclasses.",
+   "definition": "EntityInfluence provides additional descriptions of an Entity's binary influence upon any other kind of resource. Instances of EntityInfluence use the prov:entity property to cite the influencing Entity.",
    "comments": [
-    "EntityInfluence provides additional descriptions of an Entity's binary influence upon any other kind of resource. Instances of EntityInfluence use the prov:entity property to cite the influencing Entity."
+    "It is not recommended that the type EntityInfluence be asserted without also asserting one of its more specific subclasses."
    ],
    "superclasses": [
     "prov:Influence"
@@ -631,8 +631,8 @@
     "This property has multiple RDFS domains to suit multiple OWL Profiles. See <a href=\"#owl-profile\">PROV-O OWL Profile</a>."
    ],
    "domain": [
-    "prov:Influence",
-    "prov:Association or prov:InstantaneousEvent"
+    "prov:Association or prov:InstantaneousEvent",
+    "prov:Influence"
    ],
    "range": [
     "prov:Role"

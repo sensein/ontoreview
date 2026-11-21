@@ -437,3 +437,23 @@ a.stat-body:hover { text-decoration: none; background: var(--paper-2); }
 .check-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--bar); }
 @media (forced-colors: active) { .check-bar { border: 1px solid CanvasText; } .check-bar > span { background: CanvasText; } }
 @media (max-width: 640px) { .check-summary .check-bar-col { display: none; } }
+
+/* Provenance: timeline */
+.prov-timeline { list-style: none; margin: .6rem 0 1.4rem; padding: 0; position: relative; }
+.prov-timeline::before { content: ""; position: absolute; left: 10.45rem; top: .55rem; bottom: .55rem; width: 1px; background: var(--rule-strong); }
+.prov-ev { display: grid; grid-template-columns: 9.6rem 1fr; gap: 1.6rem; padding: .35rem 0; position: relative; }
+.prov-ev::before { content: ""; position: absolute; left: calc(10.45rem - 4px); top: .78rem; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); border: 2px solid var(--link); box-sizing: border-box; }
+.prov-ev.prov-check::before { border-color: var(--mod); }
+.prov-ev.prov-build::before { background: var(--link); }
+.prov-ev time { font: .82rem/1.9 var(--mono); color: var(--muted); text-align: right; white-space: nowrap; }
+.prov-what { display: flex; flex-direction: column; padding-left: .4rem; }
+.prov-title { font-weight: 600; color: var(--ink); }
+.prov-detail { font-size: .88rem; color: var(--ink-2); }
+@media (max-width: 640px) {
+  .prov-timeline::before { left: .3rem; }
+  .prov-ev { grid-template-columns: 1fr; gap: 0; padding-left: 1.4rem; }
+  .prov-ev::before { left: calc(.3rem - 4px); }
+  .prov-ev time { text-align: left; }
+  .prov-what { padding-left: 0; }
+}
+@media (forced-colors: active) { .prov-ev::before { border-color: CanvasText; } }

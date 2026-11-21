@@ -21,7 +21,7 @@
   "class": 4,
   "object_property": 17,
   "datatype_property": 1,
-  "annotation_property": 10,
+  "annotation_property": 18,
   "triples": 252
  },
  "terms": [
@@ -376,8 +376,8 @@
    "label": "alternative label",
    "definition": "An alternative lexical label for a resource.",
    "comments": [
-    "The range of skos:altLabel is the class of RDF plain literals.",
-    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties."
+    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.",
+    "The range of skos:altLabel is the class of RDF plain literals."
    ],
    "examples": [
     "Acronyms, abbreviations, spelling variants, and irregular plural/singular forms may be included among the alternative labels for a concept. Mis-spelled terms are normally included as hidden labels (see skos:hiddenLabel)."
@@ -397,6 +397,24 @@
    ]
   },
   {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/contributor",
+   "curie": "dcterms:contributor",
+   "kind": "annotation_property",
+   "label": "contributor"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/creator",
+   "curie": "dcterms:creator",
+   "kind": "annotation_property",
+   "label": "creator"
+  },
+  {
    "iri": "http://www.w3.org/2004/02/skos/core#definition",
    "curie": "skos:definition",
    "kind": "annotation_property",
@@ -405,6 +423,12 @@
    "super_properties": [
     "skos:note"
    ]
+  },
+  {
+   "iri": "http://purl.org/dc/terms/description",
+   "curie": "dcterms:description",
+   "kind": "annotation_property",
+   "label": "description"
   },
   {
    "iri": "http://www.w3.org/2004/02/skos/core#editorialNote",
@@ -433,8 +457,8 @@
    "label": "hidden label",
    "definition": "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations.",
    "comments": [
-    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.",
-    "The range of skos:hiddenLabel is the class of RDF plain literals."
+    "The range of skos:hiddenLabel is the class of RDF plain literals.",
+    "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties."
    ],
    "super_properties": [
     "rdfs:label"
@@ -448,6 +472,23 @@
    "definition": "A note about the past state/use/meaning of a concept.",
    "super_properties": [
     "skos:note"
+   ]
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label",
+   "sub_properties": [
+    "skos:altLabel",
+    "skos:hiddenLabel",
+    "skos:prefLabel"
    ]
   },
   {
@@ -472,8 +513,8 @@
    "label": "preferred label",
    "definition": "The preferred lexical label for a resource, in a given language.",
    "comments": [
-    "The range of skos:prefLabel is the class of RDF plain literals.",
     "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise\n      disjoint properties.",
+    "The range of skos:prefLabel is the class of RDF plain literals.",
     "A resource has no more than one value of skos:prefLabel per language tag, and no more than one value of skos:prefLabel without language tag."
    ],
    "super_properties": [
@@ -489,6 +530,18 @@
    "super_properties": [
     "skos:note"
    ]
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+   "curie": "rdfs:seeAlso",
+   "kind": "annotation_property",
+   "label": "seeAlso"
+  },
+  {
+   "iri": "http://purl.org/dc/terms/title",
+   "curie": "dcterms:title",
+   "kind": "annotation_property",
+   "label": "title"
   }
  ],
  "competency_questions": []

@@ -6,7 +6,7 @@
 - Namespace: http://www.w3.org/ns/dcat# (prefix `dcat:`)
 - Version: 3
 - License: CC BY 4.0
-- Contents: 9 classes, 30 object properties, 9 datatype properties
+- Contents: 9 classes, 30 object properties, 9 datatype properties, 27 annotation properties
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
@@ -16,6 +16,7 @@ Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL
 - [Classes](classes.md): 9 classes with definitions and axioms
 - [Object properties](object-properties.md): 30 object properties with definitions and axioms
 - [Datatype properties](datatype-properties.md): 9 datatype properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 27 annotation properties with definitions and axioms
 
 ## Machine-readable
 

@@ -194,7 +194,7 @@ A name for some thing.
 
 | | |
 |---|---|
-| Super-properties | [rdfs:label](http://www.w3.org/2000/01/rdf-schema#label) |
+| Super-properties | [label](annotation-properties.md#label) |
 | Domain | [Thing](http://www.w3.org/2002/07/owl#Thing) |
 | Range | [rdfs:Literal](http://www.w3.org/2000/01/rdf-schema#Literal) |
 

@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-20T01:27:41.160208+00:00",
-  "run_id": 22,
+  "checked_at": "2026-11-21T17:11:39.152350+00:00",
+  "run_id": 54,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "offline": false,
@@ -36,7 +36,7 @@
       "ontology": null,
       "version_iri": null,
       "version": null,
-      "retrieved": "2026-11-20T01:26:46.852642+00:00",
+      "retrieved": "2026-11-20T01:27:42.410095+00:00",
       "terms": 1,
       "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
       "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl"
@@ -78,7 +78,7 @@
         "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
         "version_iri": null,
         "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
-        "fetched_at": "2026-11-20T01:26:46.852642+00:00",
+        "fetched_at": "2026-11-20T01:27:42.410095+00:00",
         "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl"
       }
     },

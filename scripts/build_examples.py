@@ -38,6 +38,19 @@ SITES = [
     ("org", FIX / "real" / "org.ttl", {}, "W3C Organization ontology"),
     ("skos", FIX / "real" / "skos.rdf", {}, "W3C SKOS core"),
     ("dcat", FIX / "real" / "dcat.ttl", {}, "W3C DCAT 3"),
+    # cross-domain interoperability (queries OLS and runs language models; slow on the first run)
+    ("cdi-prov-o", FIX / "real" / "prov-o.ttl",
+     {"evaluation": {"cdi": "on", "cdi_references": ["ols"], "cdi_domains": ["provenance"]}},
+     "W3C PROV-O with the cross-domain interoperability score (OLS)"),
+    ("cdi-sosa", FIX / "cdi" / "sosa.ttl",
+     {"evaluation": {"cdi": "on", "cdi_references": ["ols", str(FIX / "real" / "prov-o.ttl")],
+                     "cdi_domains": ["sensor"]}},
+     "SOSA with the CDI score against OLS and a local reference ontology (PROV-O)"),
+    ("cdi-soil", FIX / "cdi" / "toy_onto.ttl",
+     {"evaluation": {"cdi": "on", "cdi_references": ["ols", str(FIX / "cdi" / "toy_ref.ttl"),
+                                                     str(FIX / "cdi" / "toy_to_bfo.sssom.tsv")],
+                     "cdi_domains": ["agriculture"]}},
+     "Small soil-sensing ontology with the CDI score against OLS, a local ontology and an SSSOM mapping"),
 ]
 
 

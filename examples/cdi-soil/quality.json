@@ -116,7 +116,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "0.0s. Own namespaces (not checked as external): http://example.org/toy/. Run #22 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "0.0s. Own namespaces (not checked as external): http://example.org/toy/. Run #54 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -176,8 +176,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-20T01:27:41.160208+00:00",
-        "run_id": 22,
+        "checked_at": "2026-11-21T17:11:39.152350+00:00",
+        "run_id": 54,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -213,7 +213,7 @@
             "ontology": null,
             "version_iri": null,
             "version": null,
-            "retrieved": "2026-11-20T01:26:46.852642+00:00",
+            "retrieved": "2026-11-20T01:27:42.410095+00:00",
             "terms": 1,
             "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
             "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl"
@@ -255,7 +255,7 @@
               "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
               "version_iri": null,
               "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
-              "fetched_at": "2026-11-20T01:26:46.852642+00:00",
+              "fetched_at": "2026-11-20T01:27:42.410095+00:00",
               "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl"
             }
           },
@@ -561,7 +561,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "12 reference ontologies (2 given, 10 discovered); left out: 1 same domain, 19 below the top N. Full record in cdi.json, and as CDI run 6 in the term database. Details of 29 repository ontologies came from the term database.",
+      "scope": "12 reference ontologies (2 given, 10 discovered); left out: 1 same domain, 19 below the top N. Full record in cdi.json, and as CDI run 31 in the term database. Details of 29 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -685,7 +685,7 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-20T01:27:42.406871+00:00",
+        "checked_at": "2026-11-21T17:11:39.190213+00:00",
         "references": [
           "ols",
           "/Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
@@ -694,7 +694,7 @@
         "notes": [
           "Details of 29 repository ontologies came from the term database."
         ],
-        "run_id": 6,
+        "run_id": 31,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -831,7 +831,7 @@
               "source": "file",
               "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
               "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
-              "retrieved": "2026-11-20T01:27:42.410095+00:00",
+              "retrieved": "2026-11-21T17:11:39.199131+00:00",
               "document": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
               "database": "cache",
               "terms_indexed": 4,
@@ -900,7 +900,7 @@
               "title": "toy_to_bfo.sssom.tsv",
               "sha256": "ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185",
               "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv",
-              "retrieved": "2026-11-20T01:27:42.410651+00:00",
+              "retrieved": "2026-11-21T17:11:39.201142+00:00",
               "identified_by": "content hash"
             }
           },
@@ -2293,7 +2293,7 @@
             "title": "toy_ref.ttl",
             "id": "file:toy_ref.ttl",
             "source": "file",
-            "retrieved": "2026-11-20T01:27:42.410095+00:00",
+            "retrieved": "2026-11-21T17:11:39.199131+00:00",
             "sha256": "da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd",
             "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl",
             "identified_by": "content hash",
@@ -2332,7 +2332,7 @@
             "title": "toy_to_bfo.sssom.tsv",
             "id": "sssom:toy_to_bfo.sssom.tsv",
             "source": "file",
-            "retrieved": "2026-11-20T01:27:42.410651+00:00",
+            "retrieved": "2026-11-21T17:11:39.201142+00:00",
             "sha256": "ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185",
             "source_url": "file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv",
             "identified_by": "content hash",

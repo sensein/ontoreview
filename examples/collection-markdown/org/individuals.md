@@ -9,5 +9,5 @@ A role corresponding to the `org:headOf` property
 | | |
 |---|---|
 | Types | [Role](classes.md#role) |
-| role (property) | org:headOf |
+| roleProperty | org:headOf |
 

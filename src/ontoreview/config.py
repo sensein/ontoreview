@@ -236,6 +236,8 @@ class Config(BaseModel):
     # Output
     output: str = "docs"
     layout: Literal["single", "multi"] = "single"
+    standalone: bool = Field(True, description="Also write standalone.html in the output folder: the whole "
+                                               "documentation in one file (CSS, JS, data and downloads inlined)")
     languages: list[str] = Field(default_factory=lambda: ["en"])
     base_url: str | None = None
     theme: str | None = None

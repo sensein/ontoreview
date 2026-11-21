@@ -163,3 +163,31 @@ def test_sidebar_lists_quality_subsections(fixtures, tmp_path):
     assert 'href="#quality-builtin"' in nav and 'href="#quality-oops"' in nav and "OOPS!" in nav
     assert 'id="quality-builtin"' in html and 'id="quality-oops"' in html
     assert 'href=""' not in html[html.index('id="quality"'):]          # tools without a URL get no empty link
+
+
+def test_provenance_timeline_matches_ttl(fixtures, tmp_path):
+    import re
+
+    from rdflib import Graph
+    from rdflib.namespace import PROV
+
+    import ontoreview
+    ontoreview.build(fixtures / "pizza.ttl", out=tmp_path, evaluation={"oops": "off", "cdi": "off"})
+    html = (tmp_path / "index.html").read_text()
+    assert 'class="prov-timeline"' in html and "Documentation generated" in html and "SHA-256" in html
+    g = Graph().parse(tmp_path / "provenance.ttl")
+    ended = str(next(g.objects(None, PROV.endedAtTime)))
+    started = str(next(g.objects(None, PROV.startedAtTime)))
+    assert f'datetime="{ended}"' in html and f'datetime="{started}"' in html     # same record, same times
+    assert any(str(o).startswith("urn:sha256:") for o in g.objects(None, PROV.used))
+    standalone = (tmp_path / "standalone.html").read_text()
+    assert 'class="prov-timeline"' in standalone and 'href="provenance.ttl"' not in standalone
+    assert re.search(r"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d UTC", html)
+
+
+def test_provenance_dates():
+    from ontoreview.publish import _when
+
+    assert _when("2013-04-30")[1] is True
+    assert _when("2026-11-21T10:00:00Z")[0].hour == 10
+    assert _when("spring 2020") is None and _when("") is None

@@ -11,4 +11,4 @@ An RDF vocabulary for describing the basic structure and content of concept sche
 - [Classes](classes.md) (4)
 - [Object properties](object-properties.md) (17)
 - [Datatype properties](datatype-properties.md) (1)
-- [Annotation properties](annotation-properties.md) (10)
+- [Annotation properties](annotation-properties.md) (18)

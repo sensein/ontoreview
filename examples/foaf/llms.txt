@@ -4,7 +4,7 @@
 
 - Ontology IRI: http://xmlns.com/foaf/0.1/
 - Namespace: http://xmlns.com/foaf/0.1/ (prefix `foaf:`)
-- Contents: 14 classes, 34 object properties, 27 datatype properties, 7 annotation properties
+- Contents: 14 classes, 34 object properties, 27 datatype properties, 10 annotation properties
 
 Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.
 
@@ -14,7 +14,7 @@ Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL
 - [Classes](classes.md): 14 classes with definitions and axioms
 - [Object properties](object-properties.md): 34 object properties with definitions and axioms
 - [Datatype properties](datatype-properties.md): 27 datatype properties with definitions and axioms
-- [Annotation properties](annotation-properties.md): 7 annotation properties with definitions and axioms
+- [Annotation properties](annotation-properties.md): 10 annotation properties with definitions and axioms
 
 ## Machine-readable
 

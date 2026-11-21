@@ -5,7 +5,7 @@
     "info": 80
   },
   "totals": {
-    "error": 20,
+    "error": 19,
     "warning": 139,
     "info": 239
   },
@@ -20,7 +20,6 @@
           "severity": "error",
           "description": "",
           "affected": [
-            "http://www.w3.org/ns/prov-o#",
             "prov:aq",
             "prov:category",
             "prov:component",
@@ -44,7 +43,7 @@
           "severity": "error",
           "description": "",
           "affected": [
-            "http://www.w3.org/ns/prov#"
+            "http://www.w3.org/ns/prov-o#"
           ],
           "note": ""
         },
@@ -54,7 +53,7 @@
           "severity": "error",
           "description": "",
           "affected": [
-            "http://www.w3.org/ns/prov#"
+            "http://www.w3.org/ns/prov-o#"
           ],
           "note": ""
         },
@@ -64,7 +63,7 @@
           "severity": "error",
           "description": "",
           "affected": [
-            "http://www.w3.org/ns/prov#"
+            "http://www.w3.org/ns/prov-o#"
           ],
           "note": ""
         },
@@ -208,7 +207,7 @@
       "metrics": [],
       "provenance": {},
       "summary": {
-        "error": 18,
+        "error": 17,
         "warning": 99,
         "info": 7
       }
@@ -246,7 +245,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "0.0s. Own namespaces (not checked as external): http://www.w3.org/ns/prov#, http://www.w3.org/ns/prov/, http://www.w3.org/ns/prov-o# and 3 more. Run #24 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "scope": "0.0s. Own namespaces (not checked as external): http://www.w3.org/ns/prov#, http://www.w3.org/ns/prov/, http://www.w3.org/ns/prov-o# and 3 more. Run #52 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
       "metrics": [
         {
           "group": "IRI",
@@ -290,8 +289,8 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-20T01:28:04.338582+00:00",
-        "run_id": 24,
+        "checked_at": "2026-11-21T17:10:54.244231+00:00",
+        "run_id": 52,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "offline": false,
@@ -303,8 +302,8 @@
             "http://www.w3.org/ns/prov/",
             "http://www.w3.org/ns/prov-o#",
             "http://www.w3.org/ns/prov-o/",
-            "http://www.w3.org/2000/01/rdf-schema#",
-            "http://www.w3.org/2002/07/owl#"
+            "http://www.w3.org/2002/07/owl#",
+            "http://www.w3.org/2000/01/rdf-schema#"
           ],
           "budget": 120,
           "cache_days": 30
@@ -314,8 +313,8 @@
           "http://www.w3.org/ns/prov/",
           "http://www.w3.org/ns/prov-o#",
           "http://www.w3.org/ns/prov-o/",
-          "http://www.w3.org/2000/01/rdf-schema#",
-          "http://www.w3.org/2002/07/owl#"
+          "http://www.w3.org/2002/07/owl#",
+          "http://www.w3.org/2000/01/rdf-schema#"
         ],
         "releases": [],
         "terms": []
@@ -708,7 +707,7 @@
       ],
       "error": null,
       "note": "",
-      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 49 below the top N. Full record in cdi.json, and as CDI run 8 in the term database. Details of 49 repository ontologies came from the term database.",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 52 below the top N. Full record in cdi.json, and as CDI run 29 in the term database. Details of 50 repository ontologies came from the term database.",
       "metrics": [
         {
           "group": "Cross-domain interoperability",
@@ -816,14 +815,14 @@
         }
       ],
       "provenance": {
-        "checked_at": "2026-11-20T01:28:06.427336+00:00",
+        "checked_at": "2026-11-21T17:10:57.229868+00:00",
         "references": [
           "ols"
         ],
         "notes": [
-          "Details of 49 repository ontologies came from the term database."
+          "Details of 50 repository ontologies came from the term database."
         ],
-        "run_id": 8,
+        "run_id": 29,
         "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
         "settings": {
           "cdi": "on",
@@ -1191,6 +1190,28 @@
             }
           },
           {
+            "id": "db:http://purl.org/spar/datacite/identifier",
+            "source": "termdb",
+            "title": "The DataCite Ontology (DataCite)",
+            "domain": "",
+            "given": false,
+            "coverage": 0.075,
+            "n_correspondences": 6,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (cache)",
+              "title": "The DataCite Ontology (DataCite)",
+              "document": "http://purl.org/spar/datacite/identifier",
+              "ontology_iri": "http://purl.org/spar/datacite",
+              "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+              "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+              "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml",
+              "retrieved": "2026-11-20T02:33:51.493696+00:00",
+              "identified_by": "version IRI"
+            }
+          },
+          {
             "id": "ols:mesh",
             "source": "ols",
             "title": "Medical Subject Headings",
@@ -1412,6 +1433,27 @@
               "source_url": "https://www.w3.org/ns/dcat3.ttl",
               "retrieved": "2026-11-18T01:08:31.555419+00:00",
               "identified_by": "version IRI"
+            }
+          },
+          {
+            "id": "db:http://www.w3.org/ns/oa",
+            "source": "termdb",
+            "title": "Web Annotation Ontology",
+            "domain": "",
+            "given": false,
+            "coverage": 0.025,
+            "n_correspondences": 2,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "term database (cache)",
+              "title": "Web Annotation Ontology",
+              "document": "http://www.w3.org/ns/oa",
+              "ontology_iri": "http://www.w3.org/ns/oa#",
+              "sha256": "f661e37d33bf29176390101687711734a7e33a716bdecfb66b90c732373d7af5",
+              "source_url": "https://www.w3.org/ns/oa",
+              "retrieved": "2026-11-20T02:33:52.163363+00:00",
+              "identified_by": "content hash"
             }
           },
           {
@@ -2120,6 +2162,29 @@
               "metadata_sha256": "e28018cd6b3b8718db19464c4b7f515f3944ac21092db6b4b14015179a179b40",
               "identified_by": "version IRI",
               "cached": "2026-11-20T01:25:26.323097+00:00"
+            }
+          },
+          {
+            "id": "ols:pr",
+            "source": "ols",
+            "title": "PRotein Ontology (PRO)",
+            "domain": "chemistry and biochemistry",
+            "given": false,
+            "coverage": 0.0125,
+            "n_correspondences": 3,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "pr",
+              "title": "PRotein Ontology (PRO)",
+              "ontology_iri": "http://purl.obolibrary.org/obo/pr.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/pr/73.1/pr.owl",
+              "released": "2026-11-21T00:15:07.176521483",
+              "retrieved": "2026-11-21T17:05:16Z",
+              "metadata_sha256": "f364584097c073be58fa6f15b4f3389d2c9af45dfb93781a5fb8618516500e88",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:05:16.553858+00:00"
             }
           },
           {
@@ -8431,66 +8496,6 @@
           },
           {
             "source": "http://www.w3.org/ns/prov#Generation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:dcat",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Generation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:emi",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Generation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:mcro",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Generation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:miapa",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Generation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:prov",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Generation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:reproduceme",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Generation",
             "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
             "relation": "⊑",
             "confidence": 1.0,
@@ -8568,6 +8573,66 @@
             "method": "lexical:exact/exact",
             "target_ontology": "ols:schemaorg_http",
             "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Generation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Generation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Generation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Generation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:miapa",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Generation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:prov",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Generation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:reproduceme",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
           },
           {
             "source": "http://www.w3.org/ns/prov#Generation",
@@ -8641,66 +8706,6 @@
           },
           {
             "source": "http://www.w3.org/ns/prov#Invalidation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:dcat",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Invalidation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:emi",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Invalidation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:mcro",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Invalidation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:miapa",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Invalidation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:prov",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Invalidation",
-            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
-            "relation": "⊑",
-            "confidence": 1.0,
-            "depth": 1,
-            "method": "shared-iri",
-            "target_ontology": "ols:reproduceme",
-            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
-          },
-          {
-            "source": "http://www.w3.org/ns/prov#Invalidation",
             "target": "http://www.w3.org/ns/prov#InstantaneousEvent",
             "relation": "⊑",
             "confidence": 1.0,
@@ -8778,6 +8783,66 @@
             "method": "lexical:exact/exact",
             "target_ontology": "ols:schemaorg_http",
             "via": "http://www.w3.org/ns/prov#InstantaneousEvent"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Invalidation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:dcat",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Invalidation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:emi",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Invalidation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:mcro",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Invalidation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:miapa",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Invalidation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:prov",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
+          },
+          {
+            "source": "http://www.w3.org/ns/prov#Invalidation",
+            "target": "http://www.w3.org/ns/prov#ActivityInfluence",
+            "relation": "⊑",
+            "confidence": 1.0,
+            "depth": 1,
+            "method": "shared-iri",
+            "target_ontology": "ols:reproduceme",
+            "via": "http://www.w3.org/ns/prov#ActivityInfluence"
           },
           {
             "source": "http://www.w3.org/ns/prov#Invalidation",
@@ -10939,10 +11004,10 @@
       "rule": "OB016",
       "title": "Duplicate labels",
       "severity": "warning",
-      "message": "Label “activity” is used by `prov:Activity`, `prov:activity`.",
-      "subject": "http://www.w3.org/ns/prov#Activity",
-      "subject_label": "Activity",
-      "anchor": "Activity"
+      "message": "Label “activity” is used by `prov:activity`, `prov:Activity`.",
+      "subject": "http://www.w3.org/ns/prov#activity",
+      "subject_label": "activity",
+      "anchor": "activity"
     },
     {
       "rule": "OB016",

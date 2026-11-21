@@ -6,13 +6,17 @@
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
 
 ### category
 
 **IRI:** `http://www.w3.org/ns/prov#category` · `prov:category`
 
 Classify prov-o terms into three categories, including 'starting-point', 'qualifed', and 'extended'. This classification is used by the prov-o html document to gently introduce prov-o terms to its users. 
+
+### comment
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#comment` · `rdfs:comment`
 
 ### component
 
@@ -28,7 +32,7 @@ A reference to the principal section of the PROV-CONSTRAINTS document that descr
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
 
 ### definition
 
@@ -48,7 +52,7 @@ A reference to the principal section of the PROV-DM document that describes this
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
 
 ### editorialNote
 
@@ -72,6 +76,14 @@ When the prov-o term does not have a definition drawn from prov-dm, and the prov
 
 PROV-O does not define all property inverses. The directionalities defined in PROV-O should be given preference over those not defined. However, if users wish to name the inverse of a PROV-O property, the local name given by prov:inverse should be used.
 
+### isDefinedBy
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#isDefinedBy` · `rdfs:isDefinedBy`
+
+### label
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#label` · `rdfs:label`
+
 ### n
 
 **IRI:** `http://www.w3.org/ns/prov#n` · `prov:n`
@@ -80,7 +92,7 @@ A reference to the principal section of the PROV-DM document that describes this
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
 
 ### order
 
@@ -114,7 +126,15 @@ Note how the value of the unqualified influence (prov:wasGeneratedBy :activity1)
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
+
+### seeAlso
+
+**IRI:** `http://www.w3.org/2000/01/rdf-schema#seeAlso` · `rdfs:seeAlso`
+
+| | |
+|---|---|
+| Sub-properties | [aq](annotation-properties.md#aq), [constraints](annotation-properties.md#constraints), [dm](annotation-properties.md#dm), [n](annotation-properties.md#n), [qualifiedForm](annotation-properties.md#qualifiedform), [sharesDefinitionWith](annotation-properties.md#sharesdefinitionwith), [unqualifiedForm](annotation-properties.md#unqualifiedform) |
 
 ### sharesDefinitionWith
 
@@ -122,7 +142,7 @@ Note how the value of the unqualified influence (prov:wasGeneratedBy :activity1)
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
 
 ### todo
 
@@ -136,5 +156,9 @@ Classes and properties used to qualify relationships are annotated with prov:unq
 
 | | |
 |---|---|
-| Super-properties | [rdfs:seeAlso](http://www.w3.org/2000/01/rdf-schema#seeAlso) |
+| Super-properties | [seeAlso](annotation-properties.md#seealso) |
+
+### versionInfo
+
+**IRI:** `http://www.w3.org/2002/07/owl#versionInfo` · `owl:versionInfo`
 

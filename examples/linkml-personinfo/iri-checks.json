@@ -1,0 +1,776 @@
+{
+  "checked_at": "2026-11-21T17:09:05.742427+00:00",
+  "run_id": 45,
+  "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+  "settings": {
+    "offline": false,
+    "refresh": false,
+    "repositories": true,
+    "resolve": true,
+    "local_namespaces": [
+      "https://w3id.org/example/personinfo/",
+      "https://w3id.org/example/personinfo#",
+      "https://w3id.org/example/personinfo/GenderType#"
+    ],
+    "budget": 120,
+    "cache_days": 30
+  },
+  "own_namespaces": [
+    "https://w3id.org/example/personinfo/",
+    "https://w3id.org/example/personinfo#",
+    "https://w3id.org/example/personinfo/GenderType#"
+  ],
+  "releases": [
+    {
+      "title": "Simple Knowledge Organization System",
+      "source": "bundle",
+      "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T01:08:31.108081+00:00",
+      "terms": 5,
+      "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+      "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+    },
+    {
+      "title": "bibo (purl.org)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/ontology/bibo/",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-18T03:50:03.244033+00:00",
+      "terms": 5,
+      "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+      "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+    },
+    {
+      "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/goodrelations/v1",
+      "ontology": null,
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T17:47:34.665699+00:00",
+      "terms": 4,
+      "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+      "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+    },
+    {
+      "title": "The DataCite Ontology (DataCite)",
+      "source": "cache",
+      "ontology_iri": "http://purl.org/spar/datacite",
+      "ontology": null,
+      "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+      "version": null,
+      "retrieved": "2026-11-20T02:33:51.493696+00:00",
+      "terms": 3,
+      "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+      "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+    },
+    {
+      "title": null,
+      "source": "ols",
+      "ontology_iri": "schemaorg_http",
+      "ontology": "schemaorg_http",
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-21T00:09:03.193403165",
+      "terms": 2
+    },
+    {
+      "title": null,
+      "source": "ols",
+      "ontology_iri": "schemaorg_https",
+      "ontology": "schemaorg_https",
+      "version_iri": null,
+      "version": null,
+      "retrieved": "2026-11-19T00:09:02.226879785",
+      "terms": 1
+    }
+  ],
+  "terms": [
+    {
+      "iri": "http://purl.org/dc/terms/contributor",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/created",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/creator",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/description",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/license",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/modified",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-20T02:33:51.493696+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://purl.org/dc/terms/title",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/ontology/bibo/",
+        "namespace": "http://purl.org/ontology/bibo/",
+        "title": "bibo (purl.org)",
+        "document": "http://purl.org/ontology/bibo/doi",
+        "version_iri": null,
+        "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+        "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+        "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+      }
+    },
+    {
+      "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-20T02:33:51.493696+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/spar/datacite",
+        "namespace": "http://purl.org/spar/datacite/",
+        "title": "The DataCite Ontology (DataCite)",
+        "document": "http://purl.org/spar/datacite/identifier",
+        "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+        "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+        "fetched_at": "2026-11-20T02:33:51.493696+00:00",
+        "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+      }
+    },
+    {
+      "iri": "http://schema.org/Person",
+      "roles": [
+        "class",
+        "class_or_datatype"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://schema.org/birthDate",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "schemaorg_http",
+        "ontology_iri": "schemaorg_http",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-21T00:09:03.193403165"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://schema.org/description",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://schema.org/email",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "schemaorg_http",
+        "ontology_iri": "schemaorg_http",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-21T00:09:03.193403165"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "http://schema.org/name",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "cache",
+        "ontology_iri": "http://purl.org/goodrelations/v1",
+        "namespace": "http://purl.org/goodrelations/",
+        "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+        "document": "http://purl.org/goodrelations/v1",
+        "version_iri": null,
+        "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+        "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+        "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#definition",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#exactMatch",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#example",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "http://www.w3.org/2004/02/skos/core#historyNote",
+      "roles": [
+        "property"
+      ],
+      "status": "valid",
+      "snapshot": "bundle",
+      "release": {
+        "source": "bundle",
+        "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+        "namespace": "http://www.w3.org/2004/02/skos/",
+        "title": "Simple Knowledge Organization System",
+        "document": "http://www.w3.org/2004/02/skos/core",
+        "version_iri": null,
+        "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+        "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+        "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+      }
+    },
+    {
+      "iri": "https://schema.org/keywords",
+      "status": "valid",
+      "snapshot": "cache",
+      "release": {
+        "source": "ols",
+        "ontology": "schemaorg_https",
+        "ontology_iri": "schemaorg_https",
+        "version_iri": null,
+        "version": null,
+        "loaded": "2026-11-19T00:09:02.226879785"
+      },
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/abstract",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "https://w3id.org/linkml/abstract: HTTPError: 404 Client Error: Not Found for url: https://linkml.io/linkml-model/linkml_model/rdf/abstract.ttl",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "https://w3id.org/linkml/abstract: HTTPError: 404 Client Error: Not Found for url: https://linkml.io/linkml-model/linkml_model/rdf/abstract.ttl"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/attribute_of",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "https://w3id.org/linkml/attribute_of: HTTPError: 404 Client Error: Not Found for url: https://linkml.io/linkml-model/linkml_model/rdf/attribute_of.ttl",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "https://w3id.org/linkml/attribute_of: HTTPError: 404 Client Error: Not Found for url: https://linkml.io/linkml-model/linkml_model/rdf/attribute_of.ttl"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/domain_of",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "https://w3id.org/linkml/domain_of: HTTPError: 404 Client Error: Not Found for url: https://linkml.io/linkml-model/linkml_model/rdf/domain_of.ttl",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "ols",
+          "status": "not_found"
+        },
+        {
+          "provider": "bioportal",
+          "status": "not_configured",
+          "detail": "Set BIOPORTAL_API_KEY"
+        },
+        {
+          "provider": "direct_download",
+          "status": "unverified",
+          "detail": "https://w3id.org/linkml/domain_of: HTTPError: 404 Client Error: Not Found for url: https://linkml.io/linkml-model/linkml_model/rdf/domain_of.ttl"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/generation_source",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/identifier",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/inlined_as_list",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/kind",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/maximum_value",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/minimum_value",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/mixin",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/mixins",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/multivalued",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/pattern",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/permissible_value",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    },
+    {
+      "iri": "https://w3id.org/linkml/tree_root",
+      "roles": [
+        "property"
+      ],
+      "status": "unverified",
+      "detail": "Not found in this namespace's first 3 lookups; not looked up again",
+      "attempts": [
+        {
+          "provider": "local",
+          "status": "unverified"
+        },
+        {
+          "provider": "remote",
+          "status": "skipped (3 misses in this namespace)"
+        }
+      ]
+    }
+  ]
+}

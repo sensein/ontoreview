@@ -13,7 +13,7 @@ The time at which an InstantaneousEvent occurred, in the form of xsd:dateTime.
 | category | qualified |
 | component | entities-activities |
 | sharesDefinitionWith | prov:InstantaneousEvent |
-| unqualifiedForm | prov:generatedAtTime; prov:invalidatedAtTime; prov:startedAtTime; prov:endedAtTime |
+| unqualifiedForm | prov:generatedAtTime; prov:endedAtTime; prov:startedAtTime; prov:invalidatedAtTime |
 
 ### endedAtTime
 
@@ -43,7 +43,7 @@ The time at which an entity was completely created and is available for use.
 | category | expanded |
 | component | entities-activities |
 | editorialNote | It is the intent that the property chain holds: (prov:qualifiedGeneration o prov:atTime) rdfs:subPropertyOf prov:generatedAtTime. |
-| qualifiedForm | prov:Generation; prov:atTime |
+| qualifiedForm | prov:atTime; prov:Generation |
 
 ### invalidatedAtTime
 

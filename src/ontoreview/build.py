@@ -24,6 +24,7 @@ from .publish import (
     htaccess,
     nginx_conf,
     provenance_graph,
+    provenance_record,
     w3id_htaccess,
     write_serializations,
 )
@@ -117,6 +118,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     import tempfile
 
     t0 = time.perf_counter()
+    started = _now()
     cfg = resolve_config(source, config, **overrides)
     out_file = Path(out_file)
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -129,6 +131,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
+    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
     changelog = None
     if cfg.previous_version:
         prev = cfg.previous_version
@@ -144,10 +147,43 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
                                          cfg.serializations) if cfg.sections.serializations else []
         renderer = SiteRenderer(cfg.model_copy(update={"layout": "single"}), onto, tmpdir,
                                 report=report, changelog=changelog, downloads=downloads,
-                                plugin_sections=plugins.sections(onto, cfg), inline=True, cqs=cqset)
+                                plugin_sections=plugins.sections(onto, cfg), inline=True, cqs=cqset,
+                                provenance=prov)
         page = renderer.render()[0]
         shutil.copyfile(page, out_file)
     return BuildResult(out_file, onto, report, changelog, [out_file], time.perf_counter() - t0, cqset)
+
+
+STANDALONE_FILE = "standalone.html"
+
+
+def _now():
+    import datetime as dt
+
+    return dt.datetime.now(dt.timezone.utc)
+
+
+def _write_standalone(cfg: Config, onto: Ontology, out_dir: Path, report, changelog, downloads: list[dict],
+                      plugins: PluginManager, cqset, prov: dict | None = None) -> Path:
+    """The site's primary language as one self-contained page in ``out_dir``, rendered from the
+    results this build already has (no second parse or quality run)."""
+    import copy
+    import tempfile
+
+    dl = copy.deepcopy(downloads)            # the inline renderer rewrites href to data: URIs
+    for d in dl:
+        d.setdefault("path", str(out_dir / d["file"]))
+    with tempfile.TemporaryDirectory() as tmp:
+        renderer = SiteRenderer(cfg.model_copy(update={"layout": "single"}), onto, Path(tmp),
+                                report=report, changelog=changelog, downloads=dl,
+                                plugin_sections=plugins.sections(onto, cfg), inline=True, cqs=cqset,
+                                provenance=prov)
+        if plugins.template_dirs():
+            renderer._plugin_template_dirs = plugins.template_dirs()
+            renderer.env = renderer._env()
+        target = out_dir / STANDALONE_FILE
+        shutil.copyfile(renderer.render()[0], target)
+    return target
 
 
 def build(source: str | Path | None = None, out: str | Path | None = None,
@@ -159,6 +195,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     >>> ontoreview.build("ontology.ttl", out="docs/")          # doctest: +SKIP
     """
     t0 = time.perf_counter()
+    started = _now()
     cfg = resolve_config(source, config, **overrides)
     out_dir = Path(out) if out else (cfg.resolve(cfg.output) or Path("docs"))
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -174,6 +211,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
+    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
 
     changelog = None
     if cfg.previous_version:
@@ -226,11 +264,15 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
             live_reload=live_reload,
             cqs=cqset,
             llm_files=llm_files,
+            provenance=prov,
         )
         if plugins.template_dirs():
             renderer._plugin_template_dirs = plugins.template_dirs()
             renderer.env = renderer._env()
         files += renderer.render()
+
+    if cfg.standalone:
+        files.append(_write_standalone(cfg, onto, out_dir, report, changelog, downloads, plugins, cqset, prov))
 
     # Publishing extras
     if cfg.conneg and downloads:
@@ -252,7 +294,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
         # frozen at build time: which release each external term was verified against
         (out_dir / "iri-checks.json").write_text(json.dumps(iri_prov, indent=2, ensure_ascii=False), "utf-8")
     if cfg.sections.provenance:
-        pg = provenance_graph(onto, Path(cfg.source or "").name, __version__)
+        pg = provenance_graph(onto, Path(cfg.source or "").name, __version__, prov)
         if iri_prov or cdi_rec:
             from rdflib import URIRef
 

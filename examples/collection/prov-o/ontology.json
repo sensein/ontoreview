@@ -18,7 +18,7 @@
   "class": 30,
   "object_property": 44,
   "datatype_property": 6,
-  "annotation_property": 15,
+  "annotation_property": 20,
   "triples": 1146
  },
  "terms": [
@@ -37,9 +37,9 @@
    "curie": "prov:ActivityInfluence",
    "kind": "class",
    "label": "ActivityInfluence",
-   "definition": "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity.",
+   "definition": "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses.",
    "comments": [
-    "It is not recommended that the type ActivityInfluence be asserted without also asserting one of its more specific subclasses."
+    "ActivityInfluence provides additional descriptions of an Activity's binary influence upon any other kind of resource. Instances of ActivityInfluence use the prov:activity property to cite the influencing Activity."
    ],
    "superclasses": [
     "prov:Influence"
@@ -174,8 +174,8 @@
    "label": "Derivation",
    "definition": "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.",
    "comments": [
-    "An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ].",
-    "The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply."
+    "The more specific forms of prov:Derivation (i.e., prov:Revision, prov:Quotation, prov:PrimarySource) should be asserted if they apply.",
+    "An instance of prov:Derivation provides additional descriptions about the binary prov:wasDerivedFrom relation from some derived prov:Entity to another prov:Entity from which it was derived. For example, :chewed_bubble_gum prov:wasDerivedFrom :unwrapped_bubble_gum; prov:qualifiedDerivation [ a prov:Derivation; prov:entity :unwrapped_bubble_gum; :foo :bar ]."
    ],
    "superclasses": [
     "prov:EntityInfluence"
@@ -269,8 +269,8 @@
    "label": "Influence",
    "definition": "Influence is the capacity of an entity, activity, or agent to have an effect on the character, development, or behavior of another by means of usage, start, end, generation, invalidation, communication, derivation, attribution, association, or delegation.",
    "comments": [
-    "An instance of prov:Influence provides additional descriptions about the binary prov:wasInfluencedBy relation from some influenced Activity, Entity, or Agent to the influencing Activity, Entity, or Agent. For example, :stomach_ache prov:wasInfluencedBy :spoon; prov:qualifiedInfluence [ a prov:Influence; prov:entity :spoon; :foo :bar ] . Because prov:Influence is a broad relation, the more specific relations (Communication, Delegation, End, etc.) should be used when applicable.",
-    "Because prov:Influence is a broad relation, its most specific subclasses (e.g. prov:Communication, prov:Delegation, prov:End, prov:Revision, etc.) should be used when applicable."
+    "Because prov:Influence is a broad relation, its most specific subclasses (e.g. prov:Communication, prov:Delegation, prov:End, prov:Revision, etc.) should be used when applicable.",
+    "An instance of prov:Influence provides additional descriptions about the binary prov:wasInfluencedBy relation from some influenced Activity, Entity, or Agent to the influencing Activity, Entity, or Agent. For example, :stomach_ache prov:wasInfluencedBy :spoon; prov:qualifiedInfluence [ a prov:Influence; prov:entity :spoon; :foo :bar ] . Because prov:Influence is a broad relation, the more specific relations (Communication, Delegation, End, etc.) should be used when applicable."
    ],
    "subclasses": [
     "prov:ActivityInfluence",
@@ -558,8 +558,8 @@
     "This property has multiple RDFS domains to suit multiple OWL Profiles. See <a href=\"#owl-profile\">PROV-O OWL Profile</a>."
    ],
    "domain": [
-    "prov:Delegation or prov:Derivation or prov:End or prov:Start",
-    "prov:Influence"
+    "prov:Influence",
+    "prov:Delegation or prov:Derivation or prov:End or prov:Start"
    ],
    "range": [
     "prov:Activity"
@@ -1267,6 +1267,12 @@
    "definition": "Classify prov-o terms into three categories, including 'starting-point', 'qualifed', and 'extended'. This classification is used by the prov-o html document to gently introduce prov-o terms to its users. "
   },
   {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "curie": "rdfs:comment",
+   "kind": "annotation_property",
+   "label": "comment"
+  },
+  {
    "iri": "http://www.w3.org/ns/prov#component",
    "curie": "prov:component",
    "kind": "annotation_property",
@@ -1328,6 +1334,18 @@
    "definition": "PROV-O does not define all property inverses. The directionalities defined in PROV-O should be given preference over those not defined. However, if users wish to name the inverse of a PROV-O property, the local name given by prov:inverse should be used."
   },
   {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "curie": "rdfs:isDefinedBy",
+   "kind": "annotation_property",
+   "label": "isDefinedBy"
+  },
+  {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#label",
+   "curie": "rdfs:label",
+   "kind": "annotation_property",
+   "label": "label"
+  },
+  {
    "iri": "http://www.w3.org/ns/prov#n",
    "curie": "prov:n",
    "kind": "annotation_property",
@@ -1355,6 +1373,21 @@
    ]
   },
   {
+   "iri": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+   "curie": "rdfs:seeAlso",
+   "kind": "annotation_property",
+   "label": "seeAlso",
+   "sub_properties": [
+    "prov:aq",
+    "prov:constraints",
+    "prov:dm",
+    "prov:n",
+    "prov:qualifiedForm",
+    "prov:sharesDefinitionWith",
+    "prov:unqualifiedForm"
+   ]
+  },
+  {
    "iri": "http://www.w3.org/ns/prov#sharesDefinitionWith",
    "curie": "prov:sharesDefinitionWith",
    "kind": "annotation_property",
@@ -1378,6 +1411,12 @@
    "super_properties": [
     "rdfs:seeAlso"
    ]
+  },
+  {
+   "iri": "http://www.w3.org/2002/07/owl#versionInfo",
+   "curie": "owl:versionInfo",
+   "kind": "annotation_property",
+   "label": "versionInfo"
   }
  ],
  "competency_questions": []

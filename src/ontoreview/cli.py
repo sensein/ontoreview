@@ -234,6 +234,7 @@ def build(
     cdi_ontoaligner: str | None = typer.Option(None, "--cdi-ontoaligner", help="Also match file/URL references with OntoAligner: sbert (sentence embeddings, default; model downloaded automatically), fuzzy (string similarity) or off. Needs ontoreview[cdi]."),
     cdi_api_key: list[str] | None = typer.Option(None, "--cdi-api-key", help="Optional API key for BioPortal (KEY or bioportal=KEY), another OntoPortal service (ontoportal=KEY or bioportal@host=KEY). Avoids shared rate limits; OLS needs none. Prefer BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY to keep keys out of shell history."),
     single_file: bool = typer.Option(False, "--single-file", help="Write one self-contained HTML file."),
+    standalone: bool | None = typer.Option(None, "--standalone/--no-standalone", help="Also write standalone.html (the whole documentation in one file) in the output folder (default: on)."),
     open_browser: bool = typer.Option(False, "--open", help="Open the result in a browser."),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
@@ -244,7 +245,7 @@ def build(
     from .build import build_single_file
 
     ov = _overrides(layout=layout.value if layout else None, languages=lang, previous_version=previous,
-                    base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason,
+                    base_url=base_url, theme=str(theme.resolve()) if theme else None, reason=reason, standalone=standalone,
                     load_imports=imports, include_imported=include_imported,
                     include_individuals=individuals, evaluation=_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain, cdi_api_key, cdi_ontoaligner, no_cdi, hf_token),
                     competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)

@@ -10,7 +10,7 @@
 <link rel="alternate" type="application/ld+json" href="ontology.jsonld" title="JSON-LD">
 <link rel="alternate" type="application/n-triples" href="ontology.nt" title="N-Triples">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
-<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6afd1434">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt"><link rel="stylesheet" href="assets/ontoreview.css?v=6b01d116">
 <script>try{var m=localStorage.getItem("ontoreview-theme");if(m)document.documentElement.dataset.theme=m;var z=localStorage.getItem("ontoreview-textsize");if(z)document.documentElement.dataset.textsize=z}catch(e){}</script>
 
 <script type="application/ld+json">{
@@ -65,143 +65,10 @@
  "hasDefinedTerm": [
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#postIn",
-   "name": "post in",
-   "description": "Indicates the Organization in which the Post exists.",
-   "termCode": "org:postIn"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#roleProperty",
-   "name": "role (property)",
-   "description": "This is a metalevel property which is used to annotate an `org:Role` instance with a sub-property of `org:memberOf` that can be used to directly indicate the role for easy of query. The intended semantics is a Membership relation involving the Role implies the existence of a direct property relationship through an inference rule of the form:  `{ [] org:member ?p; org:organization ?o; org:role [org:roleProperty ?r] } -> {?p ?r ?o}`.",
-   "termCode": "org:roleProperty"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Post",
-   "name": "Post",
-   "description": "A Post represents some position within an organization that exists independently of the person or persons filling it. Posts may be used to represent situations where a person is a member of an organization ex officio (for example the Secretary of State for Scotland is part of UK Cabinet by virtue of being Secretary of State for Scotland, not as an individual person). A post can be held by multiple people and hence can be treated as a organization in its own right.",
-   "termCode": "org:Post"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#subOrganizationOf",
-   "name": "subOrganization of",
-   "description": "Represents hierarchical containment of Organizations or OrganizationalUnits; indicates an Organization which contains this Organization. Inverse of `org:hasSubOrganization`.",
-   "termCode": "org:subOrganizationOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#ChangeEvent",
-   "name": "Change Event",
-   "description": "Represents an event which resulted in a major change to an organization such as a merger or complete restructuring. It is intended for situations where the resulting organization is sufficient distinct from the original organizations that it has a distinct identity and distinct URI. Extension vocabularies should define sub-classes of this to denote particular categories of event. The instant or interval at which the event occurred should be given by `prov:startAtTime` and `prov:endedAtTime`, a d",
-   "termCode": "org:ChangeEvent"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#identifier",
-   "name": "identifier",
-   "description": "Gives an identifier, such as a company registration number, that can be used to used to uniquely identify the organization. Many different national and international identier schemes are available. The org ontology is neutral to which schemes are used. The particular identifier scheme should be indicated by the datatype of the identifier value.  Using datatypes to distinguish the notation scheme used is consistent with recommended best practice for `skos:notation` of which this property is a spe",
-   "termCode": "org:identifier"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#OrganizationalUnit",
-   "name": "OrganizationalUnit",
-   "description": "An Organization such as a University Support Unit which is part of some larger FormalOrganization and only has full recognition within the context of that FormalOrganization, it is not a Legal Entity in its own right. Units can be large and complex containing other Units and even FormalOrganizations. Alternative names: _OU_ _Unit_ _Department_",
-   "termCode": "org:OrganizationalUnit"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Site",
-   "name": "Site",
-   "description": "An office or other premise at which the organization is located. Many organizations are spread across multiple sites and many sites will host multiple locations. In most cases a Site will be a physical location. However, we don't exclude the possibility of non-physical sites such as a virtual office with an associated post box and phone reception service. Extensions may provide subclasses to denote particular types of site.",
-   "termCode": "org:Site"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#reportsTo",
-   "name": "reports to",
-   "description": "Indicates a reporting relationship as might be depicted on an organizational chart. The precise semantics of the reporting relationship will vary by organization but is intended to encompass both direct supervisory relationships (e.g. carrying objective and salary setting authority) and more general reporting or accountability relationships (e.g. so called _dotted line_ reporting).",
-   "termCode": "org:reportsTo"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasUnit",
-   "name": "has Unit",
-   "description": "Indicates a unit which is part of this Organization, e.g. a Department within a larger FormalOrganization. Inverse of `org:unitOf`.",
-   "termCode": "org:hasUnit"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#role",
-   "name": "role",
-   "description": "Indicates the Role that the Agent plays in a Membership relationship with an Organization.",
-   "termCode": "org:role"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#FormalOrganization",
-   "name": "Formal Organization",
-   "description": "An Organization which is recognized in the world at large, in particular in legal jurisdictions, with associated rights and responsibilities. Examples include a Corporation, Charity, Government or Church. Note that this is a super class of `gr:BusinessEntity` and it is recommended to use the GoodRelations vocabulary to denote Business classifications such as DUNS or NAICS.",
-   "termCode": "org:FormalOrganization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasRegisteredSite",
-   "name": "registered Site",
-   "description": "Indicates the legally registered site for the organization, in many legal jurisdictions there is a requirement that FormalOrganizations such as Companies or Charities have such a primary designed site. ",
-   "termCode": "org:hasRegisteredSite"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#heldBy",
-   "name": "held by",
-   "description": "Indicates an Agent which holds a Post.",
-   "termCode": "org:heldBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasSite",
-   "name": "has site",
-   "description": "Indicates a site at which the Organization has some presence even if only indirect (e.g. virtual office or a professional service which is acting as the registered address for a company). Inverse of `org:siteOf`.",
-   "termCode": "org:hasSite"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#member",
-   "name": "member",
-   "description": "Indicates the Person (or other Agent including Organization) involved in the Membership relationship. Inverse of `org:hasMembership`",
-   "termCode": "org:member"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#siteOf",
-   "name": "site Of",
-   "description": "Indicates an Organization which has some presence at the given site. This is the inverse of `org:hasSite`.",
-   "termCode": "org:siteOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#unitOf",
-   "name": "unit Of",
-   "description": "Indicates an Organization of which this Unit is a part, e.g. a Department within a larger FormalOrganization. This is the inverse of `org:hasUnit`.",
-   "termCode": "org:unitOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#changedBy",
-   "name": "changed by",
-   "description": "Indicates a change event which resulted in a change to this organization. Depending on the event the organization may or may not have continued to exist after the event. Inverse of `org:originalOrganization`.",
-   "termCode": "org:changedBy"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#basedAt",
-   "name": "based At",
-   "description": "Indicates the site at which a person is based. We do not restrict the possibility that a person is based at multiple sites.",
-   "termCode": "org:basedAt"
+   "@id": "http://www.w3.org/ns/org#OrganizationalCollaboration",
+   "name": "Endeavour",
+   "description": "A collaboration between two or more Organizations such as a project. It meets the criteria for being an Organization in that it has an identity and defining purpose independent of its particular members but is neither a formally recognized legal entity nor a sub-unit within some larger organization. Might typically have a shorter lifetime than the Organizations within it, but not necessarily. All members are `org:Organization`s rather than individuals and those Organizations can play particular ",
+   "termCode": "org:OrganizationalCollaboration"
   },
   {
    "@type": "DefinedTerm",
@@ -212,87 +79,10 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#holds",
-   "name": "holds",
-   "description": "Indicates a Post held by some Agent.",
-   "termCode": "org:holds"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#headOf",
-   "name": "head of",
-   "description": "Indicates that a person is the leader or formal head of the Organization. This will normally mean that they are the root of the `org:reportsTo` (acyclic) graph, though an organization may have more than one head.",
-   "termCode": "org:headOf"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasMembership",
-   "name": "membership",
-   "description": "Indicates a membership relationship that the Agent plays. Inverse of `org:member`.",
-   "termCode": "org:hasMembership"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#siteAddress",
-   "name": "site Address",
-   "description": "Indicates an address for the site in a suitable encoding. Use of vCard (using the http://www.w3.org/TR/vcard-rdf/ vocabulary) is encouraged but the range is left open to allow other encodings to be used. The address may include email, telephone, and geo-location information and is not restricted to a physical address. ",
-   "termCode": "org:siteAddress"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#originalOrganization",
-   "name": "original organization",
-   "description": "Indicates one or more organizations that existed before the change event. Depending on the event they may or may not have continued to exist after the event. Inverse of `org:changedBy`.",
-   "termCode": "org:originalOrganization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#resultingOrganization",
-   "name": "resulted in",
-   "description": "Indicates an organization which was created or changed as a result of the event. Inverse of `org:resultedFrom`.",
-   "termCode": "org:resultingOrganization"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#location",
-   "name": "location",
-   "description": "Gives a location description for a person within the organization, for example a _Mail Stop_ for internal posting purposes.",
-   "termCode": "org:location"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#linkedTo",
-   "name": "linked to",
-   "description": "Indicates an arbitrary relationship between two organizations. Specializations of this can be used to, for example, denote funding or supply chain relationships.",
-   "termCode": "org:linkedTo"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#purpose",
-   "name": "purpose",
-   "description": "Indicates the purpose of this Organization. There can be many purposes at different levels of abstraction but the nature of an organization is to have a reason for existence and this property is a means to document that reason. An Organization may have multiple purposes. It is recommended that the purpose be denoted by a controlled term or code list, ideally a `skos:Concept`. However, the range is left open to allow for other types of descriptive schemes. It is expected that specializations or a",
-   "termCode": "org:purpose"
-  },
-  {
-   "@type": "DefinedTerm",
    "@id": "http://www.w3.org/ns/org#Head",
    "name": "head",
    "description": "A role corresponding to the `org:headOf` property",
    "termCode": "org:Head"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#OrganizationalCollaboration",
-   "name": "Endeavour",
-   "description": "A collaboration between two or more Organizations such as a project. It meets the criteria for being an Organization in that it has an identity and defining purpose independent of its particular members but is neither a formally recognized legal entity nor a sub-unit within some larger organization. Might typically have a shorter lifetime than the Organizations within it, but not necessarily. All members are `org:Organization`s rather than individuals and those Organizations can play particular ",
-   "termCode": "org:OrganizationalCollaboration"
-  },
-  {
-   "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#remuneration",
-   "name": "remuneration",
-   "description": "Indicates a salary or other reward associated with the role. Typically this will be denoted using an existing representation scheme such as `gr:PriceSpecification` but the range is left open to allow applications to specialize it (e.g. to remunerationInGBP).",
-   "termCode": "org:remuneration"
   },
   {
    "@type": "DefinedTerm",
@@ -303,38 +93,45 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Role",
-   "name": "Role",
-   "description": "Denotes a role that a Person or other Agent can take in an organization. Instances of this class describe the abstract role; to denote a specific instance of a person playing that role in a specific organization use an instance of `org:Membership`. It is common for roles to be arranged in some taxonomic structure and we use SKOS to represent that. The normal SKOS lexical properties should be used when labelling the Role. Additional descriptive properties for the Role, such as a Salary band, may ",
-   "termCode": "org:Role"
+   "@id": "http://www.w3.org/ns/org#basedAt",
+   "name": "based At",
+   "description": "Indicates the site at which a person is based. We do not restrict the possibility that a person is based at multiple sites.",
+   "termCode": "org:basedAt"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
-   "name": "transitive sub-organization",
-   "description": "The transitive closure of subOrganizationOf, giving a representation of all organizations that contain this one. Note that technically this is a super property of the transitive closure so it could contain additional assertions but such usage is discouraged.",
-   "termCode": "org:transitiveSubOrganizationOf"
+   "@id": "http://www.w3.org/ns/org#Post",
+   "name": "Post",
+   "description": "A Post represents some position within an organization that exists independently of the person or persons filling it. Posts may be used to represent situations where a person is a member of an organization ex officio (for example the Secretary of State for Scotland is part of UK Cabinet by virtue of being Secretary of State for Scotland, not as an individual person). A post can be held by multiple people and hence can be treated as a organization in its own right.",
+   "termCode": "org:Post"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasMember",
-   "name": "has member",
-   "description": "Indicates a person who is a member of the subject Organization. Inverse of `org:memberOf`, see that property for further clarification. Provided for compatibility with `foaf:member`.",
-   "termCode": "org:hasMember"
+   "@id": "http://www.w3.org/ns/org#originalOrganization",
+   "name": "original organization",
+   "description": "Indicates one or more organizations that existed before the change event. Depending on the event they may or may not have continued to exist after the event. Inverse of `org:changedBy`.",
+   "termCode": "org:originalOrganization"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Organization",
-   "name": "Organization",
-   "description": "Represents a collection of people organized together into a community or other social, commercial or political structure. The group has some common purpose or reason for existence which goes beyond the set of people belonging to it and can act as an Agent. Organizations are often decomposable into hierarchical structures.  It is recommended that SKOS lexical labels should be used to label the Organization. In particular `skos:prefLabel` for the primary (possibly legally recognized name), `skos:a",
-   "termCode": "org:Organization"
+   "@id": "http://www.w3.org/ns/org#siteOf",
+   "name": "site Of",
+   "description": "Indicates an Organization which has some presence at the given site. This is the inverse of `org:hasSite`.",
+   "termCode": "org:siteOf"
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasSubOrganization",
-   "name": "has SubOrganization",
-   "description": "Represents hierarchical containment of Organizations or Organizational Units; indicates an organization which is a sub-part or child of this organization.  Inverse of `org:subOrganizationOf`.",
-   "termCode": "org:hasSubOrganization"
+   "@id": "http://www.w3.org/ns/org#memberDuring",
+   "name": "member During",
+   "description": "Optional property to indicate the interval for which the membership is/was valid.",
+   "termCode": "org:memberDuring"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#subOrganizationOf",
+   "name": "subOrganization of",
+   "description": "Represents hierarchical containment of Organizations or OrganizationalUnits; indicates an Organization which contains this Organization. Inverse of `org:hasSubOrganization`.",
+   "termCode": "org:subOrganizationOf"
   },
   {
    "@type": "DefinedTerm",
@@ -345,10 +142,52 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#Membership",
-   "name": "Membership",
-   "description": "Indicates the nature of an Agent's membership of an organization. Represents an n-ary relation between an Agent, an Organization and a Role. It is possible to directly indicate membership, independent of the specific Role, through use of the `org:memberOf` property.",
-   "termCode": "org:Membership"
+   "@id": "http://www.w3.org/ns/org#hasSubOrganization",
+   "name": "has SubOrganization",
+   "description": "Represents hierarchical containment of Organizations or Organizational Units; indicates an organization which is a sub-part or child of this organization.  Inverse of `org:subOrganizationOf`.",
+   "termCode": "org:hasSubOrganization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#location",
+   "name": "location",
+   "description": "Gives a location description for a person within the organization, for example a _Mail Stop_ for internal posting purposes.",
+   "termCode": "org:location"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#holds",
+   "name": "holds",
+   "description": "Indicates a Post held by some Agent.",
+   "termCode": "org:holds"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#transitiveSubOrganizationOf",
+   "name": "transitive sub-organization",
+   "description": "The transitive closure of subOrganizationOf, giving a representation of all organizations that contain this one. Note that technically this is a super property of the transitive closure so it could contain additional assertions but such usage is discouraged.",
+   "termCode": "org:transitiveSubOrganizationOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasMembership",
+   "name": "membership",
+   "description": "Indicates a membership relationship that the Agent plays. Inverse of `org:member`.",
+   "termCode": "org:hasMembership"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#unitOf",
+   "name": "unit Of",
+   "description": "Indicates an Organization of which this Unit is a part, e.g. a Department within a larger FormalOrganization. This is the inverse of `org:hasUnit`.",
+   "termCode": "org:unitOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasRegisteredSite",
+   "name": "registered Site",
+   "description": "Indicates the legally registered site for the organization, in many legal jurisdictions there is a requirement that FormalOrganizations such as Companies or Charities have such a primary designed site. ",
+   "termCode": "org:hasRegisteredSite"
   },
   {
    "@type": "DefinedTerm",
@@ -359,10 +198,17 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#hasPost",
-   "name": "post",
-   "description": "Indicates a Post which exists within the Organization.",
-   "termCode": "org:hasPost"
+   "@id": "http://www.w3.org/ns/org#reportsTo",
+   "name": "reports to",
+   "description": "Indicates a reporting relationship as might be depicted on an organizational chart. The precise semantics of the reporting relationship will vary by organization but is intended to encompass both direct supervisory relationships (e.g. carrying objective and salary setting authority) and more general reporting or accountability relationships (e.g. so called _dotted line_ reporting).",
+   "termCode": "org:reportsTo"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#remuneration",
+   "name": "remuneration",
+   "description": "Indicates a salary or other reward associated with the role. Typically this will be denoted using an existing representation scheme such as `gr:PriceSpecification` but the range is left open to allow applications to specialize it (e.g. to remunerationInGBP).",
+   "termCode": "org:remuneration"
   },
   {
    "@type": "DefinedTerm",
@@ -373,10 +219,230 @@
   },
   {
    "@type": "DefinedTerm",
-   "@id": "http://www.w3.org/ns/org#memberDuring",
-   "name": "member During",
-   "description": "Optional property to indicate the interval for which the membership is/was valid.",
-   "termCode": "org:memberDuring"
+   "@id": "http://www.w3.org/ns/org#resultingOrganization",
+   "name": "resulted in",
+   "description": "Indicates an organization which was created or changed as a result of the event. Inverse of `org:resultedFrom`.",
+   "termCode": "org:resultingOrganization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#identifier",
+   "name": "identifier",
+   "description": "Gives an identifier, such as a company registration number, that can be used to used to uniquely identify the organization. Many different national and international identier schemes are available. The org ontology is neutral to which schemes are used. The particular identifier scheme should be indicated by the datatype of the identifier value.  Using datatypes to distinguish the notation scheme used is consistent with recommended best practice for `skos:notation` of which this property is a spe",
+   "termCode": "org:identifier"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#purpose",
+   "name": "purpose",
+   "description": "Indicates the purpose of this Organization. There can be many purposes at different levels of abstraction but the nature of an organization is to have a reason for existence and this property is a means to document that reason. An Organization may have multiple purposes. It is recommended that the purpose be denoted by a controlled term or code list, ideally a `skos:Concept`. However, the range is left open to allow for other types of descriptive schemes. It is expected that specializations or a",
+   "termCode": "org:purpose"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#roleProperty",
+   "name": "role (property)",
+   "description": "This is a metalevel property which is used to annotate an `org:Role` instance with a sub-property of `org:memberOf` that can be used to directly indicate the role for easy of query. The intended semantics is a Membership relation involving the Role implies the existence of a direct property relationship through an inference rule of the form:  `{ [] org:member ?p; org:organization ?o; org:role [org:roleProperty ?r] } -> {?p ?r ?o}`.",
+   "termCode": "org:roleProperty"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#Organization",
+   "name": "Organization",
+   "description": "Represents a collection of people organized together into a community or other social, commercial or political structure. The group has some common purpose or reason for existence which goes beyond the set of people belonging to it and can act as an Agent. Organizations are often decomposable into hierarchical structures.  It is recommended that SKOS lexical labels should be used to label the Organization. In particular `skos:prefLabel` for the primary (possibly legally recognized name), `skos:a",
+   "termCode": "org:Organization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#OrganizationalUnit",
+   "name": "OrganizationalUnit",
+   "description": "An Organization such as a University Support Unit which is part of some larger FormalOrganization and only has full recognition within the context of that FormalOrganization, it is not a Legal Entity in its own right. Units can be large and complex containing other Units and even FormalOrganizations. Alternative names: _OU_ _Unit_ _Department_",
+   "termCode": "org:OrganizationalUnit"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#heldBy",
+   "name": "held by",
+   "description": "Indicates an Agent which holds a Post.",
+   "termCode": "org:heldBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#Site",
+   "name": "Site",
+   "description": "An office or other premise at which the organization is located. Many organizations are spread across multiple sites and many sites will host multiple locations. In most cases a Site will be a physical location. However, we don't exclude the possibility of non-physical sites such as a virtual office with an associated post box and phone reception service. Extensions may provide subclasses to denote particular types of site.",
+   "termCode": "org:Site"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#headOf",
+   "name": "head of",
+   "description": "Indicates that a person is the leader or formal head of the Organization. This will normally mean that they are the root of the `org:reportsTo` (acyclic) graph, though an organization may have more than one head.",
+   "termCode": "org:headOf"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#changedBy",
+   "name": "changed by",
+   "description": "Indicates a change event which resulted in a change to this organization. Depending on the event the organization may or may not have continued to exist after the event. Inverse of `org:originalOrganization`.",
+   "termCode": "org:changedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#siteAddress",
+   "name": "site Address",
+   "description": "Indicates an address for the site in a suitable encoding. Use of vCard (using the http://www.w3.org/TR/vcard-rdf/ vocabulary) is encouraged but the range is left open to allow other encodings to be used. The address may include email, telephone, and geo-location information and is not restricted to a physical address. ",
+   "termCode": "org:siteAddress"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#postIn",
+   "name": "post in",
+   "description": "Indicates the Organization in which the Post exists.",
+   "termCode": "org:postIn"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasUnit",
+   "name": "has Unit",
+   "description": "Indicates a unit which is part of this Organization, e.g. a Department within a larger FormalOrganization. Inverse of `org:unitOf`.",
+   "termCode": "org:hasUnit"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#FormalOrganization",
+   "name": "Formal Organization",
+   "description": "An Organization which is recognized in the world at large, in particular in legal jurisdictions, with associated rights and responsibilities. Examples include a Corporation, Charity, Government or Church. Note that this is a super class of `gr:BusinessEntity` and it is recommended to use the GoodRelations vocabulary to denote Business classifications such as DUNS or NAICS.",
+   "termCode": "org:FormalOrganization"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#ChangeEvent",
+   "name": "Change Event",
+   "description": "Represents an event which resulted in a major change to an organization such as a merger or complete restructuring. It is intended for situations where the resulting organization is sufficient distinct from the original organizations that it has a distinct identity and distinct URI. Extension vocabularies should define sub-classes of this to denote particular categories of event. The instant or interval at which the event occurred should be given by `prov:startAtTime` and `prov:endedAtTime`, a d",
+   "termCode": "org:ChangeEvent"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasSite",
+   "name": "has site",
+   "description": "Indicates a site at which the Organization has some presence even if only indirect (e.g. virtual office or a professional service which is acting as the registered address for a company). Inverse of `org:siteOf`.",
+   "termCode": "org:hasSite"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#role",
+   "name": "role",
+   "description": "Indicates the Role that the Agent plays in a Membership relationship with an Organization.",
+   "termCode": "org:role"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasPost",
+   "name": "post",
+   "description": "Indicates a Post which exists within the Organization.",
+   "termCode": "org:hasPost"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#hasMember",
+   "name": "has member",
+   "description": "Indicates a person who is a member of the subject Organization. Inverse of `org:memberOf`, see that property for further clarification. Provided for compatibility with `foaf:member`.",
+   "termCode": "org:hasMember"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#member",
+   "name": "member",
+   "description": "Indicates the Person (or other Agent including Organization) involved in the Membership relationship. Inverse of `org:hasMembership`",
+   "termCode": "org:member"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#linkedTo",
+   "name": "linked to",
+   "description": "Indicates an arbitrary relationship between two organizations. Specializations of this can be used to, for example, denote funding or supply chain relationships.",
+   "termCode": "org:linkedTo"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#Role",
+   "name": "Role",
+   "description": "Denotes a role that a Person or other Agent can take in an organization. Instances of this class describe the abstract role; to denote a specific instance of a person playing that role in a specific organization use an instance of `org:Membership`. It is common for roles to be arranged in some taxonomic structure and we use SKOS to represent that. The normal SKOS lexical properties should be used when labelling the Role. Additional descriptive properties for the Role, such as a Salary band, may ",
+   "termCode": "org:Role"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/ns/org#Membership",
+   "name": "Membership",
+   "description": "Indicates the nature of an Agent's membership of an organization. Represents an n-ary relation between an Agent, an Organization and a Role. It is possible to directly indicate membership, independent of the specific Role, through use of the `org:memberOf` property.",
+   "termCode": "org:Membership"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+   "name": "label",
+   "termCode": "rdfs:label"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
+   "name": "comment",
+   "termCode": "rdfs:comment"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+   "name": "isDefinedBy",
+   "termCode": "rdfs:isDefinedBy"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
+   "name": "prefLabel",
+   "termCode": "skos:prefLabel"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2002/07/owl#versionInfo",
+   "name": "versionInfo",
+   "termCode": "owl:versionInfo"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/created",
+   "name": "created",
+   "termCode": "dct:created"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/modified",
+   "name": "modified",
+   "termCode": "dct:modified"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/title",
+   "name": "title",
+   "termCode": "dct:title"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/contributor",
+   "name": "contributor",
+   "termCode": "dct:contributor"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://purl.org/dc/terms/license",
+   "name": "license",
+   "termCode": "dct:license"
+  },
+  {
+   "@type": "DefinedTerm",
+   "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+   "name": "seeAlso",
+   "termCode": "rdfs:seeAlso"
   }
  ]
 }</script></head>
@@ -402,66 +468,78 @@
   <nav aria-label="Contents">
     <ol class="toc-list">
       <li>
-        <a href="#graph" data-section="graph"><span class="secno">1</span><span class="toc-label">Visualization</span></a>
+        <a href="#overview" data-section="overview"><span class="secno">1</span><span class="toc-label">Overview</span></a>
       </li>
       <li>
-        <a href="#classes" data-section="classes"><span class="secno">2</span><span class="toc-label">Reference</span></a>
+        <a href="#graph" data-section="graph"><span class="secno">2</span><span class="toc-label">Visualization</span></a>
+      </li>
+      <li>
+        <a href="#classes" data-section="classes"><span class="secno">3</span><span class="toc-label">Terms</span></a>
         <ol>
           <li class="toc-kind">
             <details>
-              <summary><a href="#classes" data-section="classes"><span class="secno">2.1</span><span class="toc-label">Classes</span><span class="toc-count">9</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="#classes" data-section="classes"><span class="secno">3.1</span><span class="toc-label">Classes</span><span class="toc-count">9</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#ChangeEvent" class="ref" title="org:ChangeEvent">Change Event</a></span></li><li><span class="leaf"><a href="#Membership" class="ref" title="org:Membership">Membership</a></span></li><li><details><summary><a href="#Organization" class="ref" title="org:Organization">Organization</a></summary><ul class="tree"><li><span class="leaf"><a href="#OrganizationalCollaboration" class="ref" title="org:OrganizationalCollaboration">Endeavour</a></span></li><li><span class="leaf"><a href="#FormalOrganization" class="ref" title="org:FormalOrganization">Formal Organization</a></span></li><li><span class="leaf"><a href="#OrganizationalUnit" class="ref" title="org:OrganizationalUnit">OrganizationalUnit</a></span></li></ul></details></li><li><span class="leaf"><a href="#Post" class="ref" title="org:Post">Post</a></span></li><li><span class="leaf"><a href="#Role" class="ref" title="org:Role">Role</a></span></li><li><span class="leaf"><a href="#Site" class="ref" title="org:Site">Site</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="#object-properties" data-section="object-properties"><span class="secno">2.2</span><span class="toc-label">Object properties</span><span class="toc-count">31</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="#object-properties" data-section="object-properties"><span class="secno">3.2</span><span class="toc-label">Object properties</span><span class="toc-count">31</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#basedAt" class="ref" title="org:basedAt">based At</a></span></li><li><span class="leaf"><a href="#changedBy" class="ref" title="org:changedBy">changed by</a></span></li><li><span class="leaf"><a href="#classification" class="ref" title="org:classification">classification</a></span></li><li><span class="leaf"><a href="#hasMember" class="ref" title="org:hasMember">has member</a></span></li><li><details><summary><a href="#hasSite" class="ref" title="org:hasSite">has site</a></summary><ul class="tree"><li><details><summary><a href="#hasPrimarySite" class="ref" title="org:hasPrimarySite">primary Site</a></summary><ul class="tree"><li><span class="leaf"><a href="#hasRegisteredSite" class="ref" title="org:hasRegisteredSite">registered Site</a></span></li></ul></details></li></ul></details></li><li><details><summary><a href="#hasSubOrganization" class="ref" title="org:hasSubOrganization">has SubOrganization</a></summary><ul class="tree"><li><span class="leaf"><a href="#hasUnit" class="ref" title="org:hasUnit">has Unit</a></span></li></ul></details></li><li><span class="leaf"><a href="#heldBy" class="ref" title="org:heldBy">held by</a></span></li><li><span class="leaf"><a href="#holds" class="ref" title="org:holds">holds</a></span></li><li><span class="leaf"><a href="#linkedTo" class="ref" title="org:linkedTo">linked to</a></span></li><li><span class="leaf"><a href="#member" class="ref" title="org:member">member</a></span></li><li><span class="leaf"><a href="#memberDuring" class="ref" title="org:memberDuring">member During</a></span></li><li><details><summary><a href="#memberOf" class="ref" title="org:memberOf">member of</a></summary><ul class="tree"><li><span class="leaf"><a href="#headOf" class="ref" title="org:headOf">head of</a></span></li></ul></details></li><li><span class="leaf"><a href="#hasMembership" class="ref" title="org:hasMembership">membership</a></span></li><li><span class="leaf"><a href="#organization" class="ref" title="org:organization">organization</a></span></li><li><span class="leaf"><a href="#originalOrganization" class="ref" title="org:originalOrganization">original organization</a></span></li><li><span class="leaf"><a href="#hasPost" class="ref" title="org:hasPost">post</a></span></li><li><span class="leaf"><a href="#postIn" class="ref" title="org:postIn">post in</a></span></li><li><span class="leaf"><a href="#remuneration" class="ref" title="org:remuneration">remuneration</a></span></li><li><span class="leaf"><a href="#reportsTo" class="ref" title="org:reportsTo">reports to</a></span></li><li><span class="leaf"><a href="#resultedFrom" class="ref" title="org:resultedFrom">resulted from</a></span></li><li><span class="leaf"><a href="#resultingOrganization" class="ref" title="org:resultingOrganization">resulted in</a></span></li><li><span class="leaf"><a href="#role" class="ref" title="org:role">role</a></span></li><li><span class="leaf"><a href="#siteAddress" class="ref" title="org:siteAddress">site Address</a></span></li><li><span class="leaf"><a href="#siteOf" class="ref" title="org:siteOf">site Of</a></span></li><li><details><summary><a href="#transitiveSubOrganizationOf" class="ref" title="org:transitiveSubOrganizationOf">transitive sub-organization</a></summary><ul class="tree"><li><details><summary><a href="#subOrganizationOf" class="ref" title="org:subOrganizationOf">subOrganization of</a></summary><ul class="tree"><li><span class="leaf"><a href="#unitOf" class="ref" title="org:unitOf">unit Of</a></span></li></ul></details></li></ul></details></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="#datatype-properties" data-section="datatype-properties"><span class="secno">2.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">2</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="#datatype-properties" data-section="datatype-properties"><span class="secno">3.3</span><span class="toc-label">Datatype properties</span><span class="toc-count">2</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#identifier" class="ref" title="org:identifier">identifier</a></span></li><li><span class="leaf"><a href="#location" class="ref" title="org:location">location</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="#properties" data-section="properties"><span class="secno">2.4</span><span class="toc-label">Properties</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="#properties" data-section="properties"><span class="secno">3.4</span><span class="toc-label">Properties</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#purpose" class="ref" title="org:purpose">purpose</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="#annotation-properties" data-section="annotation-properties"><span class="secno">2.5</span><span class="toc-label">Annotation properties</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
-              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#roleProperty" class="ref" title="org:roleProperty">role (property)</a></span></li></ul></div>
+              <summary><a href="#annotation-properties" data-section="annotation-properties"><span class="secno">3.5</span><span class="toc-label">Annotation properties</span><span class="toc-count">12</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#comment" class="ref" title="rdfs:comment">comment</a></span></li><li><span class="leaf"><a href="#contributor" class="ref" title="dct:contributor">contributor</a></span></li><li><span class="leaf"><a href="#created" class="ref" title="dct:created">created</a></span></li><li><span class="leaf"><a href="#isDefinedBy" class="ref" title="rdfs:isDefinedBy">isDefinedBy</a></span></li><li><span class="leaf"><a href="#label" class="ref" title="rdfs:label">label</a></span></li><li><span class="leaf"><a href="#license" class="ref" title="dct:license">license</a></span></li><li><span class="leaf"><a href="#modified" class="ref" title="dct:modified">modified</a></span></li><li><span class="leaf"><a href="#prefLabel" class="ref" title="skos:prefLabel">prefLabel</a></span></li><li><span class="leaf"><a href="#roleProperty" class="ref" title="org:roleProperty">role (property)</a></span></li><li><span class="leaf"><a href="#seeAlso" class="ref" title="rdfs:seeAlso">seeAlso</a></span></li><li><span class="leaf"><a href="#title" class="ref" title="dct:title">title</a></span></li><li><span class="leaf"><a href="#versionInfo" class="ref" title="owl:versionInfo">versionInfo</a></span></li></ul></div>
             </details>
           </li>
           <li class="toc-kind">
             <details>
-              <summary><a href="#individuals" data-section="individuals"><span class="secno">2.6</span><span class="toc-label">Named individuals</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
+              <summary><a href="#individuals" data-section="individuals"><span class="secno">3.6</span><span class="toc-label">Named individuals</span><span class="toc-count">1</span></a><span class="toc-toggle" title="Expand" aria-hidden="true"></span></summary>
               <div class="toc-tree"><ul class="tree"><li><span class="leaf"><a href="#Head" class="ref" title="org:Head">head</a></span></li></ul></div>
             </details>
           </li>
         </ol>
       </li>
       <li>
-        <a href="#namespaces" data-section="namespaces"><span class="secno">3</span><span class="toc-label">Namespaces</span></a>
+        <a href="#namespaces" data-section="namespaces"><span class="secno">4</span><span class="toc-label">Namespaces</span></a>
       </li>
       <li>
-        <a href="#quality" data-section="quality"><span class="secno">4</span><span class="toc-label">Quality report</span></a>
+        <a href="#quality" data-section="quality"><span class="secno">5</span><span class="toc-label">Quality report</span></a>
+        <ol class="toc-quality">
+          <li><a href="#quality-builtin"><span class="secno">5.1</span><span class="toc-label">OntoReview checks</span><span class="toc-count">22</span></a></li>
+          <li><a href="#quality-robot"><span class="secno">5.2</span><span class="toc-label">ROBOT</span><span class="toc-count">99</span></a></li>
+          <li><a href="#quality-logical-consistency"><span class="secno">5.3</span><span class="toc-label">Logical consistency</span></a></li>
+          <li><a href="#quality-iri-checks"><span class="secno">5.4</span><span class="toc-label">IRI checks</span></a></li>
+          <li><a href="#quality-ontocheck"><span class="secno">5.5</span><span class="toc-label">OntoCheck</span><span class="toc-count">103</span></a></li>
+          <li><a href="#quality-cross-domain-interoperability"><span class="secno">5.6</span><span class="toc-label">Cross-domain interoperability</span><span class="toc-count">16</span></a></li>
+          <li><a href="#quality-oops"><span class="secno">5.7</span><span class="toc-label">OOPS!</span><span class="toc-count">28</span></a></li>
+        </ol>
       </li>
       <li>
-        <a href="#downloads" data-section="downloads"><span class="secno">5</span><span class="toc-label">Download</span></a>
+        <a href="#downloads" data-section="downloads"><span class="secno">6</span><span class="toc-label">Download</span></a>
       </li>
       <li>
-        <a href="#llm" data-section="llm"><span class="secno">6</span><span class="toc-label">For LLMs and agents</span></a>
+        <a href="#llm" data-section="llm"><span class="secno">7</span><span class="toc-label">For LLMs and agents</span></a>
       </li>
       <li>
-        <a href="#citation" data-section="citation"><span class="secno">7</span><span class="toc-label">How to cite</span></a>
+        <a href="#citation" data-section="citation"><span class="secno">8</span><span class="toc-label">How to cite</span></a>
       </li>
       <li>
-        <a href="#provenance" data-section="provenance"><span class="secno">8</span><span class="toc-label">Provenance</span></a>
+        <a href="#provenance" data-section="provenance"><span class="secno">9</span><span class="toc-label">Provenance</span></a>
       </li>
     </ol>
   </nav>
@@ -492,8 +570,21 @@
     <dl class="meta-table">
 <div><dt>See also</dt><dd><a href="http://www.w3.org/TR/vocab-org/">http://www.w3.org/TR/vocab-org/</a></dd></div>    </dl>
   </details>
-</header><section class="section section-wide" id="graph">
-  <h2><span class="secno">1</span> Visualization</h2>
+</header><section class="section" id="overview">
+  <h2><span class="secno">1</span> Overview</h2>
+  <ul class="stats">
+    <li class="stat"><a class="stat-body" href="#classes"><span class="stat-num">9</span><span class="stat-label">Classes</span></a></li>
+    <li class="stat"><a class="stat-body" href="#object-properties"><span class="stat-num">31</span><span class="stat-label">Object properties</span></a></li>
+    <li class="stat"><a class="stat-body" href="#datatype-properties"><span class="stat-num">2</span><span class="stat-label">Datatype properties</span></a></li>
+    <li class="stat"><a class="stat-body" href="#properties"><span class="stat-num">1</span><span class="stat-label">Properties</span></a></li>
+    <li class="stat"><a class="stat-body" href="#annotation-properties"><span class="stat-num">12</span><span class="stat-label">Annotation properties</span></a></li>
+    <li class="stat"><a class="stat-body" href="#individuals"><span class="stat-num">1</span><span class="stat-label">Named individuals</span></a></li>
+    <li class="stat stat-quality"><a class="stat-body" href="#quality"><span class="stat-num">7</span><span class="stat-label">quality checks run</span></a></li>
+    <li class="stat stat-score stat-warn"><a class="stat-body" href="#quality-cross-domain-interoperability"><span class="stat-num">0.50</span><span class="stat-label">Cross-domain interoperability</span><span class="stat-sub">below θ = 0.5</span></a></li>
+  </ul>
+
+</section><section class="section section-wide" id="graph">
+  <h2><span class="secno">2</span> Visualization</h2>
   <figure class="figure" id="figure-graph" data-notation="vowl">
     <div class="figure-tools">
       <input id="g-focus" type="search" placeholder="Focus on term…" list="g-terms" aria-label="Focus on term…">
@@ -530,10 +621,10 @@
     </div>
     <figcaption><span class="fig-label">Figure 1.</span> Classes of Core organization ontology. Hover over a class to highlight its superclasses and subclasses; select it to show only its neighbourhood, and double-click to open its entry. <span id="g-status" class="muted" role="status" aria-live="polite"></span></figcaption>
   </figure>
-</section><h2 class="group-title" id="reference"><span class="secno">2</span> Reference</h2>
+</section><h2 class="group-title" id="reference"><span class="secno">3</span> Terms</h2>
 <section class="section section-terms" id="classes">
   <div class="section-head">
-    <h2 class="sub"><span class="secno">2.1</span> Classes</h2>
+    <h2 class="sub"><span class="secno">3.1</span> Classes</h2>
 <input class="term-filter" type="search" placeholder="Filter…" aria-label="Filter classes">  </div>
 <article class="term" id="ChangeEvent" data-kind="class">
   <header class="term-head">
@@ -645,7 +736,7 @@
 <p class="term-foot"><a class="graph-link" href="#graph" data-focus="http://www.w3.org/ns/org#Site">Show in figure</a></p></article>
 </section><section class="section section-terms" id="object-properties">
   <div class="section-head">
-    <h2 class="sub"><span class="secno">2.2</span> Object properties</h2>
+    <h2 class="sub"><span class="secno">3.2</span> Object properties</h2>
 <input class="term-filter" type="search" placeholder="Filter…" aria-label="Filter object properties">  </div>
 <article class="term" id="basedAt" data-kind="object_property">
   <header class="term-head">
@@ -1021,7 +1112,7 @@
 </article>
 </section><section class="section section-terms" id="datatype-properties">
   <div class="section-head">
-    <h2 class="sub"><span class="secno">2.3</span> Datatype properties</h2>
+    <h2 class="sub"><span class="secno">3.3</span> Datatype properties</h2>
   </div>
 <article class="term" id="identifier" data-kind="datatype_property">
   <header class="term-head">
@@ -1049,7 +1140,7 @@
 </article>
 </section><section class="section section-terms" id="properties">
   <div class="section-head">
-    <h2 class="sub"><span class="secno">2.4</span> Properties</h2>
+    <h2 class="sub"><span class="secno">3.4</span> Properties</h2>
   </div>
 <article class="term" id="purpose" data-kind="property">
   <header class="term-head">
@@ -1065,8 +1156,96 @@
 </article>
 </section><section class="section section-terms" id="annotation-properties">
   <div class="section-head">
-    <h2 class="sub"><span class="secno">2.5</span> Annotation properties</h2>
-  </div>
+    <h2 class="sub"><span class="secno">3.5</span> Annotation properties</h2>
+<input class="term-filter" type="search" placeholder="Filter…" aria-label="Filter annotation properties">  </div>
+<article class="term" id="comment" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#comment">comment</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#comment</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#comment" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:comment</code></td></tr><tr><th scope="row">Used on</th><td>46 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="contributor" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#contributor">contributor</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/contributor</code> <button class="copy" data-copy="http://purl.org/dc/terms/contributor" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dct:contributor</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="created" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#created">created</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/created</code> <button class="copy" data-copy="http://purl.org/dc/terms/created" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dct:created</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="isDefinedBy" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#isDefinedBy">isDefinedBy</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#isDefinedBy</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#isDefinedBy" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:isDefinedBy</code></td></tr><tr><th scope="row">Used on</th><td>45 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="label" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#label">label</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#label</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#label" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:label</code></td></tr><tr><th scope="row">Used on</th><td>46 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="license" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#license">license</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/license</code> <button class="copy" data-copy="http://purl.org/dc/terms/license" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dct:license</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="modified" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#modified">modified</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/modified</code> <button class="copy" data-copy="http://purl.org/dc/terms/modified" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dct:modified</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="prefLabel" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#prefLabel">prefLabel</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2004/02/skos/core#prefLabel</code> <button class="copy" data-copy="http://www.w3.org/2004/02/skos/core#prefLabel" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>skos:prefLabel</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
 <article class="term" id="roleProperty" data-kind="annotation_property">
   <header class="term-head">
     <h3 class="term-title"><a href="#roleProperty">role (property)</a></h3>
@@ -1079,9 +1258,42 @@
 <tr><th scope="row">CURIE</th><td><code>org:roleProperty</code></td></tr><tr><th scope="row">Domain</th><td><span class="expr"><a href="#Role" class="ref" title="org:Role">Role</a></span></td></tr><tr><th scope="row">Range</th><td><span class="expr"><a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property" class="ref ext" title="rdf:Property">rdf:Property</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/org" class="ref ext" title="http://www.w3.org/ns/org">org</a></td></tr>    </tbody>
   </table>
 </article>
+<article class="term" id="seeAlso" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#seeAlso">seeAlso</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2000/01/rdf-schema#seeAlso</code> <button class="copy" data-copy="http://www.w3.org/2000/01/rdf-schema#seeAlso" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>rdfs:seeAlso</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="title" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#title">title</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://purl.org/dc/terms/title</code> <button class="copy" data-copy="http://purl.org/dc/terms/title" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>dct:title</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
+<article class="term" id="versionInfo" data-kind="annotation_property">
+  <header class="term-head">
+    <h3 class="term-title"><a href="#versionInfo">versionInfo</a></h3>
+    <span class="term-kind">Annotation property</span>
+<span class="term-flag" title="Used as an annotation in this ontology but not declared as owl:AnnotationProperty">used, not declared</span>  </header>
+  <p class="term-iri"><code>http://www.w3.org/2002/07/owl#versionInfo</code> <button class="copy" data-copy="http://www.w3.org/2002/07/owl#versionInfo" aria-label="Copy IRI">copy</button></p>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">CURIE</th><td><code>owl:versionInfo</code></td></tr><tr><th scope="row">Used on</th><td>1 resource(s) in this ontology</td></tr>    </tbody>
+  </table>
+</article>
 </section><section class="section section-terms" id="individuals">
   <div class="section-head">
-    <h2 class="sub"><span class="secno">2.6</span> Named individuals</h2>
+    <h2 class="sub"><span class="secno">3.6</span> Named individuals</h2>
   </div>
 <article class="term" id="Head" data-kind="individual">
   <header class="term-head">
@@ -1092,21 +1304,48 @@
 <div class="definition"><p>A role corresponding to the <code>org:headOf</code> property</p>
 </div>  <table class="rel">
     <tbody>
-<tr><th scope="row">CURIE</th><td><code>org:Head</code></td></tr><tr><th scope="row">Types</th><td><span class="expr"><a href="#Role" class="ref" title="org:Role">Role</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/org" class="ref ext" title="http://www.w3.org/ns/org">org</a></td></tr><tr><th scope="row"><a href="#roleProperty" class="ref" title="org:roleProperty">role (property)</a></th><td><span class="expr"><a href="#headOf" class="ref" title="org:headOf">head of</a></span></td></tr>    </tbody>
+<tr><th scope="row">CURIE</th><td><code>org:Head</code></td></tr><tr><th scope="row">Types</th><td><span class="expr"><a href="#Role" class="ref" title="org:Role">Role</a></span></td></tr><tr><th scope="row">Defined by</th><td><a href="http://www.w3.org/ns/org" class="ref ext" title="http://www.w3.org/ns/org">org</a></td></tr><tr><th scope="row"><a href="#roleProperty" class="ref" title="org:roleProperty">roleProperty</a></th><td><span class="expr"><a href="#headOf" class="ref" title="org:headOf">headOf</a></span></td></tr>    </tbody>
   </table>
 </article>
 </section><section class="section" id="namespaces">
-  <h2><span class="secno">3</span> Namespaces</h2>
+  <h2><span class="secno">4</span> Namespaces</h2>
   <table class="plain">
     <thead><tr><th>Prefix</th><th>Namespace</th></tr></thead>
     <tbody>
 <tr><td><code>dct</code></td><td><code>http://purl.org/dc/terms/</code></td></tr><tr><td><code>foaf</code></td><td><code>http://xmlns.com/foaf/0.1/</code></td></tr><tr><td><code>gr</code></td><td><code>http://purl.org/goodrelations/v1#</code></td></tr><tr><td><code>org</code></td><td><code>http://www.w3.org/ns/org#</code></td></tr><tr><td><code>owl</code></td><td><code>http://www.w3.org/2002/07/owl#</code></td></tr><tr><td><code>prov</code></td><td><code>http://www.w3.org/ns/prov#</code></td></tr><tr><td><code>rdf</code></td><td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td></tr><tr><td><code>rdfs</code></td><td><code>http://www.w3.org/2000/01/rdf-schema#</code></td></tr><tr><td><code>skos</code></td><td><code>http://www.w3.org/2004/02/skos/core#</code></td></tr><tr><td><code>xsd</code></td><td><code>http://www.w3.org/2001/XMLSchema#</code></td></tr>    </tbody>
   </table>
 </section><section class="section" id="quality">
-  <h2><span class="secno">4</span> Quality report</h2>
-  <p class="prose">ontoreview checks: 0 errors, 17 warnings and 5 suggestions. ROBOT: 49 errors, 47 warnings, 3 suggestions. Logical consistency: 0 errors, 0 warnings, 0 suggestions. OntoCheck: 0 errors, 0 warnings, 103 suggestions. OOPS!: 0 errors, 17 warnings, 11 suggestions.</p>
+  <h2><span class="secno">5</span> Quality report</h2>
+  <p class="prose">Findings from the checks run on this version. Each row opens the full list.</p>
+  <table class="plain check-summary">
+    <caption class="sr-only">Quality report</caption>
+    <thead><tr><th scope="col">Check</th><th scope="col">Findings</th><th scope="col" class="check-bar-col">Compared with the largest</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#quality-builtin">OntoReview checks</a></td>
+      <td class="check-count">22</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:21.4%"></span></span></td></tr>
+      <tr><td><a href="#quality-robot">ROBOT</a></td>
+      <td class="check-count">99</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:96.1%"></span></span></td></tr>
+      <tr><td><a href="#quality-logical-consistency">Logical consistency</a></td>
+      <td class="check-count"><a href="#quality-logical-consistency">See report</a></td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:0.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-iri-checks">IRI checks</a></td>
+      <td class="check-count"><a href="#quality-iri-checks">See report</a></td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:0.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-ontocheck">OntoCheck</a></td>
+      <td class="check-count">103</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:100.0%"></span></span></td></tr>
+      <tr><td><a href="#quality-cross-domain-interoperability">Cross-domain interoperability</a></td>
+      <td class="check-count">16</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:15.5%"></span></span></td></tr>
+      <tr><td><a href="#quality-oops">OOPS!</a></td>
+      <td class="check-count">28</td>
+      <td class="check-bar-col"><span class="check-bar" aria-hidden="true"><span style="width:27.2%"></span></span></td></tr>
+    </tbody>
+  </table>
 
-<h3 class="subhead">ontoreview checks</h3>  <details class="finding sev-warning">
+<h3 class="subhead" id="quality-builtin">OntoReview checks</h3>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> No creators <span class="muted">(1) OB005</span></summary>
     <p class="muted rule-desc">Credit the authors with dcterms:creator.</p>
     <ul class="findings">
@@ -1170,6 +1409,46 @@
   </details>
   <h3 class="subhead" id="quality-logical-consistency">Logical consistency <a class="muted small" href="http://robot.obolibrary.org/reason">http://robot.obolibrary.org/reason</a></h3>
 <p>Consistent; all classes satisfiable (HermiT).</p>
+  <h3 class="subhead" id="quality-iri-checks">IRI checks <a class="muted small" href="https://www.w3.org/TR/cooluris/">https://www.w3.org/TR/cooluris/</a></h3>
+<p class="muted small">0.4s. Own namespaces (not checked as external): http://www.w3.org/ns/org#, http://www.w3.org/ns/org/. Run #58 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.</p>  <table class="plain metrics">
+    <caption class="sr-only">IRI checks metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">IRI</th></tr>      <tr class="metric-ok"><td>IRI syntax <code class="muted small">syntax</code></td><td><span class="mstat" aria-hidden="true"></span> No malformed IRIs<span class="sr-only"> (ok)</span></td><td class="muted small">All 104 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host</td></tr>
+      <tr class="metric-ok"><td>Ontology header <code class="muted small">header</code></td><td><span class="mstat" aria-hidden="true"></span> http://www.w3.org/ns/org#<span class="sr-only"> (ok)</span></td><td class="muted small">Exactly one named owl:Ontology</td></tr>
+      <tr class="metric-info"><td>Version IRI <code class="muted small">version</code></td><td><span class="mstat" aria-hidden="true"></span> None<span class="sr-only"> (info)</span></td><td class="muted small">owl:versionIRI, distinct from the ontology IRI</td></tr>
+      <tr class="metric-ok"><td>Ontology IRI resolves <code class="muted small">resolves</code></td><td><span class="mstat" aria-hidden="true"></span> Yes (turtle, HTTP 200)<span class="sr-only"> (ok)</span></td><td class="muted small">The ontology IRI returns RDF (content negotiation) whose header matches it</td></tr>
+      <tr class="metric-ok"><td>External terms <code class="muted small">external</code></td><td><span class="mstat" aria-hidden="true"></span> 19 checked: 19 valid<span class="sr-only"> (ok)</span></td><td class="muted small">Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated</td></tr>
+      <tr class="metric-info"><td>Lookup sources <code class="muted small">sources</code></td><td><span class="mstat" aria-hidden="true"></span> bundled 3, cache 16<span class="sr-only"> (info)</span></td><td class="muted small">Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download</td></tr>
+      <tr class="metric-ok"><td>Freshness <code class="muted small">freshness</code></td><td><span class="mstat" aria-hidden="true"></span> All lookups current<span class="sr-only"> (ok)</span></td><td class="muted small">Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged</td></tr>
+      <tr class="metric-info"><td>Releases verified against <code class="muted small">releases</code></td><td><span class="mstat" aria-hidden="true"></span> http://www.w3.org/ns/prov-o-20130430 (3), http://purl.org/spar/datacite/2026-10-05 (1)<span class="sr-only"> (info)</span></td><td class="muted small">The vocabulary release (version IRI / version) each external term was checked against</td></tr>
+    </tbody>
+  </table>
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Verified against (frozen at build time, 2026-11-21 17:12:42 UTC; full record in <a href="iri-checks.json">iri-checks.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <tbody>
+      <tr><td>bibo (purl.org)<br><code class="small">http://purl.org/ontology/bibo/</code><br><span class="muted small">sha256 2cf16dfa7421e5de…</span></td>
+      <td class="small">cache<br><span class="muted">https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl</span></td>
+      <td class="small">2026-11-18</td><td>8</td></tr>
+      <tr><td>Simple Knowledge Organization System<br><code class="small">http://www.w3.org/2004/02/skos/core</code><br><span class="muted small">sha256 e79633b8d0564816…</span></td>
+      <td class="small">bundle<br><span class="muted">https://www.w3.org/2009/08/skos-reference/skos.rdf</span></td>
+      <td class="small">2026-11-18</td><td>3</td></tr>
+      <tr><td>W3C PROVenance Interchange Ontology (PROV-O)<br><code class="small">http://www.w3.org/ns/prov-o-20130430</code><br><span class="muted small">sha256 7d203989f67b38bc…</span></td>
+      <td class="small">cache<br><span class="muted">https://www.w3.org/ns/prov-o.ttl</span></td>
+      <td class="small">2026-11-21</td><td>3</td></tr>
+      <tr><td>Friend of a Friend (FOAF) vocabulary<br><code class="small">http://xmlns.com/foaf/0.1/</code><br><span class="muted small">sha256 3d859b5d92a2c3d0…</span></td>
+      <td class="small">cache<br><span class="muted">https://xmlns.com/foaf/spec/</span></td>
+      <td class="small">2026-11-19</td><td>2</td></tr>
+      <tr><td>The GoodRelations Vocabulary for Semantic Web-based E-Commerce<br><code class="small">http://purl.org/goodrelations/v1</code><br><span class="muted small">sha256 4eeecc843408390f…</span></td>
+      <td class="small">cache<br><span class="muted">http://www.heppnetz.de/ontologies/goodrelations/v1.owl</span></td>
+      <td class="small">2026-11-19</td><td>2</td></tr>
+      <tr><td>The DataCite Ontology (DataCite)<br><code class="small">http://purl.org/spar/datacite/2026-10-05</code><br><span class="muted small">sha256 129a4981e894ff69…</span></td>
+      <td class="small">cache<br><span class="muted">https://sparontologies.github.io/datacite/current/datacite.xml</span></td>
+      <td class="small">2026-11-20</td><td>1</td></tr>
+    </tbody>
+  </table>
+<p>No issues found.</p>
   <h3 class="subhead" id="quality-ontocheck">OntoCheck <a class="muted small" href="https://ontocheck.readthedocs.io">https://ontocheck.readthedocs.io</a></h3>
   <table class="plain metrics">
     <caption class="sr-only">OntoCheck metrics</caption>
@@ -1224,6 +1503,72 @@
 <p class="muted rule-desc">OntoCheck spellCheck (English dictionary) in rdfs:label, skos:definition and rdfs:comment. Domain terms and abbreviations are often flagged; review before changing.</p><p class="rule-desc">Endeavour → endeavor, Org → or, affilliation → affiliation, alt → all, ary → are, datatype, datatypes, dct → act, encodings → encoding, esp → es, foaf → foam, hasmember → dismember, http → help, identier → identify, indended → intended, metalevel, officio → office, org → or, pref → prep, rdf → ref, skos → skis, specializable, vcard → card, www → wow</p>    <ul class="findings">
 <li><code>http://www.w3.org/ns/org#</code></li><li><a href="#ChangeEvent">Change Event</a> <code class="muted">org:ChangeEvent</code></li><li><a href="#Head">head</a> <code class="muted">org:Head</code></li><li><a href="#Membership">Membership</a> <code class="muted">org:Membership</code></li><li><a href="#Organization">Organization</a> <code class="muted">org:Organization</code></li><li><a href="#OrganizationalCollaboration">Endeavour</a> <code class="muted">org:OrganizationalCollaboration</code></li><li><a href="#Post">Post</a> <code class="muted">org:Post</code></li><li><a href="#Role">Role</a> <code class="muted">org:Role</code></li><li><a href="#changedBy">changed by</a> <code class="muted">org:changedBy</code></li><li><a href="#classification">classification</a> <code class="muted">org:classification</code></li><li><a href="#hasMember">has member</a> <code class="muted">org:hasMember</code></li><li><a href="#hasMembership">membership</a> <code class="muted">org:hasMembership</code></li><li><a href="#hasSite">has site</a> <code class="muted">org:hasSite</code></li><li><a href="#hasSubOrganization">has SubOrganization</a> <code class="muted">org:hasSubOrganization</code></li><li><a href="#hasUnit">has Unit</a> <code class="muted">org:hasUnit</code></li><li><a href="#headOf">head of</a> <code class="muted">org:headOf</code></li><li><a href="#identifier">identifier</a> <code class="muted">org:identifier</code></li><li><a href="#member">member</a> <code class="muted">org:member</code></li><li><a href="#memberOf">member of</a> <code class="muted">org:memberOf</code></li><li><a href="#originalOrganization">original organization</a> <code class="muted">org:originalOrganization</code></li><li><a href="#purpose">purpose</a> <code class="muted">org:purpose</code></li><li><a href="#resultedFrom">resulted from</a> <code class="muted">org:resultedFrom</code></li><li><a href="#resultingOrganization">resulted in</a> <code class="muted">org:resultingOrganization</code></li><li><a href="#roleProperty">role (property)</a> <code class="muted">org:roleProperty</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li><li><a href="#siteOf">site Of</a> <code class="muted">org:siteOf</code></li><li><a href="#subOrganizationOf">subOrganization of</a> <code class="muted">org:subOrganizationOf</code></li><li><a href="#unitOf">unit Of</a> <code class="muted">org:unitOf</code></li>    </ul>
   </details>
+  <h3 class="subhead" id="quality-cross-domain-interoperability">Cross-domain interoperability</h3>
+<p class="muted small">10 reference ontologies (0 given, 10 discovered); left out: 37 below the top N. Full record in cdi.json, and as CDI run 35 in the term database. Details of 37 repository ontologies came from the term database.</p>  <table class="plain metrics">
+    <caption class="sr-only">Cross-domain interoperability metrics</caption>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Result</th><th scope="col">What it measures</th></tr></thead>
+    <tbody>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Cross-domain interoperability</th></tr>      <tr class="metric-warn"><td>CDI score <code class="muted small">CDI</code></td><td><span class="mstat" aria-hidden="true"></span> 0.50, not interoperable (θ = 0.5, β = 1.0)<span class="sr-only"> (warn)</span></td><td class="muted small">Weighted harmonic mean of Align and Gen; low when either is low</td></tr>
+      <tr class="metric-ok"><td>Alignment <code class="muted small">Align</code></td><td><span class="mstat" aria-hidden="true"></span> 0.55; 27 of 42 entities aligned<span class="sr-only"> (ok)</span></td><td class="muted small">Mean best correspondence strength per entity into ontologies of other domains (counted from τ = 0.5)</td></tr>
+      <tr class="metric-warn"><td>Generality <code class="muted small">Gen</code></td><td><span class="mstat" aria-hidden="true"></span> 0.45 = definition coverage 1.00 (9/9) × mean generality 0.45<span class="sr-only"> (warn)</span></td><td class="muted small">How domain-neutral the class definitions are (zero-shot language model)</td></tr>
+      <tr class="metric-group"><th colspan="3" scope="colgroup">Alignment by reference ontology</th></tr>      <tr class="metric-info"><td>NCI Thesaurus OBO Edition <code class="muted small">ols:ncit</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.35, coverage 0.33, 38 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</td></tr>
+      <tr class="metric-info"><td>Allotrope Merged Ontology Suite <code class="muted small">ols:afo</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.30, coverage 0.29, 16 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</td></tr>
+      <tr class="metric-info"><td>SNOMED CT (International Edition) <code class="muted small">ols:snomed</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.27, coverage 0.24, 10 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:snomed; release http://snomed.info/sct/900000000000207008/version/20251017</td></tr>
+      <tr class="metric-info"><td>http://www.w3.org/ns/prov-o# <code class="muted small">db:http://www.w3.org/ns/prov-o#</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.21, coverage 0.19, 13 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:http://www.w3.org/ns/prov-o#; release http://www.w3.org/ns/prov-o-20130430</td></tr>
+      <tr class="metric-info"><td>Semanticscience Integrated Ontology <code class="muted small">ols:sio</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.21, coverage 0.19, 8 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:sio; release http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</td></tr>
+      <tr class="metric-info"><td>ols:schemaorg_http <code class="muted small">ols:schemaorg_http</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.19, coverage 0.17, 7 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:schemaorg_http; version not reported (identified by release/load date)</td></tr>
+      <tr class="metric-info"><td>ols:schemaorg_https <code class="muted small">ols:schemaorg_https</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.19, coverage 0.17, 7 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:schemaorg_https; version not reported (identified by release/load date)</td></tr>
+      <tr class="metric-info"><td>The DataCite Ontology (DataCite) <code class="muted small">db:http://purl.org/spar/datacite/identifier</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.16, coverage 0.14, 6 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:http://purl.org/spar/datacite/identifier; release http://purl.org/spar/datacite/2026-10-05</td></tr>
+      <tr class="metric-info"><td>Ontology for vCard <code class="muted small">db:http://www.w3.org/2006/vcard/ns</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.17, coverage 0.14, 8 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">db:http://www.w3.org/2006/vcard/ns; version not reported (identified by content hash)</td></tr>
+      <tr class="metric-info"><td>Medical Subject Headings <code class="muted small">ols:mesh</code></td><td><span class="mstat" aria-hidden="true"></span> Align_d 0.17, coverage 0.14, 6 correspondences (discovered)<span class="sr-only"> (info)</span></td><td class="muted small">ols:mesh; release https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</td></tr>
+    </tbody>
+  </table>
+  <table class="plain metrics">
+    <caption class="muted small" style="text-align:left;caption-side:top">Checked against (frozen at build time, 2026-11-21 17:12:44 UTC; full record in <a href="cdi.json">cdi.json</a>)</caption>
+    <thead><tr><th scope="col">Release</th><th scope="col">Source</th><th scope="col">Retrieved</th><th scope="col">Terms</th></tr></thead>
+    <tbody>
+      <tr><td>NCI Thesaurus OBO Edition<br><code class="small">http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>38</td></tr>
+      <tr><td>Allotrope Merged Ontology Suite<br><code class="small">http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>16</td></tr>
+      <tr><td>SNOMED CT (International Edition)<br><code class="small">http://snomed.info/sct/900000000000207008/version/20251017</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>10</td></tr>
+      <tr><td>http://www.w3.org/ns/prov-o#<br><code class="small">http://www.w3.org/ns/prov-o-20130430</code><br><span class="muted small">sha256 7d203989f67b38bc…</span></td>
+      <td class="small">term database (bundled)<br><span class="muted">https://www.w3.org/ns/prov-o.ttl</span></td>
+      <td class="small">2026-11-18</td><td>13</td></tr>
+      <tr><td>Semanticscience Integrated Ontology<br><code class="small">http://semanticscience.org/ontology/sio/v1.62/sio-release.owl</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>8</td></tr>
+      <tr><td>ols:schemaorg_http<br><code class="small">schemaorg_http</code><br><span class="muted small">version not reported; identified by release/load date (2026-11-19T00:08:59)</span><br><span class="muted small">version not reported by the source; identified by release/load date</span></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>7</td></tr>
+      <tr><td>ols:schemaorg_https<br><code class="small">schemaorg_https</code><br><span class="muted small">version not reported; identified by release/load date (2026-11-19T00:09:02)</span><br><span class="muted small">version not reported by the source; identified by release/load date</span></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>7</td></tr>
+      <tr><td>The DataCite Ontology (DataCite)<br><code class="small">http://purl.org/spar/datacite/2026-10-05</code><br><span class="muted small">sha256 129a4981e894ff69…</span></td>
+      <td class="small">term database (cache)<br><span class="muted">https://sparontologies.github.io/datacite/current/datacite.xml</span></td>
+      <td class="small">2026-11-20</td><td>6</td></tr>
+      <tr><td>Ontology for vCard<br><code class="small">http://www.w3.org/2006/vcard/ns</code><br><span class="muted small">version not reported; identified by content hash</span><br><span class="muted small">sha256 2442baf3d07d6609…</span></td>
+      <td class="small">term database (cache)<br><span class="muted">https://www.w3.org/2006/vcard/ns</span></td>
+      <td class="small">2026-11-19</td><td>8</td></tr>
+      <tr><td>Medical Subject Headings<br><code class="small">https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn</code></td>
+      <td class="small">ols</td>
+      <td class="small">2026-11-20</td><td>6</td></tr>
+    </tbody>
+  </table>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> No correspondence in another domain <span class="muted">(15) CDI-A</span></summary>
+<p class="muted rule-desc">No direct, lexical or inherited correspondence of sufficient strength into the reference ontologies. Mapping these (e.g. SSSOM, owl:equivalentClass, rdfs:subClassOf) raises Align.</p>    <ul class="findings">
+<li><a href="#basedAt">based At</a> <code class="muted">org:basedAt</code></li><li><a href="#changedBy">changed by</a> <code class="muted">org:changedBy</code></li><li><a href="#hasSite">has site</a> <code class="muted">org:hasSite</code></li><li><a href="#hasSubOrganization">has SubOrganization</a> <code class="muted">org:hasSubOrganization</code></li><li><a href="#heldBy">held by</a> <code class="muted">org:heldBy</code></li><li><a href="#holds">holds</a> <code class="muted">org:holds</code></li><li><a href="#linkedTo">linked to</a> <code class="muted">org:linkedTo</code></li><li><a href="#memberDuring">member During</a> <code class="muted">org:memberDuring</code></li><li><a href="#postIn">post in</a> <code class="muted">org:postIn</code></li><li><a href="#reportsTo">reports to</a> <code class="muted">org:reportsTo</code></li><li><a href="#resultingOrganization">resulted in</a> <code class="muted">org:resultingOrganization</code></li><li><a href="#siteAddress">site Address</a> <code class="muted">org:siteAddress</code></li><li><a href="#subOrganizationOf">subOrganization of</a> <code class="muted">org:subOrganizationOf</code></li><li><a href="#transitiveSubOrganizationOf">transitive sub-organization</a> <code class="muted">org:transitiveSubOrganizationOf</code></li><li><a href="#unitOf">unit Of</a> <code class="muted">org:unitOf</code></li>    </ul>
+  </details>
+  <details class="finding sev-info">
+    <summary><span class="sev">info</span> Very specific class definition <span class="muted">(1) CDI-G</span></summary>
+<p class="muted rule-desc">The definition reads as describing a concrete system or measurable details. A more general wording helps reuse outside this domain and raises Gen.</p>    <ul class="findings">
+<li><a href="#ChangeEvent">Change Event</a> <code class="muted">org:ChangeEvent</code></li>    </ul>
+  </details>
   <h3 class="subhead" id="quality-oops">OOPS! <a class="muted small" href="https://oops.linkeddata.es">https://oops.linkeddata.es</a></h3>
 <p class="muted small">Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).</p>  <details class="finding sev-warning">
     <summary><span class="sev">warning</span> Missing domain or range in properties <span class="muted">(4) P11</span></summary>
@@ -1259,7 +1604,7 @@
 <li><a href="#hasSubOrganization">has SubOrganization</a> <code class="muted">org:hasSubOrganization</code></li><li><a href="#linkedTo">linked to</a> <code class="muted">org:linkedTo</code></li><li><a href="#reportsTo">reports to</a> <code class="muted">org:reportsTo</code></li><li><a href="#subOrganizationOf">subOrganization of</a> <code class="muted">org:subOrganizationOf</code></li>    </ul>
   </details>
 </section><section class="section" id="downloads">
-  <h2><span class="secno">5</span> Download</h2>
+  <h2><span class="secno">6</span> Download</h2>
   <p class="prose">Download the ontology in your preferred format:</p>
   <table class="plain">
     <thead><tr><th>Format</th><th>File</th><th>Media type</th><th class="num">Size</th><th></th></tr></thead>
@@ -1271,19 +1616,19 @@
     </tbody>
   </table>
 <p class="small muted">The ontology IRI supports content negotiation when deployed with the generated server configuration.</p></section><section class="section" id="llm">
-  <h2><span class="secno">6</span> For LLMs and agents</h2>
+  <h2><span class="secno">7</span> For LLMs and agents</h2>
   <p class="prose">Plain-text and JSON versions of this document, generated with it, for language models, agents and other tools. They contain the same terms, definitions and axioms as the pages above.</p>
   <table class="plain">
     <thead><tr><th>File</th><th>Purpose</th><th class="num">Size</th><th></th></tr></thead>
     <tbody>
     <tr><td><a href="llms.txt">llms.txt</a></td><td>Index for language models (llmstxt.org): summary and links to the Markdown pages</td><td class="num">1.6 KB</td><td><button class="copy" data-copy-href="llms.txt">copy link</button></td></tr>
-    <tr><td><a href="llms-full.txt">llms-full.txt</a></td><td>The complete documentation as a single Markdown file</td><td class="num">27.5 KB</td><td><button class="copy" data-copy-href="llms-full.txt">copy link</button></td></tr>
-    <tr><td><a href="ontology.json">ontology.json</a></td><td>Every term as JSON: IRI, CURIE, label, definition, hierarchy, domain and range</td><td class="num">24.9 KB</td><td><button class="copy" data-copy-href="ontology.json">copy link</button></td></tr>
+    <tr><td><a href="llms-full.txt">llms-full.txt</a></td><td>The complete documentation as a single Markdown file</td><td class="num">28.4 KB</td><td><button class="copy" data-copy-href="llms-full.txt">copy link</button></td></tr>
+    <tr><td><a href="ontology.json">ontology.json</a></td><td>Every term as JSON: IRI, CURIE, label, definition, hierarchy, domain and range</td><td class="num">26.5 KB</td><td><button class="copy" data-copy-href="ontology.json">copy link</button></td></tr>
     </tbody>
   </table>
   <h3 class="subhead">Markdown pages</h3>
   <ul class="index-cols">
-<li><a href="index.md">index.md</a> <span class="muted small">590 B</span></li><li><a href="classes.md">classes.md</a> <span class="muted small">10.2 KB</span></li><li><a href="object-properties.md">object-properties.md</a> <span class="muted small">13.8 KB</span></li><li><a href="datatype-properties.md">datatype-properties.md</a> <span class="muted small">1.1 KB</span></li><li><a href="properties.md">properties.md</a> <span class="muted small">857 B</span></li><li><a href="annotation-properties.md">annotation-properties.md</a> <span class="muted small">689 B</span></li><li><a href="individuals.md">individuals.md</a> <span class="muted small">224 B</span></li>  </ul>
+<li><a href="index.md">index.md</a> <span class="muted small">591 B</span></li><li><a href="classes.md">classes.md</a> <span class="muted small">10.2 KB</span></li><li><a href="object-properties.md">object-properties.md</a> <span class="muted small">13.8 KB</span></li><li><a href="datatype-properties.md">datatype-properties.md</a> <span class="muted small">1.1 KB</span></li><li><a href="properties.md">properties.md</a> <span class="muted small">857 B</span></li><li><a href="annotation-properties.md">annotation-properties.md</a> <span class="muted small">1.6 KB</span></li><li><a href="individuals.md">individuals.md</a> <span class="muted small">221 B</span></li>  </ul>
   <h3 class="subhead">Using these files with an agent</h3>
   <div class="prose">
     <p>Give the agent the address of llms.txt; it links to everything else. For code that needs exact identifiers, ontology.json lists every term with its IRI and relations. The instruction below can be pasted into a prompt or a system message.</p>
@@ -1291,7 +1636,7 @@
   <pre id="llm-prompt"><code>Read llms.txt for Core organization ontology (prefix org:). Use only terms defined there; look up IRIs, definitions, domains and ranges in ontology.json before writing SPARQL or RDF.</code></pre>
   <p class="small"><button class="copy" data-copy-target="llm-prompt">copy instruction</button></p>
 </section><section class="section" id="citation">
-  <h2><span class="secno">7</span> How to cite</h2>
+  <h2><span class="secno">8</span> How to cite</h2>
   <p>Please cite this ontology as:</p>
   <blockquote class="cite" id="cite-text">Anonymous (2010). Core organization ontology. Version 0.8. http://www.w3.org/ns/org#</blockquote>
   <p class="small"><button class="copy" data-copy-target="cite-text">copy</button> &middot; <a href="CITATION.cff">CITATION.cff</a></p>
@@ -1304,12 +1649,49 @@
 }</code></pre>
   <p class="small"><button class="copy" data-copy-target="cite-bib">copy BibTeX</button></p>
 </section><section class="section" id="provenance">
-  <h2><span class="secno">8</span> Provenance</h2>
+  <h2><span class="secno">9</span> Provenance</h2>
   <table class="rel">
     <tbody>
 <tr><th scope="row">Contributors</th><td><span class="agent">Dave Reynolds</span>; <span class="agent">Dominique Guardiola</span>; <span class="agent">Antonio Maccioni</span>; <span class="agent">Giorgia Lodi</span>; <span class="agent"><a href="http://www.asahi-net.or.jp/~ax2s-kmtn/">Shuji Kamitsuna</a></span>; <span class="agent">Guadalupe Aguado de Cea</span>; <span class="agent">Elena Montiel Ponsoda</span>; <span class="agent">Olga Ximena Giraldo</span>; <span class="agent">María Poveda Villalón</span></td></tr><tr><th scope="row">Created</th><td>2010-05-28</td></tr><tr><th scope="row">Last modified</th><td>2010-06-09</td></tr>    </tbody>
   </table>
-  <p class="small muted">This documentation was generated from the ontology source with ontoreview 0.1.0. <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
+
+  <h3 class="subhead" id="provenance-timeline">Timeline</h3>
+  <ol class="prov-timeline">
+    <li class="prov-ev prov-ontology">
+      <time datetime="2010-05-28">2010-05-28</time>
+      <div class="prov-what"><span class="prov-title">Ontology created</span></div>
+    </li>
+    <li class="prov-ev prov-ontology">
+      <time datetime="2010-06-09">2010-06-09</time>
+      <div class="prov-what"><span class="prov-title">Ontology last modified</span></div>
+    </li>
+    <li class="prov-ev prov-build">
+      <time datetime="2026-11-21T17:12:40+00:00">2026-11-21 17:12:40 UTC</time>
+      <div class="prov-what"><span class="prov-title">Documentation build started</span><span class="prov-detail">From org.ttl</span></div>
+    </li>
+    <li class="prov-ev prov-check">
+      <time datetime="2026-11-21T17:12:42+00:00">2026-11-21 17:12:42 UTC</time>
+      <div class="prov-what"><span class="prov-title">IRI checks run</span><span class="prov-detail">Verified against 6 reference releases</span></div>
+    </li>
+    <li class="prov-ev prov-check">
+      <time datetime="2026-11-21T17:12:44+00:00">2026-11-21 17:12:44 UTC</time>
+      <div class="prov-what"><span class="prov-title">Cross-domain interoperability run</span><span class="prov-detail">CDI 0.50; verified against 10 reference releases</span></div>
+    </li>
+    <li class="prov-ev prov-build">
+      <time datetime="2026-11-21T17:12:54+00:00">2026-11-21 17:12:54 UTC</time>
+      <div class="prov-what"><span class="prov-title">Documentation generated</span><span class="prov-detail">OntoReview 0.1.0; checks: OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, OOPS!</span></div>
+    </li>
+  </ol>
+
+  <h3 class="subhead" id="provenance-build">This build</h3>
+  <table class="rel">
+    <tbody>
+<tr><th scope="row">Source file</th><td>org.ttl (82.2 KB)</td></tr><tr><th scope="row">SHA-256</th><td><code class="small">3e01f89a17475a88f8b1606ca0fae04800d34dbbf93adc6db12dc30929848729</code></td></tr>    <tr><th scope="row">Generated by</th><td>OntoReview 0.1.0</td></tr>
+    <tr><th scope="row">Started</th><td><time datetime="2026-11-21T17:12:40+00:00">2026-11-21 17:12:40 UTC</time></td></tr>
+    <tr><th scope="row">Finished</th><td><time datetime="2026-11-21T17:12:54+00:00">2026-11-21 17:12:54 UTC</time> <span class="muted">(13.6 s)</span></td></tr>
+<tr><th scope="row">Checks run</th><td>OntoReview checks, ROBOT, Logical consistency, IRI checks, OntoCheck, Cross-domain interoperability, OOPS!</td></tr>    </tbody>
+  </table>
+  <p class="small muted">This documentation was generated from the ontology source with OntoReview 0.1.0. Machine-readable: <a href="provenance.ttl">provenance.ttl</a> (W3C PROV-O).</p>
 </section>    <footer class="colophon">
       Generated with <a href="https://github.com/CAIRNepal/ontoreview">OntoReview</a> 0.1.0. License: <a href="http://www.opendatacommons.org/licenses/pddl/1.0/">http://www.opendatacommons.org/licenses/pddl/1.0/</a>.
     </footer>
@@ -1326,10 +1708,10 @@
   </div>
 </div>
 
-<script src="ontoreview-data.js?v=6afd1434"></script>
+<script src="ontoreview-data.js?v=6b01d116"></script>
 <script src="assets/vendor/minisearch.min.js"></script>
 <script src="assets/vendor/cytoscape.min.js"></script>
 <script src="assets/vendor/dagre.min.js"></script>
-<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6afd1434"></script>
+<script src="assets/vendor/cytoscape-dagre.js"></script><script src="assets/ontoreview.js?v=6b01d116"></script>
 </body>
 </html>

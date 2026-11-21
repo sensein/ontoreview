@@ -1,16 +1,100 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
+    prov:generatedAtTime "2026-11-21T17:09:38+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <http://www.w3.org/ns/prov-o-20130430> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
+
+<http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl> a prov:Entity ;
+    dcterms:date "2026-11-20T01:25:24Z"^^xsd:string ;
+    dcterms:hasVersion "2023-03-07" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/mcro.owl> ;
+    dcterms:title "Model Card Report Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
+
+<http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:40Z"^^xsd:string ;
+    dcterms:hasVersion "26.02d" ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/ncit.owl> ;
+    dcterms:title "NCI Thesaurus OBO Edition" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (69 correspondence(s), via ols)." .
+
+<http://snomed.info/sct/900000000000207008/version/20251017> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:34Z"^^xsd:string ;
+    dcterms:isVersionOf <http://snomed.info/sct/9000000000002070081231> ;
+    dcterms:title "SNOMED CT (International Edition)" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (14 correspondence(s), via ols)." .
+
+<http://www.w3.org/ns/dcat3> a prov:Entity ;
+    dcterms:date "2026-11-20T01:25:30Z"^^xsd:string ;
+    dcterms:hasVersion "3" ;
+    dcterms:isVersionOf <http://www.w3.org/ns/dcat> ;
+    dcterms:title "ols:dcat" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
 
 <http://www.w3.org/ns/prov-o-20130430> a prov:Entity ;
     dcterms:title "W3C PROVenance Interchange Ontology (PROV-O)" .
 
+<https://w3id.org/emi/version/1.0> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:59Z"^^xsd:string ;
+    dcterms:hasVersion "1.0" ;
+    dcterms:isVersionOf <https://w3id.org/emi> ;
+    dcterms:title "The Earth Metabolome Initiative (EMI) ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
+
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-18T02:56:37+00:00"^^xsd:dateTime ;
-    prov:used "prov-o.ttl" ;
+    prov:endedAtTime "2026-11-21T17:09:38+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T17:09:15+00:00"^^xsd:dateTime ;
+    prov:used <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
+        <http://purl.obolibrary.org/obo/mcro/releases/2023-03-07/mcro.owl>,
+        <http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl>,
+        <http://snomed.info/sct/900000000000207008/version/20251017>,
+        <http://www.w3.org/ns/dcat3>,
+        <https://w3id.org/emi/version/1.0>,
+        <urn:sha256:029d4d1f9002d632622e232fc2af2162b131d37b276100b9c0847a452ad9b1cc>,
+        <urn:sha256:14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914>,
+        <urn:sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96>,
+        <urn:sha256:908f8d1f1c983d4c9e506488361131c6cc0984663efda6b41c8f3a98ab4eeaf5>,
+        <urn:sha256:a0348f7c24e6a5d104e3c9d2ab3887de883fcb31b392dbd2c2d9a9e35398cdda>,
+        "prov-o.ttl" ;
     prov:wasAssociatedWith <https://w3id.org/ontoreview#v0.1.0> .
+
+<urn:sha256:029d4d1f9002d632622e232fc2af2162b131d37b276100b9c0847a452ad9b1cc> a prov:Entity ;
+    dcterms:date "2026-11-20T01:25:27Z"^^xsd:string ;
+    dcterms:isVersionOf <http://purl.obolibrary.org/obo/miapa.owl> ;
+    dcterms:title "MIAPA Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
+
+<urn:sha256:14ff6ed97bea9d48c4ce11d53abc873e48d673c7c5f1fb5bb83cc66abacb6914> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:59Z"^^xsd:string ;
+    dcterms:isVersionOf <http://schema.org/> ;
+    dcterms:title "ols:schemaorg_http" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (13 correspondence(s), via ols)." .
+
+<urn:sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96> a prov:Entity ;
+    dcterms:identifier "sha256:7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96" ;
+    dcterms:title "prov-o.ttl" .
+
+<urn:sha256:908f8d1f1c983d4c9e506488361131c6cc0984663efda6b41c8f3a98ab4eeaf5> a prov:Entity ;
+    dcterms:date "2026-11-20T01:25:21Z"^^xsd:string ;
+    dcterms:isVersionOf prov: ;
+    dcterms:title "Provenance Ontology (PROV-O)" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
+
+<urn:sha256:a0348f7c24e6a5d104e3c9d2ab3887de883fcb31b392dbd2c2d9a9e35398cdda> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:36Z"^^xsd:string ;
+    dcterms:hasVersion "1.1" ;
+    dcterms:isVersionOf <https://w3id.org/reproduceme> ;
+    dcterms:title "REPRODUCE-ME Ontology" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (30 correspondence(s), via ols)." .
+
+<http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> a prov:Entity ;
+    dcterms:date "2026-11-20T01:24:42Z"^^xsd:string ;
+    dcterms:hasVersion "REC/2026/09" ;
+    dcterms:isVersionOf <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred> ;
+    dcterms:title "Allotrope Merged Ontology Suite" ;
+    rdfs:comment "Reference release used for the cross-domain interoperability score (18 correspondence(s), via ols)." .
 

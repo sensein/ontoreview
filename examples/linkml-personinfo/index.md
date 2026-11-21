@@ -16,5 +16,6 @@ Used to test **OntoReview**'s LinkML support.
 - [Classes](classes.md) (6)
 - [Object properties](object-properties.md) (5)
 - [Datatype properties](datatype-properties.md) (8)
+- [Annotation properties](annotation-properties.md) (31)
 - [Datatypes](datatypes.md) (1)
 - [Named individuals](individuals.md) (4)

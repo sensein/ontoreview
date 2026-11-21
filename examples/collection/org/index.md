@@ -14,5 +14,5 @@ Vocabulary for describing organizational structures, specializable to a broad va
 - [Object properties](object-properties.md) (31)
 - [Datatype properties](datatype-properties.md) (2)
 - [Properties](properties.md) (1)
-- [Annotation properties](annotation-properties.md) (1)
+- [Annotation properties](annotation-properties.md) (12)
 - [Named individuals](individuals.md) (1)

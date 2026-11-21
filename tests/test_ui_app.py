@@ -42,7 +42,8 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
         await user.should_see(f"ontoreview build {src} -o {out}")
         user.find(marker="run").click()
         for _ in range(100):                          # the build runs in a worker thread
-            if (out / "index.html").exists() and ui_core.HISTORY_FILE.exists():
+            runs = list(isolated.glob("site-*"))      # each run gets its own dated folder
+            if runs and (runs[0] / "index.html").exists() and ui_core.HISTORY_FILE.exists():
                 break
             await asyncio.sleep(0.1)
         from ontoreview.ui import SESSION
@@ -56,9 +57,11 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
         await user.should_see("Issues")
         await user.should_see(ui.table)
 
-    assert (out / "vocab" / "colors" / "index.html").is_file()
+    (run_dir,) = isolated.glob("site-*")
+    assert (run_dir / "vocab" / "colors" / "index.html").is_file() and not out.exists()
     history = json.loads(ui_core.HISTORY_FILE.read_text())
     assert history[0]["ok"] == 2 and history[0]["source"] == str(src)
+    assert history[0]["output"] == str(run_dir)
     assert json.loads(ui_core.SETTINGS_FILE.read_text())["source"] == str(src)   # remembered for next time
 
 
@@ -247,7 +250,8 @@ async def test_build_survives_switching_pages(isolated, fixtures, monkeypatch):
         await user.open("/history")                       # leave while it runs
         await user.should_see("Run history")
         for _ in range(100):
-            if (out / "index.html").exists() and ui_core.HISTORY_FILE.exists():
+            runs = list(isolated.glob("out-*"))      # each run gets its own dated folder
+            if runs and (runs[0] / "index.html").exists() and ui_core.HISTORY_FILE.exists():
                 break
             await asyncio.sleep(0.1)
         await user.open("/")                              # come back: the finished result is shown
@@ -285,3 +289,22 @@ async def test_sidebar_shows_running_task(isolated, fixtures, monkeypatch):
         SESSION.build["running"] = True
         await user.should_see(kind=ui.spinner, retries=20)
         SESSION.build["running"] = False
+
+
+@pytest.mark.anyio
+async def test_history_shows_config_and_reruns(isolated, fixtures):
+    s = ui_core.Settings(source=str(fixtures / "pizza.ttl"), output=str(isolated / "d"), oops="off", cdi=False)
+    res = ui_core.run_task(s)
+    entry = ui_core.record_run(s, res)
+    assert res.output.name.startswith("d-") and (res.output / "standalone.html").is_file()
+    async with user_simulation(root=build_page) as user:
+        await user.open("/history")
+        await user.should_see("1 of 1 runs shown")
+        user.find(ui.table).trigger("rowClick", [{}, {"id": entry.id}, 0])      # click the row
+        await user.should_see("Configuration")
+        await user.should_see("Each run in its own folder")
+        await user.should_see("Edit and run")
+        user.find("Edit and run").click()
+        await user.should_see("New build")
+        await user.should_see("Settings from that run loaded", retries=20)
+        await user.should_see("a new folder each run")

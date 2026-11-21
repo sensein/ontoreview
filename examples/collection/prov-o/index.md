@@ -13,4 +13,4 @@ If you wish to make comments regarding this document, please send them to public
 - [Classes](classes.md) (30)
 - [Object properties](object-properties.md) (44)
 - [Datatype properties](datatype-properties.md) (6)
-- [Annotation properties](annotation-properties.md) (15)
+- [Annotation properties](annotation-properties.md) (20)

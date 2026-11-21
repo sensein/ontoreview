@@ -148,11 +148,11 @@ Feature which is intended to be representative of a FeatureOfInterest on which O
 
 Physical samples are sometimes known as 'specimens'.
 
-A Sample is the result from an act of Sampling.
-
 Samples are artifacts of an observational strategy, and have no significant function outside of their role in the observation process. The characteristics of the samples themselves are of little interest, except perhaps to the manager of a sampling campaign.
 
 A Sample is intended to sample some FatureOfInterest, so there is an expectation of at least one isSampleOf property. However, in some cases the identity, and even the exact type, of the sampled feature may not be known when observations are made using the sampling features.
+
+A Sample is the result from an act of Sampling.
 
 Feature which is intended to be representative of a FeatureOfInterest on which Observations may be made.
 
@@ -185,7 +185,7 @@ An act of Sampling carries out a sampling Procedure to create or transform one o
 | | |
 |---|---|
 | Used in | in domain of [has feature of interest](object-properties.md#hasfeatureofinterest); in domain of [has result](object-properties.md#hasresult); in domain of [has simple result](datatype-properties.md#hassimpleresult); in domain of [made by sampler](object-properties.md#madebysampler); in domain of [phenomenon time](object-properties.md#phenomenontime); in domain of [result time](datatype-properties.md#resulttime); in domain of [used procedure](object-properties.md#usedprocedure); in range of [is feature of interest of](object-properties.md#isfeatureofinterestof); in range of [is result of](object-properties.md#isresultof); in range of [made sampling](object-properties.md#madesampling) |
-| Examples | `Dividing a field site into quadrants.`; `Selecting a subset of a population.`; `Sieving a powder to separate the subset finer than 100-mesh.`; `Registering an image of the landscape.`; `Digging a pit through a soil sequence.`; `Drilling an observation well.`; `Taking a diamond-drill core from a rock outcrop.`; `Crushing a rock sample in a ball mill.`; `Splitting a piece of drill-core to create two new samples.`; `Establishing a station for environmental monitoring.`; `Drawing blood from a patient.` |
+| Examples | `Splitting a piece of drill-core to create two new samples.`; `Drawing blood from a patient.`; `Sieving a powder to separate the subset finer than 100-mesh.`; `Digging a pit through a soil sequence.`; `Crushing a rock sample in a ball mill.`; `Registering an image of the landscape.`; `Establishing a station for environmental monitoring.`; `Taking a diamond-drill core from a rock outcrop.`; `Drilling an observation well.`; `Selecting a subset of a population.`; `Dividing a field site into quadrants.` |
 
 ### Sensor
 
@@ -247,12 +247,12 @@ A relation between an Observation and the entity whose quality was observed, or 
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
-| Range | [Feature Of Interest](classes.md#featureofinterest); [Sample](classes.md#sample) |
+| Domain | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
+| Range | [Sample](classes.md#sample); [Feature Of Interest](classes.md#featureofinterest) |
 | Inverse of | [is feature of interest of](object-properties.md#isfeatureofinterestof) |
 | Examples | `For example, in an Observation of the weight of a person, the FeatureOfInterest is the person and the property is its weight.` |
-| domainIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
-| rangeIncludes | sosa:FeatureOfInterest; sosa:Sample |
+| domainIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
+| rangeIncludes | sosa:Sample; sosa:FeatureOfInterest |
 
 ### has result
 
@@ -264,10 +264,10 @@ Relation linking an Observation or Actuation or act of Sampling and a Result or 
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Sampling](classes.md#sampling); [Actuation](classes.md#actuation) |
+| Domain | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
 | Range | [Sample](classes.md#sample); [Result](classes.md#result) |
 | Inverse of | [is result of](object-properties.md#isresultof) |
-| domainIncludes | sosa:Observation; sosa:Sampling; sosa:Actuation |
+| domainIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
 | rangeIncludes | sosa:Sample; sosa:Result |
 
 ### has sample
@@ -297,10 +297,10 @@ Relation between a Platform and a Sensor, Actuator, Sampler, or Platform, hosted
 | | |
 |---|---|
 | Domain | [Platform](classes.md#platform) |
-| Range | [Platform](classes.md#platform); [Sensor](classes.md#sensor); [Actuator](classes.md#actuator); [Sampler](classes.md#sampler) |
+| Range | [Sampler](classes.md#sampler); [Actuator](classes.md#actuator); [Sensor](classes.md#sensor); [Platform](classes.md#platform) |
 | Inverse of | [is hosted by](object-properties.md#ishostedby) |
 | domainIncludes | sosa:Platform |
-| rangeIncludes | sosa:Platform; sosa:Sensor; sosa:Actuator; sosa:Sampler |
+| rangeIncludes | sosa:Sampler; sosa:Actuator; sosa:Sensor; sosa:Platform |
 
 ### is acted on by
 
@@ -330,10 +330,10 @@ A relation between a FeatureOfInterest and an Observation about it, an Actuation
 | | |
 |---|---|
 | Domain | [Feature Of Interest](classes.md#featureofinterest); [Sample](classes.md#sample) |
-| Range | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
+| Range | [Actuation](classes.md#actuation); [Sampling](classes.md#sampling); [Observation](classes.md#observation) |
 | Inverse of | [has feature of interest](object-properties.md#hasfeatureofinterest) |
 | domainIncludes | sosa:FeatureOfInterest; sosa:Sample |
-| rangeIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
+| rangeIncludes | sosa:Actuation; sosa:Sampling; sosa:Observation |
 
 ### is hosted by
 
@@ -345,10 +345,10 @@ Relation between a Sensor, Actuator, Sampler, or Platform, and the Platform that
 
 | | |
 |---|---|
-| Domain | [Actuator](classes.md#actuator); [Sampler](classes.md#sampler); [Platform](classes.md#platform); [Sensor](classes.md#sensor) |
+| Domain | [Platform](classes.md#platform); [Sampler](classes.md#sampler); [Actuator](classes.md#actuator); [Sensor](classes.md#sensor) |
 | Range | [Platform](classes.md#platform) |
 | Inverse of | [hosts](object-properties.md#hosts) |
-| domainIncludes | sosa:Actuator; sosa:Sampler; sosa:Platform; sosa:Sensor |
+| domainIncludes | sosa:Platform; sosa:Sampler; sosa:Actuator; sosa:Sensor |
 | rangeIncludes | sosa:Platform |
 
 ### is observed by
@@ -377,11 +377,11 @@ Relation linking a Result to the Observation or Actuation or act of Sampling tha
 
 | | |
 |---|---|
-| Domain | [Result](classes.md#result); [Sample](classes.md#sample) |
-| Range | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
+| Domain | [Sample](classes.md#sample); [Result](classes.md#result) |
+| Range | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
 | Inverse of | [has result](object-properties.md#hasresult) |
-| domainIncludes | sosa:Result; sosa:Sample |
-| rangeIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
+| domainIncludes | sosa:Sample; sosa:Result |
+| rangeIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
 
 ### is sample of
 
@@ -536,9 +536,9 @@ The time that the Result of an Observation, Actuation or Sampling applies to the
 
 | | |
 |---|---|
-| Domain | [Actuation](classes.md#actuation); [Observation](classes.md#observation); [Sampling](classes.md#sampling) |
+| Domain | [Sampling](classes.md#sampling); [Observation](classes.md#observation); [Actuation](classes.md#actuation) |
 | Range | [TemporalEntity](classes.md#temporalentity) |
-| domainIncludes | sosa:Actuation; sosa:Observation; sosa:Sampling |
+| domainIncludes | sosa:Sampling; sosa:Observation; sosa:Actuation |
 | rangeIncludes | time:TemporalEntity |
 
 ### used procedure
@@ -551,9 +551,9 @@ A relation to link to a re-usable Procedure used in making an Observation, an Ac
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Actuation](classes.md#actuation); [Sampling](classes.md#sampling) |
+| Domain | [Actuation](classes.md#actuation); [Sampling](classes.md#sampling); [Observation](classes.md#observation) |
 | Range | [Procedure](classes.md#procedure) |
-| domainIncludes | sosa:Observation; sosa:Actuation; sosa:Sampling |
+| domainIncludes | sosa:Actuation; sosa:Sampling; sosa:Observation |
 | rangeIncludes | sosa:Procedure |
 
 ---
@@ -570,9 +570,9 @@ The simple value of an Observation or Actuation or act of Sampling.
 
 | | |
 |---|---|
-| Domain | [Observation](classes.md#observation); [Sampling](classes.md#sampling); [Actuation](classes.md#actuation) |
+| Domain | [Actuation](classes.md#actuation); [Sampling](classes.md#sampling); [Observation](classes.md#observation) |
 | Examples | `For instance, the values 23 or true.` |
-| domainIncludes | sosa:Observation; sosa:Sampling; sosa:Actuation |
+| domainIncludes | sosa:Actuation; sosa:Sampling; sosa:Observation |
 
 ### result time
 
@@ -584,9 +584,9 @@ The result time is the instant of time when the Observation, Actuation or Sampli
 
 | | |
 |---|---|
-| Domain | [Sampling](classes.md#sampling); [Actuation](classes.md#actuation); [Observation](classes.md#observation) |
+| Domain | [Actuation](classes.md#actuation); [Sampling](classes.md#sampling); [Observation](classes.md#observation) |
 | Range | [xsd:dateTime](http://www.w3.org/2001/XMLSchema#dateTime) |
-| domainIncludes | sosa:Sampling; sosa:Actuation; sosa:Observation |
+| domainIncludes | sosa:Actuation; sosa:Sampling; sosa:Observation |
 
 ---
 

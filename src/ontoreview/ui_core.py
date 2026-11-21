@@ -76,6 +76,7 @@ class Settings:
     cdi_ontoportal_key: str = field(default="", repr=False)   # any other OntoPortal service
     hf_token: str = field(default="", repr=False)             # Hugging Face token for model downloads (optional)
     default_root: str = ""          # Settings > default output folder
+    separate_runs: bool = True      # each docs run writes a new, self-contained folder (name-YYYYMMDD-HHMMSS)
     verbose: bool = False
 
     # -------------------------------------------------------------- derived
@@ -441,6 +442,23 @@ def _external_text(reports) -> str:
     return "; ".join(parts)
 
 
+DOCS_TASKS = ("site", "single", "markdown", "myst")
+
+
+def run_folder(out: Path, now: float | None = None) -> Path:
+    """A new folder for one docs run, so runs never overwrite each other: ``docs`` becomes
+    ``docs-20261121-153012``; a single-file target ``pizza.html`` becomes
+    ``pizza-20261121-153012/pizza.html``. A clash within the same second gets ``-2``, ``-3``…"""
+    stamp = time.strftime("%Y%m%d-%H%M%S", time.localtime(now))
+    is_file = out.suffix.lower() == ".html"
+    base = out.parent / f"{out.stem if is_file else out.name}-{stamp}"
+    folder, n = base, 1
+    while folder.exists():
+        n += 1
+        folder = base.with_name(f"{base.name}-{n}")
+    return folder / out.name if is_file else folder
+
+
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
     from .build import build, build_single_file, check, load, resolve_config
@@ -455,6 +473,8 @@ def run_task(settings: Settings) -> TaskResult:
     t0 = time.perf_counter()
     s = settings
     out = s.output_path()
+    if s.separate_runs and s.task in DOCS_TASKS:
+        out = run_folder(out)
     src = s.source.strip()
     src = src if src.startswith(("http://", "https://")) else str(Path(src).expanduser().resolve())
     ov = s.overrides()
@@ -678,6 +698,59 @@ def record_run(settings: Settings, result: TaskResult | None, error: str | None 
     except OSError as e:
         log.debug("could not save run history: %s", e)
     return entry
+
+
+EXPORT_DIR = SETTINGS_FILE.with_name("exports")
+
+
+def export_output(output: str | Path, dest_dir: Path | None = None) -> Path:
+    """A run's output as one file to download: a folder becomes ``<name>.zip`` (its files under
+    ``<name>/``), a single file is returned as it is."""
+    import zipfile
+
+    src = Path(output).expanduser()
+    if not src.exists():
+        raise FileNotFoundError(f"{src} no longer exists")
+    if src.is_file():
+        return src
+    dest_dir = dest_dir or EXPORT_DIR
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    target = dest_dir / f"{src.name}.zip"
+    with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as zf:
+        for f in sorted(src.rglob("*")):
+            if f.is_file():
+                zf.write(f, Path(src.name) / f.relative_to(src))
+    return target
+
+
+def run_config_rows(settings: dict[str, Any]) -> list[tuple[str, str]]:
+    """A recorded run's settings as readable (label, value) rows for the Run history dialog."""
+    g = settings.get
+    on = lambda v: "on" if v else "off"  # noqa: E731
+    rows = [("Task", TASKS.get(g("task", ""), g("task", ""))), ("Ontology", g("source", "")),
+            ("Save to", g("output") or "default, next to the ontology")]
+    if g("task") in DOCS_TASKS:
+        rows += [("Layout", "one page" if g("layout") == "single" else "one page per section"),
+                 ("Languages", g("languages", "en")),
+                 ("Each run in its own folder", on(g("separate_runs", True)))]
+        if g("base_url"):
+            rows.append(("Base URL", g("base_url")))
+    if g("previous_version"):
+        rows.append(("Previous version", g("previous_version")))
+    if g("competency_questions"):
+        rows.append(("Competency questions", g("competency_questions")))
+    if g("task") != "diff":
+        rows += [("Load imports", on(g("load_imports", True))), ("Individuals", on(g("include_individuals", True))),
+                 ("Reasoning", on(g("reason"))),
+                 ("ROBOT", g("robot", "auto")), ("Reasoner", g("reasoner", "hermit")), ("OOPS!", g("oops", "auto")),
+                 ("OntoCheck", on(g("ontocheck", True))), ("IRI checks", on(g("iri_checks", True)))]
+        cdi = g("cdi", True)
+        rows.append(("Cross-domain interoperability",
+                     f"on · references: {', '.join(x.strip() for x in str(g('cdi_references', '')).splitlines() if x.strip()) or '–'}"
+                     + (f" · domains: {g('cdi_domains')}" if g("cdi_domains") else "")
+                     + f" · OntoAligner: {g('cdi_ontoaligner', 'sbert')}" if cdi else "off"))
+        rows.append(("Fail on", g("fail_on", "error")))
+    return rows
 
 
 def forget_run(entry_id: str, path: Path | None = None) -> None:

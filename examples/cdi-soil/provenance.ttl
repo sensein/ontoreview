@@ -5,6 +5,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:ontoreview:documentation> a prov:Entity ;
+    prov:generatedAtTime "2026-11-21T17:11:43+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom <urn:ontoreview:ontology> ;
     prov:wasGeneratedBy <urn:ontoreview:build> .
 
@@ -59,7 +60,8 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (4 correspondence(s), via ols)." .
 
 <urn:ontoreview:build> a prov:Activity ;
-    prov:endedAtTime "2026-11-20T01:27:50+00:00"^^xsd:dateTime ;
+    prov:endedAtTime "2026-11-21T17:11:43+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-11-21T17:11:35+00:00"^^xsd:dateTime ;
     prov:used <http://addictovocab.org/addicto.owl/2026-10-08>,
         <http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred>,
         <http://purl.obolibrary.org/obo/bfo/2019-08-26/bfo.owl>,
@@ -71,6 +73,7 @@
         <http://snomed.info/sct/900000000000207008/version/20251017>,
         <http://www.bioassayontology.org/bao/bao_complete.owl>,
         <urn:ontoreview:release:29a4db7ef16ae4bf>,
+        <urn:sha256:57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3>,
         <urn:sha256:ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185>,
         <urn:sha256:c70b0d1c843c0047e4c98e0a89392e46a05752ff6365bda7f7f55303905a0392>,
         <urn:sha256:da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd>,
@@ -84,8 +87,12 @@
     dcterms:date "2026-11-19T00:08:58.696434276"^^xsd:string ;
     rdfs:comment "Release used to verify 1 external term(s) (via ols)." .
 
+<urn:sha256:57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3> a prov:Entity ;
+    dcterms:identifier "sha256:57279d7dc1f72bb9b2c234e945b8bc94d32f322233faf5294d3577631cda14c3" ;
+    dcterms:title "toy_onto.ttl" .
+
 <urn:sha256:ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185> a prov:Entity ;
-    dcterms:date "2026-11-20T01:27:42.410651+00:00"^^xsd:string ;
+    dcterms:date "2026-11-21T17:11:39.201142+00:00"^^xsd:string ;
     dcterms:identifier "sha256:ae83102ae516d6f0a2c24d7c231573ce8c8626cefcefa8ca63c649cbd7b1c185" ;
     dcterms:source <file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_to_bfo.sssom.tsv> ;
     dcterms:title "toy_to_bfo.sssom.tsv" ;
@@ -100,8 +107,8 @@
     rdfs:comment "Reference release used for the cross-domain interoperability score (2 correspondence(s), via term database (bundled))." .
 
 <urn:sha256:da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd> a prov:Entity ;
-    dcterms:date "2026-11-20T01:26:46.852642+00:00"^^xsd:string,
-        "2026-11-20T01:27:42.410095+00:00"^^xsd:string ;
+    dcterms:date "2026-11-20T01:27:42.410095+00:00"^^xsd:string,
+        "2026-11-21T17:11:39.199131+00:00"^^xsd:string ;
     dcterms:identifier "sha256:da76f84a349093effc8b79b55e8c382aeee939c1df1412738f7e9248d56edddd" ;
     dcterms:source <file:///Users/tekrajchhetri/Documents/ontology-docs/tests/fixtures/cdi/toy_ref.ttl> ;
     dcterms:title "cdi",

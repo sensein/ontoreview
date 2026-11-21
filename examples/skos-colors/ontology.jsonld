@@ -1,5 +1,22 @@
 [
   {
+    "@id": "https://example.org/colors/maroon",
+    "@type": [
+      "http://www.w3.org/2004/02/skos/core#Concept"
+    ],
+    "http://www.w3.org/2004/02/skos/core#broader": [
+      {
+        "@id": "https://example.org/colors/red"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en",
+        "@value": "maroon"
+      }
+    ]
+  },
+  {
     "@id": "https://example.org/colors/scheme",
     "@type": [
       "http://www.w3.org/2004/02/skos/core#ConceptScheme"
@@ -79,23 +96,6 @@
     "http://www.w3.org/2004/02/skos/core#related": [
       {
         "@id": "https://example.org/colors/maroon"
-      }
-    ]
-  },
-  {
-    "@id": "https://example.org/colors/maroon",
-    "@type": [
-      "http://www.w3.org/2004/02/skos/core#Concept"
-    ],
-    "http://www.w3.org/2004/02/skos/core#broader": [
-      {
-        "@id": "https://example.org/colors/red"
-      }
-    ],
-    "http://www.w3.org/2004/02/skos/core#prefLabel": [
-      {
-        "@language": "en",
-        "@value": "maroon"
       }
     ]
   },

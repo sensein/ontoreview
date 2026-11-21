@@ -1,6 +1,6 @@
 {% import "macros.html" as m with context %}
 <div class="toc-inner">
-  <a class="toc-title" href="index.html">{{ meta.title or "Ontology" }}</a>
+  <a class="toc-title" href="{{ '#top' if inline else 'index.html' }}">{{ meta.title or "Ontology" }}</a>
   {% if meta.version_info %}<div class="toc-version">{% if meta.version_info[:1].isdigit() %}{{ t('version') }} {% endif %}{{ meta.version_info|truncate(40, True, '…') }}</div>{% endif %}
 
   <button class="toc-search" data-action="search" aria-label="{{ t('search') }}">
