@@ -186,8 +186,8 @@ GUIDE = ROOT / "guide" / "images"
 
 
 def docs_shots(browser) -> None:
-    """The generated documentation (examples/cdi-sosa) for the README: run build_examples.py first."""
-    site = ROOT / "examples" / "cdi-sosa" / "index.html"
+    """The generated documentation (examples/site/cdi-sosa) for the README: run build_examples.py first."""
+    site = ROOT / "examples" / "site" / "cdi-sosa" / "index.html"
     if not site.is_file():
         print("skip docs shots: run scripts/build_examples.py first")
         return

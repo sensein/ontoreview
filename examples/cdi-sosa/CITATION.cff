@@ -1,8 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this ontology, please cite it as below."
-type: dataset
-title: "Sensor, Observation, Sample, and Actuator (SOSA) Ontology"
-url: "http://www.w3.org/ns/sosa/"
-authors:
-  - given-names: "W3C/OGC Spatial Data on the Web Working"
-    family-names: "Group"

@@ -1,7 +1,9 @@
-"""Regenerate the example documentation sites in ./examples from the test fixtures.
+"""Build the example documentation sites into ./examples/site from the test fixtures.
 
     python scripts/build_examples.py
-    python -m http.server 8000 -d examples     # then open http://127.0.0.1:8000/
+    python -m http.server 8000 -d examples/site     # then open http://127.0.0.1:8000/
+
+The output is generated, so it is git-ignored; only examples/toy_onto.ttl and its README are kept.
 """
 
 from __future__ import annotations
@@ -23,7 +25,7 @@ os.environ.setdefault("ONTOREVIEW_REQUIRE_METADATA", "0")
 
 ROOT = Path(__file__).resolve().parent.parent
 FIX = ROOT / "tests" / "fixtures"
-OUT = ROOT / "examples"
+OUT = ROOT / "examples" / "site"                # generated, git-ignored
 
 CQ = [str(FIX / "cq" / "pizza-cq.yaml"), str(FIX / "cq" / "pizza-cq.csv")]
 
@@ -62,7 +64,7 @@ SITES = [
 def main() -> None:
     if OUT.exists():
         shutil.rmtree(OUT)
-    OUT.mkdir()
+    OUT.mkdir(parents=True)
     rows = []
     for name, src, opts, desc in SITES:
         res = ontoreview.build(src, out=OUT / name, **opts)
