@@ -408,7 +408,7 @@ HELP = [
         "The other row buttons open the output, show it in its folder, or remove the entry (files are kept). API keys "
         "are never stored in the history, so re-runs use the keys currently set in Settings.",
     ], "", [("Open Run history", "/history")]),
-    ("fixes", "Fix first, then document", "", [
+    ("fixes", "Fix first, then document", "fixes-ai.png", [
         "After <b>Build docs</b>, OntoReview checks the ontology and opens the <b>Quality issues</b> page before any "
         "docs are generated (also from <b>Review fixes</b> on a result). The original file is <b>never changed</b>: applied fixes go to a new file "
         "(<code>a-v1.ttl</code>, then <code>a-v2.ttl</code> …), and the docs are built from it.",
@@ -3937,6 +3937,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 return
             ai_lock["busy"] = True
             set_ai("working", f"Drafting AI suggestions for {len(todo)} issues…")
+            failed: list[str] = []
             try:
                 src = await ensure_ai()
                 desc = src.describe() if src.name != "hf" else {"provider": "Hugging Face", "model": src.model}
@@ -3953,13 +3954,20 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         else:
                             draft = await run.io_bound(suggest_domain_range, session, x.subject,
                                                        "domain" if x.rule == "OB012" else "range", src)
-                    except _AIError:
+                    except _AIError as e:
+                        failed.append(str(e))
                         continue            # keep the field to fill by hand
                     session.replace(draft)
                     if fs["sel"] == x.id:
                         fs["sel"] = draft.id
                     render_all()
-                notify("AI suggestions ready to review; nothing is applied until you accept.", "positive")
+                if failed and len(failed) == len(todo):      # nothing came back: say why, not "ready"
+                    notify(f"AI could not draft any suggestion: {failed[-1]}", "warning")
+                    set_ai("error", f"AI drafts failed: {failed[-1]}")
+                    return
+                notify("AI suggestions ready to review; nothing is applied until you accept."
+                       + (f" {len(failed)} could not be drafted ({failed[-1][:120]})." if failed else ""),
+                       "positive" if not failed else "warning")
                 set_ai("ok", "AI suggestions ready for review")
                 ui.timer(4.0, lambda: ai_status["state"] == "ok" and set_ai("idle"), once=True)
             except Exception as e:  # noqa: BLE001
