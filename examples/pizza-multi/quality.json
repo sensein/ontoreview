@@ -1,0 +1,3634 @@
+{
+  "summary": {
+    "error": 1,
+    "warning": 6,
+    "info": 5
+  },
+  "totals": {
+    "error": 7,
+    "warning": 24,
+    "info": 27
+  },
+  "external": [
+    {
+      "tool": "ROBOT",
+      "url": "http://robot.obolibrary.org/report",
+      "items": [
+        {
+          "code": "deprecated_class_reference",
+          "name": "Deprecated class reference",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#CheeseTopping"
+          ],
+          "note": ""
+        },
+        {
+          "code": "duplicate_label",
+          "name": "Duplicate label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#Pizza"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_label",
+          "name": "Missing label",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://orcid.org/0000-0000-0000-0001"
+          ],
+          "note": ""
+        },
+        {
+          "code": "multiple_labels",
+          "name": "Multiple labels",
+          "severity": "error",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#Pizza"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_definition",
+          "name": "Missing definition",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Calzone",
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#MeatTopping",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#Pizza",
+            "https://example.org/pizza#PizzaBase",
+            "https://example.org/pizza#PizzaTopping",
+            "https://example.org/pizza#VegetarianPizza",
+            "https://example.org/pizza#hasBase",
+            "https://example.org/pizza#hasCalories",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#hasTopping",
+            "https://example.org/pizza#isToppingOf",
+            "https://orcid.org/0000-0000-0000-0001"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_obsolete_label",
+          "name": "Missing obsolete label",
+          "severity": "warning",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#CheeseTopping"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missing_superclass",
+          "name": "Missing superclass",
+          "severity": "info",
+          "description": "",
+          "affected": [
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#VegetarianPizza"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 6,
+        "warning": 15,
+        "info": 2
+      }
+    },
+    {
+      "tool": "Logical consistency",
+      "url": "http://robot.obolibrary.org/reason",
+      "items": [],
+      "error": null,
+      "note": "Consistent; all classes satisfiable (HermiT).",
+      "scope": "",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 0
+      }
+    },
+    {
+      "tool": "IRI checks",
+      "url": "https://www.w3.org/TR/cooluris/",
+      "items": [
+        {
+          "code": "ontology_iri_not_resolvable",
+          "name": "Ontology IRI does not resolve to this ontology",
+          "severity": "info",
+          "description": "Published ontologies should return RDF for their IRI (content negotiation). Expected for unpublished or in-development ontologies.",
+          "affected": [
+            "https://example.org/pizza"
+          ],
+          "note": "HTTPError: 404 Client Error: Not Found for url: https://example.org/pizza"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "0.1s. Own namespaces (not checked as external): https://example.org/pizza#, https://example.org/pizza/. Run #87 recorded in /Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3.",
+      "metrics": [
+        {
+          "group": "IRI",
+          "metric": "syntax",
+          "title": "IRI syntax",
+          "value": "No malformed IRIs",
+          "status": "ok",
+          "about": "All 70 IRIs checked for spaces, forbidden characters, bad percent escapes, missing scheme or host"
+        },
+        {
+          "group": "IRI",
+          "metric": "header",
+          "title": "Ontology header",
+          "value": "https://example.org/pizza",
+          "status": "ok",
+          "about": "Exactly one named owl:Ontology"
+        },
+        {
+          "group": "IRI",
+          "metric": "version",
+          "title": "Version IRI",
+          "value": "https://example.org/pizza/1.2.0",
+          "status": "ok",
+          "about": "owl:versionIRI, distinct from the ontology IRI"
+        },
+        {
+          "group": "IRI",
+          "metric": "resolves",
+          "title": "Ontology IRI resolves",
+          "value": "Not reachable",
+          "status": "warn",
+          "about": "The ontology IRI returns RDF (content negotiation) whose header matches it"
+        },
+        {
+          "group": "IRI",
+          "metric": "external",
+          "title": "External terms",
+          "value": "16 checked: 16 valid",
+          "status": "ok",
+          "about": "Classes and properties reused from other vocabularies exist there, with the expected type, and are not deprecated"
+        },
+        {
+          "group": "IRI",
+          "metric": "sources",
+          "title": "Lookup sources",
+          "value": "bundled 2, cache 14",
+          "status": "info",
+          "about": "Where each external term was verified: bundled SQLite, local cache, OLS, BioPortal, or a direct download"
+        },
+        {
+          "group": "IRI",
+          "metric": "freshness",
+          "title": "Freshness",
+          "value": "All lookups current",
+          "status": "ok",
+          "about": "Cached and bundled entries are refreshed after 30 days; entries that could not be refreshed are used but flagged"
+        },
+        {
+          "group": "IRI",
+          "metric": "releases",
+          "title": "Releases verified against",
+          "value": "http://purl.org/spar/datacite/2026-10-05 (3)",
+          "status": "info",
+          "about": "The vocabulary release (version IRI / version) each external term was checked against"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T17:44:04.781991+00:00",
+        "run_id": 87,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "offline": false,
+          "refresh": false,
+          "repositories": true,
+          "resolve": true,
+          "local_namespaces": [
+            "https://example.org/pizza#",
+            "https://example.org/pizza/"
+          ],
+          "budget": 120,
+          "cache_days": 30
+        },
+        "own_namespaces": [
+          "https://example.org/pizza#",
+          "https://example.org/pizza/"
+        ],
+        "releases": [
+          {
+            "title": "bibo (purl.org)",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/ontology/bibo/",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T03:50:03.244033+00:00",
+            "terms": 6,
+            "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+            "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+          },
+          {
+            "title": "The DataCite Ontology (DataCite)",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/spar/datacite",
+            "ontology": null,
+            "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+            "version": null,
+            "retrieved": "2026-11-21T17:40:46.656861+00:00",
+            "terms": 3,
+            "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+            "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+          },
+          {
+            "title": null,
+            "source": "ols",
+            "ontology_iri": "schemaorg_https",
+            "ontology": "schemaorg_https",
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-19T00:09:02.226879785",
+            "terms": 3
+          },
+          {
+            "title": "Simple Knowledge Organization System",
+            "source": "bundle",
+            "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-18T01:08:31.108081+00:00",
+            "terms": 2,
+            "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+            "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+          },
+          {
+            "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+            "source": "cache",
+            "ontology_iri": "http://purl.org/goodrelations/v1",
+            "ontology": null,
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-19T17:47:34.665699+00:00",
+            "terms": 1,
+            "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+            "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+          },
+          {
+            "title": null,
+            "source": "ols",
+            "ontology_iri": "dcterms",
+            "ontology": "dcterms",
+            "version_iri": null,
+            "version": null,
+            "retrieved": "2026-11-19T00:08:58.760281588",
+            "terms": 1
+          }
+        ],
+        "terms": [
+          {
+            "iri": "http://purl.org/dc/terms/abstract",
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "ols",
+              "ontology": "dcterms",
+              "ontology_iri": "dcterms",
+              "version_iri": null,
+              "version": null,
+              "loaded": "2026-11-19T00:08:58.760281588"
+            },
+            "attempts": [
+              {
+                "provider": "local",
+                "status": "unverified"
+              }
+            ]
+          },
+          {
+            "iri": "http://purl.org/dc/terms/contributor",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/created",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/creator",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/description",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/license",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/goodrelations/v1",
+              "namespace": "http://purl.org/goodrelations/",
+              "title": "The GoodRelations Vocabulary for Semantic Web-based E-Commerce",
+              "document": "http://purl.org/goodrelations/v1",
+              "version_iri": null,
+              "sha256": "4eeecc843408390fc16d69a291cb2ba5454fb124eaedef24a9618f6dd40c1f9e",
+              "fetched_at": "2026-11-19T17:47:34.665699+00:00",
+              "source_url": "http://www.heppnetz.de/ontologies/goodrelations/v1.owl"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/modified",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/spar/datacite",
+              "namespace": "http://purl.org/spar/datacite/",
+              "title": "The DataCite Ontology (DataCite)",
+              "document": "http://purl.org/spar/datacite/identifier",
+              "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+              "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+              "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+              "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+            }
+          },
+          {
+            "iri": "http://purl.org/dc/terms/title",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "http://purl.org/vocab/vann/preferredNamespacePrefix",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/spar/datacite",
+              "namespace": "http://purl.org/spar/datacite/",
+              "title": "The DataCite Ontology (DataCite)",
+              "document": "http://purl.org/spar/datacite/identifier",
+              "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+              "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+              "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+              "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+            }
+          },
+          {
+            "iri": "http://purl.org/vocab/vann/preferredNamespaceUri",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/spar/datacite",
+              "namespace": "http://purl.org/spar/datacite/",
+              "title": "The DataCite Ontology (DataCite)",
+              "document": "http://purl.org/spar/datacite/identifier",
+              "version_iri": "http://purl.org/spar/datacite/2026-10-05",
+              "sha256": "129a4981e894ff69579aaba472b9897b0d00f75eaf8d7da1900247cf77f18a7f",
+              "fetched_at": "2026-11-21T17:40:46.656861+00:00",
+              "source_url": "https://sparontologies.github.io/datacite/current/datacite.xml"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#definition",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://www.w3.org/2004/02/skos/core#example",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "bundle",
+            "release": {
+              "source": "bundle",
+              "ontology_iri": "http://www.w3.org/2004/02/skos/core",
+              "namespace": "http://www.w3.org/2004/02/skos/",
+              "title": "Simple Knowledge Organization System",
+              "document": "http://www.w3.org/2004/02/skos/core",
+              "version_iri": null,
+              "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6",
+              "fetched_at": "2026-11-18T01:08:31.108081+00:00",
+              "source_url": "https://www.w3.org/2009/08/skos-reference/skos.rdf"
+            }
+          },
+          {
+            "iri": "http://xmlns.com/foaf/0.1/name",
+            "roles": [
+              "property"
+            ],
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "cache",
+              "ontology_iri": "http://purl.org/ontology/bibo/",
+              "namespace": "http://purl.org/ontology/bibo/",
+              "title": "bibo (purl.org)",
+              "document": "http://purl.org/ontology/bibo/doi",
+              "version_iri": null,
+              "sha256": "2cf16dfa7421e5deb41e2e8ee5575e91913f443a758214b07a9682c9d6025310",
+              "fetched_at": "2026-11-18T03:50:03.244033+00:00",
+              "source_url": "https://www.dublincore.org/specifications/bibo/bibo/bibo.ttl"
+            }
+          },
+          {
+            "iri": "https://schema.org/affiliation",
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "ols",
+              "ontology": "schemaorg_https",
+              "ontology_iri": "schemaorg_https",
+              "version_iri": null,
+              "version": null,
+              "loaded": "2026-11-19T00:09:02.226879785"
+            },
+            "attempts": [
+              {
+                "provider": "local",
+                "status": "unverified"
+              }
+            ]
+          },
+          {
+            "iri": "https://schema.org/keywords",
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "ols",
+              "ontology": "schemaorg_https",
+              "ontology_iri": "schemaorg_https",
+              "version_iri": null,
+              "version": null,
+              "loaded": "2026-11-19T00:09:02.226879785"
+            },
+            "attempts": [
+              {
+                "provider": "local",
+                "status": "unverified"
+              }
+            ]
+          },
+          {
+            "iri": "https://schema.org/name",
+            "status": "valid",
+            "snapshot": "cache",
+            "release": {
+              "source": "ols",
+              "ontology": "schemaorg_https",
+              "ontology_iri": "schemaorg_https",
+              "version_iri": null,
+              "version": null,
+              "loaded": "2026-11-19T00:09:02.226879785"
+            },
+            "attempts": [
+              {
+                "provider": "local",
+                "status": "unverified"
+              }
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 1
+      }
+    },
+    {
+      "tool": "OntoCheck",
+      "url": "https://ontocheck.readthedocs.io",
+      "items": [
+        {
+          "code": "definitionCheck",
+          "name": "Classes without skos:definition",
+          "severity": "info",
+          "description": "OntoCheck definitionCheck looks for skos:definition only (not IAO:0000115 or rdfs:comment).",
+          "affected": [
+            "https://example.org/pizza#MeatTopping"
+          ],
+          "note": ""
+        },
+        {
+          "code": "duplicateLabels",
+          "name": "Shared labels",
+          "severity": "info",
+          "description": "OntoCheck duplicateLabels (case-insensitive rdfs:label).",
+          "affected": [
+            "https://example.org/pizza#Food",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#Pizza"
+          ],
+          "note": "“pizza”: 3 entities; “food”: 2 entities"
+        },
+        {
+          "code": "isolatedElements",
+          "name": "Isolated classes and properties",
+          "severity": "info",
+          "description": "OntoCheck isolatedElements: not related to any other class or property.",
+          "affected": [
+            "https://example.org/pizza#Calzone",
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasCalories"
+          ],
+          "note": ""
+        },
+        {
+          "code": "missingDomainRange",
+          "name": "Properties without domain or range",
+          "severity": "info",
+          "description": "3 without rdfs:domain, 2 without rdfs:range.",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "",
+      "metrics": [
+        {
+          "group": "Labeling",
+          "metric": "checkLabel",
+          "title": "Labels",
+          "about": "Named classes with an rdfs:label",
+          "value": "8 of 8 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Labeling",
+          "metric": "altLabelCheck",
+          "title": "Alternative labels",
+          "about": "Named classes with a skos:altLabel",
+          "value": "0 of 8 classes (0%)",
+          "status": "info"
+        },
+        {
+          "group": "Labeling",
+          "metric": "definitionCheck",
+          "title": "Definitions",
+          "about": "Named classes with a skos:definition",
+          "value": "7 of 8 classes (88%)",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "isolatedElements",
+          "title": "Isolated elements",
+          "about": "Classes and properties not connected to anything else",
+          "value": "1 class, 2 properties",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "classConnections",
+          "title": "Class connections",
+          "about": "Separate groups of classes (subClassOf, equivalentClass, disjointWith); 1 means fully connected",
+          "value": "2 groups",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "missingDomainRange",
+          "title": "Domain and range",
+          "about": "Object and datatype properties without rdfs:domain / rdfs:range",
+          "value": "3 without domain, 2 without range",
+          "status": "warn"
+        },
+        {
+          "group": "Structural",
+          "metric": "leafNodeCheck",
+          "title": "Leaf classes",
+          "about": "Classes with no subclasses",
+          "value": "6 of 8 classes",
+          "status": "info"
+        },
+        {
+          "group": "Structural",
+          "metric": "semanticConnection",
+          "title": "Upper-ontology links",
+          "about": "Top-level classes connected to BFO or CCO",
+          "value": "0 of 2 top-level classes",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "sparqlEndpoint",
+          "title": "SPARQL endpoint",
+          "about": "Declared SPARQL endpoints that answer a query",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "rdfDump",
+          "title": "RDF dump",
+          "about": "Declared RDF dump URLs that can be downloaded",
+          "value": "None declared",
+          "status": "info"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "humanLicense",
+          "title": "Human-readable license",
+          "about": "License or copyright text in the ontology",
+          "value": "Found",
+          "status": "ok"
+        },
+        {
+          "group": "Accessibility",
+          "metric": "externalLinks",
+          "title": "External links",
+          "about": "Entities linked to external resources (owl:sameAs, rdfs:seeAlso, SKOS mappings, …)",
+          "value": "0.0% of entities",
+          "status": "info"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classCapitalCheck",
+          "title": "Capitalised class names",
+          "about": "Class names that start with a capital letter",
+          "value": "8 of 8 classes (100%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "classSpaceCheck",
+          "title": "Spaces in class names",
+          "about": "Class names containing spaces in the Turtle source",
+          "value": "None",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "spellCheck",
+          "title": "Spelling",
+          "about": "Words in English (or untagged) labels, definitions and comments not found in an English dictionary",
+          "value": "0 possible misspellings in 61 words (0.0%)",
+          "status": "ok"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "duplicateLabels",
+          "title": "Duplicate labels",
+          "about": "Classes and properties sharing an rdfs:label (case-insensitive)",
+          "value": "2 labels shared",
+          "status": "warn"
+        },
+        {
+          "group": "Naming convention",
+          "metric": "searchClass",
+          "title": "Class search",
+          "about": "Classes whose name contains the configured search term",
+          "value": "Skipped: no search term set (evaluation.ontocheck_search)",
+          "status": "skipped"
+        }
+      ],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 10
+      }
+    },
+    {
+      "tool": "Cross-domain interoperability",
+      "url": "",
+      "items": [
+        {
+          "code": "CDI-A",
+          "name": "No correspondence in another domain",
+          "severity": "info",
+          "description": "No direct, lexical or inherited correspondence of sufficient strength into the reference ontologies. Mapping these (e.g. SSSOM, owl:equivalentClass, rdfs:subClassOf) raises Align.",
+          "affected": [
+            "https://example.org/pizza#CheeseTopping",
+            "https://example.org/pizza#MeatTopping",
+            "https://example.org/pizza#hasCalories",
+            "https://example.org/pizza#hasTopping",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "10 reference ontologies (0 given, 10 discovered); left out: 2 below the top N. Full record in cdi.json, and as CDI run 63 in the term database. Details of 12 repository ontologies came from the term database.",
+      "metrics": [
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "CDI",
+          "title": "CDI score",
+          "status": "warn",
+          "value": "0.44, not interoperable (θ = 0.5, β = 1.0)",
+          "about": "Weighted harmonic mean of Align and Gen; low when either is low"
+        },
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "Align",
+          "title": "Alignment",
+          "status": "ok",
+          "value": "0.51; 9 of 14 entities aligned",
+          "about": "Mean best correspondence strength per entity into ontologies of other domains (counted from τ = 0.5)"
+        },
+        {
+          "group": "Cross-domain interoperability",
+          "metric": "Gen",
+          "title": "Generality",
+          "status": "warn",
+          "value": "0.39 = definition coverage 0.88 (7/8) × mean generality 0.44",
+          "about": "How domain-neutral the class definitions are (zero-shot language model)"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:foodon",
+          "title": "Food Ontology",
+          "status": "info",
+          "value": "Align_d 0.42, coverage 0.29, 6 correspondences (discovered)",
+          "about": "ols:foodon; domain: diet, metabolomics, and nutrition; release http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:snomed",
+          "title": "SNOMED CT (International Edition)",
+          "status": "info",
+          "value": "Align_d 0.42, coverage 0.29, 4 correspondences (discovered)",
+          "about": "ols:snomed; release http://snomed.info/sct/900000000000207008/version/20251017"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:ncit",
+          "title": "NCI Thesaurus OBO Edition",
+          "status": "info",
+          "value": "Align_d 0.32, coverage 0.21, 5 correspondences (discovered)",
+          "about": "ols:ncit; domain: health; release http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:afo",
+          "title": "Allotrope Merged Ontology Suite",
+          "status": "info",
+          "value": "Align_d 0.11, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:afo; release http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:chebi",
+          "title": "Chemical Entities of Biological Interest",
+          "status": "info",
+          "value": "Align_d 0.19, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:chebi; domain: chemistry and biochemistry; release http://purl.obolibrary.org/obo/chebi/257/chebi.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:fobi",
+          "title": "Food-Biomarker Ontology",
+          "status": "info",
+          "value": "Align_d 0.06, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:fobi; domain: diet, metabolomics, and nutrition; release http://purl.obolibrary.org/obo/fobi/fobi.owl"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:mesh",
+          "title": "Medical Subject Headings",
+          "status": "info",
+          "value": "Align_d 0.19, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:mesh; release https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:micro",
+          "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
+          "status": "info",
+          "value": "Align_d 0.11, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:micro; domain: phenotype; release MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.\n\nIncludes terms and term synonyms extracted from > 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.\n\nThe ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).\n\nDescriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.\nhttps://github.com/biosemantics/micropie2\n\nThe most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO."
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:om",
+          "title": "Ontology of units of Measure (OM)",
+          "status": "info",
+          "value": "Align_d 0.06, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:om; release 2.0.60"
+        },
+        {
+          "group": "Alignment by reference ontology",
+          "metric": "ols:omit",
+          "title": "Ontology for MIRNA Target",
+          "status": "info",
+          "value": "Align_d 0.19, coverage 0.07, 1 correspondences (discovered)",
+          "about": "ols:omit; domain: chemistry and biochemistry; release http://purl.obolibrary.org/obo/omit/dev/omit.owl"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T17:44:04.952936+00:00",
+        "references": [
+          "ols"
+        ],
+        "notes": [
+          "Details of 12 repository ontologies came from the term database."
+        ],
+        "run_id": 63,
+        "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
+        "settings": {
+          "cdi": "on",
+          "cdi_references": [
+            "ols"
+          ],
+          "cdi_term_db": true,
+          "cdi_domains": [],
+          "cdi_exclude": [],
+          "cdi_namespace": [],
+          "cdi_classes_only": false,
+          "cdi_top_n": 10,
+          "cdi_tau": 0.5,
+          "cdi_c_lex": 0.9,
+          "cdi_rho_sub": 0.8,
+          "cdi_gamma": 0.8,
+          "cdi_k_max": 3,
+          "cdi_beta": 1.0,
+          "cdi_theta": 0.5,
+          "cdi_model": "facebook/bart-large-mnli",
+          "cdi_generality": true,
+          "cdi_ontoaligner": "sbert",
+          "cdi_sbert_model": "all-MiniLM-L6-v2",
+          "cdi_ontoaligner_threshold": 0.8,
+          "cdi_timeout": 30,
+          "cdi_budget": 600,
+          "si": "on",
+          "si_home_domain": null,
+          "si_theta_s": 0.3,
+          "si_classifier": true,
+          "si_p_min": 0.15,
+          "si_domain_map": {},
+          "si_upper_ontologies": [],
+          "si_upper_namespaces": []
+        },
+        "summary": {
+          "align": 0.5091428571428571,
+          "gen": 0.38670892142731483,
+          "cdi": 0.43955951162453005,
+          "interoperable": false,
+          "definition_coverage": 0.875,
+          "mean_definition_generality": 0.4419530530597884,
+          "n_entities": 14,
+          "n_aligned_entities": 9,
+          "n_classes": 8,
+          "n_defined_classes": 7,
+          "reference_ontologies": [
+            "ols:afo",
+            "ols:chebi",
+            "ols:fobi",
+            "ols:foodon",
+            "ols:mesh",
+            "ols:micro",
+            "ols:ncit",
+            "ols:om",
+            "ols:omit",
+            "ols:snomed"
+          ],
+          "params": {
+            "tau": 0.5,
+            "c_lex": 0.9,
+            "rho_sub": 0.8,
+            "gamma": 0.8,
+            "k_max": 3,
+            "top_n": 10,
+            "beta": 1.0,
+            "theta": 0.5,
+            "domains": [],
+            "namespace": [
+              "https://example.org/pizza#"
+            ]
+          }
+        },
+        "per_ontology": [
+          {
+            "id": "ols:foodon",
+            "source": "ols",
+            "title": "Food Ontology",
+            "domain": "diet, metabolomics, and nutrition",
+            "given": false,
+            "description": "A broadly scoped ontology representing entities which bear a “food role”. It encompasses materials in natural ecosystems and agriculture that are consumed by humans and domesticated animals. This includes any generic (unbranded) raw or processed food material found in processing plants, markets, stores or food distribution points. FoodOn also imports nutritional component and dietary pattern terms from other OBO Foundry ontologies to support interoperability in diet and nutrition research",
+            "coverage": 0.2857142857142857,
+            "n_correspondences": 6,
+            "status": "selected",
+            "align_d": 0.4217142857142857,
+            "release": {
+              "source": "ols",
+              "ontology": "foodon",
+              "title": "Food Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/foodon.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl",
+              "version": "2026-02-02",
+              "released": "2026-11-21T00:08:37.554689634",
+              "retrieved": "2026-11-21T17:32:34Z",
+              "metadata_sha256": "93eeb6caa7a84aaddf5e478f34ee5121a67b352c1f5a31860a3b77572566bf9f",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:32:34.450246+00:00"
+            }
+          },
+          {
+            "id": "ols:snomed",
+            "source": "ols",
+            "title": "SNOMED CT (International Edition)",
+            "domain": "",
+            "given": false,
+            "description": "SNOMED CT or SNOMED Clinical Terms is a systematically organized computer processable collection of medical terms providing codes, terms, synonyms and definitions used in clinical documentation and reporting.",
+            "coverage": 0.2857142857142857,
+            "n_correspondences": 4,
+            "status": "selected",
+            "align_d": 0.4217142857142857,
+            "release": {
+              "source": "ols",
+              "ontology": "snomed",
+              "title": "SNOMED CT (International Edition)",
+              "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
+              "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
+              "released": "2026-10-21T10:27:50.617005757",
+              "retrieved": "2026-11-21T17:30:09Z",
+              "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:09.210659+00:00"
+            }
+          },
+          {
+            "id": "ols:ncit",
+            "source": "ols",
+            "title": "NCI Thesaurus OBO Edition",
+            "domain": "health",
+            "given": false,
+            "description": "NCI Thesaurus (NCIt)is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. The NCIt OBO Edition aims to increase integration of the NCIt with OBO Library ontologies. NCIt OBO Edition releases should be considered experimental.",
+            "coverage": 0.21428571428571427,
+            "n_correspondences": 5,
+            "status": "selected",
+            "align_d": 0.3162857142857143,
+            "release": {
+              "source": "ols",
+              "ontology": "ncit",
+              "title": "NCI Thesaurus OBO Edition",
+              "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+              "version": "26.02d",
+              "released": "2026-11-21T00:09:04.346151993",
+              "retrieved": "2026-11-21T17:30:07Z",
+              "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:07.631597+00:00"
+            }
+          },
+          {
+            "id": "ols:afo",
+            "source": "ols",
+            "title": "Allotrope Merged Ontology Suite",
+            "domain": "",
+            "given": false,
+            "description": "Allotrope Merged Ontology Suite",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.10542857142857143,
+            "release": {
+              "source": "ols",
+              "ontology": "afo",
+              "title": "Allotrope Merged Ontology Suite",
+              "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+              "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+              "version": "REC/2026/09",
+              "released": "2026-11-21T00:09:10.933549934",
+              "retrieved": "2026-11-21T17:30:08Z",
+              "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:08.826386+00:00"
+            }
+          },
+          {
+            "id": "ols:chebi",
+            "source": "ols",
+            "title": "Chemical Entities of Biological Interest",
+            "domain": "chemistry and biochemistry",
+            "given": false,
+            "description": "A structured classification of molecular entities of biological interest focusing on 'small' chemical compounds.",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.18771428571428572,
+            "release": {
+              "source": "ols",
+              "ontology": "chebi",
+              "title": "Chemical Entities of Biological Interest",
+              "ontology_iri": "http://purl.obolibrary.org/obo/chebi.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/chebi/257/chebi.owl",
+              "version": "257",
+              "released": "2026-11-21T00:08:51.503620060",
+              "retrieved": "2026-11-21T17:30:14Z",
+              "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:14.565811+00:00"
+            }
+          },
+          {
+            "id": "ols:fobi",
+            "source": "ols",
+            "title": "Food-Biomarker Ontology",
+            "domain": "diet, metabolomics, and nutrition",
+            "given": false,
+            "description": "FOBI (Food-Biomarker Ontology) is an ontology to represent food intake data and associate it with metabolomic data",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.0642857142857143,
+            "release": {
+              "source": "ols",
+              "ontology": "fobi",
+              "title": "Food-Biomarker Ontology",
+              "ontology_iri": "http://purl.obolibrary.org/obo/fobi.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/fobi/fobi.owl",
+              "released": "2026-11-21T00:08:33.721513104",
+              "retrieved": "2026-11-21T17:32:35Z",
+              "metadata_sha256": "5e0451a5eac7687564e363c144087687440191c38adc8cf829a3c6304092c51a",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:32:35.288481+00:00"
+            }
+          },
+          {
+            "id": "ols:mesh",
+            "source": "ols",
+            "title": "Medical Subject Headings",
+            "domain": "",
+            "given": false,
+            "description": "MeSH (Medical Subject Headings) is the National Library of Medicine's controlled vocabulary thesaurus. It consists of sets of terms naming descriptors in a hierarchical structure that permits searching at various levels of specificity. This thesaurus is used by NLM for indexing articles from biomedical journals, cataloguing of books, documents, etc.",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.18771428571428572,
+            "release": {
+              "source": "ols",
+              "ontology": "mesh",
+              "title": "Medical Subject Headings",
+              "ontology_iri": "https://w3id.org/biopragmatics/resources/mesh/mesh.ofn",
+              "version_iri": "https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn",
+              "version": "2025",
+              "released": "2026-11-21T00:09:41.663368724",
+              "retrieved": "2026-11-21T17:30:13Z",
+              "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:13.571879+00:00"
+            }
+          },
+          {
+            "id": "ols:micro",
+            "source": "ols",
+            "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
+            "domain": "phenotype",
+            "given": false,
+            "description": "An ontology of prokaryotic phenotypic and metabolic characters",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.10542857142857143,
+            "release": {
+              "source": "ols",
+              "ontology": "micro",
+              "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
+              "ontology_iri": "http://purl.obolibrary.org/obo/MicrO.owl",
+              "version": "MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.\n\nIncludes terms and term synonyms extracted from > 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.\n\nThe ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).\n\nDescriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.\nhttps://github.com/biosemantics/micropie2\n\nThe most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.",
+              "released": "2026-11-21T00:09:02.761695708",
+              "retrieved": "2026-11-21T17:32:35Z",
+              "metadata_sha256": "24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:32:35.704286+00:00"
+            }
+          },
+          {
+            "id": "ols:om",
+            "source": "ols",
+            "title": "Ontology of units of Measure (OM)",
+            "domain": "",
+            "given": false,
+            "description": "The OM ontology provides classes, instances, and properties that represent the different concepts used for defining and using measures and units. It includes, for instance, common units such as the SI units meter and kilogram, but also units from other systems of units such as the mile or nautical mile. For many application areas it includes more specific units and quantities, such as the unit of the Hubble constant: km/s/Mpc, or the quantity vaselife.  OM defines the complete set of concepts in the domain as distinguished in the textual standards. As a result the ontology can answer a wider range of competency questions than the existing approaches do. The following application areas are supported by OM:  Geometry; Mechanics; Thermodynamics; Electromagnetism; Fluid mechanics; Chemical physics; Photometry; Radiometry and Radiobiology; Nuclear physics; Astronomy and Astrophysics; Cosmology; Earth science; Meteorology; Material science; Microbiology; Economics; Information technology; Typography; Shipping; Food engineering; Post-harvest; technology; Dynamics of texture and taste; Packaging",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.0642857142857143,
+            "release": {
+              "source": "ols",
+              "ontology": "om",
+              "title": "Ontology of units of Measure (OM)",
+              "ontology_iri": "http://www.ontology-of-units-of-measure.org/resource/om-2",
+              "version": "2.0.60",
+              "released": "2026-11-21T00:09:13.671358264",
+              "retrieved": "2026-11-21T17:32:34Z",
+              "metadata_sha256": "94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:32:34.871014+00:00"
+            }
+          },
+          {
+            "id": "ols:omit",
+            "source": "ols",
+            "title": "Ontology for MIRNA Target",
+            "domain": "chemistry and biochemistry",
+            "given": false,
+            "description": "Ontology to establish data exchange standards and common data elements in the microRNA (miR) domain",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "selected",
+            "align_d": 0.18771428571428572,
+            "release": {
+              "source": "ols",
+              "ontology": "omit",
+              "title": "Ontology for MIRNA Target",
+              "ontology_iri": "http://purl.obolibrary.org/obo/omit.owl",
+              "version_iri": "http://purl.obolibrary.org/obo/omit/dev/omit.owl",
+              "released": "2026-11-21T00:08:46.697252767",
+              "retrieved": "2026-11-21T17:30:11Z",
+              "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:30:11.872640+00:00"
+            }
+          },
+          {
+            "id": "ols:ons",
+            "source": "ols",
+            "title": "Ontology for Nutritional Studies",
+            "domain": "diet, metabolomics, and nutrition",
+            "given": false,
+            "description": "An ontology for description of concepts in the nutritional studies domain.",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "ons",
+              "title": "Ontology for Nutritional Studies",
+              "ontology_iri": "https://raw.githubusercontent.com/enpadasi/Ontology-for-Nutritional-Studies/master/ons.owl",
+              "version_iri": "https://raw.githubusercontent.com/enpadasi/Ontology-for-Nutritional-Studies/releases/download/2026-02-06/ons.owl",
+              "version": "2026-02-06",
+              "released": "2026-11-21T00:08:38.489265645",
+              "retrieved": "2026-11-21T17:32:36Z",
+              "metadata_sha256": "fb274f1aad5aa5d64e7d1426996eba1f945783716aff6dd465ff2c4337bcfa83",
+              "identified_by": "version IRI",
+              "cached": "2026-11-21T17:32:36.103523+00:00"
+            }
+          },
+          {
+            "id": "ols:tfo",
+            "source": "ols",
+            "title": "TransformON",
+            "domain": "",
+            "given": false,
+            "description": "A domain ontology on food and bioproduct processing and characterization that is a specialization of the PO2 ontology (Process and Observation Ontology).",
+            "coverage": 0.07142857142857142,
+            "n_correspondences": 1,
+            "status": "below-top-N",
+            "align_d": 0.0,
+            "release": {
+              "source": "ols",
+              "ontology": "tfo",
+              "title": "TransformON",
+              "ontology_iri": "http://opendata.inrae.fr/PO2/Ontology/TransformON/",
+              "version": "33.0",
+              "released": "2026-11-21T00:09:21.120852308",
+              "retrieved": "2026-11-21T17:30:10Z",
+              "metadata_sha256": "2af2ead0b4260b62da6c8db1e53a706ae3fff083e2a4c6149084f2e83f3f851c",
+              "identified_by": "version",
+              "cached": "2026-11-21T17:30:10.249891+00:00"
+            }
+          }
+        ],
+        "per_entity": [
+          {
+            "entity": "https://example.org/pizza#Calzone",
+            "label": "Calzone",
+            "is_class": true,
+            "a_e": 0.576,
+            "aligned": true,
+            "best_target": "http://snomed.info/id/227757007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Pizza",
+            "best_strength": 0.576,
+            "gen": 0.4774,
+            "predicted_level": 3,
+            "p_l1": 0.0303,
+            "p_l2": 0.0255,
+            "p_l3": 0.7978,
+            "p_l4": 0.1164,
+            "p_l5": 0.0301,
+            "definition": "A folded pizza."
+          },
+          {
+            "entity": "https://example.org/pizza#CheeseTopping",
+            "label": "Cheese topping",
+            "is_class": true,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food",
+            "best_strength": 0.4608,
+            "gen": 0.4169,
+            "predicted_level": 3,
+            "p_l1": 0.0251,
+            "p_l2": 0.1166,
+            "p_l3": 0.4264,
+            "p_l4": 0.3648,
+            "p_l5": 0.0672,
+            "definition": "Cheese."
+          },
+          {
+            "entity": "https://example.org/pizza#Food",
+            "label": "Food",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.5561,
+            "predicted_level": 3,
+            "p_l1": 0.2077,
+            "p_l2": 0.1033,
+            "p_l3": 0.5033,
+            "p_l4": 0.0766,
+            "p_l5": 0.1089,
+            "definition": "Anything that can be eaten."
+          },
+          {
+            "entity": "https://example.org/pizza#MeatTopping",
+            "label": "Meat topping",
+            "is_class": true,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food",
+            "best_strength": 0.4608,
+            "gen": 0.0,
+            "predicted_level": null,
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "https://example.org/pizza#Name",
+            "label": "Pizza",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://snomed.info/id/227757007",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "https://example.org/pizza#Pizza",
+            "label": "Pizza",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://snomed.info/id/227757007",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.48,
+            "predicted_level": 3,
+            "p_l1": 0.0103,
+            "p_l2": 0.0248,
+            "p_l3": 0.8717,
+            "p_l4": 0.0612,
+            "p_l5": 0.0321,
+            "definition": "A flat **baked** dish topped with ingredients."
+          },
+          {
+            "entity": "https://example.org/pizza#PizzaBase",
+            "label": "Pizza base",
+            "is_class": true,
+            "a_e": 0.576,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food",
+            "best_strength": 0.576,
+            "gen": 0.353,
+            "predicted_level": 3,
+            "p_l1": 0.0034,
+            "p_l2": 0.0096,
+            "p_l3": 0.4755,
+            "p_l4": 0.4182,
+            "p_l5": 0.0932,
+            "definition": "The bread base of a pizza."
+          },
+          {
+            "entity": "https://example.org/pizza#PizzaTopping",
+            "label": "Pizza topping",
+            "is_class": true,
+            "a_e": 0.576,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food",
+            "best_strength": 0.576,
+            "gen": 0.368,
+            "predicted_level": 3,
+            "p_l1": 0.0076,
+            "p_l2": 0.0102,
+            "p_l3": 0.5858,
+            "p_l4": 0.2395,
+            "p_l5": 0.1569,
+            "definition": "Something placed on a pizza."
+          },
+          {
+            "entity": "https://example.org/pizza#VegetarianPizza",
+            "label": "Vegetarian pizza",
+            "is_class": true,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.obolibrary.org/obo/FOBI_007956",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:fobi",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": 0.4424,
+            "predicted_level": 3,
+            "p_l1": 0.0211,
+            "p_l2": 0.0235,
+            "p_l3": 0.7567,
+            "p_l4": 0.1013,
+            "p_l5": 0.0974,
+            "definition": "A pizza with no meat toppings."
+          },
+          {
+            "entity": "https://example.org/pizza#hasBase",
+            "label": "has base",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://www.ontology-of-units-of-measure.org/resource/om-2/hasBase",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:om",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "https://example.org/pizza#hasCalories",
+            "label": "has calories",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "https://example.org/pizza#hasIngredient",
+            "label": "has ingredient",
+            "is_class": false,
+            "a_e": 0.9,
+            "aligned": true,
+            "best_target": "http://purl.allotrope.org/ontologies/property#AFX_0000365",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "",
+            "best_strength": 0.9,
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "https://example.org/pizza#hasTopping",
+            "label": "has topping",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          },
+          {
+            "entity": "https://example.org/pizza#isToppingOf",
+            "label": "is topping of",
+            "is_class": false,
+            "a_e": 0.0,
+            "aligned": false,
+            "best_target": "",
+            "relation": "",
+            "confidence": "",
+            "depth": "",
+            "method": "",
+            "target_ontology": "",
+            "via": "",
+            "best_strength": "",
+            "gen": "",
+            "predicted_level": "",
+            "p_l1": "",
+            "p_l2": "",
+            "p_l3": "",
+            "p_l4": "",
+            "p_l5": "",
+            "definition": ""
+          }
+        ],
+        "correspondences": [
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Food",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Name",
+            "target": "http://snomed.info/id/227757007",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Name",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00003928",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Name",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C178206",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Name",
+            "target": "http://purl.obolibrary.org/obo/FOODON_03401296",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://snomed.info/id/227757007",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00003928",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C178206",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/FOODON_03401296",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#VegetarianPizza",
+            "target": "http://purl.obolibrary.org/obo/FOBI_007956",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:fobi",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#hasBase",
+            "target": "http://www.ontology-of-units-of-measure.org/resource/om-2/hasBase",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:om",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#hasIngredient",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0000365",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#hasIngredient",
+            "target": "http://snomed.info/id/762951001",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#hasIngredient",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002420",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#hasIngredient",
+            "target": "http://purl.obolibrary.org/obo/MICRO_0001244",
+            "relation": "≡",
+            "confidence": 0.9,
+            "depth": 0,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:micro",
+            "via": ""
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://snomed.info/id/227757007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Pizza"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00003928",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Pizza"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C178206",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Pizza"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/FOODON_03401296",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Pizza"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Calzone",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#CheeseTopping",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#MeatTopping",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 2,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#Pizza",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaBase",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://purl.obolibrary.org/obo/CHEBI_33290",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:chebi",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://snomed.info/id/255620007",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://id.nlm.nih.gov/mesh/D005502",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:mesh",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C62695",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://purl.obolibrary.org/obo/OMIT_0006708",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:omit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C1949",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://purl.obolibrary.org/obo/NCIT_C212614",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:ncit",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#PizzaTopping",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002403",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#Food"
+          },
+          {
+            "source": "https://example.org/pizza#hasBase",
+            "target": "http://purl.allotrope.org/ontologies/property#AFX_0000365",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:afo",
+            "via": "https://example.org/pizza#hasIngredient"
+          },
+          {
+            "source": "https://example.org/pizza#hasBase",
+            "target": "http://snomed.info/id/762951001",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:snomed",
+            "via": "https://example.org/pizza#hasIngredient"
+          },
+          {
+            "source": "https://example.org/pizza#hasBase",
+            "target": "http://purl.obolibrary.org/obo/FOODON_00002420",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:foodon",
+            "via": "https://example.org/pizza#hasIngredient"
+          },
+          {
+            "source": "https://example.org/pizza#hasBase",
+            "target": "http://purl.obolibrary.org/obo/MICRO_0001244",
+            "relation": "⊑",
+            "confidence": 0.9,
+            "depth": 1,
+            "method": "lexical:exact/exact",
+            "target_ontology": "ols:micro",
+            "via": "https://example.org/pizza#hasIngredient"
+          }
+        ],
+        "releases": [
+          {
+            "title": "Food Ontology",
+            "id": "ols:foodon",
+            "source": "ols",
+            "ontology": "foodon",
+            "ontology_iri": "http://purl.obolibrary.org/obo/foodon.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl",
+            "version": "2026-02-02",
+            "released": "2026-11-21T00:08:37.554689634",
+            "retrieved": "2026-11-21T17:32:34Z",
+            "metadata_sha256": "93eeb6caa7a84aaddf5e478f34ee5121a67b352c1f5a31860a3b77572566bf9f",
+            "identified_by": "version IRI",
+            "terms": 6
+          },
+          {
+            "title": "SNOMED CT (International Edition)",
+            "id": "ols:snomed",
+            "source": "ols",
+            "ontology": "snomed",
+            "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
+            "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
+            "released": "2026-10-21T10:27:50.617005757",
+            "retrieved": "2026-11-21T17:30:09Z",
+            "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
+            "identified_by": "version IRI",
+            "terms": 4
+          },
+          {
+            "title": "NCI Thesaurus OBO Edition",
+            "id": "ols:ncit",
+            "source": "ols",
+            "ontology": "ncit",
+            "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
+            "version": "26.02d",
+            "released": "2026-11-21T00:09:04.346151993",
+            "retrieved": "2026-11-21T17:30:07Z",
+            "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
+            "identified_by": "version IRI",
+            "terms": 5
+          },
+          {
+            "title": "Allotrope Merged Ontology Suite",
+            "id": "ols:afo",
+            "source": "ols",
+            "ontology": "afo",
+            "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+            "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
+            "version": "REC/2026/09",
+            "released": "2026-11-21T00:09:10.933549934",
+            "retrieved": "2026-11-21T17:30:08Z",
+            "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
+            "identified_by": "version IRI",
+            "terms": 1
+          },
+          {
+            "title": "Chemical Entities of Biological Interest",
+            "id": "ols:chebi",
+            "source": "ols",
+            "ontology": "chebi",
+            "ontology_iri": "http://purl.obolibrary.org/obo/chebi.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/chebi/257/chebi.owl",
+            "version": "257",
+            "released": "2026-11-21T00:08:51.503620060",
+            "retrieved": "2026-11-21T17:30:14Z",
+            "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
+            "identified_by": "version IRI",
+            "terms": 1
+          },
+          {
+            "title": "Food-Biomarker Ontology",
+            "id": "ols:fobi",
+            "source": "ols",
+            "ontology": "fobi",
+            "ontology_iri": "http://purl.obolibrary.org/obo/fobi.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/fobi/fobi.owl",
+            "released": "2026-11-21T00:08:33.721513104",
+            "retrieved": "2026-11-21T17:32:35Z",
+            "metadata_sha256": "5e0451a5eac7687564e363c144087687440191c38adc8cf829a3c6304092c51a",
+            "identified_by": "version IRI",
+            "terms": 1
+          },
+          {
+            "title": "Medical Subject Headings",
+            "id": "ols:mesh",
+            "source": "ols",
+            "ontology": "mesh",
+            "ontology_iri": "https://w3id.org/biopragmatics/resources/mesh/mesh.ofn",
+            "version_iri": "https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn",
+            "version": "2025",
+            "released": "2026-11-21T00:09:41.663368724",
+            "retrieved": "2026-11-21T17:30:13Z",
+            "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
+            "identified_by": "version IRI",
+            "terms": 1
+          },
+          {
+            "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
+            "id": "ols:micro",
+            "source": "ols",
+            "ontology": "micro",
+            "ontology_iri": "http://purl.obolibrary.org/obo/MicrO.owl",
+            "version": "MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.\n\nIncludes terms and term synonyms extracted from > 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.\n\nThe ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).\n\nDescriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.\nhttps://github.com/biosemantics/micropie2\n\nThe most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.",
+            "released": "2026-11-21T00:09:02.761695708",
+            "retrieved": "2026-11-21T17:32:35Z",
+            "metadata_sha256": "24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3",
+            "identified_by": "version",
+            "terms": 1
+          },
+          {
+            "title": "Ontology of units of Measure (OM)",
+            "id": "ols:om",
+            "source": "ols",
+            "ontology": "om",
+            "ontology_iri": "http://www.ontology-of-units-of-measure.org/resource/om-2",
+            "version": "2.0.60",
+            "released": "2026-11-21T00:09:13.671358264",
+            "retrieved": "2026-11-21T17:32:34Z",
+            "metadata_sha256": "94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59",
+            "identified_by": "version",
+            "terms": 1
+          },
+          {
+            "title": "Ontology for MIRNA Target",
+            "id": "ols:omit",
+            "source": "ols",
+            "ontology": "omit",
+            "ontology_iri": "http://purl.obolibrary.org/obo/omit.owl",
+            "version_iri": "http://purl.obolibrary.org/obo/omit/dev/omit.owl",
+            "released": "2026-11-21T00:08:46.697252767",
+            "retrieved": "2026-11-21T17:30:11Z",
+            "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
+            "identified_by": "version IRI",
+            "terms": 1
+          }
+        ],
+        "record_file": "cdi.json",
+        "label": "Checked against"
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 5
+      }
+    },
+    {
+      "tool": "Scientific interoperability",
+      "url": "",
+      "items": [
+        {
+          "code": "SI-D",
+          "name": "Reference ontology without a scientific domain",
+          "severity": "info",
+          "description": "Its correspondences count for CDI but not for any domain. Give it one in evaluation.si_domain_map (ontology id → OECD field), e.g. si_domain_map = {\"ols:afo\" = [\"1.5\"]}.",
+          "affected": [],
+          "note": "ols:afo"
+        },
+        {
+          "code": "SI-H",
+          "name": "Own domain guessed by the classifier",
+          "severity": "info",
+          "description": "D = 3.1 Basic medicine was inferred from the ontology's title and description (classifier (p = 0.04)). Set evaluation.si_home_domain if it is wrong: that domain is never counted.",
+          "affected": [],
+          "note": "3.1 Basic medicine"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Δ = OECD fields of science (42 fields; the ontology's own is not counted); θ_s = 0.3; the same reference ontologies and correspondences as the cross-domain score, without upper-level ontologies. Full record in si.json.",
+      "metrics": [
+        {
+          "group": "Scientific interoperability",
+          "metric": "SI",
+          "title": "Scientific interoperability",
+          "status": "ok",
+          "value": "2 of 41 domains covered (1.5 Earth and related environmental sciences, 3.2 Clinical medicine); θ_s = 0.3",
+          "about": "Scientific domains other than the ontology's own whose CDI reaches θ_s"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "SI^",
+          "title": "Share of domains",
+          "status": "info",
+          "value": "0.049",
+          "about": "SI divided by the 41 possible domains (OECD fields of science)"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "D",
+          "title": "Own domain",
+          "status": "info",
+          "value": "3.1 Basic medicine (classifier (p = 0.04))",
+          "about": "Not counted; set evaluation.si_home_domain to fix it"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "Ceiling",
+          "title": "Generality ceiling",
+          "status": "info",
+          "value": "0.56, from Gen = 0.39",
+          "about": "The highest CDI any one domain can reach, even fully aligned; more general class definitions raise it"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "Upper",
+          "title": "Upper-level ontologies ignored",
+          "status": "info",
+          "value": "0 correspondences removed; 0 upper-level and 1 reference ontologies without a domain ignored, of 10",
+          "about": "BFO, COB, RO, DOLCE/DUL, GFO, SUMO, gUFO (by ontology and IRI namespace)"
+        },
+        {
+          "group": "Scientific interoperability",
+          "metric": "CDI ≥ CDI_δ",
+          "title": "Consistency with CDI",
+          "status": "ok",
+          "value": "holds: every CDI_δ ≤ CDI = 0.44",
+          "about": "A domain's CDI can never exceed the cross-domain score"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.5",
+          "title": "Earth and related environmental sciences",
+          "status": "ok",
+          "value": "CDI_δ 0.40 (covered); Align_δ 0.42, 8 entities aligned",
+          "about": "via ols:foodon"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "3.2",
+          "title": "Clinical medicine",
+          "status": "ok",
+          "value": "CDI_δ 0.40 (covered); Align_δ 0.42, 8 entities aligned",
+          "about": "via ols:ncit, ols:snomed"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.4",
+          "title": "Chemical sciences",
+          "status": "warn",
+          "value": "CDI_δ 0.25 (below θ_s = 0.3); Align_δ 0.19, 4 entities aligned",
+          "about": "via ols:chebi, ols:omit"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "3.3",
+          "title": "Health sciences",
+          "status": "warn",
+          "value": "CDI_δ 0.25 (below θ_s = 0.3); Align_δ 0.19, 4 entities aligned",
+          "about": "via ols:mesh"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.6",
+          "title": "Biological sciences",
+          "status": "warn",
+          "value": "CDI_δ 0.24 (below θ_s = 0.3); Align_δ 0.17, 3 entities aligned",
+          "about": "via ols:fobi, ols:micro"
+        },
+        {
+          "group": "Interoperability per scientific domain",
+          "metric": "1.3",
+          "title": "Physical sciences",
+          "status": "warn",
+          "value": "CDI_δ 0.11 (below θ_s = 0.3); Align_δ 0.06, 1 entities aligned",
+          "about": "via ols:om"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:chebi",
+          "title": "Chemical Entities of Biological Interest",
+          "status": "info",
+          "value": "1.4 Chemical sciences",
+          "about": "repository metadata; repository domain: chemistry and biochemistry"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:fobi",
+          "title": "Food-Biomarker Ontology",
+          "status": "info",
+          "value": "1.6 Biological sciences",
+          "about": "classifier, p = 0.20; repository domain: diet, metabolomics, and nutrition"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:foodon",
+          "title": "Food Ontology",
+          "status": "info",
+          "value": "1.5 Earth and related environmental sciences",
+          "about": "classifier, p = 0.24; repository domain: diet, metabolomics, and nutrition"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:mesh",
+          "title": "Medical Subject Headings",
+          "status": "info",
+          "value": "3.3 Health sciences",
+          "about": "classifier, p = 0.54"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:micro",
+          "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
+          "status": "info",
+          "value": "1.6 Biological sciences",
+          "about": "repository metadata; repository domain: phenotype"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:ncit",
+          "title": "NCI Thesaurus OBO Edition",
+          "status": "info",
+          "value": "3.2 Clinical medicine",
+          "about": "repository metadata; repository domain: health"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:om",
+          "title": "Ontology of units of Measure (OM)",
+          "status": "info",
+          "value": "1.3 Physical sciences",
+          "about": "classifier, p = 0.19"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:omit",
+          "title": "Ontology for MIRNA Target",
+          "status": "info",
+          "value": "1.4 Chemical sciences",
+          "about": "repository metadata; repository domain: chemistry and biochemistry"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:snomed",
+          "title": "SNOMED CT (International Edition)",
+          "status": "info",
+          "value": "3.2 Clinical medicine",
+          "about": "classifier, p = 0.59"
+        },
+        {
+          "group": "Domain of each reference ontology",
+          "metric": "ols:afo",
+          "title": "Allotrope Merged Ontology Suite",
+          "status": "info",
+          "value": "–",
+          "about": "no domain, ignored"
+        }
+      ],
+      "provenance": {
+        "checked_at": "2026-11-21T17:44:04.952936+00:00",
+        "references": [
+          "ols"
+        ],
+        "cdi_run_id": 63,
+        "settings": {
+          "si": "on",
+          "si_home_domain": null,
+          "si_theta_s": 0.3,
+          "si_classifier": true,
+          "si_p_min": 0.15,
+          "si_domain_map": {},
+          "si_upper_ontologies": [],
+          "si_upper_namespaces": []
+        },
+        "summary": {
+          "home_domain": "3.1 Basic medicine",
+          "home_domain_source": "classifier (p = 0.04)",
+          "si": 2,
+          "si_normalised": 0.04878048780487805,
+          "covered_domains": [
+            "1.5 Earth and related environmental sciences",
+            "3.2 Clinical medicine"
+          ],
+          "theta_s": 0.3,
+          "taxonomy_size": 42,
+          "generality": 0.38670892142731483,
+          "generality_ceiling": 0.5577362566172607,
+          "cdi": 0.43955951162453005,
+          "align": 0.5091428571428571,
+          "proposition_holds": true,
+          "n_reference_ontologies": 10,
+          "n_ignored_upper": 0,
+          "n_ignored_no_domain": 1,
+          "n_correspondences_removed_upper": 0,
+          "upper_namespaces": [
+            "http://purl.obolibrary.org/obo/BFO_",
+            "http://purl.obolibrary.org/obo/COB_",
+            "http://purl.obolibrary.org/obo/RO_",
+            "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#",
+            "http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#",
+            "http://www.loa.istc.cnr.it/ontologies/DOLCE-Lite.owl#",
+            "http://www.onto-med.de/ontologies/gfo.owl#",
+            "http://www.ontologyportal.org/SUMO.owl#",
+            "http://www.ontologyportal.org/SUMO#",
+            "http://purl.org/nemo/gufo#"
+          ],
+          "interoperable": true,
+          "display": "2",
+          "params": {
+            "theta": 0.3
+          },
+          "display_note": "of 41 domains (θ_s = 0.3)"
+        },
+        "per_domain": [
+          {
+            "domain": "1.5",
+            "name": "Earth and related environmental sciences",
+            "reference_ontologies": [
+              "ols:foodon"
+            ],
+            "n_aligned_entities": 8,
+            "align_delta": 0.4217142857142857,
+            "cdi_delta": 0.40345372359034043,
+            "covered": true
+          },
+          {
+            "domain": "3.2",
+            "name": "Clinical medicine",
+            "reference_ontologies": [
+              "ols:ncit",
+              "ols:snomed"
+            ],
+            "n_aligned_entities": 8,
+            "align_delta": 0.4217142857142857,
+            "cdi_delta": 0.40345372359034043,
+            "covered": true
+          },
+          {
+            "domain": "1.4",
+            "name": "Chemical sciences",
+            "reference_ontologies": [
+              "ols:chebi",
+              "ols:omit"
+            ],
+            "n_aligned_entities": 4,
+            "align_delta": 0.18771428571428572,
+            "cdi_delta": 0.2527432320371971,
+            "covered": false
+          },
+          {
+            "domain": "3.3",
+            "name": "Health sciences",
+            "reference_ontologies": [
+              "ols:mesh"
+            ],
+            "n_aligned_entities": 4,
+            "align_delta": 0.18771428571428572,
+            "cdi_delta": 0.2527432320371971,
+            "covered": false
+          },
+          {
+            "domain": "1.6",
+            "name": "Biological sciences",
+            "reference_ontologies": [
+              "ols:fobi",
+              "ols:micro"
+            ],
+            "n_aligned_entities": 3,
+            "align_delta": 0.16971428571428573,
+            "cdi_delta": 0.23589968044836354,
+            "covered": false
+          },
+          {
+            "domain": "1.3",
+            "name": "Physical sciences",
+            "reference_ontologies": [
+              "ols:om"
+            ],
+            "n_aligned_entities": 1,
+            "align_delta": 0.0642857142857143,
+            "cdi_delta": 0.11024458947414884,
+            "covered": false
+          },
+          {
+            "domain": "1.1",
+            "name": "Mathematics",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.2",
+            "name": "Computer and information sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "1.7",
+            "name": "Other natural sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.1",
+            "name": "Civil engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.10",
+            "name": "Nano-technology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.11",
+            "name": "Other engineering and technologies",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.2",
+            "name": "Electrical engineering, electronic engineering, information engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.3",
+            "name": "Mechanical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.4",
+            "name": "Chemical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.5",
+            "name": "Materials engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.6",
+            "name": "Medical engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.7",
+            "name": "Environmental engineering",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.8",
+            "name": "Environmental biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "2.9",
+            "name": "Industrial biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.4",
+            "name": "Medical biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "3.5",
+            "name": "Other medical sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.1",
+            "name": "Agriculture, forestry, and fisheries",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.2",
+            "name": "Animal and dairy science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.3",
+            "name": "Veterinary science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.4",
+            "name": "Agricultural biotechnology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "4.5",
+            "name": "Other agricultural sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.1",
+            "name": "Psychology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.2",
+            "name": "Economics and business",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.3",
+            "name": "Educational sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.4",
+            "name": "Sociology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.5",
+            "name": "Law",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.6",
+            "name": "Political science",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.7",
+            "name": "Social and economic geography",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.8",
+            "name": "Media and communications",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "5.9",
+            "name": "Other social sciences",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.1",
+            "name": "History and archaeology",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.2",
+            "name": "Languages and literature",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.3",
+            "name": "Philosophy, ethics and religion",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.4",
+            "name": "Arts (arts, history of arts, performing arts, music)",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          },
+          {
+            "domain": "6.5",
+            "name": "Other humanities",
+            "reference_ontologies": [],
+            "n_aligned_entities": 0,
+            "align_delta": 0.0,
+            "cdi_delta": 0.0,
+            "covered": false
+          }
+        ],
+        "domain_assignments": [
+          {
+            "ontology": "ols:foodon",
+            "domains": [
+              "1.5"
+            ],
+            "source": "classifier",
+            "score": 0.23699097335338593,
+            "title": "Food Ontology",
+            "raw_domain": "diet, metabolomics, and nutrition"
+          },
+          {
+            "ontology": "ols:snomed",
+            "domains": [
+              "3.2"
+            ],
+            "source": "classifier",
+            "score": 0.5897862315177917,
+            "title": "SNOMED CT (International Edition)",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:ncit",
+            "domains": [
+              "3.2"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "NCI Thesaurus OBO Edition",
+            "raw_domain": "health"
+          },
+          {
+            "ontology": "ols:afo",
+            "domains": [],
+            "source": "none",
+            "score": null,
+            "title": "Allotrope Merged Ontology Suite",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:chebi",
+            "domains": [
+              "1.4"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Chemical Entities of Biological Interest",
+            "raw_domain": "chemistry and biochemistry"
+          },
+          {
+            "ontology": "ols:fobi",
+            "domains": [
+              "1.6"
+            ],
+            "source": "classifier",
+            "score": 0.19671261310577393,
+            "title": "Food-Biomarker Ontology",
+            "raw_domain": "diet, metabolomics, and nutrition"
+          },
+          {
+            "ontology": "ols:mesh",
+            "domains": [
+              "3.3"
+            ],
+            "source": "classifier",
+            "score": 0.5356423258781433,
+            "title": "Medical Subject Headings",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:micro",
+            "domains": [
+              "1.6"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
+            "raw_domain": "phenotype"
+          },
+          {
+            "ontology": "ols:om",
+            "domains": [
+              "1.3"
+            ],
+            "source": "classifier",
+            "score": 0.18705464899539948,
+            "title": "Ontology of units of Measure (OM)",
+            "raw_domain": ""
+          },
+          {
+            "ontology": "ols:omit",
+            "domains": [
+              "1.4"
+            ],
+            "source": "metadata",
+            "score": null,
+            "title": "Ontology for MIRNA Target",
+            "raw_domain": "chemistry and biochemistry"
+          }
+        ],
+        "n_correspondences_without_upper": 78,
+        "taxonomy": "OECD Fields of Science and Technology (Frascati Manual 2015), level 2",
+        "record_file": "si.json"
+      },
+      "summary": {
+        "error": 0,
+        "warning": 0,
+        "info": 2
+      }
+    },
+    {
+      "tool": "OOPS!",
+      "url": "https://oops.linkeddata.es",
+      "items": [
+        {
+          "code": "P11",
+          "name": "Missing domain or range in properties",
+          "severity": "warning",
+          "description": "Object and/or datatype properties without domain or range (or none of them) are included in the ontology.",
+          "affected": [
+            "https://example.org/pizza#Name",
+            "https://example.org/pizza#hasIngredient",
+            "https://example.org/pizza#isToppingOf"
+          ],
+          "note": ""
+        },
+        {
+          "code": "P13",
+          "name": "Inverse relationships not explicitly declared",
+          "severity": "info",
+          "description": "This pitfall appears when any relationship (except for those that are defined as symmetric properties using owl:SymmetricProperty) does not have an inverse relationship (owl:inverseOf) defined within the ontology.",
+          "affected": [],
+          "note": ""
+        },
+        {
+          "code": "P22",
+          "name": "Using different naming conventions in the ontology",
+          "severity": "info",
+          "description": "The ontology elements are not named following the same convention (for example CamelCase or use of delimiters as &quot;-&quot; or &quot;_&quot;) . Some notions about naming conventions are provided in [2].",
+          "affected": [],
+          "note": "There are elements following different naming conventions as for example: https://example.org/pizza#hasCalories https://example.org/pizza#Name"
+        }
+      ],
+      "error": null,
+      "note": "",
+      "scope": "Run alongside ROBOT. Not run here because ROBOT already checks them: P08 Missing annotations (ROBOT missing_label, missing_definition); P32 Several classes with the same label (ROBOT duplicate_label); P41 No license declared (ROBOT missing_ontology_license).",
+      "metrics": [],
+      "provenance": {},
+      "summary": {
+        "error": 0,
+        "warning": 3,
+        "info": 2
+      }
+    }
+  ],
+  "findings": [
+    {
+      "rule": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "message": "Datatype property “Pizza” has class range “Pizza base”.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Class “Meat topping” has no definition.",
+      "subject": "https://example.org/pizza#MeatTopping",
+      "subject_label": "Meat topping",
+      "anchor": "MeatTopping"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Datatype property “Pizza” has no definition.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Object property “has base” has no definition.",
+      "subject": "https://example.org/pizza#hasBase",
+      "subject_label": "has base",
+      "anchor": "hasBase"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Datatype property “has calories” has no definition.",
+      "subject": "https://example.org/pizza#hasCalories",
+      "subject_label": "has calories",
+      "anchor": "hasCalories"
+    },
+    {
+      "rule": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "message": "Object property “is topping of” has no definition.",
+      "subject": "https://example.org/pizza#isToppingOf",
+      "subject_label": "is topping of",
+      "anchor": "isToppingOf"
+    },
+    {
+      "rule": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "message": "Label “pizza” @en is used by `pizza:Name`, `pizza:Pizza`.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “Pizza” has no domain.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    },
+    {
+      "rule": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "message": "Property “has ingredient” has no domain.",
+      "subject": "https://example.org/pizza#hasIngredient",
+      "subject_label": "has ingredient",
+      "anchor": "hasIngredient"
+    },
+    {
+      "rule": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "message": "Property “has ingredient” has no range.",
+      "subject": "https://example.org/pizza#hasIngredient",
+      "subject_label": "has ingredient",
+      "anchor": "hasIngredient"
+    },
+    {
+      "rule": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "message": "“Cheese topping” is deprecated but has no replacement.",
+      "subject": "https://example.org/pizza#CheeseTopping",
+      "subject_label": "Cheese topping",
+      "anchor": "CheeseTopping"
+    },
+    {
+      "rule": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "message": "Property name `Name` is not lowerCamelCase.",
+      "subject": "https://example.org/pizza#Name",
+      "subject_label": "Pizza",
+      "anchor": "Name"
+    }
+  ],
+  "rules": [
+    {
+      "id": "OB001",
+      "title": "Ontology has no title",
+      "severity": "warning",
+      "description": "Add dcterms:title (or rdfs:label) to the owl:Ontology node."
+    },
+    {
+      "id": "OB002",
+      "title": "Ontology has no description",
+      "severity": "warning",
+      "description": "Add dcterms:description or dcterms:abstract so readers know what the ontology is for."
+    },
+    {
+      "id": "OB003",
+      "title": "No license declared",
+      "severity": "warning",
+      "description": "Declare a license with dcterms:license so others know how they may reuse the ontology."
+    },
+    {
+      "id": "OB004",
+      "title": "No version information",
+      "severity": "info",
+      "description": "Add owl:versionInfo and owl:versionIRI to make releases citable and comparable."
+    },
+    {
+      "id": "OB005",
+      "title": "No creators",
+      "severity": "warning",
+      "description": "Credit the authors with dcterms:creator."
+    },
+    {
+      "id": "OB006",
+      "title": "No preferred prefix/namespace",
+      "severity": "info",
+      "description": "Add vann:preferredNamespacePrefix and vann:preferredNamespaceUri."
+    },
+    {
+      "id": "OB010",
+      "title": "Term without a label",
+      "severity": "warning",
+      "description": "Every term should have a human-readable rdfs:label or skos:prefLabel (OOPS! P08)."
+    },
+    {
+      "id": "OB011",
+      "title": "Term without a definition",
+      "severity": "warning",
+      "description": "Every term should have a definition (skos:definition, IAO:0000115 or rdfs:comment) (OOPS! P08)."
+    },
+    {
+      "id": "OB012",
+      "title": "Property without domain",
+      "severity": "info",
+      "description": "Consider declaring rdfs:domain (OOPS! P11). Ignored when the property is used in class axioms."
+    },
+    {
+      "id": "OB013",
+      "title": "Property without range",
+      "severity": "info",
+      "description": "Consider declaring rdfs:range (OOPS! P11)."
+    },
+    {
+      "id": "OB014",
+      "title": "Cycle in class hierarchy",
+      "severity": "error",
+      "description": "A class is (indirectly) a subclass of itself, which makes the classes equivalent (OOPS! P06)."
+    },
+    {
+      "id": "OB015",
+      "title": "Undeclared term",
+      "severity": "error",
+      "description": "A term in the ontology namespace is used but never declared (no rdf:type) (OOPS! P34/P35)."
+    },
+    {
+      "id": "OB016",
+      "title": "Duplicate labels",
+      "severity": "warning",
+      "description": "Two or more terms share the same label, which confuses readers and tools."
+    },
+    {
+      "id": "OB017",
+      "title": "Multiple labels in one language",
+      "severity": "warning",
+      "description": "A term has more than one rdfs:label/skos:prefLabel in the same language."
+    },
+    {
+      "id": "OB018",
+      "title": "Deprecated term without replacement",
+      "severity": "info",
+      "description": "Deprecated terms should point to their replacement with dcterms:isReplacedBy."
+    },
+    {
+      "id": "OB019",
+      "title": "Inconsistent naming convention",
+      "severity": "info",
+      "description": "Classes are usually UpperCamelCase and properties lowerCamelCase (OOPS! P22)."
+    },
+    {
+      "id": "OB020",
+      "title": "Class both subclass of and disjoint with another",
+      "severity": "error",
+      "description": "A class that is a subclass of a class it is disjoint with is unsatisfiable."
+    },
+    {
+      "id": "OB021",
+      "title": "Transitive property used as functional",
+      "severity": "error",
+      "description": "In OWL 2 DL a transitive property cannot be functional or inverse functional."
+    },
+    {
+      "id": "OB022",
+      "title": "Self-referencing definition",
+      "severity": "warning",
+      "description": "A class is declared equivalent to or a subclass of itself (OOPS! P24/P27)."
+    },
+    {
+      "id": "OB023",
+      "title": "Orphan class",
+      "severity": "info",
+      "description": "A class with no superclass, no subclasses and no usage is disconnected from the model."
+    },
+    {
+      "id": "OB024",
+      "title": "Wrong kind of range",
+      "severity": "error",
+      "description": "Datatype properties must have a datatype range and object properties a class range (OOPS! P31-like)."
+    },
+    {
+      "id": "OB025",
+      "title": "Inverse of itself but not symmetric",
+      "severity": "warning",
+      "description": "A property declared as inverse of itself should be declared symmetric instead (OOPS! P25)."
+    },
+    {
+      "id": "OB026",
+      "title": "Missing language tags",
+      "severity": "info",
+      "description": "When some labels carry language tags, all of them should (helps multilingual docs)."
+    },
+    {
+      "id": "OB027",
+      "title": "Term outside the ontology namespace",
+      "severity": "info",
+      "description": "Declared terms that live in other namespaces are documented as external."
+    },
+    {
+      "id": "OB028",
+      "title": "Multiple domains or ranges",
+      "severity": "warning",
+      "description": "Several rdfs:domain (or range) axioms are interpreted as their intersection, which is often not intended (OOPS! P19)."
+    }
+  ]
+}
