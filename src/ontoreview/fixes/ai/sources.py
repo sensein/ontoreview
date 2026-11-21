@@ -207,10 +207,18 @@ class OllamaSource:
             raise AIError(f"Could not reach Ollama at {self.url} ({e}).") from e
 
     def generate(self, system: str, user: str, schema: dict) -> dict:
-        r = _post(f"{self.url}/api/chat", {"model": self.model, "stream": False, "format": schema,
-                                           "options": {"temperature": 0},
-                                           "messages": [{"role": "system", "content": system},
-                                                        {"role": "user", "content": user}]}, {}, self.timeout)
+        # thinking models (qwen3.5, …) otherwise reason at length before answering: minutes per draft,
+        # often past the timeout. A short annotation needs no visible reasoning, so ask them not to.
+        body = {"model": self.model, "stream": False, "format": schema, "think": False,
+                "options": {"temperature": 0},
+                "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
+        try:
+            r = _post(f"{self.url}/api/chat", body, {}, self.timeout)
+        except AIError as e:
+            if "think" not in str(e).lower():
+                raise
+            body.pop("think")                        # an Ollama that does not know the option
+            r = _post(f"{self.url}/api/chat", body, {}, self.timeout)
         return extract_json((r.get("message") or {}).get("content", ""))
 
     def describe(self) -> dict:

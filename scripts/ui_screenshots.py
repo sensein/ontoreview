@@ -1,7 +1,7 @@
 """Regenerate the screenshots on the app's Help page (src/ontoreview/ui_assets/help/*.png).
 
     uv run --extra ui --with playwright python scripts/ui_screenshots.py            # all
-    uv run --extra ui --extra cdi --with playwright python scripts/ui_screenshots.py --only cdi   # or si, docs
+    uv run --extra ui --extra cdi --with playwright python scripts/ui_screenshots.py --only cdi   # or si, docs, fixes
 (docs: the generated example site for the README, in guide/images; run build_examples.py first)
 
 Uses Playwright with the Chrome already installed on this machine (no browser download) and demo
@@ -73,15 +73,15 @@ def shoot(page: Page, name: str) -> None:
     print("✓", name)
 
 
-def serve(settings: Path, demo: Path) -> tuple[subprocess.Popen, str]:
+def serve(settings: Path, demo: Path, review: bool = False) -> tuple[subprocess.Popen, str]:
     port = free_port()
-    # these shots show build results: skip the Quality issues review step (it has screenshots of its own)
+    # most shots show build results: skip the Quality issues review step (fixes_shots shows it)
     prefs = settings.with_name("prefs.json")
     data = json.loads(prefs.read_text()) if prefs.exists() else {}
-    prefs.write_text(json.dumps({**data, "fix_review": False}))
+    prefs.write_text(json.dumps({**data, "fix_review": review}))
     # a term database of its own: no personal paths or earlier runs in the images
     env = {**os.environ, "ONTOREVIEW_UI_SETTINGS": str(settings), "ONTOREVIEW_IRI_DB": str(demo / "iri.sqlite3"),
-           "ONTOREVIEW_REQUIRE_METADATA": "0"}
+           "ONTOREVIEW_REQUIRE_METADATA": "1" if review else "0"}
     server = subprocess.Popen([sys.executable, "-m", "ontoreview.ui", "--port", str(port), "--no-browser"],
                               env=env, cwd=demo, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     for _ in range(150):
@@ -91,6 +91,49 @@ def serve(settings: Path, demo: Path) -> tuple[subprocess.Popen, str]:
         except OSError:
             time.sleep(0.2)
     return server, f"http://127.0.0.1:{port}"
+
+
+def fixes_shots(browser, demo: Path, paths: dict) -> None:
+    """The Quality issues page: required metadata, and AI suggestions from a local Ollama model (soil toy
+    ontology). Needs Ollama running with ONTOREVIEW_SHOT_MODEL (default qwen3.5:9b); nothing leaves the machine."""
+    cfg = demo / "config-fixes"
+    cfg.mkdir()
+    model = os.environ.get("ONTOREVIEW_SHOT_MODEL", "qwen3.5:9b")
+    (cfg / "prefs.json").write_text(json.dumps({"open_when_done": False, "oops": "off", "robot_enabled": False,
+                                                 "cdi": False, "si": False, "ai_enabled": True,
+                                                 "ai_priority": "ollama", "ai_ollama_model": model}))
+    server, url = serve(cfg / "ui.json", demo, review=True)
+    try:
+        page = browser.new_page(viewport=VIEW, color_scheme="light")
+        page.goto(url + "/")
+        wait_text(page, "New build")
+        set_source(page, paths["soil"])
+        wait_text(page, "Single ontology")
+        page.get_by_role("button", name="Build docs").click()
+        wait_text(page, "Found in this check")
+        wait_text(page, "Required metadata")
+        page.wait_for_timeout(1500)
+        shoot(page, "fixes.png")
+        wait_text(page, "(AI draft)", timeout=600_000)             # the local model drafts definitions
+        page.get_by_text("(AI draft)", exact=False).first.click()
+        wait_text(page, "Made by")
+        page.wait_for_timeout(800)
+        page.evaluate("window.scrollTo(0, 0)")
+        page.wait_for_timeout(600)
+        shoot(page, "fixes-ai.png")
+        sugg = page.get_by_text("(AI suggestion)", exact=False)
+        try:
+            sugg.first.wait_for(timeout=300_000)                   # ranked domains / ranges
+            sugg.first.click()
+            page.wait_for_timeout(800)
+            page.evaluate("window.scrollTo(0, 0)")
+            page.wait_for_timeout(600)
+            shoot(page, "fixes-ai-domain.png")
+        except Exception:  # noqa: BLE001 - the model may suggest none
+            print("· no domain/range suggestion this time")
+        page.close()
+    finally:
+        server.terminate()
 
 
 def cdi_shots(browser, demo: Path, paths: dict) -> None:
@@ -218,6 +261,15 @@ def main() -> None:
             docs_shots(browser)
             browser.close()
         shutil.rmtree(demo, ignore_errors=True)
+        return
+    if only == "fixes":
+        try:
+            with sync_playwright() as pw:
+                browser = pw.chromium.launch(channel="chrome")
+                fixes_shots(browser, demo, paths)
+                browser.close()
+        finally:
+            shutil.rmtree(demo, ignore_errors=True)
         return
     if only in ("cdi", "si"):
         try:
