@@ -8,6 +8,27 @@
 **Documentation, quality review and interoperability scores for OWL, RDFS, SKOS and LinkML ontologies.**
 Pure Python, no Java. One app or one command; the result is a self-contained website you can publish anywhere.
 
+## Publication
+
+This software is part of ongoing research for the following manuscript (in preparation):
+
+> **OntoReview: From Ontology Quality Assessment to Publication with LLM-Assisted Repair and Documentation**<br>
+> Tek Raj Chhetri, Daniil Dobriy, Nandana Mihindukulasooriya, Satrajit S. Ghosh
+
+The implementation, documentation and associated resources may change as the research progresses.
+
+**Citation.** If you use OntoReview in your research, please acknowledge the software and its
+authors. A formal citation will be provided when the manuscript is published.
+
+```bibtex
+@software{chhetri2026ontoreview,
+  author  = {Chhetri, Tek Raj and Dobriy, Daniil and Mihindukulasooriya, Nandana and Ghosh, Satrajit S.},
+  title   = {{OntoReview}: Ontology Quality Assessment, {LLM}-Assisted Repair and Documentation},
+  year    = {2026},
+  version = {0.1.0},
+  url     = {https://github.com/sensein/ontoreview}
+}
+```
 
 ## Quick start
 
