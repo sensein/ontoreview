@@ -53,9 +53,13 @@ async def test_run_folder_from_the_ui(isolated, fixtures):
             await asyncio.sleep(0.1)
         await user.should_see("2 of 2 succeeded", retries=20)
         await user.should_see("Show in folder", retries=20)
+        await user.should_see(marker="export-output")
         await user.should_see("Terms documented")
         await user.should_see("Issues")
         await user.should_see(ui.table)
+        user.find(marker="new-build").click()             # clears the result; the run stays in history
+        await user.should_see("No build yet")
+        await user.should_not_see("Terms documented")
 
     (run_dir,) = isolated.glob("site-*")
     assert (run_dir / "vocab" / "colors" / "index.html").is_file() and not out.exists()

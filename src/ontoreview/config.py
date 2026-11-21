@@ -197,7 +197,49 @@ class EvaluationConfig(BaseModel):
     cdi_timeout: float = Field(30, description="Seconds per repository request")
     cdi_budget: float = Field(600, description="Total seconds for repository lookups per run")
 
-    @field_validator("oops", "robot", "ontocheck", "iri_checks", "cdi", mode="before")
+    si: Literal["on", "off"] = Field("on", description="Scientific interoperability: in how many scientific domains "
+                                                       "(OECD fields of science), other than the ontology's own, it is "
+                                                       "interoperable. Reuses the cross-domain run and its reference "
+                                                       "ontologies (cdi_references); upper-level ontologies are ignored")
+    si_home_domain: str | None = Field(None, description="The ontology's own scientific domain D: an OECD field code "
+                                                         "(e.g. '1.2') or name (e.g. 'Computer and information "
+                                                         "sciences'). Default: classify the ontology's title and "
+                                                         "description with the language model")
+    si_theta_s: float = Field(0.3, ge=0, le=1, description="θ_s: CDI with one domain at or above this counts the "
+                                                           "domain as covered")
+    si_classifier: bool = Field(True, description="Assign scientific domains to reference ontologies without "
+                                                  "repository metadata by classifying their title and description "
+                                                  "(zero-shot, the generality model); off = metadata and si_domain_map "
+                                                  "only")
+    si_p_min: float = Field(0.15, ge=0, le=1, description="Minimum classifier probability to assign a domain")
+    si_domain_map: dict[str, list[str]] = Field(
+        default_factory=dict, description="Your domain for a reference ontology, overriding metadata and the "
+                                          "classifier: ontology id -> OECD field codes or names, e.g. "
+                                          "{'ols:emi' = ['1.5']}")
+    si_upper_ontologies: list[str] = Field(default_factory=list, description="More upper-level ontology ids to "
+                                                                             "ignore, besides BFO, COB, RO, DOLCE/DUL, "
+                                                                             "GFO, SUMO and gUFO")
+    si_upper_namespaces: list[str] = Field(default_factory=list, description="More upper-level IRI namespaces whose "
+                                                                             "correspondences are ignored")
+
+    @field_validator("si_home_domain")
+    @classmethod
+    def _fos_code(cls, v):
+        if v in (None, ""):
+            return None
+        from .quality_checks.cdi.si import resolve_fos
+        return resolve_fos(v)
+
+    @field_validator("si_domain_map", mode="before")
+    @classmethod
+    def _fos_map(cls, v):
+        from .quality_checks.cdi.si import resolve_fos
+        if not isinstance(v, dict):
+            return v
+        return {str(k): [resolve_fos(x) for x in (vals if isinstance(vals, (list, tuple)) else str(vals).split(";"))
+                         if str(x).strip()] for k, vals in v.items()}
+
+    @field_validator("oops", "robot", "ontocheck", "iri_checks", "cdi", "si", mode="before")
     @classmethod
     def _bool_to_mode(cls, v):
         # older configs used oops = true / false

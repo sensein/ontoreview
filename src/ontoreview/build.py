@@ -287,6 +287,10 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     externals = report.external if report else []
     iri_prov = next((x.provenance for x in externals if x.tool == TOOLS["iri"].name and x.provenance), None)
     cdi_rec = next((x.provenance for x in externals if x.tool == TOOLS["cdi"].name and x.provenance), None)
+    si_rec = next((x.provenance for x in externals if x.tool == TOOLS["si"].name and x.provenance), None)
+    if si_rec:
+        # degree, covered domains, per-domain scores and the domain of each reference ontology
+        (out_dir / "si.json").write_text(json.dumps(si_rec, indent=2, ensure_ascii=False), "utf-8")
     if cdi_rec:
         # scores, per-entity and per-reference results, and every correspondence
         (out_dir / "cdi.json").write_text(json.dumps(cdi_rec, indent=2, ensure_ascii=False), "utf-8")

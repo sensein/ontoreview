@@ -82,6 +82,7 @@ TOOLS: dict[str, Tool] = {
     "oops": Tool("OOPS!", "https://oops.linkeddata.es"),
     # OntoReview's own check: no external reference
     "cdi": Tool("Cross-domain interoperability", "", score="cdi", verdict="interoperable"),
+    "si": Tool("Scientific interoperability", "", score="si", verdict="interoperable"),
 }
 
 
@@ -189,7 +190,9 @@ class Report:
                 continue
             out.append({"tool": r.tool, "anchor": tool_anchor(r.tool), "value": float(s[tool.score]),
                         "passed": s.get(tool.verdict) if tool.verdict else None,
-                        "threshold": (s.get("params") or {}).get("theta")})
+                        "threshold": (s.get("params") or {}).get("theta"),
+                        # a count (SI) is shown as is, with its own note; a 0..1 score with two decimals
+                        "display": s.get("display"), "note": s.get("display_note")})
         return out
 
     def to_dict(self) -> dict:

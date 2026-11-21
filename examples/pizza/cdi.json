@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-11-21T17:08:42.082210+00:00",
+  "checked_at": "2026-11-21T17:42:46.008810+00:00",
   "references": [
     "ols"
   ],
   "notes": [
     "Details of 12 repository ontologies came from the term database."
   ],
-  "run_id": 20,
+  "run_id": 60,
   "database": "/Users/tekrajchhetri/Library/Caches/ontoreview/iri.sqlite3",
   "settings": {
     "cdi": "on",
@@ -32,7 +32,15 @@
     "cdi_sbert_model": "all-MiniLM-L6-v2",
     "cdi_ontoaligner_threshold": 0.8,
     "cdi_timeout": 30,
-    "cdi_budget": 600
+    "cdi_budget": 600,
+    "si": "on",
+    "si_home_domain": null,
+    "si_theta_s": 0.3,
+    "si_classifier": true,
+    "si_p_min": 0.15,
+    "si_domain_map": {},
+    "si_upper_ontologies": [],
+    "si_upper_namespaces": []
   },
   "summary": {
     "align": 0.5091428571428571,
@@ -79,6 +87,7 @@
       "title": "Food Ontology",
       "domain": "diet, metabolomics, and nutrition",
       "given": false,
+      "description": "A broadly scoped ontology representing entities which bear a “food role”. It encompasses materials in natural ecosystems and agriculture that are consumed by humans and domesticated animals. This includes any generic (unbranded) raw or processed food material found in processing plants, markets, stores or food distribution points. FoodOn also imports nutritional component and dietary pattern terms from other OBO Foundry ontologies to support interoperability in diet and nutrition research",
       "coverage": 0.2857142857142857,
       "n_correspondences": 6,
       "status": "selected",
@@ -91,10 +100,10 @@
         "version_iri": "http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl",
         "version": "2026-02-02",
         "released": "2026-11-21T00:08:37.554689634",
-        "retrieved": "2026-11-21T16:52:34Z",
+        "retrieved": "2026-11-21T17:32:34Z",
         "metadata_sha256": "93eeb6caa7a84aaddf5e478f34ee5121a67b352c1f5a31860a3b77572566bf9f",
         "identified_by": "version IRI",
-        "cached": "2026-11-21T16:52:34.287222+00:00"
+        "cached": "2026-11-21T17:32:34.450246+00:00"
       }
     },
     {
@@ -103,6 +112,7 @@
       "title": "SNOMED CT (International Edition)",
       "domain": "",
       "given": false,
+      "description": "SNOMED CT or SNOMED Clinical Terms is a systematically organized computer processable collection of medical terms providing codes, terms, synonyms and definitions used in clinical documentation and reporting.",
       "coverage": 0.2857142857142857,
       "n_correspondences": 4,
       "status": "selected",
@@ -114,10 +124,10 @@
         "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
         "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
         "released": "2026-10-21T10:27:50.617005757",
-        "retrieved": "2026-11-20T01:24:34Z",
+        "retrieved": "2026-11-21T17:30:09Z",
         "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:34.511188+00:00"
+        "cached": "2026-11-21T17:30:09.210659+00:00"
       }
     },
     {
@@ -126,6 +136,7 @@
       "title": "NCI Thesaurus OBO Edition",
       "domain": "health",
       "given": false,
+      "description": "NCI Thesaurus (NCIt)is a reference terminology that includes broad coverage of the cancer domain, including cancer related diseases, findings and abnormalities. The NCIt OBO Edition aims to increase integration of the NCIt with OBO Library ontologies. NCIt OBO Edition releases should be considered experimental.",
       "coverage": 0.21428571428571427,
       "n_correspondences": 5,
       "status": "selected",
@@ -137,11 +148,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
         "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
         "version": "26.02d",
-        "released": "2026-11-19T00:08:40.177514829",
-        "retrieved": "2026-11-20T01:24:40Z",
-        "metadata_sha256": "47756ac031c76f5a4c588e0cbfc200bcc492ff4796c174687bfd85c2f3039a90",
+        "released": "2026-11-21T00:09:04.346151993",
+        "retrieved": "2026-11-21T17:30:07Z",
+        "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:40.214587+00:00"
+        "cached": "2026-11-21T17:30:07.631597+00:00"
       }
     },
     {
@@ -150,6 +161,7 @@
       "title": "Allotrope Merged Ontology Suite",
       "domain": "",
       "given": false,
+      "description": "Allotrope Merged Ontology Suite",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -161,11 +173,11 @@
         "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
         "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
         "version": "REC/2026/09",
-        "released": "2026-11-19T00:09:08.267589190",
-        "retrieved": "2026-11-20T01:24:42Z",
-        "metadata_sha256": "8098223f947c41f28ad3b4cfaff6e5af11596f5654ec8894c84d2e7840f133bd",
+        "released": "2026-11-21T00:09:10.933549934",
+        "retrieved": "2026-11-21T17:30:08Z",
+        "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:42.897913+00:00"
+        "cached": "2026-11-21T17:30:08.826386+00:00"
       }
     },
     {
@@ -174,6 +186,7 @@
       "title": "Chemical Entities of Biological Interest",
       "domain": "chemistry and biochemistry",
       "given": false,
+      "description": "A structured classification of molecular entities of biological interest focusing on 'small' chemical compounds.",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -185,11 +198,11 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/chebi.owl",
         "version_iri": "http://purl.obolibrary.org/obo/chebi/257/chebi.owl",
         "version": "257",
-        "released": "2026-11-19T00:08:19.959448025",
-        "retrieved": "2026-11-20T01:24:41Z",
-        "metadata_sha256": "f4ecb37a129ed918a2269a4b35bcab25a075063a53c2bcda627eefba2b3ebb6a",
+        "released": "2026-11-21T00:08:51.503620060",
+        "retrieved": "2026-11-21T17:30:14Z",
+        "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:41.068327+00:00"
+        "cached": "2026-11-21T17:30:14.565811+00:00"
       }
     },
     {
@@ -198,6 +211,7 @@
       "title": "Food-Biomarker Ontology",
       "domain": "diet, metabolomics, and nutrition",
       "given": false,
+      "description": "FOBI (Food-Biomarker Ontology) is an ontology to represent food intake data and associate it with metabolomic data",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -209,10 +223,10 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/fobi.owl",
         "version_iri": "http://purl.obolibrary.org/obo/fobi/fobi.owl",
         "released": "2026-11-21T00:08:33.721513104",
-        "retrieved": "2026-11-21T16:52:32Z",
+        "retrieved": "2026-11-21T17:32:35Z",
         "metadata_sha256": "5e0451a5eac7687564e363c144087687440191c38adc8cf829a3c6304092c51a",
         "identified_by": "version IRI",
-        "cached": "2026-11-21T16:52:32.653664+00:00"
+        "cached": "2026-11-21T17:32:35.288481+00:00"
       }
     },
     {
@@ -221,6 +235,7 @@
       "title": "Medical Subject Headings",
       "domain": "",
       "given": false,
+      "description": "MeSH (Medical Subject Headings) is the National Library of Medicine's controlled vocabulary thesaurus. It consists of sets of terms naming descriptors in a hierarchical structure that permits searching at various levels of specificity. This thesaurus is used by NLM for indexing articles from biomedical journals, cataloguing of books, documents, etc.",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -232,11 +247,11 @@
         "ontology_iri": "https://w3id.org/biopragmatics/resources/mesh/mesh.ofn",
         "version_iri": "https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn",
         "version": "2025",
-        "released": "2026-11-19T00:09:20.081199373",
-        "retrieved": "2026-11-20T01:25:00Z",
-        "metadata_sha256": "8599e091ffa3183f674b64dac99d87845aad8ac5829368ce973178196b7654c0",
+        "released": "2026-11-21T00:09:41.663368724",
+        "retrieved": "2026-11-21T17:30:13Z",
+        "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:25:00.338873+00:00"
+        "cached": "2026-11-21T17:30:13.571879+00:00"
       }
     },
     {
@@ -245,6 +260,7 @@
       "title": "Ontology of Prokaryotic Phenotypic and Metabolic Characters",
       "domain": "phenotype",
       "given": false,
+      "description": "An ontology of prokaryotic phenotypic and metabolic characters",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -256,10 +272,10 @@
         "ontology_iri": "http://purl.obolibrary.org/obo/MicrO.owl",
         "version": "MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.\n\nIncludes terms and term synonyms extracted from > 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.\n\nThe ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).\n\nDescriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.\nhttps://github.com/biosemantics/micropie2\n\nThe most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.",
         "released": "2026-11-21T00:09:02.761695708",
-        "retrieved": "2026-11-21T16:52:33Z",
+        "retrieved": "2026-11-21T17:32:35Z",
         "metadata_sha256": "24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3",
         "identified_by": "version",
-        "cached": "2026-11-21T16:52:33.072069+00:00"
+        "cached": "2026-11-21T17:32:35.704286+00:00"
       }
     },
     {
@@ -268,6 +284,7 @@
       "title": "Ontology of units of Measure (OM)",
       "domain": "",
       "given": false,
+      "description": "The OM ontology provides classes, instances, and properties that represent the different concepts used for defining and using measures and units. It includes, for instance, common units such as the SI units meter and kilogram, but also units from other systems of units such as the mile or nautical mile. For many application areas it includes more specific units and quantities, such as the unit of the Hubble constant: km/s/Mpc, or the quantity vaselife.  OM defines the complete set of concepts in the domain as distinguished in the textual standards. As a result the ontology can answer a wider range of competency questions than the existing approaches do. The following application areas are supported by OM:  Geometry; Mechanics; Thermodynamics; Electromagnetism; Fluid mechanics; Chemical physics; Photometry; Radiometry and Radiobiology; Nuclear physics; Astronomy and Astrophysics; Cosmology; Earth science; Meteorology; Material science; Microbiology; Economics; Information technology; Typography; Shipping; Food engineering; Post-harvest; technology; Dynamics of texture and taste; Packaging",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -278,11 +295,11 @@
         "title": "Ontology of units of Measure (OM)",
         "ontology_iri": "http://www.ontology-of-units-of-measure.org/resource/om-2",
         "version": "2.0.60",
-        "released": "2026-11-19T00:09:08.546463004",
-        "retrieved": "2026-11-20T01:25:25Z",
-        "metadata_sha256": "8a3eb6f837b1aee20d8c2a2c479ede4f9224c7e5f3fc787e6a0feed39941c0a1",
+        "released": "2026-11-21T00:09:13.671358264",
+        "retrieved": "2026-11-21T17:32:34Z",
+        "metadata_sha256": "94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59",
         "identified_by": "version",
-        "cached": "2026-11-20T01:25:25.910159+00:00"
+        "cached": "2026-11-21T17:32:34.871014+00:00"
       }
     },
     {
@@ -291,6 +308,7 @@
       "title": "Ontology for MIRNA Target",
       "domain": "chemistry and biochemistry",
       "given": false,
+      "description": "Ontology to establish data exchange standards and common data elements in the microRNA (miR) domain",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "selected",
@@ -301,11 +319,11 @@
         "title": "Ontology for MIRNA Target",
         "ontology_iri": "http://purl.obolibrary.org/obo/omit.owl",
         "version_iri": "http://purl.obolibrary.org/obo/omit/dev/omit.owl",
-        "released": "2026-11-19T00:08:23.855087262",
-        "retrieved": "2026-11-20T01:24:58Z",
-        "metadata_sha256": "17ee9415fbbaf888a938f04269c0a0febd2a974b93ddf92ade5b4a52e6faccad",
+        "released": "2026-11-21T00:08:46.697252767",
+        "retrieved": "2026-11-21T17:30:11Z",
+        "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
         "identified_by": "version IRI",
-        "cached": "2026-11-20T01:24:58.202321+00:00"
+        "cached": "2026-11-21T17:30:11.872640+00:00"
       }
     },
     {
@@ -314,6 +332,7 @@
       "title": "Ontology for Nutritional Studies",
       "domain": "diet, metabolomics, and nutrition",
       "given": false,
+      "description": "An ontology for description of concepts in the nutritional studies domain.",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -326,10 +345,10 @@
         "version_iri": "https://raw.githubusercontent.com/enpadasi/Ontology-for-Nutritional-Studies/releases/download/2026-02-06/ons.owl",
         "version": "2026-02-06",
         "released": "2026-11-21T00:08:38.489265645",
-        "retrieved": "2026-11-21T16:52:33Z",
+        "retrieved": "2026-11-21T17:32:36Z",
         "metadata_sha256": "fb274f1aad5aa5d64e7d1426996eba1f945783716aff6dd465ff2c4337bcfa83",
         "identified_by": "version IRI",
-        "cached": "2026-11-21T16:52:33.481899+00:00"
+        "cached": "2026-11-21T17:32:36.103523+00:00"
       }
     },
     {
@@ -338,6 +357,7 @@
       "title": "TransformON",
       "domain": "",
       "given": false,
+      "description": "A domain ontology on food and bioproduct processing and characterization that is a specialization of the PO2 ontology (Process and Observation Ontology).",
       "coverage": 0.07142857142857142,
       "n_correspondences": 1,
       "status": "below-top-N",
@@ -348,11 +368,11 @@
         "title": "TransformON",
         "ontology_iri": "http://opendata.inrae.fr/PO2/Ontology/TransformON/",
         "version": "33.0",
-        "released": "2026-11-19T00:09:21.695368286",
-        "retrieved": "2026-11-20T01:24:44Z",
-        "metadata_sha256": "96f292eb212f77468a680e101112e5dc688bb92c807f9b648422cb976d4dd6fa",
+        "released": "2026-11-21T00:09:21.120852308",
+        "retrieved": "2026-11-21T17:30:10Z",
+        "metadata_sha256": "2af2ead0b4260b62da6c8db1e53a706ae3fff083e2a4c6149084f2e83f3f851c",
         "identified_by": "version",
-        "cached": "2026-11-20T01:24:44.336997+00:00"
+        "cached": "2026-11-21T17:30:10.249891+00:00"
       }
     }
   ],
@@ -1472,7 +1492,7 @@
       "version_iri": "http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl",
       "version": "2026-02-02",
       "released": "2026-11-21T00:08:37.554689634",
-      "retrieved": "2026-11-21T16:52:34Z",
+      "retrieved": "2026-11-21T17:32:34Z",
       "metadata_sha256": "93eeb6caa7a84aaddf5e478f34ee5121a67b352c1f5a31860a3b77572566bf9f",
       "identified_by": "version IRI",
       "terms": 6
@@ -1485,7 +1505,7 @@
       "ontology_iri": "http://snomed.info/sct/9000000000002070081231",
       "version_iri": "http://snomed.info/sct/900000000000207008/version/20251017",
       "released": "2026-10-21T10:27:50.617005757",
-      "retrieved": "2026-11-20T01:24:34Z",
+      "retrieved": "2026-11-21T17:30:09Z",
       "metadata_sha256": "e619f618c83ac5add3562ebcd4b8362c9edd208cec325adf540cf6b28c4583df",
       "identified_by": "version IRI",
       "terms": 4
@@ -1498,9 +1518,9 @@
       "ontology_iri": "http://purl.obolibrary.org/obo/ncit.owl",
       "version_iri": "http://purl.obolibrary.org/obo/ncit/releases/2026-03-19/ncit.owl",
       "version": "26.02d",
-      "released": "2026-11-19T00:08:40.177514829",
-      "retrieved": "2026-11-20T01:24:40Z",
-      "metadata_sha256": "47756ac031c76f5a4c588e0cbfc200bcc492ff4796c174687bfd85c2f3039a90",
+      "released": "2026-11-21T00:09:04.346151993",
+      "retrieved": "2026-11-21T17:30:07Z",
+      "metadata_sha256": "304a03249ba372a4b576eedbac242a70bb28ade85418fda75b79080e9e3e58a1",
       "identified_by": "version IRI",
       "terms": 5
     },
@@ -1512,9 +1532,9 @@
       "ontology_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
       "version_iri": "http://purl.allotrope.org/voc/afo/merged/REC/2026/09/merged-without-qudt-and-inferred",
       "version": "REC/2026/09",
-      "released": "2026-11-19T00:09:08.267589190",
-      "retrieved": "2026-11-20T01:24:42Z",
-      "metadata_sha256": "8098223f947c41f28ad3b4cfaff6e5af11596f5654ec8894c84d2e7840f133bd",
+      "released": "2026-11-21T00:09:10.933549934",
+      "retrieved": "2026-11-21T17:30:08Z",
+      "metadata_sha256": "350fd4bc4926850f1b1b1b4f08d75df864daebb9370b3d37de7029a073476138",
       "identified_by": "version IRI",
       "terms": 1
     },
@@ -1526,9 +1546,9 @@
       "ontology_iri": "http://purl.obolibrary.org/obo/chebi.owl",
       "version_iri": "http://purl.obolibrary.org/obo/chebi/257/chebi.owl",
       "version": "257",
-      "released": "2026-11-19T00:08:19.959448025",
-      "retrieved": "2026-11-20T01:24:41Z",
-      "metadata_sha256": "f4ecb37a129ed918a2269a4b35bcab25a075063a53c2bcda627eefba2b3ebb6a",
+      "released": "2026-11-21T00:08:51.503620060",
+      "retrieved": "2026-11-21T17:30:14Z",
+      "metadata_sha256": "81af049292eaf57e37e5c8edb9cc21dfe4f42fdcb84f5908e7b4d8395fdcca66",
       "identified_by": "version IRI",
       "terms": 1
     },
@@ -1540,7 +1560,7 @@
       "ontology_iri": "http://purl.obolibrary.org/obo/fobi.owl",
       "version_iri": "http://purl.obolibrary.org/obo/fobi/fobi.owl",
       "released": "2026-11-21T00:08:33.721513104",
-      "retrieved": "2026-11-21T16:52:32Z",
+      "retrieved": "2026-11-21T17:32:35Z",
       "metadata_sha256": "5e0451a5eac7687564e363c144087687440191c38adc8cf829a3c6304092c51a",
       "identified_by": "version IRI",
       "terms": 1
@@ -1553,9 +1573,9 @@
       "ontology_iri": "https://w3id.org/biopragmatics/resources/mesh/mesh.ofn",
       "version_iri": "https://w3id.org/biopragmatics/resources/mesh/2025/mesh.ofn",
       "version": "2025",
-      "released": "2026-11-19T00:09:20.081199373",
-      "retrieved": "2026-11-20T01:25:00Z",
-      "metadata_sha256": "8599e091ffa3183f674b64dac99d87845aad8ac5829368ce973178196b7654c0",
+      "released": "2026-11-21T00:09:41.663368724",
+      "retrieved": "2026-11-21T17:30:13Z",
+      "metadata_sha256": "da5be768e3c98f1a284614d7b8400fa461ecd5bc88c85962c4abb997879e825c",
       "identified_by": "version IRI",
       "terms": 1
     },
@@ -1567,7 +1587,7 @@
       "ontology_iri": "http://purl.obolibrary.org/obo/MicrO.owl",
       "version": "MicrO (An Ontology of Prokaryotic Phenotypic and Metabolic Characters).  Version 1.5.1 released 6/14/2018.\n\nIncludes terms and term synonyms extracted from > 3000 prokaryotic taxonomic descriptions, collected from a large number of taxonomic descriptions from Archaea, Cyanobacteria, Bacteroidetes, Firmicutes and Mollicutes.\n\nThe ontology and the synonym lists were developed to facilitate the automated extraction of phenotypic data and character states from prokaryotic taxonomic descriptions using a natural language processing algorithm (MicroPIE).  MicroPIE was developed by Hong Cui, Elvis Hsin-Hui Wu, and Jin Mao (University of Arizona) in collaboration with Carrine E. Blank (University of Montana) and Lisa R. Moore (University of Southern Maine).\n\nDescriptions and links to MicroPIE can be found at http://avatol.org/ngp/nlp/overview-2/.\nhttps://github.com/biosemantics/micropie2\n\nThe most current version of MicrO can be downloaded from https://github.com/carrineblank/MicrO.",
       "released": "2026-11-21T00:09:02.761695708",
-      "retrieved": "2026-11-21T16:52:33Z",
+      "retrieved": "2026-11-21T17:32:35Z",
       "metadata_sha256": "24e646c419b4ab35e21f69e2cc9a68d3bf9d26e989aa724bd99e5a7a82ca63c3",
       "identified_by": "version",
       "terms": 1
@@ -1579,9 +1599,9 @@
       "ontology": "om",
       "ontology_iri": "http://www.ontology-of-units-of-measure.org/resource/om-2",
       "version": "2.0.60",
-      "released": "2026-11-19T00:09:08.546463004",
-      "retrieved": "2026-11-20T01:25:25Z",
-      "metadata_sha256": "8a3eb6f837b1aee20d8c2a2c479ede4f9224c7e5f3fc787e6a0feed39941c0a1",
+      "released": "2026-11-21T00:09:13.671358264",
+      "retrieved": "2026-11-21T17:32:34Z",
+      "metadata_sha256": "94cc1c0e683d95073d44d16ba566614e0416eaa213b31028d94157f729c2cc59",
       "identified_by": "version",
       "terms": 1
     },
@@ -1592,9 +1612,9 @@
       "ontology": "omit",
       "ontology_iri": "http://purl.obolibrary.org/obo/omit.owl",
       "version_iri": "http://purl.obolibrary.org/obo/omit/dev/omit.owl",
-      "released": "2026-11-19T00:08:23.855087262",
-      "retrieved": "2026-11-20T01:24:58Z",
-      "metadata_sha256": "17ee9415fbbaf888a938f04269c0a0febd2a974b93ddf92ade5b4a52e6faccad",
+      "released": "2026-11-21T00:08:46.697252767",
+      "retrieved": "2026-11-21T17:30:11Z",
+      "metadata_sha256": "2dc1a7f41e0d0982936a423bbf0dc41e6b30a2f713d50baa99f52fa467cbff99",
       "identified_by": "version IRI",
       "terms": 1
     }

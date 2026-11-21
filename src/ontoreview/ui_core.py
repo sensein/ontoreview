@@ -72,6 +72,10 @@ class Settings:
     cdi_generality: bool = True
     cdi_top_n: int = 10
     cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
+    si: bool = True                 # scientific interoperability (same run and references as cdi)
+    si_home_domain: str = ""        # OECD field code or name; empty = classify the ontology's title/description
+    si_theta_s: float = 0.3
+    si_domain_map: str = ""         # one per line: "ols:emi = 1.5; 1.6"
     cdi_bioportal_key: str = field(default="", repr=False)    # optional; never in the CLI line, TOML or history
     cdi_ontoportal_key: str = field(default="", repr=False)   # any other OntoPortal service
     hf_token: str = field(default="", repr=False)             # Hugging Face token for model downloads (optional)
@@ -157,7 +161,16 @@ class Settings:
                 ev[k] = False
         if not self.cdi:
             ev["cdi"] = "off"
-        else:                       # on by default: only what differs from the defaults
+        if not self.si:
+            ev["si"] = "off"
+        else:
+            if self.si_home_domain.strip():
+                ev["si_home_domain"] = self.si_home_domain.strip()
+            if float(self.si_theta_s or 0.3) != 0.3:
+                ev["si_theta_s"] = float(self.si_theta_s)
+            if self.si_domain_map_dict():
+                ev["si_domain_map"] = self.si_domain_map_dict()
+        if self.cdi or self.si:     # on by default: only what differs from the defaults (SI uses the same run)
             refs = self.cdi_reference_list()
             if refs != ["ols"]:
                 ev["cdi_references"] = refs
@@ -180,6 +193,15 @@ class Settings:
         if self.oops_endpoint.strip() and self.oops_endpoint.strip() != OOPS_ENDPOINT:
             ev["oops_endpoint"] = self.oops_endpoint.strip()
         return ev
+
+    def si_domain_map_dict(self) -> dict[str, list[str]]:
+        """``ols:emi = 1.5; Biological sciences`` per line -> {"ols:emi": ["1.5", "Biological sciences"]}."""
+        out: dict[str, list[str]] = {}
+        for line in self.si_domain_map.splitlines():
+            oid, sep, doms = line.partition("=")
+            if sep and oid.strip():
+                out[oid.strip()] = [d.strip() for d in doms.replace(",", ";").split(";") if d.strip()]
+        return out
 
     def cdi_reference_list(self) -> list[str]:
         """References, one per line; local paths made absolute."""
@@ -211,12 +233,25 @@ class Settings:
             for v in [x.strip() for x in val.split(",") if x.strip()]:
                 if not v.startswith(("http://", "https://")) and not Path(v).expanduser().exists():
                     problems.append(f"{label} file not found: {v}")
-        if self.cdi and self.task in ("site", "single", "check"):
+        if self.si and self.task in ("site", "single", "check"):
+            from .quality_checks.cdi.si import resolve_fos
+
+            for label, spec in [("Own scientific domain", self.si_home_domain)] + [
+                    (f"Domain of {k}", d) for k, ds in self.si_domain_map_dict().items() for d in ds]:
+                if spec.strip():
+                    try:
+                        resolve_fos(spec)
+                    except ValueError as e:
+                        problems.append(f"{label}: {e}")
+            bad = [ln.strip() for ln in self.si_domain_map.splitlines() if ln.strip() and "=" not in ln]
+            if bad:
+                problems.append(f"Domain map lines need 'ontology id = field', e.g. 'ols:emi = 1.5': {bad[0]}")
+        if (self.cdi or self.si) and self.task in ("site", "single", "check"):
             from .quality_checks.cdi import parse_reference
 
             refs = [r for r in self.cdi_references.splitlines() if r.strip()]
             if not refs:
-                problems.append("Cross-domain interoperability needs at least one reference (e.g. ols).")
+                problems.append("Cross-domain and scientific interoperability need at least one reference (e.g. ols).")
             for r in refs:
                 ref = parse_reference(r)
                 if ref["kind"] in ("file", "sssom") and not Path(ref["path"]).exists():
@@ -269,7 +304,16 @@ class Settings:
                 args.append("--offline")
             if not self.cdi:
                 args.append("--no-cdi")
+            if not self.si:
+                args.append("--no-si")
             else:
+                if self.si_home_domain.strip():
+                    args += ["--si-home-domain", q(self.si_home_domain.strip())]
+                if float(self.si_theta_s or 0.3) != 0.3:
+                    args += ["--si-theta-s", str(float(self.si_theta_s))]
+                for k, ds in self.si_domain_map_dict().items():
+                    args += ["--si-domain", q(f"{k}={';'.join(ds)}")]
+            if self.cdi or self.si:
                 refs = self.cdi_reference_list()
                 for r in refs if refs != ["ols"] else []:
                     args += ["--cdi", q(r)]
@@ -303,8 +347,17 @@ class Settings:
                   f"ontocheck = {s('on' if self.ontocheck else 'off')}",
                   f"iri_checks = {s('on' if self.iri_checks else 'off')}",
                   f"iri_network = {'true' if self.iri_network else 'false'}",
-                  f"cdi = {s('on' if self.cdi else 'off')}"]
-        if self.cdi:
+                  f"cdi = {s('on' if self.cdi else 'off')}",
+                  f"si = {s('on' if self.si else 'off')}"]
+        if self.si:
+            if self.si_home_domain.strip():
+                lines.append(f"si_home_domain = {s(self.si_home_domain.strip())}")
+            lines.append(f"si_theta_s = {float(self.si_theta_s or 0.3)}")
+            dm = self.si_domain_map_dict()
+            if dm:
+                lines.append("si_domain_map = { " + ", ".join(f"{s(k)} = [{', '.join(s(d) for d in v)}]"
+                                                              for k, v in dm.items()) + " }")
+        if self.cdi or self.si:
             lines += [f"cdi_references = [{', '.join(s(x) for x in self.cdi_reference_list())}]",
                       f"cdi_domains = [{', '.join(s(x.strip()) for x in self.cdi_domains.split(',') if x.strip())}]",
                       f"cdi_generality = {'true' if self.cdi_generality else 'false'}",
@@ -346,6 +399,10 @@ class Settings:
                                       else rel(r) for r in ev.get("cdi_references", ["ols"])),
             cdi_domains=", ".join(ev.get("cdi_domains", [])), cdi_generality=bool(ev.get("cdi_generality", True)),
             cdi_top_n=int(ev.get("cdi_top_n", 10)), cdi_ontoaligner=ev.get("cdi_ontoaligner", "sbert"),
+            si=ev.get("si", "on") not in ("off", False), si_home_domain=str(ev.get("si_home_domain") or ""),
+            si_theta_s=float(ev.get("si_theta_s", 0.3)),
+            si_domain_map="\n".join(f"{k} = {'; '.join(v if isinstance(v, list) else [v])}"
+                                     for k, v in (ev.get("si_domain_map") or {}).items()),
         )
 
     # -------------------------------------------------------------- persistence
@@ -749,6 +806,11 @@ def run_config_rows(settings: dict[str, Any]) -> list[tuple[str, str]]:
                      f"on · references: {', '.join(x.strip() for x in str(g('cdi_references', '')).splitlines() if x.strip()) or '–'}"
                      + (f" · domains: {g('cdi_domains')}" if g("cdi_domains") else "")
                      + f" · OntoAligner: {g('cdi_ontoaligner', 'sbert')}" if cdi else "off"))
+        rows.append(("Scientific interoperability",
+                     ("on · own domain: " + (g("si_home_domain") or "classified") + f" · θ_s = {g('si_theta_s', 0.3)}"
+                      + (" · domain map: " + "; ".join(x.strip() for x in str(g("si_domain_map", "")).splitlines()
+                                                         if x.strip()) if g("si_domain_map") else ""))
+                     if g("si", True) else "off"))
         rows.append(("Fail on", g("fail_on", "error")))
     return rows
 
@@ -950,6 +1012,10 @@ class Prefs:
     cdi_generality: bool = True
     cdi_top_n: int = 10
     cdi_ontoaligner: Literal["off", "fuzzy", "sbert"] = "sbert"
+    si: bool = True
+    si_home_domain: str = ""
+    si_theta_s: float = 0.3
+    si_domain_map: str = ""
     cdi_bioportal_key: str = field(default="", repr=False)
     cdi_ontoportal_key: str = field(default="", repr=False)
     hf_token: str = field(default="", repr=False)
@@ -1005,6 +1071,7 @@ class Prefs:
         s.ontocheck, s.ontocheck_network, s.ontocheck_search = self.ontocheck, self.ontocheck_network, self.ontocheck_search
         for k in ("iri_checks", "iri_network", "iri_repositories", "iri_resolve",
                   "cdi", "cdi_references", "cdi_domains", "cdi_generality", "cdi_top_n", "cdi_ontoaligner",
+                  "si", "si_home_domain", "si_theta_s", "si_domain_map",
                   "cdi_bioportal_key", "cdi_ontoportal_key", "hf_token"):
             setattr(s, k, getattr(self, k))
         for k in ("layout", "languages", "base_url", "load_imports", "include_individuals", "reason", "verbose",

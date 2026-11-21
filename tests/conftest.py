@@ -44,7 +44,7 @@ def _no_external_evaluators(request, monkeypatch):
     if "real_iri" not in request.keywords:
         monkeypatch.setattr(iri, "check_iris", lambda *a, **k: None)
     if "real_cdi" not in request.keywords:      # on by default: OLS queries and a language model
-        monkeypatch.setattr(cdi, "check_cdi", lambda *a, **k: None)
+        monkeypatch.setattr(cdi, "check_cdi", lambda *a, **k: [])
     if "real_evaluators" in request.keywords:
         return
     monkeypatch.setattr(robot, "run_robot", lambda *a, **k: None)

@@ -267,6 +267,8 @@ def provenance_record(onto: Ontology, source: str | Path, tool_version: str, sta
             detail = f"Verified against {n} reference release{'s' if n != 1 else ''}" if n else ""
             if summ.get("cdi") is not None:
                 detail = f"CDI {summ['cdi']:.2f}" + (f"; {detail.lower()}" if detail else "")
+            if summ.get("si") is not None and summ.get("taxonomy_size"):
+                detail = f"SI {summ['si']} of {summ['taxonomy_size'] - 1} scientific domains"
             event(pv["checked_at"], f"{ext.tool} run", detail, "check")
     if report is not None:
         checks.insert(0, "OntoReview checks")

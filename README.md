@@ -101,6 +101,7 @@ For the full list of quality checks, their order and how to configure them, see 
 - **IRI checks** cover IRI syntax, the ontology header and version IRI, whether the ontology IRI resolves, and whether reused external classes and properties exist in their vocabulary, with the right type and not deprecated. Lookups go to a bundled SQLite database of 10 W3C vocabularies first, then your cache, OLS, BioPortal and a direct download. IRI syntax follows the full RFC 3987 grammar. Every result records the vocabulary release it was verified against, cached entries expire after `iri_cache_days` (30), and every run is recorded. Browse, search and extend the database on the app's **Term database** page or with `ontoreview terms`. Use `--offline` for SQLite only, or turn the checks off with `evaluation.iri_checks = "off"` or `--no-iri`.
 - **OntoCheck** ([docs](https://ontocheck.readthedocs.io)) adds a scorecard of 17 metrics in four groups: labeling (labels, alternative labels, definitions), structural (isolated elements, class connections, domains and ranges, leaf classes, links to BFO/CCO), accessibility (SPARQL endpoint, RDF dump, human-readable license, external links) and naming conventions (capitalisation, spaces, spelling, duplicate labels, class search). It runs in-process. Only the endpoint and dump checks use the network (`evaluation.ontocheck_network`). Turn it off with `evaluation.ontocheck = "off"` or `--no-ontocheck`.
 - **OOPS!** runs alongside ROBOT, because it checks modelling (unconnected elements, missing domains, ranges, inverses and disjointness, naming) where ROBOT checks annotations. When the ROBOT report ran, OOPS! leaves out the three pitfalls ROBOT already covers (P08, P32, P41) and says so in the review. Without ROBOT it runs the full catalogue. It calls the [OOPS! web service](https://oops.linkeddata.es/webservice.html), so **it sends your ontology to oops.linkeddata.es.** Set `evaluation.oops = "off"` (or pass `--no-oops`) to keep it local, or `"on"` (`--oops`) for the full catalogue every time. See [quality_check.md](quality_check.md).
+- **Scientific interoperability** (on by default, from the same run; `--no-si` or `evaluation.si = "off"`) counts the scientific domains (OECD fields of science), other than the ontology's own, in which it is interoperable, ignoring upper-level ontologies. See [Scientific interoperability](#scientific-interoperability).
 - **Cross-domain interoperability** (on by default; turn off with `evaluation.cdi = "off"` or `--no-cdi`) scores whether the ontology can serve beyond its own domain. *Align* is the mean strength of each entity's best correspondence into reference ontologies from other domains (direct, lexical, or inherited through superclasses). *Gen* is how domain-neutral the class definitions are, rated by a zero-shot language model. *CDI* is their weighted harmonic mean. See [Cross-domain interoperability](#cross-domain-interoperability).
 - To skip external evaluators entirely, set both `evaluation.robot = "off"` and `evaluation.oops = "off"`. With ROBOT off, OOPS! runs its full catalogue unless it is off too.
 
@@ -135,6 +136,32 @@ cdi = "on"
 cdi_references = ["ols", "ols:envo,chebi", "refs/upper.owl", "refs/maps.sssom.tsv"]
 cdi_domains = ["agriculture"]
 ```
+
+## Scientific interoperability
+
+Scientific interoperability asks **how many** scientific domains, other than its own, an ontology is interoperable with. It refines cross-domain interoperability and reuses the same run: the same reference ontologies (files you upload, ontologies named on OLS or BioPortal, or ones discovered there), the same correspondences and the same Gen. Nothing is fetched twice.
+
+- **Domains** are the OECD Fields of Science and Technology (Frascati Manual 2015, level 2: 42 fields). Each reference ontology gets domains from your `si_domain_map`, else from repository metadata (OLS domains, BioPortal categories), else from the language model classifying its title and description (kept when p ≥ 0.15). Ontologies left without a domain are listed in the review with the setting that fixes it.
+- **Upper-level ontologies are ignored.** BFO, COB, RO, DOLCE/DUL, GFO, SUMO and gUFO get no domain, and every correspondence into their namespaces is dropped, so SI counts links to scientific fields rather than shared foundational commitments.
+- **Per domain δ**, Align_δ pools the correspondences into that domain's reference ontologies, and CDI_δ = (1+β²)·Align_δ·Gen / (Align_δ + β²·Gen).
+- **SI** is the number of domains, other than the ontology's own (`si_home_domain`, or classified from its title and description), with CDI_δ ≥ θ_s = 0.3. SI ≥ 1 counts as scientifically interoperable. SI^ = SI / 41 is the share of possible domains.
+- Gen caps every domain: even a perfectly aligned domain cannot exceed (1+β²)·Gen / (1+β²·Gen). The review shows that ceiling, and checks that no CDI_δ exceeds CDI.
+
+```bash
+ontoreview check my.ttl --cdi ols --si-home-domain 1.2                 # own domain: Computer and information sciences
+ontoreview check my.ttl --cdi ols:envo --cdi refs/mine.owl --si-domain file:mine.owl=1.6 --si-theta-s 0.25
+ontoreview check my.ttl --no-cdi --cdi ols                            # SI only (still runs the shared alignment)
+```
+
+```toml
+[evaluation]
+si = "on"
+si_home_domain = "1.2"                       # or "Computer and information sciences"
+si_theta_s = 0.3
+si_domain_map = { "ols:emi" = ["1.5"], "file:mine.owl" = ["Biological sciences"] }
+```
+
+It runs by default with cross-domain interoperability (`--no-si` or `evaluation.si = "off"` to skip it). In the app it is under **Settings → Quality checks → Scientific interoperability**. The docs show SI in the Overview and in the quality report (per-domain scores and the domain of every reference ontology), and write the full record to `si.json`. SI needs Gen, so it needs the language model (`ontoreview[cdi]`); without it the review says so.
 
 ## For LLMs and agents
 
