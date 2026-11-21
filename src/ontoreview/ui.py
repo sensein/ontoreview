@@ -10,6 +10,7 @@ Pages: Build, Run history, Settings, About; a sidebar shows whether ROBOT and OO
 from __future__ import annotations
 
 import argparse
+import asyncio
 import json
 import logging
 import os
@@ -406,6 +407,11 @@ HELP = [
         "that ontology, with the settings it was started with. "
         "The AI button turns amber and pulses while the model works, green when the draft is ready, red if it "
         "failed. "
+        "LinkML schemas are checked and fixed too: definitions, titles, domains and ranges go into the YAML copy; "
+        "a fix the YAML cannot hold saves the fixed version as OWL (Turtle) generated from the schema. "
+        "Open issues stay at the top of the list; accepted or ignored ones move to the end. "
+        "The prompts sent to the model are in <code>fixes/ai/prompts.md</code> in the package; set "
+        "<code>ONTOREVIEW_PROMPTS</code> to your own copy to change them. "
         "For each creator, the name is looked up in the public ORCID registry (or press the search icon in the ORCID "
         "field): pick the right person to fill in the ORCID, or choose <i>None of these</i>. Nothing is filled in "
         "without your choice.",
@@ -738,6 +744,10 @@ class _Session:
 
 
 SESSION = _Session()
+
+
+ORCID_HITS: dict[str, list | None] = {}     # creator name → ORCID candidates (None while looking up)
+ORCID_DISMISSED: set[str] = set()            # names whose candidates the user dismissed ("None of these")
 
 
 def open_issue_total() -> int:
@@ -1391,21 +1401,34 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             """Candidates from the ORCID registry for the row's name; the user picks one (or none)."""
             from .fixes.orcid import search_orcid
             name = r["name"].strip()
-            if len(name) < 3 or (auto and (r["orcid"] or r.get("_looked") == name)):
+            if len(name) < 3 or (auto and (r["orcid"] or r.get("_looked") == name or name in ORCID_DISMISSED)):
                 return
             r["_looked"] = name
             picks.clear()
             with picks:
                 ui.spinner(size="sm")
                 ui.label(f"Looking up “{name}” in ORCID…").classes("or-hint")
-            try:
-                hits = await run.io_bound(search_orcid, name)
-            except Exception as e:  # noqa: BLE001 - offline, rate limit, …
-                picks.clear()
-                if not auto:
-                    with picks:
-                        ui.label(f"ORCID lookup failed ({type(e).__name__}); type the ORCID yourself.") \
-                            .classes("or-hint text-negative")
+            # results are cached by name: the panel may be re-rendered while the lookup runs, and the new
+            # row then shows them instead of losing them
+            if name not in ORCID_HITS:
+                ORCID_HITS[name] = None
+                try:
+                    ORCID_HITS[name] = await run.io_bound(search_orcid, name)
+                except Exception as e:  # noqa: BLE001 - offline, rate limit, …
+                    ORCID_HITS.pop(name, None)
+                    if not picks.is_deleted:
+                        picks.clear()
+                        if not auto:
+                            with picks:
+                                ui.label(f"ORCID lookup failed ({type(e).__name__}); type the ORCID yourself.") \
+                                    .classes("or-hint text-negative")
+                    return
+            for _ in range(100):                  # another row/render already asked: wait for its answer
+                if ORCID_HITS.get(name) is not None or name not in ORCID_HITS:
+                    break
+                await asyncio.sleep(0.15)
+            hits = ORCID_HITS.get(name) or []
+            if picks.is_deleted:
                 return
             picks.clear()
             with picks:
@@ -1421,7 +1444,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.link(h["orcid"], h["url"], new_tab=True).classes("or-mono text-xs")
                         if h["institutions"]:
                             ui.label(" · ".join(h["institutions"])).classes("or-hint")
-                ui.button("None of these", on_click=picks.clear).props("dense flat no-caps").classes("or-hint")
+                ui.button("None of these", on_click=lambda: (ORCID_DISMISSED.add(name), picks.clear())) \
+                    .props("dense flat no-caps").classes("or-hint")
 
         def use(r: dict, oi, picks, orcid: str) -> None:
             oi.value = orcid             # on_value_change saves and validates it
@@ -1451,6 +1475,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         .mark("orcid-find")
                 # when a name is typed and no ORCID given yet, look it up and offer the matches
                 ni.on("blur", lambda _, r=r, oi=oi, p=picks: lookup(r, oi, p, auto=True))
+                nm = r["name"].strip()
+                if nm in ORCID_HITS and not r["orcid"] and nm not in ORCID_DISMISSED:   # re-rendered mid-lookup
+                    ui.timer(0.05, lambda r=r, oi=oi, p=picks: lookup(r, oi, p), once=True)
 
         for r in list(rows):
             rows.remove(r)
@@ -3375,7 +3402,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 want = {"errors": ("error", "required"), "warnings": ("warning",), "suggestions": ("info",)}[f_]
                 items = [x for x in items if sev(x) in want]
             order = {"required": 0, "error": 1, "warning": 2, "info": 3}
-            return sorted(items, key=lambda x: (order.get(sev(x), 4), dec(x)["status"] == "accepted"))
+            # open issues first (by severity); handled ones (accepted, ignored) sink to the end of the list
+            return sorted(items, key=lambda x: (dec(x)["status"] != "open", order.get(sev(x), 4)))
 
         with head:
             header_box = ui.row().classes("gap-2 items-center")
@@ -3588,6 +3616,10 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             else:
                                 ui.input(f.label, value=d["values"].get(f.name, ""), placeholder=f.hint,
                                          on_change=typed).props("outlined dense").classes("w-full").mark(f"issue-{f.name}")
+                        if session.is_linkml and not session.yaml_writable(x):
+                            ui.label("LinkML has no place for this change in the YAML: with it, the fixed version "
+                                     "is saved as OWL (Turtle) generated from the schema, plus a patch of the parts "
+                                     "the YAML can hold.").classes("or-hint").mark("linkml-owl-note")
                         o = chosen_option(x)
                         if o is not None and (o.add or o.remove):
                             with ui.row().classes("w-full justify-between"):

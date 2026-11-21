@@ -314,8 +314,10 @@ def test_linkml_schema_fixed_into_yaml_copy(fixtures, tmp_path):
     assert r.path.name == "core-v1.yaml" and src.read_text() == original and r.patch.suffix == ".yaml"
     if mine:
         import yaml
-        sec, name = linkml_element(yaml.safe_load(src.read_text()), mine[0].subject)
-        assert yaml.safe_load(r.path.read_text())[sec][name]["description"] == "A thing for testing."
+        node = yaml.safe_load(r.path.read_text())
+        for k in linkml_element(yaml.safe_load(src.read_text()), mine[0].subject):
+            node = node[k]
+        assert node["description"] == "A thing for testing."
     res = ontoreview.build(r.path, out=tmp_path / "docs", require_metadata=True, evaluation={"oops": "off"})
     m = res.ontology.metadata
     assert m.description == "Soil pH readings." and "creativecommons.org/licenses/by/4.0" in m.license
@@ -366,3 +368,72 @@ def test_other_checks_become_fixes(b):
     manual = next(x for x in added if x.rule == "OOPS!:P07")
     assert manual.kind == "M" and "joins two concepts" in manual.explanation and manual.severity == "warning"
     assert not any("CDI" in tag for x in s.suggestions for tag in x.reported_by)       # interoperability: no fixes
+
+
+LINKML_MINI = """id: https://example.org/mini
+name: mini
+title: Mini schema
+description: A small schema.
+license: https://creativecommons.org/licenses/by/4.0/
+default_prefix: ex
+prefixes:
+  ex: https://example.org/mini/
+  linkml: https://w3id.org/linkml/
+imports:
+- linkml:types
+default_range: string
+classes:
+  Sample:
+    description: A physical sample.
+    attributes:
+      sample_code:
+        range: string
+slots:
+  collected_by:
+    range: string
+"""
+
+
+def test_linkml_attribute_definition_goes_into_the_yaml(tmp_path):
+    import yaml
+
+    from ontoreview.fixes.session import linkml_element
+    src = tmp_path / "mini.yaml"
+    src.write_text(LINKML_MINI)
+    s = FixSession(src)
+    code = next(x for x in s.suggestions if x.rule == "OB011" and x.subject.endswith("sample_code"))
+    assert linkml_element(s._linkml_data(), code.subject) == ("classes", "Sample", "attributes", "sample_code")
+    assert s.yaml_writable(code)
+    s.accept(code.id, values={code.fields[0].name: "The lab code of a sample."})
+    r = s.write()
+    assert r.path.suffix == ".yaml"
+    out = yaml.safe_load(r.path.read_text())
+    assert out["classes"]["Sample"]["attributes"]["sample_code"]["description"] == "The lab code of a sample."
+    assert out["classes"]["Sample"]["attributes"]["sample_code"]["range"] == "string"      # the rest is kept
+
+
+def test_linkml_fix_without_a_yaml_key_writes_owl(tmp_path):
+    """A fix LinkML YAML cannot hold: the OWL version of the schema is written with every fix, plus the
+    YAML-expressible part as a patch."""
+    from ontoreview.fixes.model import Option, Suggestion
+    src = tmp_path / "mini.yaml"
+    src.write_text(LINKML_MINI)
+    s = FixSession(src)
+    iri = next(t for t in s.onto.terms if t.endswith("collected_by"))
+    odd = s.add(Suggestion("OB099", iri, "D", "Mark as deprecated", options=[Option("Deprecate", add=[
+        (f"<{iri}>", "<http://www.w3.org/2002/07/owl#deprecated>",
+         '"true"^^<http://www.w3.org/2001/XMLSchema#boolean>')])]))
+    assert s.supported(odd) and not s.yaml_writable(odd)
+    d = next(x for x in s.suggestions if x.rule == "OB011" and x.subject == iri)
+    s.accept(odd.id)
+    s.accept(d.id, values={d.fields[0].name: "Who collected it."})
+    r = s.write()
+    assert r.path.name == "mini-v1.ttl" and r.patch.name == "mini-v1.patch.ru"
+    assert (tmp_path / "mini-v1.patch.yaml").is_file()
+    rec = json.loads(r.record.read_text())
+    assert rec["converted"].startswith("LinkML schema → OWL")
+    from rdflib import Graph, URIRef
+    from rdflib.namespace import OWL
+    g = Graph().parse(r.path)
+    assert (URIRef(iri), OWL.deprecated, None) in g
+    assert src.read_text() == LINKML_MINI

@@ -49,6 +49,9 @@ Before any docs are generated, **Build docs** opens the **Quality issues** page:
 - **Where AI runs** (Settings › AI & fixes, reorderable): a local **Ollama** first (installed models are listed, new ones can be pulled), then an open-source **Hugging Face** model (default `Qwen/Qwen3.5-4B`, Apache-2.0, downloaded once with progress), then an **API key** (OpenAI, Anthropic, OpenRouter, …).
 - **Come back later**: the Quality issues page lists every checked ontology with its status (waiting / built), kept across restarts; each is built only when you apply or skip it, with its own settings.
 - **Apply N fixes & build** writes a new file (`a-v1.ttl`, `a-v1.yaml` for LinkML) with a patch and a record; the original is never changed. **Skip and build** uses the original.
+- **LinkML**: definitions, titles, domains and ranges of classes, slots, enums and class attributes go into the YAML copy. A fix the YAML cannot hold (e.g. on an imported term) saves the fixed version as OWL (`a-v1.ttl`, generated from the schema) plus a YAML patch of the rest.
+- **Long lists**: open issues stay on top; accepted or ignored ones move to the end.
+- **Prompts**: the exact prompts sent to the model are in [`src/ontoreview/fixes/ai/prompts.md`](src/ontoreview/fixes/ai/prompts.md); edit it, or point `ONTOREVIEW_PROMPTS` at your own copy.
 
 Command line: `ontoreview fix list a.ttl [--ai]` and `ontoreview fix apply a.ttl --accept-safe --set license=… --set creators="Name | ORCID | email"`.
 

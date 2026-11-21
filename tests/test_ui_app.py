@@ -23,8 +23,10 @@ def isolated(tmp_path, monkeypatch):
     monkeypatch.setattr(ui_core, "HISTORY_FILE", tmp_path / "cfg" / "history.json")
     (tmp_path / "cfg").mkdir(parents=True, exist_ok=True)       # builds go straight through unless a test
     (tmp_path / "cfg" / "prefs.json").write_text('{"fix_review": false}')   # exercises the review step
-    from ontoreview.ui import SESSION
+    from ontoreview.ui import ORCID_DISMISSED, ORCID_HITS, SESSION
     SESSION.reset()                      # run state is process-wide (it outlives page switches)
+    ORCID_HITS.clear()
+    ORCID_DISMISSED.clear()
     return tmp_path
 
 
