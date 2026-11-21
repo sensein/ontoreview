@@ -121,6 +121,24 @@ ontoreview evaluate --list-options -f json
 | `settings` | The effective settings (API keys and tokens shown as `***`) |
 | `report` | The full report: every finding and every check's own results and metrics |
 
+**Fixes, including AI suggestions** (`ontoreview fix`): list suggestions (with `--ai`, drafted
+definitions and ranked domains/ranges), save them, let a person choose, then apply exactly those. AI
+output is never applied unless its id is passed to `apply`.
+
+```bash
+# 1. suggestions (+ AI) → fixes.json  (schema ontoreview.fixes/1)
+ontoreview fix list onto.ttl --ai --ai-priority ollama,api --ai-ollama-model qwen3.5:4b -o fixes.json
+ontoreview fix list onto.ttl --refine "soil sample" --refine-instruction "for non-experts" -o fixes.json
+
+# 2. apply the chosen ones → onto-v1.ttl + patch + record  (schema ontoreview.fix-result/1)
+ontoreview fix apply onto.ttl --from fixes.json --accept 3f2a9c1b7d0e --text 3f2a9c1b7d0e="Edited wording." \
+    --value 9b1c…="A definition you typed." --set license=https://creativecommons.org/licenses/by/4.0/ --json
+```
+
+`--from` refuses suggestions made for another version of the file. API keys come from the provider's
+environment variable (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …) and are never written to the results.
+Accepted AI text is counted as `ai_assisted` and recorded with its model in the `.fixes.json` record.
+
 Notes for services:
 
 - **Network and uploads.** OOPS! uploads the ontology to oops.linkeddata.es, and CDI/SI query OLS or

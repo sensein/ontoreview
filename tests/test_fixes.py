@@ -437,3 +437,39 @@ def test_linkml_fix_without_a_yaml_key_writes_owl(tmp_path):
     g = Graph().parse(r.path)
     assert (URIRef(iri), OWL.deprecated, None) in g
     assert src.read_text() == LINKML_MINI
+
+
+def test_cli_fix_list_with_ai_then_apply_from_file(b, stub, tmp_path, monkeypatch):
+    """A site's flow: list suggestions with AI and save them, a person picks, apply exactly those."""
+    from typer.testing import CliRunner
+
+    from ontoreview.cli import app
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    runner = CliRunner()
+    saved = tmp_path / "fixes.json"
+    r = runner.invoke(app, ["fix", "list", str(b), "--ai", "--ai-priority", "api", "--ai-api-provider", "custom",
+                            "--ai-api-base-url", stub + "/v1", "--ai-api-model", "m1", "-o", str(saved), "--json"])
+    assert r.exit_code == 0, r.output
+    data = json.loads(saved.read_text())
+    assert data["schema"] == "ontoreview.fixes/1" and data["ai"]["used"] and data["ai"]["model"] == "m1"
+    assert "sk-test" not in saved.read_text()
+    draft = next(x for x in data["suggestions"] if x["kind"] == "L" and x["subject"] == NS + "PyramidalCell")
+    r = runner.invoke(app, ["fix", "apply", str(b), "--from", str(saved), "--accept", draft["id"],
+                            "--text", f"{draft['id']}=A neuron with a pyramid-shaped cell body.", "--json"])
+    assert r.exit_code == 0, r.output
+    res = json.loads(r.output)
+    assert res["schema"] == "ontoreview.fix-result/1" and res["applied"] == 1 and res["ai_assisted"] == 1
+    from pathlib import Path
+    assert "pyramid-shaped" in Path(res["output"]["path"]).read_text()
+
+
+def test_cli_fix_apply_rejects_suggestions_for_another_version(b, tmp_path):
+    from typer.testing import CliRunner
+
+    from ontoreview.cli import app
+    runner = CliRunner()
+    saved = tmp_path / "fixes.json"
+    assert runner.invoke(app, ["fix", "list", str(b), "-o", str(saved)]).exit_code == 0
+    b.write_text(b.read_text() + "\n# changed\n")
+    r = runner.invoke(app, ["fix", "apply", str(b), "--from", str(saved), "--accept-safe"])
+    assert r.exit_code == 2 and "another version" in " ".join(r.output.split())
