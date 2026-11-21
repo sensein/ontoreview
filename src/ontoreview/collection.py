@@ -168,8 +168,8 @@ def build_collection(folder: str | Path, out: str | Path = "docs", config: Confi
             cfg = _config_for(f, folder, config)
             if single_file:
                 res = build_single_file(f, target / "index.html", config=cfg, **overrides)
-            else:
-                res = build(f, out=target, config=cfg, **overrides)
+            else:   # one deployment kit for the whole collection, at its root
+                res = build(f, out=target, config=cfg, **{**overrides, "deploy_files": False})
             _fill(e, res)
         except Exception as ex:  # noqa: BLE001 - one broken file must not stop the rest
             log.error("%s: %s", e.source, ex)
@@ -177,6 +177,9 @@ def build_collection(folder: str | Path, out: str | Path = "docs", config: Confi
         entries.append(e)
     result = CollectionResult(out, entries, [s.relative_to(folder).as_posix() for s in skipped])
     write_collection_index(result, title=_title(folder, config))
+    if not single_file and overrides.get("deploy_files", True):
+        from .publish.deploy import write_deploy_files
+        write_deploy_files(out, _title(folder, config), [], conneg=False)
     result.seconds = time.perf_counter() - t0
     return result
 

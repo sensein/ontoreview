@@ -43,7 +43,8 @@ def prepare(demo: Path) -> dict[str, Path]:
     cfg = demo / "config"
     cfg.mkdir()
     # cross-domain interoperability gets its own server and screenshots (cdi_shots); keep the others fast
-    (cfg / "prefs.json").write_text(json.dumps({"open_when_done": False, "oops": "off", "cdi": False}))
+    (cfg / "prefs.json").write_text(json.dumps({"open_when_done": False, "oops": "off", "cdi": False, "si": False,
+                                                 "deploy_remote": "https://github.com/you/pizza-docs"}))
     (demo / "soil").mkdir()
     for f in ("toy_onto.ttl", "toy_ref.ttl", "toy_to_bfo.sssom.tsv"):
         shutil.copy(FIX / "cdi" / f, demo / "soil" / f)
@@ -244,6 +245,10 @@ def main() -> None:
             page.goto(url + "/history")
             wait_text(page, "runs shown")
             shoot(page, "history.png")
+            page.get_by_label("Deploy to GitHub Pages").first.click()      # the dialog only; nothing is pushed
+            wait_text(page, "The site will be at")
+            shoot(page, "deploy.png")
+            page.keyboard.press("Escape")
 
             page.goto(url + "/settings")
             wait_text(page, "Default output folder")

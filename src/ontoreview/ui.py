@@ -29,9 +29,11 @@ from .ui_core import (
     TASKS,
     Prefs,
     Settings,
+    add_deploy,
     browse,
     change_counts,
     clear_history,
+    deploys_for,
     describe_source,
     existing_output,
     export_output,
@@ -378,6 +380,25 @@ HELP = [
         "The other row buttons open the output, show it in its folder, or remove the entry (files are kept). API keys "
         "are never stored in the history, so re-runs use the keys currently set in Settings.",
     ], "", [("Open Run history", "/history")]),
+    ("deploy", "Deploy: GitHub Pages, Docker, any server", "deploy.png", [
+        "Every website folder includes a deployment kit: <code>DEPLOY.md</code> (step-by-step), a "
+        "<code>Dockerfile</code> and <code>docker-compose.yml</code> (nginx, content negotiation included), "
+        "<code>deploy/nginx.conf</code> for nginx without Docker, <code>.htaccess</code> for Apache, "
+        "<code>deploy/serve.sh</code> / <code>serve.bat</code> for a local preview, and "
+        "<code>.github/workflows/pages.yml</code>, which publishes the folder on GitHub Pages on every push.",
+        "<b>Deploy to GitHub Pages from the app:</b> press <b>Deploy</b> on a website result, or the cloud icon / "
+        "<b>Deploy</b> of a website run in Run history. Enter the repository (create it on GitHub first; it can be "
+        "empty) and the branch, and press Deploy. The app pushes the website; GitHub Actions publishes it at "
+        "<code>https://&lt;you&gt;.github.io/&lt;repo&gt;/</code> a minute or two later.",
+        "Deploying again (a newer build, or the same run after changes) updates the same site and keeps the "
+        "repository history; nothing is force-pushed. Each deploy is listed with its link on the run in Run history.",
+        "<b>Turn on GitHub Pages</b> sets the repository's Pages source to GitHub Actions with the GitHub CLI "
+        "(<code>gh</code>). Without it, the result tells you the one setting to change "
+        "(Settings › Pages › Source: GitHub Actions).",
+        "<b>Docker:</b> <code>docker compose up -d</code> in the website folder serves it at http://localhost:8080/. "
+        "<b>Elsewhere:</b> upload the folder to any static host; see DEPLOY.md.",
+    ], "Pushing uses your own git login (gh auth login, a credential helper or an SSH key); OntoReview stores no "
+       "tokens. A public repository makes the site public.", [("Open Run history", "/history")]),
     ("si", "Scientific interoperability", ("si-settings.png", "si-results.png"), [
         "<b>What it measures:</b> in how many scientific domains, other than the ontology's own, it is interoperable. "
         "Domains are the 41 OECD Fields of Science (Frascati Manual), e.g. 1.2 Computer and information sciences, "
@@ -1041,6 +1062,89 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             add(r)
         add({"id": "", "doms": []})
 
+    def deploy_dialog(site: str) -> None:
+        """Push a website run to a GitHub repository; its Pages workflow publishes it."""
+        from .publish.github import DeployError, deploy_site, pages_url, parse_remote
+
+        with ui.dialog() as d, ui.card().classes("or-card").style("width:min(40rem,94vw);max-height:90vh;overflow-y:auto"):
+            with ui.row().classes("w-full items-start justify-between no-wrap"):
+                with ui.column().classes("gap-0"):
+                    ui.label("Deploy to GitHub Pages").classes("or-h2")
+                    ui.label(Path(site).name).classes("or-hint or-mono")
+                ui.button(icon="close", on_click=d.close).props('flat round dense aria-label="Close"')
+            ui.label("Pushes this website to a GitHub repository. The workflow included in every website "
+                     "(.github/workflows/pages.yml) publishes it on GitHub Pages; later deploys to the same "
+                     "repository update the site and keep its history.").classes("or-hint")
+            ui.label("Repository").classes("or-label")
+            remote = ui.input(placeholder="https://github.com/you/ontology-docs", value=prefs.deploy_remote) \
+                .props('outlined dense clearable aria-label="GitHub repository"').classes("w-full or-mono") \
+                .mark("deploy-remote")
+            url_hint = ui.label().classes("or-hint")
+            with ui.row().classes("gap-4 items-end"):
+                with ui.column().classes("gap-1"):
+                    ui.label("Branch").classes("or-label")
+                    branch = ui.input(value=prefs.deploy_branch or "main") \
+                        .props('outlined dense aria-label="Branch"').classes("w-40 or-mono")
+                pages = ui.checkbox("Turn on GitHub Pages (needs the GitHub CLI, gh)", value=prefs.deploy_enable_pages)
+            ui.label("Create the repository on GitHub first (it can be empty). Pushing uses your own git login "
+                     "(gh auth login, a credential helper or an SSH key); nothing is stored here. A public "
+                     "repository makes the site public.").classes("or-hint")
+            past = deploys_for(site)
+            if past:
+                ui.label("Earlier deploys of this run").classes("or-label q-mt-sm")
+                for x in past[:5]:
+                    with ui.row().classes("items-center gap-2"):
+                        ui.icon("cloud_done", size="16px").classes("or-muted")
+                        ui.label(f"{x.get('when', '')[:16].replace('T', ' ')} UTC → ").classes("or-hint")
+                        ui.link(x.get("pages_url", ""), x.get("pages_url", ""), new_tab=True).classes("or-hint")
+            result_box = ui.column().classes("w-full gap-1")
+            with ui.row().classes("w-full justify-end gap-2 q-mt-sm"):
+                ui.button("Cancel", on_click=d.close).props("flat no-caps")
+                go = ui.button("Deploy", icon="cloud_upload").props("unelevated no-caps").mark("deploy-go")
+
+            def show_url() -> None:
+                try:
+                    o, r = parse_remote(remote.value or "")
+                    url_hint.text = f"The site will be at {pages_url(o, r)}"
+                except DeployError:
+                    url_hint.text = "A GitHub address: https://github.com/<you>/<repo> or git@github.com:<you>/<repo>.git"
+            remote.on_value_change(lambda _: show_url())
+            show_url()
+
+            async def run_deploy() -> None:
+                result_box.clear()
+                prefs.deploy_remote, prefs.deploy_branch = (remote.value or "").strip(), (branch.value or "main").strip()
+                prefs.deploy_enable_pages = bool(pages.value)
+                prefs.save()
+                go.disable()
+                with result_box:
+                    with ui.row().classes("items-center gap-2"):
+                        ui.spinner(size="18px")
+                        ui.label("Pushing to GitHub…").classes("or-hint")
+                try:
+                    res = await run.io_bound(deploy_site, site, prefs.deploy_remote, prefs.deploy_branch,
+                                             None, prefs.deploy_enable_pages)
+                except Exception as e:  # noqa: BLE001 - DeployError and anything git says
+                    result_box.clear()
+                    with result_box:
+                        ui.label(f"Deploy failed: {e}").classes("or-hint text-negative").style("word-break:break-word")
+                    go.enable()
+                    return
+                add_deploy(site, res.to_dict())
+                result_box.clear()
+                with result_box:
+                    with ui.row().classes("items-center gap-2"):
+                        badge("ok", "Deployed" if res.changed else "Up to date")
+                        ui.link(res.pages_url, res.pages_url, new_tab=True).classes("text-weight-medium")
+                    ui.label(f"Commit {res.commit} on {res.branch} · {res.repo_url}").classes("or-hint or-mono")
+                    for n in res.notes:
+                        ui.label(n).classes("or-hint").style("word-break:break-word")
+                go.enable()
+                notify("Deployed to GitHub" if res.changed else "Already up to date", "positive")
+
+            go.on_click(run_deploy)
+        d.open()
+
     def metrics_grid(metrics: list[dict], title: str = "Quality metrics", mark: str = "ontocheck-metrics") -> None:
         dot = {"ok": "ok", "warn": "warn", "error": "err", "info": "off", "skipped": "off"}
         with ui.card().classes("or-card w-full").props("flat"), ui.column().classes("or-sec gap-3 w-full"):
@@ -1385,6 +1489,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 if res.index and res.task not in ("check", "interop"):
                                     ui.button("Open docs", icon="open_in_new", on_click=lambda: open_result(res.index)) \
                                         .props("unelevated no-caps")
+                                if res.task == "site" and res.ok:
+                                    ui.button("Deploy", icon="cloud_upload",
+                                              on_click=lambda: deploy_dialog(str(res.output))) \
+                                        .props("outline no-caps").mark("deploy-output") \
+                                        .tooltip("Publish this website on GitHub Pages")
                                 ui.button("Export", icon="download", on_click=lambda: export(str(res.output))) \
                                     .props("outline no-caps").mark("export-output") \
                                     .tooltip("Download the output" + (" as a .zip" if Path(res.output).is_dir() else ""))
@@ -1702,7 +1811,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             rows = [{"id": e.id, "status": "failed" if e.failed else ("ok" if e.exists else "gone"),
                      "name": run_name(e), "out": e.output, "task": TASKS.get(e.task, e.task),
                      "issues": issues_text(e), "when": when_text(e.when), "index": e.index or "",
-                     "exists": e.exists} for e in shown]
+                     "exists": e.exists, "site": e.task == "site" and not e.failed,
+                     "deployed": (e.deploys[0].get("when", "")[:10] if e.deploys else "")} for e in shown]
             tbl = ui.table(rows=rows, row_key="id", pagination={"rowsPerPage": 20}, columns=[
                 {"name": "status", "label": "Status", "field": "status", "align": "left"},
                 {"name": "name", "label": "Ontology", "field": "name", "align": "left"},
@@ -1724,6 +1834,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                   aria-label="Open output" @click.stop="() => $parent.$emit('open', props.row)"><q-tooltip>Open output</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="download" :disable="!props.row.exists"
                   aria-label="Export output" @click.stop="() => $parent.$emit('export', props.row)"><q-tooltip>Export output (folders as .zip)</q-tooltip></q-btn>
+                <q-btn v-if="props.row.site" flat round dense size="sm" icon="cloud_upload" :disable="!props.row.exists"
+                  aria-label="Deploy to GitHub Pages" @click.stop="() => $parent.$emit('deploy', props.row)"><q-tooltip>Deploy to GitHub Pages{{ props.row.deployed ? ' (deployed ' + props.row.deployed + ')' : '' }}</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="folder_open" :disable="!props.row.exists"
                   aria-label="Show in folder" @click.stop="() => $parent.$emit('reveal', props.row)"><q-tooltip>Show in folder</q-tooltip></q-btn>
                 <q-btn flat round dense size="sm" icon="delete_outline" color="negative"
@@ -1734,6 +1846,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             tbl.on("reveal", lambda e: reveal(e.args.get("out")))
             tbl.on("details", lambda e: details(by_id[e.args["id"]]))
             tbl.on("export", lambda e: export(by_id[e.args["id"]].output))
+            tbl.on("deploy", lambda e: deploy_dialog(by_id[e.args["id"]].output))
             tbl.on("rowClick", lambda e: details(by_id[e.args[1]["id"]]))
             tbl.props("row-click-cursor").classes("or-clickable-rows")
             tbl.on("forget", lambda e: (forget_run(e.args["id"]), table.refresh()))
@@ -1787,6 +1900,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 ui.label("This run's output: " + entry.output + ("" if entry.exists else " (deleted)")) \
                     .classes("or-hint or-mono").style("word-break:break-all")
                 with ui.row().classes("w-full justify-end gap-2 q-mt-sm"):
+                    if entry.task == "site" and entry.exists and not entry.failed:
+                        ui.button("Deploy", icon="cloud_upload", on_click=lambda: (d.close(), deploy_dialog(entry.output))) \
+                            .props("outline no-caps").tooltip("Publish this website on GitHub Pages")
                     ui.button("Export", icon="download", on_click=lambda: export(entry.output)) \
                         .props("outline no-caps").set_enabled(entry.exists)
                     ui.button("Edit and run", icon="edit", on_click=lambda: (d.close(), rerun(entry))) \

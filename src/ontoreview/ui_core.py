@@ -756,6 +756,7 @@ class HistoryEntry:
     settings: dict[str, Any]
     failed: str | None = None      # the run raised before producing anything
     summary: str = ""              # e.g. "+3 added · 1 removed · 2 modified" for comparisons
+    deploys: list[dict] = field(default_factory=list)   # GitHub Pages deploys of this run's website
 
     @property
     def exists(self) -> bool:
@@ -866,6 +867,26 @@ def run_config_rows(settings: dict[str, Any]) -> list[tuple[str, str]]:
                      if g("si", True) else "off"))
         rows.append(("Fail on", g("fail_on", "error")))
     return rows
+
+
+def add_deploy(output: str, info: dict, path: Path | None = None) -> None:
+    """Record a deploy on the newest history entry whose output is ``output``."""
+    path = path or HISTORY_FILE
+    entries = load_history(path)
+    for e in entries:
+        if e.output == str(output):
+            e.deploys = [info, *e.deploys][:20]
+            break
+    else:
+        return
+    try:
+        path.write_text(json.dumps([asdict(e) for e in entries], indent=1), "utf-8")
+    except OSError as e:
+        log.debug("could not save the deploy in the run history: %s", e)
+
+
+def deploys_for(output: str, path: Path | None = None) -> list[dict]:
+    return next((e.deploys for e in load_history(path) if e.output == str(output)), [])
 
 
 def forget_run(entry_id: str, path: Path | None = None) -> None:
@@ -1070,6 +1091,9 @@ class Prefs:
     si_theta_s: float = 0.3
     si_domain_map: str = ""
     si_references: str = ""
+    deploy_remote: str = ""         # GitHub repository for "Deploy to GitHub Pages"
+    deploy_branch: str = "main"
+    deploy_enable_pages: bool = True
     cdi_bioportal_key: str = field(default="", repr=False)
     cdi_ontoportal_key: str = field(default="", repr=False)
     hf_token: str = field(default="", repr=False)
