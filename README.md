@@ -108,8 +108,8 @@ Watch the OntoReview demo to explore ontology quality assessment, interoperabili
 
 ▶️ **[Watch on YouTube](https://youtu.be/WxV6-ko2W1E)**
 
-> **Note:** The video does not show the installation of the
-> optional CDI dependencies. To enable cross-domain and
+> **Note:** The video does not show cross-interoperability and scientific interoperability score because
+> optional CDI dependencies were not installed. To enable cross-domain and
 > scientific interoperability evaluation, install:
 >
 > ```bash
