@@ -46,6 +46,22 @@ ontoreview build my-ontology.ttl -o docs          # the website
 ontoreview check my-ontology.ttl --fail-on error  # quality checks only, CI exit code
 ```
 
+## 🎥 Video Tutorial
+
+Watch the OntoReview demo to explore ontology quality assessment, interoperability evaluation, AI-assisted fixes, automated documentation generation, and the built-in web interface.
+
+[![Watch OntoReview Demo](https://img.youtube.com/vi/WxV6-ko2W1E/maxresdefault.jpg)](https://youtu.be/WxV6-ko2W1E)
+
+▶️ **[Watch on YouTube](https://youtu.be/WxV6-ko2W1E)**
+
+> **Note:** The video does not show the installation of the
+> optional CDI dependencies. To enable cross-domain and
+> scientific interoperability evaluation, install:
+>
+> ```bash
+> pip install "ontoreview[ui,cdi]"
+> ```
+
 ## Key features
 
 - **Documentation website.** Every class, property, individual and SKOS concept with labels, definitions, axioms in Manchester syntax and back-links; an overview with statistics; an interactive diagram (VOWL or UML); search; downloads in Turtle, RDF/XML, JSON-LD and N-Triples; how to cite. Works offline, in dark mode, on phones and in print. Also as one `standalone.html`, Markdown or MyST.
