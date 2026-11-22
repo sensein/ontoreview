@@ -102,7 +102,10 @@ class UIConfig(BaseModel):
     graph_layout: Literal["auto", "hierarchy", "force", "concentric"] = Field(
         "auto", description="'auto' = force for VOWL, hierarchy for UML")
     graph_property_edges: bool | Literal["auto"] = Field(
-        "auto", description="Show object-property edges: true, false or auto (on for up to 40 classes)")
+        True, description="Show object-property edges: true (default), false, or auto (only while the "
+                          "figure is small); the reader can toggle them in the figure")
+    graph_individuals: bool = Field(
+        True, description="Show named individuals (e.g. enum values) linked to their class by rdf:type")
     graph_top_levels: int = Field(2, description="Levels shown initially for large hierarchies")
     section_order: list[str] = Field(default_factory=list, description="Section ids in display order; "
                                      "'terms' (or 'reference') stands for all term sections")

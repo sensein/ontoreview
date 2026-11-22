@@ -143,6 +143,7 @@ ollama_model = "qwen3.5:4b"
 **Keys and tokens** belong in the environment (`BIOPORTAL_API_KEY`, `ONTOPORTAL_API_KEY`, `HF_TOKEN`,
 `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`) or in the app's Settings, which keeps them in a file only you can
 read. They are never written to `ontoreview.toml`, the run history or any report.
+
 All settings with their descriptions: [Guide › Configuration](guide/GUIDE.md#configuration-ontoreviewtoml).
 
 ## Commands

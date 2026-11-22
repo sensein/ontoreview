@@ -234,7 +234,8 @@ accent = "#174a8b"
 width = "wide"                # or "normal"
 graph_notation = "vowl"       # or "uml"
 graph_layout = "auto"         # "force" | "hierarchy" | "concentric" (auto: force for VOWL, hierarchy for UML)
-graph_property_edges = "auto" # true | false | auto (on for small ontologies)
+graph_property_edges = true   # true | false | auto (on for small ontologies)
+graph_individuals = true      # enum values / named individuals, linked to their class
 section_order = ["introduction", "competency-questions", "terms", "graph"]
 
 [evaluation]

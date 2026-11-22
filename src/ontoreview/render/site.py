@@ -378,7 +378,8 @@ class SiteRenderer:
         written = []
         data = {
             "search": search_index(self.onto, self.href),
-            "graph": graph_data(self.onto, self.href) if self.has_graph() else None,
+            "graph": (graph_data(self.onto, self.href, individuals=self.cfg.ui.graph_individuals)
+                      if self.has_graph() else None),
             "i18n": {k: self.t(k) for k in ("no_results", "copied", "copy_iri", "search_placeholder",
                                             "graph_showing_top", "graph_showing_focus",
                                             "graph_showing_all", "dark", "light", "results_count",

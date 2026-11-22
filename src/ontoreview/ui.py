@@ -3943,9 +3943,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             failed: list[str] = []
             try:
                 src = await ensure_ai()
+                if ai_bar.is_deleted:
+                    return
                 desc = src.describe() if src.name != "hf" else {"provider": "Hugging Face", "model": src.model}
                 ai_bar.set_visibility(True)
                 for i, x in enumerate(todo, 1):
+                    if ai_bar.is_deleted:       # the page was left; stop drafting for it
+                        return
                     if x.id in session.accepted or x not in session.suggestions:
                         continue
                     ai_msg.set_text(f"AI suggestions with {desc.get('provider')} · {desc.get('model')}: "
@@ -3961,6 +3965,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         failed.append(str(e))
                         continue            # keep the field to fill by hand
                     session.replace(draft)
+                    if ai_bar.is_deleted:
+                        return
                     if fs["sel"] == x.id:
                         fs["sel"] = draft.id
                     render_all()
@@ -3978,7 +3984,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 set_ai("error", f"AI suggestions failed: {e}")
             finally:
                 ai_lock["busy"] = False
-                ai_bar.set_visibility(False)
+                if not ai_bar.is_deleted:
+                    ai_bar.set_visibility(False)
 
         async def rerun() -> None:
             from .fixes import FixSession
@@ -4018,6 +4025,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             ext_bar.set_visibility(True)
             try:
                 reports = await run.io_bound(session.run_external)
+                if ext_bar.is_deleted:          # the page was left while the checks ran
+                    return
                 errs = [f"{r.tool}: {r.error}" for r in reports if r.error]
                 ext_msg.set_text("")
                 if errs:
@@ -4026,11 +4035,13 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             except Exception as e:  # noqa: BLE001
                 notify(f"The other checks could not run: {e}", "warning")
             finally:
-                ext_bar.set_visibility(False)
+                if not ext_bar.is_deleted:
+                    ext_bar.set_visibility(False)
 
         async def start_page() -> None:
             await load_external()
-            await auto_drafts()
+            if not ext_bar.is_deleted:
+                await auto_drafts()
 
         render_all()
         ui.timer(0.2, start_page, once=True)
