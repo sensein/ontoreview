@@ -24,6 +24,7 @@
       <span><svg width="44" height="12"><line x1="10" y1="6" x2="44" y2="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.5 2.5"/><path d="M1 6 L11 1 L11 11 Z" fill="var(--paper)" stroke="currentColor" stroke-width="1.2"/></svg> {{ t('legend_eq') }}</span>
       <span class="legend-prop"><svg width="44" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 3"/><path d="M34 2 L43 6 L34 10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg> {{ t('legend_prop') }}</span>
       <span><svg width="30" height="14"><rect x="1" y="1" width="28" height="12" fill="none" stroke="currentColor"/></svg> {{ t('legend_class') }}</span>
+      {% if ui.graph_individuals and 'individual' in onto.kinds_present() %}<span><svg width="46" height="14"><line x1="0" y1="7" x2="14" y2="7" stroke="var(--muted)" stroke-dasharray="2 3"/><rect x="15" y="1" width="30" height="12" rx="3" fill="none" stroke="var(--muted)"/></svg> {{ t('legend_value') }}</span>{% endif %}
     </div>
     <div class="legend legend-vowl" aria-hidden="true">
       <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="var(--vowl-class)" stroke="var(--vowl-stroke)" stroke-width="1.2"/></svg> {{ t('legend_class_v') }}</span>
@@ -33,6 +34,7 @@
       <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" rx="3" fill="var(--vowl-oprop)"/></svg> {{ t('legend_oprop') }}</span>
       <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" rx="3" fill="var(--vowl-dprop)"/></svg> {{ t('legend_dprop') }}</span>
       <span><svg width="34" height="14"><rect x="1" y="1" width="32" height="12" fill="var(--vowl-literal)" stroke="var(--vowl-stroke)" stroke-dasharray="3 2"/></svg> {{ t('legend_literal') }}</span>
+      {% if ui.graph_individuals and 'individual' in onto.kinds_present() %}<span><svg width="46" height="14"><line x1="0" y1="7" x2="14" y2="7" stroke="var(--vowl-stroke)" stroke-dasharray="2 3"/><rect x="15" y="1" width="30" height="12" rx="3" fill="var(--vowl-value)" stroke="var(--vowl-stroke)"/></svg> {{ t('legend_value') }}</span>{% endif %}
     </div>
     <figcaption><span class="fig-label">{{ t('figure') }} 1.</span> {{ t('figure_caption', title=meta.title or 'the ontology') }} <span id="g-status" class="muted" role="status" aria-live="polite"></span></figcaption>
   </figure>

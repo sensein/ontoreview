@@ -29,7 +29,8 @@ def search_index(onto: Ontology, href) -> list[dict]:
     return docs
 
 
-def graph_data(onto: Ontology, href, max_nodes: int = 600) -> dict:
+def graph_data(onto: Ontology, href, max_nodes: int = 600, individuals: bool = True,
+               max_values: int = 400, max_per_class: int = 30) -> dict:
     """Cytoscape elements.
 
     Nodes are classes (and SKOS concepts). Edges:
@@ -37,6 +38,11 @@ def graph_data(onto: Ontology, href, max_nodes: int = 600) -> dict:
     * ``eq``   named class in an equivalence definition -> defined class (dotted)
     * ``prop`` object property from domain to range, taken from rdfs:domain/rdfs:range and from
       restrictions such as ``hasBase some PizzaBase``
+    * ``inst`` class -> one of its members (rdf:type): named individuals such as enum values
+      (``Damaged`` a ``ConditionType``) become small ``value`` nodes; SKOS concepts already shown
+      as nodes are linked the same way
+    * ``sub`` with ``rel`` set: concept scheme -> a concept that has no broader concept or class
+      in the figure (skos:topConceptOf / skos:inScheme), so no concept floats unconnected
     Datatype properties are attached to their domain class as ``attrs`` (shown inside the box).
     """
     from ..model.axioms import expr_text
@@ -108,6 +114,46 @@ def graph_data(onto: Ontology, href, max_nodes: int = 600) -> dict:
                                                 "label": p.label, "href": href(p.ref()),
                                                 "prop": p.iri, "inv": _inverse(p)})
 
+    # members of a class (rdf:type): enum values / named individuals, and concepts typed by a class
+    values: list[dict] = []
+    typed: set[str] = set()
+    for t in classes:
+        if t.kind != "class":
+            continue
+        shown = 0
+        for m in t.instances:
+            mt = onto.terms.get(m.iri)
+            if mt is None or m.iri == t.iri:
+                continue
+            if m.iri in ids:
+                add_edge(f"i|{t.iri}|{m.iri}", {"source": t.iri, "target": m.iri, "type": "inst"})
+                typed.add(m.iri)
+            elif individuals and mt.kind == "individual" and shown < max_per_class \
+                    and len(values) < max_values:
+                shown += 1
+                if not any(v["data"]["id"] == m.iri for v in values):
+                    values.append({"data": {"id": m.iri, "label": mt.label, "href": href(mt.ref()),
+                                            "kind": "value", "val": True, "dep": mt.deprecated}})
+                add_edge(f"i|{t.iri}|{m.iri}", {"source": t.iri, "target": m.iri, "type": "inst"})
+
+    # concepts with nothing above them hang from their concept scheme
+    schemes: dict[str, dict] = {}
+    scheme_terms = [x for x in onto.terms.values() if x.kind == "concept_scheme"]
+    for t in classes:
+        if t.kind != "concept" or t.iri in typed or any(b.iri in ids for b in t.broader):
+            continue
+        top_of = [x for x in scheme_terms if any(r.iri == t.iri for r in x.top_concepts)]
+        cands = top_of + [onto.terms[r.iri] for r in t.in_scheme
+                          if r.iri in onto.terms and onto.terms[r.iri] not in top_of]
+        if not cands:
+            continue
+        st = cands[0]
+        schemes.setdefault(st.iri, {"data": {"id": st.iri, "label": st.label, "href": href(st.ref()),
+                                             "kind": "concept_scheme", "dep": st.deprecated,
+                                             "attrs": "", "dprops": [], "inst": 0}})
+        add_edge(f"s|{t.iri}|{st.iri}", {"source": st.iri, "target": t.iri, "type": "sub",
+                                         "rel": "top concept of" if st in top_of else "in scheme"})
+
     for t in classes:
         a = sorted(attrs[t.iri])[:8]
         nodes.append({"data": {"id": t.iri, "label": t.label, "href": href(t.ref()), "kind": t.kind,
@@ -115,7 +161,8 @@ def graph_data(onto: Ontology, href, max_nodes: int = 600) -> dict:
                                "dprops": dprops[t.iri][:12], "defined": bool(t.equivalent),
                                "inst": len(t.instances)}})
     total = len([t for t in onto.terms.values() if t.kind == "class"])
-    return {"nodes": nodes + list(external.values()), "edges": edges, "truncated": total > max_nodes}
+    return {"nodes": nodes + list(schemes.values()) + list(external.values()), "values": values,
+            "edges": edges, "truncated": total > max_nodes}
 
 
 def _inverse(p) -> str | None:

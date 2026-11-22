@@ -109,3 +109,52 @@ def test_section_order_terms_alias(fixtures, tmp_path):
     html = _html(tmp_path, fixtures, ui={"section_order": ["terms", "graph"]})
     main = html.split('<main', 1)[1]
     assert main.index('id="classes"') < main.index('id="graph"')
+
+
+def test_graph_links_values_to_their_class(tmp_path):
+    """Enum values / individuals and class-typed concepts hang from their class; loose concepts from
+    their scheme; property edges are on by default."""
+    import json
+    from pathlib import Path
+
+    from ontoreview.build import build
+    from ontoreview.config import UIConfig
+    from ontoreview.loader import load_ontology
+    from ontoreview.model.extract import extract
+    from ontoreview.config import Config
+    from ontoreview.render.data import graph_data
+
+    assert UIConfig().graph_property_edges is True and UIConfig().graph_individuals is True
+
+    fx = Path(__file__).parent / "fixtures" / "linkml" / "personinfo.yaml"
+    build(str(fx), out=str(tmp_path / "site"))
+    js = (tmp_path / "site" / "ontoreview-data.js").read_text()
+    g = json.loads(js[len("window.ONTOREVIEW="):-1])["graph"]
+    assert g["values"], "enum values missing from the figure"
+    vals = {v["data"]["id"] for v in g["values"]}
+    inst = [e["data"] for e in g["edges"] if e["data"]["type"] == "inst"]
+    assert vals == {e["target"] for e in inst}      # every value has its rdf:type edge
+    assert "enum value, dotted to its class" in (tmp_path / "site" / "index.html").read_text()
+
+    ttl = tmp_path / "c.ttl"
+    ttl.write_text("""
+@prefix : <http://ex.org/o#> . @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+<http://ex.org/o> a owl:Ontology .
+:ConditionType a owl:Class ; rdfs:label "ConditionType" .
+:Damaged a skos:Concept , :ConditionType ; skos:prefLabel "Damaged" ; skos:inScheme :Conditions .
+:Good a owl:NamedIndividual , :ConditionType ; rdfs:label "Good" .
+:Conditions a skos:ConceptScheme ; skos:prefLabel "Conditions" ; skos:hasTopConcept :Loose .
+:Loose a skos:Concept ; skos:prefLabel "Loose" ; skos:inScheme :Conditions .
+""")
+    cfg = Config(source=str(ttl))
+    onto = extract(load_ontology(str(ttl)), cfg)
+    g = graph_data(onto, lambda r: "#")
+    e = {(x["data"]["source"].split("#")[1], x["data"]["target"].split("#")[1], x["data"]["type"],
+          x["data"].get("rel")) for x in g["edges"]}
+    assert ("ConditionType", "Damaged", "inst", None) in e        # concept typed by a class
+    assert ("ConditionType", "Good", "inst", None) in e           # named individual -> value node
+    assert ("Conditions", "Loose", "sub", "top concept of") in e  # otherwise from its scheme
+    assert not any(t == "Damaged" and s == "Conditions" for s, t, *_ in e)
+    assert [v["data"]["label"] for v in g["values"]] == ["Good"]
+    assert graph_data(onto, lambda r: "#", individuals=False)["values"] == []

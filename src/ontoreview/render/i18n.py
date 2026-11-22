@@ -213,6 +213,7 @@ EN = {
     "legend_oprop": "object property",
     "legend_dprop": "datatype property",
     "legend_literal": "datatype / literal",
+    "legend_value": "individual / enum value, dotted to its class (rdf:type)",
     "competency_questions": "Competency questions",
     "cq_question": "Question",
     "cq_answer": "Answer",
