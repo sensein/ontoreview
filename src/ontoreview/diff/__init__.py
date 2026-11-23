@@ -12,6 +12,7 @@ from ..loader import LoadedOntology, load_ontology
 from ..model.axioms import ExpressionRenderer, expr_text, literal_text
 from ..model.entities import Ref
 from ..model.extract import Extractor, local_name
+from ..telemetry import api as _api
 
 
 @dataclass
@@ -198,6 +199,7 @@ def compare(old: LoadedOntology, new: LoadedOntology, config: Config | None = No
     return log
 
 
+@_api("compare_files")
 def compare_files(old: str, new: str, config: Config | None = None) -> Changelog:
     return compare(load_ontology(old), load_ontology(new), config)
 

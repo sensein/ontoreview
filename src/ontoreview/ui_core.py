@@ -555,13 +555,25 @@ def interop_only(report) -> None:
     report.external = [x for x in report.external if x.tool in keep]
 
 
+_active = {"n": 0}
+
+
+def ACTIVE_TASKS() -> int:  # noqa: N802 - read like a constant by the auto-exit check
+    """Tasks (builds, checks, comparisons) running right now."""
+    return _active["n"]
+
+
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
     from . import telemetry
 
-    with telemetry.run(telemetry.TASK_COMMANDS.get(settings.task, settings.task), surface="ontoreview-ui",
-                       task=settings.task, is_folder=settings.is_folder):
-        return _run_task(settings)
+    _active["n"] += 1
+    try:
+        with telemetry.run(telemetry.TASK_COMMANDS.get(settings.task, settings.task), surface="ontoreview-ui",
+                           task=settings.task, is_folder=settings.is_folder):
+            return _run_task(settings)
+    finally:
+        _active["n"] -= 1
 
 
 def _run_task(settings: Settings) -> TaskResult:

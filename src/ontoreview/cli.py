@@ -217,7 +217,7 @@ def main(
         console.print(f"[bold]OntoReview[/] {__version__}\n")
         console.print("Start the app:   [bold]ontoreview ui[/]        (or [bold]ontoreview-ui[/])")
         console.print("                 opens http://127.0.0.1:8765 in your browser; "
-                      "[dim]--port N, --no-browser[/]")
+                      "[dim]--port N, --no-browser, --keep-running[/]")
         console.print('Needs the extra: [bold]pip install "ontoreview\\[ui]"[/]  (Python 3.11+)\n')
         console.print("[dim]Automation and CI commands (build, export, check, …): ontoreview --help[/]")
 
@@ -227,11 +227,14 @@ def ui_cmd(
     port: int | None = typer.Option(None, "--port", "-p", help="Port (default: the first free port from 8765)."),
     host: str = typer.Option("127.0.0.1", "--host", help="Interface to bind; keep 127.0.0.1 unless you know why."),
     no_browser: bool = typer.Option(False, "--no-browser", help="Do not open a browser window."),
+    keep_running: bool = typer.Option(False, "--keep-running", help="Keep running after the last browser tab is "
+                                      "closed (otherwise the app stops about 10 s later)."),
 ) -> None:
     """Start the OntoReview app in your browser (recommended)."""
     from .ui import main as ui_main
 
-    argv = ["--host", host] + (["--port", str(port)] if port else []) + (["--no-browser"] if no_browser else [])
+    argv = ["--host", host] + (["--port", str(port)] if port else []) + (["--no-browser"] if no_browser else []) \
+        + (["--keep-running"] if keep_running else [])
     ui_main(argv)
 
 
@@ -722,6 +725,8 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    env:
+      ONTOREVIEW_WORKFLOW: ontoreview-init   # lets OntoReview's anonymous statistics tell this workflow apart
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -1116,6 +1121,24 @@ def telemetry_disable() -> None:
     telemetry.set_details(False)
     console.print("[green]✓[/] Optional telemetry details are off. Mandatory usage statistics (country, commands "
                   "and checks run, platform) are still sent; see `ontoreview telemetry show`.")
+
+
+@telemetry_app.command("off")
+def telemetry_off() -> None:
+    """Turn off all telemetry for this user (the same as DO_NOT_TRACK=1, but saved)."""
+    from . import telemetry
+    telemetry.set_enabled(False)
+    console.print("[green]✓[/] Telemetry is off: nothing is sent from this computer (events not sent yet were "
+                  "discarded). Turn it back on with `ontoreview telemetry on`.")
+
+
+@telemetry_app.command("on")
+def telemetry_on() -> None:
+    """Turn telemetry back on (the default)."""
+    from . import telemetry
+    telemetry.set_enabled(True)
+    reason = telemetry.disabled_reason()
+    console.print("[green]✓[/] Telemetry is on." + (f" [yellow]Still off here: {escape(reason)}.[/]" if reason else ""))
 
 
 @telemetry_app.command("enable")

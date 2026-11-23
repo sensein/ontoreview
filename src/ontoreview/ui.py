@@ -29,6 +29,7 @@ from rdflib import URIRef
 
 from . import __version__, telemetry
 from .ui_core import (
+    ACTIVE_TASKS,
     MAX_UPLOAD_BYTES,
     RUN_FOLDER_TASKS,
     TASKS,
@@ -242,6 +243,9 @@ HELP = [
         "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
         "files or folders onto the page.",
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
+        "Closing the browser tab stops the app about 10 seconds later (after a running build finishes), so the "
+        "terminal is free again. Start it with <code>ontoreview ui --keep-running</code> to keep it running "
+        "without a tab.",
     ], "Everything runs on your computer except the OOPS! scan, which sends the ontology to a web service, and the "
        "cross-domain interoperability score, which sends labels and IRIs (never the file) to OLS. Turn either off in "
        "Settings › Quality checks.", [("Open Build", "/")]),
@@ -561,20 +565,30 @@ HELP = [
         "institutions ask how many people use it and where; that keeps the project funded and maintained. Knowing "
         "which checks people run, and which fail on which platforms, tells us what to fix and improve first. If "
         "only people who opt in were counted, these numbers would be far too low to be useful. The mandatory part "
-        "is kept to the minimum needed for that, and none of it identifies you.",
+        "is kept to the minimum needed for that, and none of it identifies you. Mandatory means it is part of "
+        "every event; you can still turn telemetry off completely.",
         "<b>Optional (on by default, switch off any time):</b> why a check did not run, ROBOT and reasoner setup, "
         "finding counts, ontology format and size (as ranges such as 100-1k classes), documentation options, the AI "
         "provider and model family, CLI option names (never their values) and which pages of the app you open.",
         "<b>Never sent:</b> your ontologies, IRIs, labels, file paths, URLs, competency questions, AI prompts or "
         "answers, API keys or tokens, names, e-mail addresses, ORCID, git remotes. The IP address is used by PostHog "
         "only to look up the country and is then discarded; no city or location is kept.",
+        "<b>Where it comes from:</b> the app, the <code>ontoreview</code> command, and the Python API "
+        "(<code>import ontoreview</code>: one event per process with the functions called, never in CI or test "
+        "suites). Each user on a computer counts once: the id is a one-way hash of the computer's own id and the "
+        "user account, which never leave the computer.",
+        "<b>CI (GitHub Actions and others):</b> the CI service, whether the workflow is the one "
+        "<code>ontoreview init</code> writes, and what triggered it (push, pull request, schedule). A repository "
+        "counts once through a one-way hash of its numeric repository id; repository names and URLs are never "
+        "sent. CI runs are sampled (1 in 10).",
         "<b>Turn off the optional details:</b> Settings › Telemetry (switch off <i>Share optional details</i>), "
         "<code>ontoreview telemetry disable</code>, or <code>ONTOREVIEW_TELEMETRY_DETAILS=0</code>.",
-        "<b>Turn off everything:</b> set <code>DO_NOT_TRACK=1</code> in the environment before starting OntoReview.",
+        "<b>Turn off everything:</b> Settings › Telemetry (switch off <i>Send usage statistics</i>), "
+        "<code>ontoreview telemetry off</code>, or <code>DO_NOT_TRACK=1</code> in the environment (handy for CI).",
         "<b>See what is sent:</b> Settings › Telemetry lists every property and the last events sent from your "
         "computer; <code>ontoreview telemetry show --last</code> prints the same.",
     ], "Statistics are sent in the background and never slow down or stop a run; without a network nothing is "
-       "sent. Calling OntoReview as a Python library (import ontoreview) sends nothing.",
+       "sent; events made offline wait on your computer and are sent later.",
      [("Telemetry settings", "settings:telemetry")]),
 ]
 
@@ -2410,9 +2424,30 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         '<div class="or-hint" style="line-height:1.55">OntoReview sends anonymous usage statistics '
                         "to PostHog (US) so we can see how many people actually use it (not just download it), "
                         "where, and which commands and quality checks work for them. "
-                        "<b>Mandatory</b> statistics are always sent; <b>optional</b> details are on by default "
-                        "and you can turn them off here. Nothing about your ontologies, files or keys is ever sent. "
+                        "<b>Mandatory</b> statistics are part of every event while telemetry is on; <b>optional</b> "
+                        "details are on by default and can be turned off on their own. You can also turn telemetry "
+                        "off completely. Nothing about your ontologies, files or keys is ever sent. "
+                        "<br>These settings cover the app, the <code>ontoreview</code> command and the Python API "
+                        "(<code>import ontoreview</code>): they are one setting for this user on this computer, so "
+                        "a change here also applies on the command line, and the other way round. "
                         "See Help › Telemetry for why.</div>", sanitize=False)
+                    env_off = bool(reason) and not reason.startswith("switched off")
+
+                    def toggle_all(e) -> None:
+                        telemetry.set_enabled(bool(e.value))
+                        notify("Telemetry " + ("on" if e.value else "off: nothing is sent from this computer"),
+                               "positive")
+                        ui.navigate.reload()
+
+                    with row("Send usage statistics",
+                             "Everything on this page, mandatory and optional. Off: nothing is sent from this "
+                             "computer, from the app, the command line or Python (events not sent yet are "
+                             "discarded). The command line: ontoreview telemetry off / on."
+                             + (f" Off here: {reason}." if env_off else "")):
+                        all_sw = ui.switch(value=not reason, on_change=toggle_all) \
+                            .props('aria-label="Send usage statistics"').mark("telemetry-all")
+                        if env_off:
+                            all_sw.disable()
                     with row("Status"):
                         ui.label(f"Off: {reason}" if reason else f"On · sent to {telemetry.HOST}") \
                             .classes("or-mono").style("flex: 1 1 320px")
@@ -2425,15 +2460,15 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
 
                     with row("Share optional details",
                              "Check status, ontology size buckets, finding counts, documentation options, AI "
-                             "provider and the pages you visit. Applies immediately."
+                             "provider and the pages you visit. Applies immediately. The command line: "
+                             "ontoreview telemetry disable / enable."
                              + (" Switched off by ONTOREVIEW_TELEMETRY_DETAILS=0." if locked else "")):
                         sw = ui.switch(value=telemetry.details_enabled(), on_change=toggle) \
                             .props('aria-label="Share optional telemetry details"').mark("telemetry-details")
                         if locked or reason:
                             sw.disable()
-                    with row("Turn off everything", "Set the environment variable DO_NOT_TRACK=1 before starting "
-                                                    "OntoReview. The command line has the same switch: "
-                                                    "ontoreview telemetry disable."):
+                    with row("For CI and shared machines", "Set DO_NOT_TRACK=1 in the environment to turn "
+                                                           "everything off without changing a setting."):
                         ui.label("DO_NOT_TRACK=1").classes("or-mono")
 
             @ui.refreshable
@@ -2460,12 +2495,27 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             with ui.card().classes("or-card w-full q-mt-md").props("flat"):
                 with ui.column().classes("w-full gap-2").style("padding: 12px 24px 20px"):
                     ui.label("What is sent").classes("or-h2")
-                    ui.label("Three events at most: one per command or app task (run_completed), one per app "
-                             "session (ui_session) and one per install (install_first_seen). Numbers are rounded "
-                             "into ranges; at most 30 events a day are sent from one computer.").classes("or-hint")
+                    ui.label("Three kinds of event: one per command, app task or Python process (run_completed), "
+                             "one per app session (ui_session) and one per new user (install_first_seen). Numbers "
+                             "are rounded into ranges; at most 30 events a day are sent from one computer; CI runs "
+                             "(GitHub Actions and others) are sampled, 1 in 10, and the Python API is not tracked "
+                             "in CI or test suites.").classes("or-hint")
                     tel_table()
                     ui.html('<div class="or-hint" style="line-height:1.55"><b>Never sent:</b> '
                             + "; ".join(telemetry.NEVER_SENT) + ".</div>", sanitize=False)
+            with ui.card().classes("or-card w-full q-mt-md").props("flat"):
+                with ui.column().classes("w-full gap-2").style("padding: 12px 24px 20px"):
+                    ui.label("Command line").classes("or-h2")
+                    ui.label("The same switches without the app (they change the same setting).").classes("or-hint")
+                    cmds = [("ontoreview telemetry status", "Whether telemetry and the optional details are on"),
+                            ("ontoreview telemetry show [--last]", "This table; --last adds the events sent from here"),
+                            ("ontoreview telemetry disable / enable", "Optional details off / on"),
+                            ("ontoreview telemetry off / on", "All telemetry off / on (unsent events are discarded)"),
+                            ("DO_NOT_TRACK=1", "Environment variable: nothing is sent (CI, shared machines)"),
+                            ("ONTOREVIEW_TELEMETRY_DETAILS=0", "Environment variable: no optional details")]
+                    ui.html('<table class="or-hint" style="border-collapse:collapse;line-height:1.7">' + "".join(
+                        f'<tr><td style="padding-right:18px"><code>{c}</code></td><td>{d}</td></tr>'
+                        for c, d in cmds) + "</table>", sanitize=False).mark("telemetry-cli")
             with ui.card().classes("or-card w-full q-mt-md").props("flat"):
                 with ui.column().classes("w-full gap-2").style("padding: 12px 24px 20px"):
                     ui.label("Sent from this computer").classes("or-h2")
@@ -4994,6 +5044,56 @@ def choose_port(host: str, wanted: int | None) -> int:
     raise SystemExit(f"No free port between {DEFAULT_PORT} and {DEFAULT_PORT + 49}; pass one with --port.")
 
 
+AUTO_EXIT_GRACE = 10.0     # seconds without an open tab before the app stops (a reload takes about 1 s)
+LOCAL_HOSTS = ("127.0.0.1", "localhost", "::1")
+
+
+def install_auto_exit(app, grace: float = AUTO_EXIT_GRACE, clients=None, busy=None, say=None) -> None:
+    """Stop the server once the last browser tab has been closed: after ``grace`` seconds without a
+    connected tab, and only when no build or comparison is still running (it is waited for)."""
+    if clients is None:
+        from nicegui import Client
+
+        def clients():
+            return list(Client.instances.values())
+    busy = busy or (lambda: ACTIVE_TASKS() > 0)
+    say = say or (lambda m: print(m, file=sys.stderr, flush=True))
+    seen = {"tab": False, "checking": False}
+
+    def connected() -> bool:
+        return any(getattr(c, "has_socket_connection", False) for c in clients())
+
+    def on_connect() -> None:
+        seen["tab"] = True
+
+    async def on_disconnect() -> None:
+        if not seen["tab"] or seen["checking"]:
+            return
+        seen["checking"] = True
+        try:
+            await asyncio.sleep(grace)
+            if connected():
+                return
+            waited = False
+            while busy():                       # a build is still running: let it finish
+                if not waited:
+                    say("The browser tab was closed; OntoReview stops when the running task finishes.")
+                    waited = True
+                await asyncio.sleep(2)
+                if connected():
+                    return
+            if connected():
+                return
+            say("The browser tab was closed, so OntoReview stopped. "
+                "Start it again with `ontoreview ui` (--keep-running keeps it running without a tab).")
+            app.shutdown()
+        finally:
+            seen["checking"] = False
+
+    app.on_connect(on_connect)
+    app.on_disconnect(on_disconnect)
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="ontoreview-ui", description="OntoReview local web UI.")
     parser.add_argument("--host", default="127.0.0.1", help="Interface to bind (default: 127.0.0.1, this machine only).")
@@ -5002,6 +5102,9 @@ def main(argv: list[str] | None = None) -> None:
                         help=f"Port to serve on (env ONTOREVIEW_UI_PORT). Default: the first free port from {DEFAULT_PORT}.")
     parser.add_argument("--no-browser", action="store_true", help="Do not open a browser window.")
     parser.add_argument("--native", action="store_true", help="Open in a desktop window (needs pywebview).")
+    parser.add_argument("--keep-running", action="store_true",
+                        help="Keep the server running after the last browser tab is closed (default when serving "
+                             "on a non-local --host). Otherwise it stops about 10 s after the tab is closed.")
     args = parser.parse_args(argv)
     try:
         from nicegui import app, ui
@@ -5012,7 +5115,7 @@ def main(argv: list[str] | None = None) -> None:
             msg += f"\nThis Python is {sys.version.split()[0]}; NiceGUI 4 requires 3.11 or newer."
         print(msg, file=sys.stderr)
         raise SystemExit(1) from None
-    if args.host not in ("127.0.0.1", "localhost", "::1"):
+    if args.host not in LOCAL_HOSTS:
         print("Warning: the UI can read and write files on this machine; binding to "
               f"{args.host} exposes that to your network.", file=sys.stderr)
     port = choose_port(args.host, args.port)
@@ -5025,6 +5128,9 @@ def main(argv: list[str] | None = None) -> None:
             print(notice, file=sys.stderr)
         telemetry.start_session()
         app.on_shutdown(telemetry.end_session)
+    if not (args.keep_running or args.native or args.host not in LOCAL_HOSTS
+            or os.environ.get("ONTOREVIEW_UI_KEEP_RUNNING") in ("1", "true")):
+        install_auto_exit(app)
     ui.run(build_page, host=args.host, port=port, title="OntoReview", reload=False,
            show=not args.no_browser, native=args.native, favicon=str(ASSETS / "favicon.svg"),
            show_welcome_message=True)

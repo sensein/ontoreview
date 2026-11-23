@@ -637,6 +637,7 @@ async def test_telemetry_settings_and_help(isolated, monkeypatch):
         user.find("Telemetry settings").click()
         await user.should_see("Share optional details")
         await user.should_see(marker="telemetry-table")
+        await user.should_see(marker="telemetry-cli")
         rows = {r["name"]: r["tier"] for r in next(iter(user.find(marker="telemetry-table").elements)).rows}
         assert rows["checks_run"] == "Mandatory" and rows["$geoip_country_code"] == "Mandatory"
         assert rows["check_status"] == "Optional · on"
@@ -646,3 +647,63 @@ async def test_telemetry_settings_and_help(isolated, monkeypatch):
         assert not telemetry.details_enabled()
         rows = {r["name"]: r["tier"] for r in next(iter(user.find(marker="telemetry-table").elements)).rows}
         assert rows["check_status"] == "Optional · off"
+        user.find(marker="telemetry-all").click()              # turn everything off
+        await asyncio.sleep(0.1)
+        assert telemetry._read_state()["enabled"] is False
+
+
+class _FakeApp:
+    def __init__(self):
+        self.connect, self.disconnect, self.stopped = [], [], False
+
+    def on_connect(self, h):
+        self.connect.append(h)
+
+    def on_disconnect(self, h):
+        self.disconnect.append(h)
+
+    def shutdown(self):
+        self.stopped = True
+
+
+class _Tab:
+    def __init__(self, open_: bool):
+        self.has_socket_connection = open_
+
+
+@pytest.mark.anyio
+async def test_app_stops_when_the_last_tab_is_closed():
+    from ontoreview.ui import install_auto_exit
+
+    tabs, busy, said = [], [False], []
+    app = _FakeApp()
+    install_auto_exit(app, grace=0.01, clients=lambda: tabs, busy=lambda: busy[0], say=said.append)
+    await app.disconnect[0]()                       # a disconnect before any tab connected: ignored
+    assert not app.stopped
+    app.connect[0]()
+    tabs[:] = [_Tab(True)]                          # reloaded / another tab still open: keep running
+    await app.disconnect[0]()
+    assert not app.stopped
+    tabs[:] = [_Tab(False)]                         # last tab closed: stop
+    await app.disconnect[0]()
+    assert app.stopped and "stopped" in said[-1]
+
+
+@pytest.mark.anyio
+async def test_app_waits_for_a_running_task_before_stopping(monkeypatch):
+    from ontoreview import ui as ui_mod
+
+    sleeps = []
+
+    async def fast_sleep(s):
+        sleeps.append(s)
+        if len(sleeps) == 3:
+            busy[0] = False                         # the build finishes
+
+    monkeypatch.setattr(ui_mod.asyncio, "sleep", fast_sleep)
+    busy, said = [True], []
+    app = _FakeApp()
+    ui_mod.install_auto_exit(app, grace=10, clients=lambda: [_Tab(False)], busy=lambda: busy[0], say=said.append)
+    app.connect[0]()
+    await app.disconnect[0]()
+    assert app.stopped and "running task" in said[0] and len(sleeps) == 3
