@@ -1,6 +1,9 @@
+import os
 from pathlib import Path
 
 import pytest
+
+os.environ["ONTOREVIEW_TELEMETRY"] = "off"      # tests never send usage statistics (tests/test_telemetry.py fakes it)
 
 from ontoreview.config import Config
 from ontoreview.loader import load_ontology
@@ -32,6 +35,8 @@ def personinfo():
 def _private_iri_db(tmp_path, monkeypatch):
     """Never touch the user's IRI term cache from tests."""
     monkeypatch.setenv("ONTOREVIEW_IRI_DB", str(tmp_path / "iri-cache.sqlite3"))
+    from ontoreview import telemetry
+    monkeypatch.setattr(telemetry, "STATE_FILE", tmp_path / "telemetry.json")
     # fixtures include third-party ontologies without a license or creators; tests of the
     # required-metadata rule turn it on explicitly (require_metadata=True)
     monkeypatch.setenv("ONTOREVIEW_REQUIRE_METADATA", "0")

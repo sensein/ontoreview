@@ -43,7 +43,7 @@ all = ["owlrl>=6.0", "openpyxl>=3.1", "nicegui>=4.0; python_version >= '3.11'"]
 dev = ["pytest>=8", "ruff>=0.5", "owlrl>=6.0", "openpyxl>=3.1"]
 
 [project.scripts]
-ontoreview = "ontoreview.cli:app"
+ontoreview = "ontoreview.cli:run"
 ontoreview-ui = "ontoreview.ui:main"
 
 [project.urls]

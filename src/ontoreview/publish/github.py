@@ -284,6 +284,8 @@ def deploy_site(site: str | Path, remote: str, branch: str = "main", message: st
                           "builds only.")
     owner, repo = parse_remote(remote)
     branch = (branch or "main").strip()
+    from .. import telemetry
+    telemetry.note_feature("deploy")
     from ..ui_core import SETTINGS_FILE
     work = _workdir(root or SETTINGS_FILE.with_name("deploy"), owner, repo)
     token = (token or "").strip() or None
