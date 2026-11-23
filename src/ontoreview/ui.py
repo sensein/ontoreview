@@ -29,6 +29,7 @@ from rdflib import URIRef
 
 from . import __version__, telemetry
 from .ui_core import (
+    ACTIVE_TASKS,
     MAX_UPLOAD_BYTES,
     RUN_FOLDER_TASKS,
     TASKS,
@@ -242,6 +243,9 @@ HELP = [
         "Pick an ontology with <b>File</b>, a folder with <b>Folder</b>, a web address with <b>URL</b>, or drag "
         "files or folders onto the page.",
         "Keep <b>Website</b> selected (recommended for publishing) and press <b>Build docs</b>.",
+        "Closing the browser tab stops the app about 10 seconds later (after a running build finishes), so the "
+        "terminal is free again. Start it with <code>ontoreview ui --keep-running</code> to keep it running "
+        "without a tab.",
     ], "Everything runs on your computer except the OOPS! scan, which sends the ontology to a web service, and the "
        "cross-domain interoperability score, which sends labels and IRIs (never the file) to OLS. Turn either off in "
        "Settings › Quality checks.", [("Open Build", "/")]),
@@ -5040,6 +5044,56 @@ def choose_port(host: str, wanted: int | None) -> int:
     raise SystemExit(f"No free port between {DEFAULT_PORT} and {DEFAULT_PORT + 49}; pass one with --port.")
 
 
+AUTO_EXIT_GRACE = 10.0     # seconds without an open tab before the app stops (a reload takes about 1 s)
+LOCAL_HOSTS = ("127.0.0.1", "localhost", "::1")
+
+
+def install_auto_exit(app, grace: float = AUTO_EXIT_GRACE, clients=None, busy=None, say=None) -> None:
+    """Stop the server once the last browser tab has been closed: after ``grace`` seconds without a
+    connected tab, and only when no build or comparison is still running (it is waited for)."""
+    if clients is None:
+        from nicegui import Client
+
+        def clients():
+            return list(Client.instances.values())
+    busy = busy or (lambda: ACTIVE_TASKS() > 0)
+    say = say or (lambda m: print(m, file=sys.stderr, flush=True))
+    seen = {"tab": False, "checking": False}
+
+    def connected() -> bool:
+        return any(getattr(c, "has_socket_connection", False) for c in clients())
+
+    def on_connect() -> None:
+        seen["tab"] = True
+
+    async def on_disconnect() -> None:
+        if not seen["tab"] or seen["checking"]:
+            return
+        seen["checking"] = True
+        try:
+            await asyncio.sleep(grace)
+            if connected():
+                return
+            waited = False
+            while busy():                       # a build is still running: let it finish
+                if not waited:
+                    say("The browser tab was closed; OntoReview stops when the running task finishes.")
+                    waited = True
+                await asyncio.sleep(2)
+                if connected():
+                    return
+            if connected():
+                return
+            say("The browser tab was closed, so OntoReview stopped. "
+                "Start it again with `ontoreview ui` (--keep-running keeps it running without a tab).")
+            app.shutdown()
+        finally:
+            seen["checking"] = False
+
+    app.on_connect(on_connect)
+    app.on_disconnect(on_disconnect)
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="ontoreview-ui", description="OntoReview local web UI.")
     parser.add_argument("--host", default="127.0.0.1", help="Interface to bind (default: 127.0.0.1, this machine only).")
@@ -5048,6 +5102,9 @@ def main(argv: list[str] | None = None) -> None:
                         help=f"Port to serve on (env ONTOREVIEW_UI_PORT). Default: the first free port from {DEFAULT_PORT}.")
     parser.add_argument("--no-browser", action="store_true", help="Do not open a browser window.")
     parser.add_argument("--native", action="store_true", help="Open in a desktop window (needs pywebview).")
+    parser.add_argument("--keep-running", action="store_true",
+                        help="Keep the server running after the last browser tab is closed (default when serving "
+                             "on a non-local --host). Otherwise it stops about 10 s after the tab is closed.")
     args = parser.parse_args(argv)
     try:
         from nicegui import app, ui
@@ -5058,7 +5115,7 @@ def main(argv: list[str] | None = None) -> None:
             msg += f"\nThis Python is {sys.version.split()[0]}; NiceGUI 4 requires 3.11 or newer."
         print(msg, file=sys.stderr)
         raise SystemExit(1) from None
-    if args.host not in ("127.0.0.1", "localhost", "::1"):
+    if args.host not in LOCAL_HOSTS:
         print("Warning: the UI can read and write files on this machine; binding to "
               f"{args.host} exposes that to your network.", file=sys.stderr)
     port = choose_port(args.host, args.port)
@@ -5071,6 +5128,9 @@ def main(argv: list[str] | None = None) -> None:
             print(notice, file=sys.stderr)
         telemetry.start_session()
         app.on_shutdown(telemetry.end_session)
+    if not (args.keep_running or args.native or args.host not in LOCAL_HOSTS
+            or os.environ.get("ONTOREVIEW_UI_KEEP_RUNNING") in ("1", "true")):
+        install_auto_exit(app)
     ui.run(build_page, host=args.host, port=port, title="OntoReview", reload=False,
            show=not args.no_browser, native=args.native, favicon=str(ASSETS / "favicon.svg"),
            show_welcome_message=True)

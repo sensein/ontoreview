@@ -217,7 +217,7 @@ def main(
         console.print(f"[bold]OntoReview[/] {__version__}\n")
         console.print("Start the app:   [bold]ontoreview ui[/]        (or [bold]ontoreview-ui[/])")
         console.print("                 opens http://127.0.0.1:8765 in your browser; "
-                      "[dim]--port N, --no-browser[/]")
+                      "[dim]--port N, --no-browser, --keep-running[/]")
         console.print('Needs the extra: [bold]pip install "ontoreview\\[ui]"[/]  (Python 3.11+)\n')
         console.print("[dim]Automation and CI commands (build, export, check, …): ontoreview --help[/]")
 
@@ -227,11 +227,14 @@ def ui_cmd(
     port: int | None = typer.Option(None, "--port", "-p", help="Port (default: the first free port from 8765)."),
     host: str = typer.Option("127.0.0.1", "--host", help="Interface to bind; keep 127.0.0.1 unless you know why."),
     no_browser: bool = typer.Option(False, "--no-browser", help="Do not open a browser window."),
+    keep_running: bool = typer.Option(False, "--keep-running", help="Keep running after the last browser tab is "
+                                      "closed (otherwise the app stops about 10 s later)."),
 ) -> None:
     """Start the OntoReview app in your browser (recommended)."""
     from .ui import main as ui_main
 
-    argv = ["--host", host] + (["--port", str(port)] if port else []) + (["--no-browser"] if no_browser else [])
+    argv = ["--host", host] + (["--port", str(port)] if port else []) + (["--no-browser"] if no_browser else []) \
+        + (["--keep-running"] if keep_running else [])
     ui_main(argv)
 
 
