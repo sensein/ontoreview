@@ -637,6 +637,7 @@ async def test_telemetry_settings_and_help(isolated, monkeypatch):
         user.find("Telemetry settings").click()
         await user.should_see("Share optional details")
         await user.should_see(marker="telemetry-table")
+        await user.should_see(marker="telemetry-cli")
         rows = {r["name"]: r["tier"] for r in next(iter(user.find(marker="telemetry-table").elements)).rows}
         assert rows["checks_run"] == "Mandatory" and rows["$geoip_country_code"] == "Mandatory"
         assert rows["check_status"] == "Optional · on"
@@ -646,3 +647,6 @@ async def test_telemetry_settings_and_help(isolated, monkeypatch):
         assert not telemetry.details_enabled()
         rows = {r["name"]: r["tier"] for r in next(iter(user.find(marker="telemetry-table").elements)).rows}
         assert rows["check_status"] == "Optional · off"
+        user.find(marker="telemetry-all").click()              # turn everything off
+        await asyncio.sleep(0.1)
+        assert telemetry._read_state()["enabled"] is False

@@ -10,6 +10,11 @@ import pytest
 from ontoreview import telemetry
 from ontoreview.config import Config
 
+REAL_IS_CI = telemetry.is_ci
+REAL_DISABLED = telemetry.disabled_reason
+CI_ENV = ("CI", "GITHUB_ACTIONS", "GITLAB_CI", "JENKINS_URL", "BUILDKITE", "CIRCLECI", "TRAVIS", "TF_BUILD",
+          "BITBUCKET_BUILD_NUMBER", "TEAMCITY_VERSION", "CODEBUILD_BUILD_ID", "DRONE", "APPVEYOR")
+
 
 class FakeClient:
     def __init__(self, online: bool = True):
@@ -187,3 +192,108 @@ def test_spec_is_consistent():
     assert len(names) == len(set(names))
     for must in ("install_id", "$geoip_country_code", "mode", "command", "checks_run", "outcome"):
         assert telemetry.TIERS[must] == "mandatory"
+
+
+def test_full_opt_out_is_saved_and_discards_the_outbox(tel, monkeypatch):
+    tel.online = False
+    with telemetry.run("build"):
+        pass
+    assert telemetry.pending() == 2
+    telemetry.set_enabled(False)
+    assert telemetry.pending() == 0
+    monkeypatch.setattr(telemetry, "disabled_reason", REAL_DISABLED)
+    assert telemetry.disabled_reason().startswith("switched off")
+    assert telemetry.track("run_completed", {"command": "build"}) is None
+    telemetry.set_enabled(True)
+    assert not (telemetry.disabled_reason() or "").startswith("switched off")
+
+
+@pytest.fixture
+def github(monkeypatch):
+    for v in CI_ENV:
+        monkeypatch.delenv(v, raising=False)
+    monkeypatch.setattr(telemetry, "is_ci", REAL_IS_CI)
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setenv("GITHUB_REPOSITORY_ID", "123456")
+    monkeypatch.setenv("GITHUB_REPOSITORY", "someone/private-repo")
+    monkeypatch.setenv("GITHUB_EVENT_NAME", "pull_request")
+    monkeypatch.setenv("RUNNER_ENVIRONMENT", "github-hosted")
+    monkeypatch.setenv("ONTOREVIEW_WORKFLOW", "ontoreview-init")
+
+
+def test_github_actions_is_recorded_and_counted_per_repository(tel, github, monkeypatch):
+    with telemetry.run("check"):
+        pass
+    [ev] = runs(tel)
+    p = ev["properties"]
+    assert p["is_ci"] is True and p["ci_provider"] == "github_actions" and p["ci_workflow"] == "ontoreview-init"
+    assert p["ci_event"] == "pull_request" and p["ci_runner"] == "github-hosted"
+    blob = json.dumps(ev, default=str)
+    assert "private-repo" not in blob and "123456" not in blob
+    first = ev["distinct_id"]
+    assert first == telemetry.ci_project_id() != telemetry.install_id()     # one id per repository
+    monkeypatch.setenv("GITHUB_REPOSITORY_ID", "999")
+    assert telemetry.ci_project_id() != first
+    assert [m["event"] for m in tel.sent] == ["run_completed"]               # runners are not new installs
+
+
+def test_other_ci_providers(monkeypatch):
+    for v in CI_ENV:
+        monkeypatch.delenv(v, raising=False)
+    assert telemetry.ci_provider() is None and telemetry.ci_props() == {}
+    monkeypatch.setenv("GITLAB_CI", "true")
+    assert telemetry.ci_provider() == "gitlab"
+    assert telemetry.ci_props()["ci_workflow"] == "custom"
+    monkeypatch.delenv("GITLAB_CI")
+    monkeypatch.setenv("CI", "true")
+    assert telemetry.ci_provider() == "other"
+
+
+@pytest.fixture
+def library(tel, monkeypatch):
+    monkeypatch.setattr(telemetry, "_library_wanted", lambda: telemetry.enabled() and not telemetry.is_ci())
+    monkeypatch.setattr(telemetry, "_library", None)
+    monkeypatch.setattr(telemetry, "_api_calls", telemetry.Counter())
+    return tel
+
+
+def test_python_api_sends_one_event_per_process(library, fixtures, tmp_path):
+    import ontoreview
+    from ontoreview.collection import build_collection
+
+    ontoreview.check(fixtures / "pizza.ttl")
+    ontoreview.check(fixtures / "pizza.ttl")
+    folder = tmp_path / "f"
+    folder.mkdir()
+    (folder / "a.ttl").write_text((fixtures / "pizza.ttl").read_text())
+    build_collection(folder, tmp_path / "out")                       # calls build() inside: counted once
+    assert runs(library) == []                                         # sent when the process ends
+    telemetry._api_end()
+    [ev] = runs(library)
+    p = ev["properties"]
+    assert p["surface"] == "library" and p["mode"] == "script" and p["command"] == "library"
+    assert p["api_calls"] == {"check": 2, "build_collection": 1}
+    assert "rules" in p["checks_run"] and p["outcome"] == "ok"
+    assert str(fixtures) not in json.dumps(p) and "pizza" not in json.dumps(p).lower()
+
+
+def test_python_api_failure_and_no_double_count_inside_cli(library, tmp_path):
+    import ontoreview
+
+    with pytest.raises(FileNotFoundError), telemetry.run("check"):
+        ontoreview.check(tmp_path / "missing.ttl")                     # part of the CLI run, not the library
+    assert telemetry._library is None
+    with pytest.raises(FileNotFoundError):
+        ontoreview.check(tmp_path / "missing.ttl")
+    telemetry._api_end()
+    lib = [m for m in runs(library) if m["properties"]["surface"] == "library"][0]["properties"]
+    assert lib["outcome"] == "failed" and lib["error_class"] and lib["api_calls"] == {"check": 1}
+
+
+def test_python_api_not_tracked_in_ci(library, github):
+    import ontoreview
+
+    with pytest.raises(FileNotFoundError):
+        ontoreview.check("/nonexistent.ttl")
+    telemetry._api_end()
+    assert library.sent == []

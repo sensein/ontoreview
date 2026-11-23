@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .model.axioms import expr_text
 from .model.entities import KIND_SLUGS, Ontology, Ref, Term
+from .telemetry import api as _api
 
 
 def _link(r: Ref, myst: bool) -> str:
@@ -86,6 +87,7 @@ def _term_md(t: Term, myst: bool) -> str:
     return "\n".join(lines)
 
 
+@_api("export_markdown")
 def export_markdown(onto: Ontology, out: Path, myst: bool = False, cqs=None) -> list[Path]:
     out.mkdir(parents=True, exist_ok=True)
     m = onto.metadata

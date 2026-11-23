@@ -722,6 +722,8 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    env:
+      ONTOREVIEW_WORKFLOW: ontoreview-init   # lets OntoReview's anonymous statistics tell this workflow apart
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -1116,6 +1118,24 @@ def telemetry_disable() -> None:
     telemetry.set_details(False)
     console.print("[green]✓[/] Optional telemetry details are off. Mandatory usage statistics (country, commands "
                   "and checks run, platform) are still sent; see `ontoreview telemetry show`.")
+
+
+@telemetry_app.command("off")
+def telemetry_off() -> None:
+    """Turn off all telemetry for this user (the same as DO_NOT_TRACK=1, but saved)."""
+    from . import telemetry
+    telemetry.set_enabled(False)
+    console.print("[green]✓[/] Telemetry is off: nothing is sent from this computer (events not sent yet were "
+                  "discarded). Turn it back on with `ontoreview telemetry on`.")
+
+
+@telemetry_app.command("on")
+def telemetry_on() -> None:
+    """Turn telemetry back on (the default)."""
+    from . import telemetry
+    telemetry.set_enabled(True)
+    reason = telemetry.disabled_reason()
+    console.print("[green]✓[/] Telemetry is on." + (f" [yellow]Still off here: {escape(reason)}.[/]" if reason else ""))
 
 
 @telemetry_app.command("enable")

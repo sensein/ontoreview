@@ -16,13 +16,19 @@ Three events only (PostHog bills per event): ``run_completed`` (one per CLI comm
 property of those events. Sending happens on a background thread and never fails or slows a run.
 
 Switches: ``ontoreview telemetry disable`` / Settings › Telemetry / ``ONTOREVIEW_TELEMETRY_DETAILS=0``
-turn off the optional details; ``DO_NOT_TRACK=1`` turns off everything.
+turn off the optional details; ``ontoreview telemetry off`` / Settings › Telemetry / ``DO_NOT_TRACK=1``
+turn off everything.
+
+Where it is sent from: the ``ontoreview`` command, the app, and the Python API (``import ontoreview``;
+one event per process, never in CI or tests). In CI, the provider (GitHub Actions, GitLab, …) is
+recorded and a CI project is counted once through a one-way hash of its repository id.
 """
 
 from __future__ import annotations
 
 import atexit
 import base64
+import functools
 import json
 import logging
 import os
@@ -104,18 +110,26 @@ class Prop:
 # One table drives the allowlist, the Settings table, `ontoreview telemetry show` and the tests.
 SPEC: tuple[Prop, ...] = (
     # ---- mandatory: who uses it, where, how and with what
-    Prop("install_id", "mandatory", "all", "random UUID (made on first run)",
-         "Counts active installs (daily / weekly / monthly) and retention, not downloads"),
+    Prop("install_id", "mandatory", "all", "anonymous UUID (one-way hash; see Help › Telemetry)",
+         "Counts active users (daily / weekly / monthly) and retention, not downloads; in CI, one id per "
+         "repository so each project counts once"),
     Prop("$geoip_country_code", "mandatory", "all", "US, DE, NP",
          "Country of use; looked up by PostHog from the connection, the IP address is then discarded"),
     Prop("$geoip_continent_code", "mandatory", "all", "NA, EU, AS", "Region rollup of the country"),
     Prop("tz_country", "mandatory", "all", "US, IN",
          "Country from the system time zone (fallback behind VPNs and proxies)"),
-    Prop("mode", "mandatory", "all", "ui, cli, headless",
-         "How it is used: the app, an interactive terminal, or scripts / automation with no terminal"),
+    Prop("mode", "mandatory", "all", "ui, cli, headless, script, notebook",
+         "How it is used: the app, an interactive terminal, automation with no terminal, or the Python API "
+         "from a script or a notebook"),
     Prop("is_ci", "mandatory", "all", "true / false", "Separates CI pipelines from people"),
+    Prop("ci_provider", "mandatory", "all", "github_actions, gitlab, jenkins, azure_pipelines, other",
+         "Which CI services run OntoReview (e.g. how many projects use it in GitHub Actions)"),
+    Prop("ci_workflow", "mandatory", "run", "ontoreview-init, custom",
+         "Whether the CI workflow is the one `ontoreview init` writes"),
     Prop("is_docker", "mandatory", "all", "true / false", "Runs inside a container"),
-    Prop("surface", "mandatory", "run, ui", "ontoreview, ontoreview-ui", "Entry point"),
+    Prop("surface", "mandatory", "run, ui", "ontoreview, ontoreview-ui, library", "Entry point"),
+    Prop("api_calls", "mandatory", "run", "build: 3, check: 1",
+         "Python API only: which functions were called in the process (counts)"),
     Prop("command", "mandatory", "run", "build, check, evaluate, diff, export, fix list, terms search",
          "Which commands and app tasks are used"),
     Prop("task", "mandatory", "run", "site, single, markdown, check, interop, diff",
@@ -130,7 +144,7 @@ SPEC: tuple[Prop, ...] = (
     Prop("session_duration_bucket", "mandatory", "ui", "<1m, 1-5m, 5-30m, 30m-2h, >2h",
          "How long people stay in the app"),
     Prop("tasks_run_count", "mandatory", "ui", "3", "Tasks run in an app session"),
-    Prop("version", "mandatory", "all", "1.0.2", "Version adoption"),
+    Prop("version", "mandatory", "all", "1.0.3", "Version adoption"),
     Prop("python", "mandatory", "all", "3.12", "Supported Python range"),
     Prop("os", "mandatory", "all", "darwin, linux, windows", "Platform support"),
     Prop("arch", "mandatory", "all", "arm64, x86_64", "Platform support"),
@@ -164,6 +178,9 @@ SPEC: tuple[Prop, ...] = (
     Prop("ai_requests", "optional", "run, ui", "1-10", "AI requests (bucketed)"),
     Prop("features", "optional", "run, ui", "deploy: 1, fix_write: 2", "Other features used (counts)"),
     Prop("flags_used", "optional", "run", "--no-oops, --reason", "CLI option names (never their values)"),
+    Prop("ci_event", "optional", "run", "push, pull_request, schedule, workflow_dispatch",
+         "What triggers CI runs"),
+    Prop("ci_runner", "optional", "run", "github-hosted, self-hosted", "Hosted or self-hosted CI runners"),
     Prop("pages_visited", "optional", "ui", "build: 4, compare: 1, fixes: 2", "Which parts of the app are used"),
     Prop("settings_tabs", "optional", "ui", "checks, ai", "Which settings people change"),
 )
@@ -196,6 +213,8 @@ def disabled_reason() -> str | None:
     """Why nothing is sent at all, or ``None`` when telemetry is active."""
     if _truthy(os.environ.get("DO_NOT_TRACK")):
         return "DO_NOT_TRACK is set"
+    if _read_state().get("enabled") is False:
+        return "switched off with `ontoreview telemetry off` or in Settings › Telemetry"
     if _falsy(os.environ.get("ONTOREVIEW_TELEMETRY")):
         return "ONTOREVIEW_TELEMETRY is off (tests and development)"
     if "dev" in __version__ or "PYTEST_CURRENT_TEST" in os.environ:
@@ -238,6 +257,16 @@ def details_enabled() -> bool:
 def details_env_locked() -> bool:
     """The optional details are switched off by the environment (the setting cannot turn them on)."""
     return _falsy(os.environ.get("ONTOREVIEW_TELEMETRY_DETAILS"))
+
+
+def set_enabled(on: bool) -> None:
+    """Turn all telemetry on or off (saved for this user). Off also discards events not sent yet."""
+    with _lock:
+        st = _read_state()
+        st["enabled"] = bool(on)
+        if not on:
+            st["outbox"] = []
+        _write_state(st)
 
 
 def set_details(on: bool) -> None:
@@ -325,8 +354,8 @@ def first_run_notice() -> str | None:
         st["notice_shown"] = True
         _write_state(st)
     return ("OntoReview sends anonymous usage statistics (country, commands and checks run, platform; never your "
-            "ontologies, paths or keys). Optional details can be switched off with `ontoreview telemetry disable` "
-            f"or in Settings › Telemetry. Details: {DOCS}")
+            "ontologies, paths or keys). Optional details: `ontoreview telemetry disable`; everything: "
+            f"`ontoreview telemetry off` (or Settings › Telemetry, or DO_NOT_TRACK=1). Details: {DOCS}")
 
 
 # ------------------------------------------------------------------ environment
@@ -361,6 +390,46 @@ def session_bucket(seconds: float) -> str:
 
 def is_ci() -> bool:
     return any(os.environ.get(v) and not _falsy(os.environ.get(v)) for v in _CI_VARS)
+
+
+_CI_PROVIDERS = (("GITHUB_ACTIONS", "github_actions"), ("GITLAB_CI", "gitlab"), ("TF_BUILD", "azure_pipelines"),
+                 ("JENKINS_URL", "jenkins"), ("CIRCLECI", "circleci"), ("BITBUCKET_BUILD_NUMBER", "bitbucket"),
+                 ("BUILDKITE", "buildkite"), ("TRAVIS", "travis"), ("TEAMCITY_VERSION", "teamcity"),
+                 ("CODEBUILD_BUILD_ID", "aws_codebuild"), ("DRONE", "drone"), ("APPVEYOR", "appveyor"))
+_CI_EVENTS = {"push", "pull_request", "pull_request_target", "schedule", "workflow_dispatch", "release",
+              "merge_request_event", "web", "api", "trigger", "pipeline", "tag"}
+
+
+def ci_provider() -> str | None:
+    """github_actions, gitlab, … ("other" for an unknown CI); ``None`` outside CI."""
+    if not is_ci():
+        return None
+    return next((name for var, name in _CI_PROVIDERS if os.environ.get(var)), "other")
+
+
+def ci_props() -> dict[str, Any]:
+    """CI details from the runner's environment (categories only; no repository names or URLs)."""
+    prov = ci_provider()
+    if not prov:
+        return {}
+    ev = (os.environ.get("GITHUB_EVENT_NAME") or os.environ.get("CI_PIPELINE_SOURCE") or "").strip().lower()
+    runner = (os.environ.get("RUNNER_ENVIRONMENT") or "").strip().lower()
+    return {"ci_provider": prov,
+            "ci_workflow": "ontoreview-init" if os.environ.get("ONTOREVIEW_WORKFLOW") == "ontoreview-init"
+            else "custom",
+            "ci_event": (ev if ev in _CI_EVENTS else "other") if ev else None,
+            "ci_runner": runner if runner in ("github-hosted", "self-hosted") else None}
+
+
+def ci_project_id() -> str | None:
+    """One anonymous id per CI project (a one-way hash of the provider's numeric repository / project id),
+    so a repository running OntoReview in many short-lived runners counts once. ``None`` outside CI."""
+    prov = ci_provider()
+    rid = os.environ.get("GITHUB_REPOSITORY_ID") or os.environ.get("CI_PROJECT_ID") \
+        or os.environ.get("BITBUCKET_REPO_UUID") or os.environ.get("BUILD_REPOSITORY_ID")
+    if not prov or not rid:
+        return None
+    return str(uuid.uuid5(_ID_NAMESPACE, f"ci:{prov}:{rid}"))
 
 
 def is_docker() -> bool:
@@ -410,7 +479,7 @@ def _base_cache() -> dict[str, Any]:
         _BASE = {"version": __version__, "python": f"{sys.version_info.major}.{sys.version_info.minor}",
                  "os": {"win32": "windows"}.get(sys.platform, sys.platform),
                  "arch": platform.machine().lower() or "unknown", "extras": _extras(), "is_ci": is_ci(),
-                 "is_docker": is_docker(), "tz_country": tz_country()}
+                 "is_docker": is_docker(), "tz_country": tz_country(), "ci_provider": ci_provider()}
     return dict(_BASE)
 
 
@@ -420,6 +489,8 @@ _BASE: dict[str, Any] | None = None
 def detect_mode(surface: str) -> str:
     if surface == "ontoreview-ui":
         return "ui"
+    if surface == "library":
+        return "notebook" if "ipykernel" in sys.modules else "script"
     try:
         return "cli" if sys.stdin.isatty() and sys.stdout.isatty() else "headless"
     except (AttributeError, ValueError):
@@ -558,7 +629,7 @@ def track(event: str, props: dict[str, Any] | None = None, *, surface: str = "on
 
 
 def _track(event: str, props: dict[str, Any], surface: str) -> dict | None:
-    iid = install_id()
+    iid = ci_project_id() or install_id()
     with _lock:
         st = _read_state()
         if st.pop("first_seen_pending", False) and event != "install_first_seen" and not (is_ci() or is_docker()):
@@ -577,7 +648,7 @@ def _track(event: str, props: dict[str, Any], surface: str) -> dict | None:
         st["count"] = st.get("count", 0) + 1
         capped = st.pop("carry_capped", 0)
         details = not details_env_locked() and bool(st.get("details", True))
-        payload = clean({**_base_cache(), "mode": detect_mode(surface), "surface": surface,
+        payload = clean({**_base_cache(), **ci_props(), "mode": detect_mode(surface), "surface": surface,
                          "sample_rate": 1.0 if not (is_ci() or is_docker()) else CI_SAMPLE,
                          "capped_count": capped or None, **props}, details)
         st["last_events"] = ([{"event": event, "when": int(time.time()), "properties": payload}]
@@ -656,7 +727,73 @@ _session: Session | None = None
 
 
 def _current() -> _Acc | None:
-    return getattr(_local, "run", None) or _session
+    return getattr(_local, "run", None) or _session or (_library if getattr(_local, "api_depth", 0) else None)
+
+
+# ------------------------------------------------------------------ the Python API (import ontoreview)
+_library: Run | None = None
+_api_calls: Counter = Counter()
+
+
+def _library_wanted() -> bool:
+    """The Python API is tracked like the CLI, except in CI and test suites (other projects' pipelines)."""
+    return enabled() and not is_ci() and "pytest" not in sys.modules
+
+
+def api(name: str):
+    """Decorator for the public functions (build, check, …): when they are called from Python, not from the
+    CLI or the app, the process sends one ``run_completed`` (surface "library") at exit."""
+    def deco(fn):
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            if getattr(_local, "run", None) is not None or _session is not None:
+                return fn(*args, **kwargs)          # part of a CLI command or an app task
+            depth = getattr(_local, "api_depth", 0)
+            if depth == 0:
+                try:
+                    _api_start(name)
+                except Exception as e:  # noqa: BLE001
+                    log.debug("telemetry: %s", e)
+            _local.api_depth = depth + 1
+            t0 = time.perf_counter()
+            try:
+                return fn(*args, **kwargs)
+            except BaseException as e:
+                if depth == 0 and _library is not None:
+                    _library.outcome, _library.error_class = "failed", type(e).__name__
+                raise
+            finally:
+                _local.api_depth = depth
+                if depth == 0 and _library is not None:
+                    _library.started -= time.perf_counter() - t0   # total time spent in API calls
+        return wrapper
+    return deco
+
+
+def _api_start(name: str) -> None:
+    global _library
+    if not _library_wanted():
+        return
+    with _lock:
+        if _library is None:
+            _library = Run(command="library", surface="library", started=0.0)
+            atexit.register(_api_end)
+            notice = first_run_notice()
+            if notice:
+                print(notice, file=sys.stderr)
+        _api_calls[name] += 1
+
+
+def _api_end() -> None:
+    global _library
+    r, _library = _library, None
+    if r is None:
+        return
+    track("run_completed", {"command": "library", "api_calls": dict(_api_calls), "outcome": r.outcome,
+                            "error_class": r.error_class, "duration_bucket": duration_bucket(-r.started),
+                            **r.props()}, surface="library")
+    _api_calls.clear()
+    flush()
 
 
 @contextmanager
@@ -864,6 +1001,7 @@ def status_lines() -> list[str]:
     reason = disabled_reason()
     st = _read_state()
     lines = [f"Telemetry: {'off (' + reason + ')' if reason else 'on'}",
+             "Usage statistics (mandatory part): " + ("not sent" if reason else "sent"),
              f"Optional details: {'on' if details_enabled() else 'off'}"
              + (" (ONTOREVIEW_TELEMETRY_DETAILS=0)" if details_env_locked() else ""),
              f"Install id: {st.get('install_id', '(not created yet)')}",

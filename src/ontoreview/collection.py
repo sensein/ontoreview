@@ -28,6 +28,7 @@ from . import __version__
 from .config import Config, find_config_file
 from .linkml import is_linkml_file
 from .report.issues import report_issues
+from .telemetry import api as _api
 
 log = logging.getLogger(__name__)
 
@@ -146,6 +147,7 @@ def _excluded_output(folder: Path, out: Path) -> list[Path]:
 
 
 # ------------------------------------------------------------------ build
+@_api("build_collection")
 def build_collection(folder: str | Path, out: str | Path = "docs", config: Config | str | Path | None = None,
                      *, single_file: bool = False, **overrides: Any) -> CollectionResult:
     """Build one documentation site per ontology in ``folder`` plus a landing page."""
@@ -205,6 +207,7 @@ def _title(folder: Path, config) -> str:
 
 
 # ------------------------------------------------------------------ export
+@_api("export_collection")
 def export_collection(folder: str | Path, out: str | Path = "docs-md", config: Config | str | Path | None = None,
                       *, myst: bool = False) -> CollectionResult:
     """Markdown/MyST export of every ontology in ``folder``, one sub-folder each, plus an index."""

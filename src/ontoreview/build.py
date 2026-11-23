@@ -32,6 +32,7 @@ from .publish import (
 from .quality_checks import Finding, Report, Rule, run_checks
 from .quality_checks.evaluators import run_evaluations
 from .render.site import SiteRenderer, copy_assets, language_links
+from .telemetry import api as _api
 
 log = logging.getLogger(__name__)
 
@@ -113,6 +114,7 @@ def load(cfg: Config) -> LoadedOntology:
     )
 
 
+@_api("build_single_file")
 def build_single_file(source: str | Path | None = None, out_file: str | Path = "ontology.html",
                       config: Config | str | Path | None = None, **overrides: Any) -> BuildResult:
     """Write one self-contained HTML file (CSS, JS, data and serializations inlined)."""
@@ -199,6 +201,7 @@ def _write_standalone(cfg: Config, onto: Ontology, out_dir: Path, report, change
     return target
 
 
+@_api("build")
 def build(source: str | Path | None = None, out: str | Path | None = None,
           config: Config | str | Path | None = None, *, live_reload: bool = False,
           **overrides: Any) -> BuildResult:
@@ -372,6 +375,7 @@ def check_records(out_dir: Path, source: str | Path, onto: Ontology, report: Rep
     return write_records(out_dir, onto, report, prov, Path(str(source)).name)
 
 
+@_api("check")
 def check(source: str | Path | None = None, config: Config | str | Path | None = None,
           **overrides: Any) -> tuple[Ontology, Report]:
     cfg = resolve_config(source, config, **overrides)

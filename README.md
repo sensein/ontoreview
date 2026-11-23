@@ -25,7 +25,7 @@ authors. A formal citation will be provided when the manuscript is published.
   author  = {Chhetri, Tek Raj and Dobriy, Daniil and Mihindukulasooriya, Nandana and Ghosh, Satrajit S.},
   title   = {{OntoReview}: Ontology Quality Assessment, {LLM}-Assisted Repair and Documentation},
   year    = {2026},
-  version = {1.0.2},
+  version = {1.0.3},
   url     = {https://github.com/sensein/ontoreview}
 }
 ```
@@ -165,7 +165,7 @@ All settings with their descriptions: [Guide › Configuration](guide/GUIDE.md#c
 
 ## Telemetry
 
-OntoReview sends anonymous usage statistics (country, commands and quality checks run, platform; never your ontologies, file paths or keys) so we can see how it is used and what to improve. Optional details can be switched off in **Settings › Telemetry** or with `ontoreview telemetry disable`, and `DO_NOT_TRACK=1` turns telemetry off completely; Settings › Telemetry and Help › Telemetry list exactly what is collected and why.
+OntoReview sends anonymous usage statistics (country, commands and quality checks run, platform; never your ontologies, file paths or keys) so we can see how it is used and what to improve. Optional details can be switched off in **Settings › Telemetry** or with `ontoreview telemetry disable`; `ontoreview telemetry off` (or `DO_NOT_TRACK=1`) turns telemetry off completely; Settings › Telemetry and Help › Telemetry list exactly what is collected and why.
 
 ## Commands
 
