@@ -130,7 +130,7 @@ SPEC: tuple[Prop, ...] = (
     Prop("session_duration_bucket", "mandatory", "ui", "<1m, 1-5m, 5-30m, 30m-2h, >2h",
          "How long people stay in the app"),
     Prop("tasks_run_count", "mandatory", "ui", "3", "Tasks run in an app session"),
-    Prop("version", "mandatory", "all", "1.0.1", "Version adoption"),
+    Prop("version", "mandatory", "all", "1.0.2", "Version adoption"),
     Prop("python", "mandatory", "all", "3.12", "Supported Python range"),
     Prop("os", "mandatory", "all", "darwin, linux, windows", "Platform support"),
     Prop("arch", "mandatory", "all", "arm64, x86_64", "Platform support"),
