@@ -133,6 +133,7 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
+    _note_telemetry(cfg, loaded, onto, report, docs=True)
     prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
     changelog = None
     if cfg.previous_version:
@@ -157,6 +158,16 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
 
 
 STANDALONE_FILE = "standalone.html"
+
+
+def _note_telemetry(cfg: Config, loaded, onto: Ontology, report, docs: bool = False) -> None:
+    """Size buckets and finding counts for the run's telemetry event (no content; see telemetry.SPEC)."""
+    from . import telemetry
+
+    telemetry.note_ontology(onto, loaded)
+    telemetry.note_report(report)
+    if docs:
+        telemetry.note_docs(cfg)
 
 
 def _now():
@@ -214,6 +225,7 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     if report is not None:
         report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     cqset = load_competency_questions(cfg, loaded, onto, report)
+    _note_telemetry(cfg, loaded, onto, report, docs=True)
     prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
 
     changelog = None
@@ -369,4 +381,5 @@ def check(source: str | Path | None = None, config: Config | str | Path | None =
     report = run_checks(onto, loaded.graph, cfg, plugins.rules())
     report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
     load_competency_questions(cfg, loaded, onto, report)
+    _note_telemetry(cfg, loaded, onto, report)
     return onto, report

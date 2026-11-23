@@ -27,7 +27,7 @@ from pathlib import Path
 
 from rdflib import URIRef
 
-from . import __version__
+from . import __version__, telemetry
 from .ui_core import (
     MAX_UPLOAD_BYTES,
     RUN_FOLDER_TASKS,
@@ -549,6 +549,33 @@ HELP = [
         "<code>~/.config/ontoreview/uploads/</code>. Use File / Folder to work on the originals.",
         "<b>Reporting a bug:</b> About › System info › Copy for bug report, then open an issue on GitHub.",
     ], "", [("Settings › Quality checks", "settings:checks"), ("About › System info", "/about"), ("Report an issue", REPO + "/issues/new/choose")]),
+    ("telemetry", "Telemetry and privacy", "", [
+        "OntoReview sends <b>anonymous usage statistics</b> to PostHog (US cloud). They tell us how many people "
+        "actually use OntoReview (PyPI only counts downloads, including mirrors and CI caches), in which countries, "
+        "and which commands, app tasks and quality checks they run, and whether those work.",
+        "<b>Mandatory (always sent):</b> a random install id made on first run (not linked to you or your computer), "
+        "country, how OntoReview is used (the app, a terminal, or headless scripts and CI), the command or task, "
+        "which quality checks ran, whether it succeeded (and the error type, never the message), how long it took "
+        "(as a range), and the OntoReview, Python and OS versions.",
+        "<b>Why some of it is mandatory:</b> OntoReview is free, open-source research software. Funders and "
+        "institutions ask how many people use it and where; that keeps the project funded and maintained. Knowing "
+        "which checks people run, and which fail on which platforms, tells us what to fix and improve first. If "
+        "only people who opt in were counted, these numbers would be far too low to be useful. The mandatory part "
+        "is kept to the minimum needed for that, and none of it identifies you.",
+        "<b>Optional (on by default, switch off any time):</b> why a check did not run, ROBOT and reasoner setup, "
+        "finding counts, ontology format and size (as ranges such as 100-1k classes), documentation options, the AI "
+        "provider and model family, CLI option names (never their values) and which pages of the app you open.",
+        "<b>Never sent:</b> your ontologies, IRIs, labels, file paths, URLs, competency questions, AI prompts or "
+        "answers, API keys or tokens, names, e-mail addresses, ORCID, git remotes. The IP address is used by PostHog "
+        "only to look up the country and is then discarded; no city or location is kept.",
+        "<b>Turn off the optional details:</b> Settings › Telemetry (switch off <i>Share optional details</i>), "
+        "<code>ontoreview telemetry disable</code>, or <code>ONTOREVIEW_TELEMETRY_DETAILS=0</code>.",
+        "<b>Turn off everything:</b> set <code>DO_NOT_TRACK=1</code> in the environment before starting OntoReview.",
+        "<b>See what is sent:</b> Settings › Telemetry lists every property and the last events sent from your "
+        "computer; <code>ontoreview telemetry show --last</code> prints the same.",
+    ], "Statistics are sent in the background and never slow down or stop a run; without a network nothing is "
+       "sent. Calling OntoReview as a Python library (import ontoreview) sends nothing.",
+     [("Telemetry settings", "settings:telemetry")]),
 ]
 
 
@@ -960,6 +987,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
     ui.timer(0.1, refresh_env, once=True)
 
     def set_active(key: str) -> None:
+        telemetry.note_page(key)
         for k, link in nav_links.items():
             if k == key:
                 link.classes(add="or-active")
@@ -2358,6 +2386,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                 t_checks = ui.tab("Quality checks")
                 t_ai = ui.tab("AI & fixes")
                 t_look = ui.tab("Appearance")
+                t_tel = ui.tab("Telemetry")
+            tabs.on_value_change(lambda e: telemetry.note_settings_tab(str(getattr(e.value, "_props", {}).get("name", e.value)).lower()))
 
         def row(label: str, hint: str = ""):
             r = ui.row().classes("w-full items-center gap-4 q-py-md no-wrap max-sm:flex-wrap or-setrow") \
@@ -2369,8 +2399,86 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.label(hint).classes("or-hint")
             return r
 
+        def telemetry_panel() -> None:
+            """Settings › Telemetry: the optional-details switch and the table of everything that can be sent."""
+            reason = telemetry.disabled_reason()
+            locked = telemetry.details_env_locked()
+            with ui.card().classes("or-card w-full").props("flat"):
+                with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
+                    ui.label("Usage statistics").classes("or-h2 q-pt-md")
+                    ui.html(
+                        '<div class="or-hint" style="line-height:1.55">OntoReview sends anonymous usage statistics '
+                        "to PostHog (US) so we can see how many people actually use it (not just download it), "
+                        "where, and which commands and quality checks work for them. "
+                        "<b>Mandatory</b> statistics are always sent; <b>optional</b> details are on by default "
+                        "and you can turn them off here. Nothing about your ontologies, files or keys is ever sent. "
+                        "See Help › Telemetry for why.</div>", sanitize=False)
+                    with row("Status"):
+                        ui.label(f"Off: {reason}" if reason else f"On · sent to {telemetry.HOST}") \
+                            .classes("or-mono").style("flex: 1 1 320px")
+
+                    def toggle(e) -> None:
+                        telemetry.set_details(bool(e.value))
+                        notify("Optional telemetry details " + ("on" if e.value else "off: only the mandatory "
+                                                                 "usage statistics are sent"), "positive")
+                        tel_table.refresh()
+
+                    with row("Share optional details",
+                             "Check status, ontology size buckets, finding counts, documentation options, AI "
+                             "provider and the pages you visit. Applies immediately."
+                             + (" Switched off by ONTOREVIEW_TELEMETRY_DETAILS=0." if locked else "")):
+                        sw = ui.switch(value=telemetry.details_enabled(), on_change=toggle) \
+                            .props('aria-label="Share optional telemetry details"').mark("telemetry-details")
+                        if locked or reason:
+                            sw.disable()
+                    with row("Turn off everything", "Set the environment variable DO_NOT_TRACK=1 before starting "
+                                                    "OntoReview. The command line has the same switch: "
+                                                    "ontoreview telemetry disable."):
+                        ui.label("DO_NOT_TRACK=1").classes("or-mono")
+
+            @ui.refreshable
+            def tel_table() -> None:
+                on = telemetry.details_enabled()
+                rows = [{"id": p.name, "name": p.name,
+                         "tier": "Mandatory" if p.tier == "mandatory" else ("Optional · on" if on else "Optional · off"),
+                         "events": p.events, "example": p.example, "purpose": p.purpose} for p in telemetry.SPEC]
+                tbl = ui.table(rows=rows, row_key="id", pagination={"rowsPerPage": 0}, columns=[
+                    {"name": "name", "label": "Property", "field": "name", "align": "left"},
+                    {"name": "tier", "label": "Tier", "field": "tier", "align": "left"},
+                    {"name": "events", "label": "Sent with", "field": "events", "align": "left"},
+                    {"name": "example", "label": "Example values", "field": "example", "align": "left"},
+                    {"name": "purpose", "label": "Why we collect it", "field": "purpose", "align": "left"},
+                ]).classes("or-table").props("flat dense wrap-cells hide-bottom").mark("telemetry-table")
+                tbl.add_slot("body-cell-tier", r'''
+                    <q-td :props="props">
+                      <span :class="'or-badge ' + (props.value === 'Mandatory' ? 'info' : (props.value.endsWith('on') ? 'ok' : 'off'))">
+                        {{ props.value }}</span>
+                    </q-td>''')
+                tbl.add_slot("body-cell-name", r'''
+                    <q-td :props="props"><code>{{ props.value }}</code></q-td>''')
+
+            with ui.card().classes("or-card w-full q-mt-md").props("flat"):
+                with ui.column().classes("w-full gap-2").style("padding: 12px 24px 20px"):
+                    ui.label("What is sent").classes("or-h2")
+                    ui.label("Three events at most: one per command or app task (run_completed), one per app "
+                             "session (ui_session) and one per install (install_first_seen). Numbers are rounded "
+                             "into ranges; at most 30 events a day are sent from one computer.").classes("or-hint")
+                    tel_table()
+                    ui.html('<div class="or-hint" style="line-height:1.55"><b>Never sent:</b> '
+                            + "; ".join(telemetry.NEVER_SENT) + ".</div>", sanitize=False)
+            with ui.card().classes("or-card w-full q-mt-md").props("flat"):
+                with ui.column().classes("w-full gap-2").style("padding: 12px 24px 20px"):
+                    ui.label("Sent from this computer").classes("or-h2")
+                    last = telemetry.last_events()
+                    ui.label(f"Install id {telemetry.install_id() if not reason else '(none: telemetry is off)'} · "
+                             f"the last {len(last)} event(s), exactly as sent.").classes("or-hint or-mono")
+                    if last:
+                        with ui.expansion("Show the last events").classes("w-full"):
+                            ui.code(json.dumps(last, indent=2), language="json").classes("w-full")
+
         with ui.element("div").classes("or-body").style("padding-top: 16px"):
-            start_tab = {"general": t_general, "docs": t_docs, "checks": t_checks, "ai": t_ai, "look": t_look} \
+            start_tab = {"general": t_general, "docs": t_docs, "checks": t_checks, "ai": t_ai, "look": t_look,
+                         "telemetry": t_tel} \
                 .get(state.pop("settings_tab", "general"), t_general)
             tabs.set_value(start_tab)
             with ui.tab_panels(tabs, value=start_tab, animated=False).classes("w-full").style("background: transparent"):
@@ -2926,6 +3034,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             theme_box = ui.element("div").props('role="radiogroup" aria-label="Theme"') \
                                 .classes("w-full gap-0").style("display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px")
                             ui.checkbox("Compact layout").bind_value(work, "compact")
+                with ui.tab_panel(t_tel).classes("q-pa-none"):
+                    telemetry_panel()
             with ui.row().classes("w-full items-center justify-between q-mt-md"):
                 ui.button("Reset to defaults", on_click=lambda: reset()).props("flat no-caps")
                 with ui.row().classes("gap-2"):
@@ -4909,6 +5019,12 @@ def main(argv: list[str] | None = None) -> None:
     if not args.port and port != DEFAULT_PORT:
         print(f"Port {DEFAULT_PORT} is busy; using {port}.", file=sys.stderr)
     register_upload_route(app)
+    if telemetry.enabled():
+        notice = telemetry.first_run_notice()
+        if notice:
+            print(notice, file=sys.stderr)
+        telemetry.start_session()
+        app.on_shutdown(telemetry.end_session)
     ui.run(build_page, host=args.host, port=port, title="OntoReview", reload=False,
            show=not args.no_browser, native=args.native, favicon=str(ASSETS / "favicon.svg"),
            show_welcome_message=True)

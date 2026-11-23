@@ -287,6 +287,8 @@ class FixSession:
     def write(self, out: str | Path | None = None) -> WriteResult:
         if not self.accepted:
             raise FixError("No fix accepted.")
+        from .. import telemetry
+        telemetry.note_feature("fix_write")
         order = {"U": 0, "L": 1, "D": 2, "A": 3}        # annotations first, logical changes after
         accepted = sorted(self.accepted.values(), key=lambda a: order.get(a.suggestion.kind, 9))
         stale = [a.suggestion.title for a in accepted

@@ -1093,3 +1093,71 @@ def fix_apply(source: str = typer.Argument(..., help="Ontology file."), config: 
 from .cli_evaluate import register as _register_evaluate  # noqa: E402
 
 _register_evaluate(app, ADVANCED)
+
+
+# ---------------------------------------------------------------- telemetry
+telemetry_app = typer.Typer(help="Anonymous usage statistics: what is sent, and switching off the optional details.",
+                            no_args_is_help=True)
+app.add_typer(telemetry_app, name="telemetry", rich_help_panel=ADVANCED)
+
+
+@telemetry_app.command("status")
+def telemetry_status() -> None:
+    """Whether telemetry is on, whether the optional details are sent, and where."""
+    from . import telemetry
+    for line in telemetry.status_lines():
+        console.print(escape(line))
+
+
+@telemetry_app.command("disable")
+def telemetry_disable() -> None:
+    """Stop sending the optional details (the mandatory usage statistics are still sent)."""
+    from . import telemetry
+    telemetry.set_details(False)
+    console.print("[green]✓[/] Optional telemetry details are off. Mandatory usage statistics (country, commands "
+                  "and checks run, platform) are still sent; see `ontoreview telemetry show`.")
+
+
+@telemetry_app.command("enable")
+def telemetry_enable() -> None:
+    """Send the optional details again (the default)."""
+    from . import telemetry
+    telemetry.set_details(True)
+    console.print("[green]✓[/] Optional telemetry details are on.")
+
+
+@telemetry_app.command("show")
+def telemetry_show(last: bool = typer.Option(False, "--last", help="Also print the last events sent from here.")) -> None:
+    """Every property that can be sent, whether it is mandatory or optional, and why."""
+    import json as _json
+
+    from . import telemetry
+    for line in telemetry.status_lines():
+        console.print(escape(line))
+    details = telemetry.details_enabled()
+    t = Table(title="What is sent", show_lines=False)
+    for col in ("Property", "Tier", "Event", "Example", "Why"):
+        t.add_column(col, overflow="fold")
+    for p in telemetry.SPEC:
+        tier = "mandatory" if p.tier == "mandatory" else ("optional (on)" if details else "optional (off)")
+        t.add_row(escape(p.name), tier, p.events, escape(p.example), escape(p.purpose))
+    console.print(t)
+    console.print("Never sent: " + "; ".join(telemetry.NEVER_SENT) + ".")
+    if last:
+        console.print_json(_json.dumps(telemetry.last_events()))
+
+
+def run() -> None:
+    """Console entry point: ``app`` with one anonymous ``run_completed`` event per command (see telemetry.py)."""
+    from . import telemetry
+
+    argv = sys.argv[1:]
+    command = telemetry.cli_command(argv)
+    if command is None or command == "ui" or command.startswith("telemetry") or not telemetry.enabled():
+        app()       # help/version, the app (it sends its own session event), telemetry settings, or switched off
+        return
+    notice = telemetry.first_run_notice()
+    if notice:
+        err.print(f"[dim]{escape(notice)}[/]")
+    with telemetry.run(command, surface="ontoreview", flags=telemetry.cli_flags(argv)):
+        app()

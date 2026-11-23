@@ -163,6 +163,10 @@ read. They are never written to `ontoreview.toml`, the run history or any report
 
 All settings with their descriptions: [Guide › Configuration](guide/GUIDE.md#configuration-ontoreviewtoml).
 
+## Telemetry
+
+OntoReview sends anonymous usage statistics (country, commands and quality checks run, platform; never your ontologies, file paths or keys) so we can see how it is used and what to improve. Optional details can be switched off in **Settings › Telemetry** or with `ontoreview telemetry disable`, and `DO_NOT_TRACK=1` turns telemetry off completely; Settings › Telemetry and Help › Telemetry list exactly what is collected and why.
+
 ## Commands
 
 | Command | What it does |

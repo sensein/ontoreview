@@ -557,6 +557,14 @@ def interop_only(report) -> None:
 
 def run_task(settings: Settings) -> TaskResult:
     """Run the chosen task for a file or a folder. Blocking; call it off the UI thread."""
+    from . import telemetry
+
+    with telemetry.run(telemetry.TASK_COMMANDS.get(settings.task, settings.task), surface="ontoreview-ui",
+                       task=settings.task, is_folder=settings.is_folder):
+        return _run_task(settings)
+
+
+def _run_task(settings: Settings) -> TaskResult:
     from datetime import datetime, timezone
 
     from .build import build, build_single_file, check, check_records, load, resolve_config

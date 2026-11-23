@@ -53,4 +53,7 @@ def run_evaluations(graph: Graph, config, source: str | None = None,
     for r in out:
         if r.error:
             log.warning(r.error)
+    from .. import telemetry
+
+    telemetry.note_evaluations(config, out)
     return out

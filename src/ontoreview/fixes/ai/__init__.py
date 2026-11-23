@@ -35,6 +35,8 @@ def _ask(source, user: str, schema: dict, key: str) -> tuple[dict, dict]:
             if (isinstance(text, str) and text.strip()) or (isinstance(text, list) and text):
                 prov = source.describe() | {"type": "llm",
                                             "prompt_sha256": hashlib.sha256(user.encode()).hexdigest()[:16]}
+                from ... import telemetry
+                telemetry.note_ai(prov)
                 return ans, prov
             last = f"the answer has no {key}"
         except (ValueError, KeyError, TypeError) as e:

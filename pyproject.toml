@@ -30,6 +30,7 @@ dependencies = [
   "OntoCheck>=0.1.3,<0.2",
   "requests>=2.32,<3",   # quality metrics (CC BY 4.0, SDLE / CWRU); <0.2: its analysis helpers are used directly
   "tomli>=2.0; python_version < '3.11'",
+  "posthog>=8,<9",
 ]
 
 [project.optional-dependencies]
@@ -42,7 +43,7 @@ all = ["owlrl>=6.0", "openpyxl>=3.1", "nicegui>=4.0; python_version >= '3.11'"]
 dev = ["pytest>=8", "ruff>=0.5", "owlrl>=6.0", "openpyxl>=3.1"]
 
 [project.scripts]
-ontoreview = "ontoreview.cli:app"
+ontoreview = "ontoreview.cli:run"
 ontoreview-ui = "ontoreview.ui:main"
 
 [project.urls]
