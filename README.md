@@ -25,7 +25,7 @@ authors. A formal citation will be provided when the manuscript is published.
   author  = {Chhetri, Tek Raj and Dobriy, Daniil and Mihindukulasooriya, Nandana and Ghosh, Satrajit S.},
   title   = {{OntoReview}: Ontology Quality Assessment, {LLM}-Assisted Repair and Documentation},
   year    = {2026},
-  version = {1.0.3},
+  version = {1.0.4},
   url     = {https://github.com/sensein/ontoreview}
 }
 ```
