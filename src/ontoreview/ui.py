@@ -2495,8 +2495,9 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             with ui.card().classes("or-card w-full q-mt-md").props("flat"):
                 with ui.column().classes("w-full gap-2").style("padding: 12px 24px 20px"):
                     ui.label("What is sent").classes("or-h2")
-                    ui.label("Three kinds of event: one per command, app task or Python process (run_completed), "
-                             "one per app session (ui_session) and one per new user (install_first_seen). Numbers "
+                    ui.label("Four kinds of event: one per command, app task or Python process (run_completed), "
+                             "one when the app opens (app_opened) and a summary when it closes (ui_session), and one "
+                             "per new user (install_first_seen). Numbers "
                              "are rounded into ranges; at most 30 events a day are sent from one computer; CI runs "
                              "(GitHub Actions and others) are sampled, 1 in 10, and the Python API is not tracked "
                              "in CI or test suites.").classes("or-hint")
@@ -4014,13 +4015,17 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             """The AI source, downloaded (Hugging Face, first use) and loaded, with progress on the page."""
             from .fixes.ai import pick_source
             src = await run.io_bound(pick_source, prefs.ai_config(), prefs.hf_token or None)
-            if src.name != "hf":
+            if src.name != "hf" or ai_bar.is_deleted:      # deleted: the page was left (Skip, Build docs, …)
                 return src
             ai_bar.set_visibility(True)
             if not await run.io_bound(src.cached):
                 total = await run.io_bound(src.total_bytes)
+                if ai_bar.is_deleted:
+                    return src
 
                 def tick() -> None:
+                    if ai_msg.is_deleted:
+                        return
                     got = src.downloaded_bytes()
                     ai_msg.set_text(f"Downloading {src.model} from Hugging Face (first use only): "
                                     f"{got / 1e9:.1f}" + (f" of {total / 1e9:.1f} GB" if total else " GB"))
@@ -4031,11 +4036,14 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     await run.io_bound(src.prepare)
                 finally:
                     timer.cancel()
+            if ai_bar.is_deleted:
+                return src
             ai_msg.set_text(f"Loading {src.model} into memory…")
             ai_prog.props("indeterminate")
             await run.io_bound(src.load)
-            ai_prog.props(remove="indeterminate")
-            ai_bar.set_visibility(False)
+            if not ai_bar.is_deleted:
+                ai_prog.props(remove="indeterminate")
+                ai_bar.set_visibility(False)
             return src
 
         async def ai_fill(ta, name: str, x, btn=None) -> None:
@@ -4052,12 +4060,16 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             ok = False
             try:
                 src = await ensure_ai()
+                if ai_bar.is_deleted:
+                    return
                 model = src.describe().get("model", "") if hasattr(src, "describe") else ""
                 ai_bar.set_visibility(True)
                 ai_msg.set_text(f"Asking {model or 'the model'} for {what}… (the first answer can take a minute)")
                 ai_prog.props("indeterminate")
                 if name == "description":
                     text, prov = await run.io_bound(draft_description, session, src)
+                    if ta.is_deleted:
+                        return
                     ta.set_value(text)
                     x.made_by = prov | {"field": "description"}
                 elif name in ("domain", "range"):
@@ -4065,22 +4077,29 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                     sug = await run.io_bound(suggest_domain_range, session, x.subject, name, src)
                     session.replace(sug)
                     fs["sel"] = sug.id
+                    if ai_bar.is_deleted:
+                        return
                     render_all()
                 else:
                     draft = await run.io_bound(draft_definition, session, x.subject, src)
                     session.replace(draft)
                     fs["sel"] = draft.id
+                    if ai_bar.is_deleted:
+                        return
                     render_all()
                 ok = True
             except (AIError, Exception) as e:  # noqa: BLE001
+                if ai_bar.is_deleted:
+                    return
                 notify(f"AI: {e}", "warning")
                 mark_btn(btn, "err", "AI failed · retry", "error")
                 set_ai("error", f"Last request failed: {e}")
             finally:
                 ai_lock["busy"] = False
-                ai_prog.props(remove="indeterminate")
-                ai_bar.set_visibility(False)
-            if ok:
+                if not ai_bar.is_deleted:
+                    ai_prog.props(remove="indeterminate")
+                    ai_bar.set_visibility(False)
+            if ok and not ai_bar.is_deleted:
                 mark_btn(btn, "ok", "Drafted · review it" if name == "description" else "Done", "check_circle")
                 set_ai("ok", f"{what[0].upper() + what[1:]} ready for review")
 
@@ -5095,6 +5114,9 @@ def install_auto_exit(app, grace: float = AUTO_EXIT_GRACE, clients=None, busy=No
 
 
 def main(argv: list[str] | None = None) -> None:
+    from .quiet import quiet
+
+    quiet()
     parser = argparse.ArgumentParser(prog="ontoreview-ui", description="OntoReview local web UI.")
     parser.add_argument("--host", default="127.0.0.1", help="Interface to bind (default: 127.0.0.1, this machine only).")
     env_port = os.environ.get("ONTOREVIEW_UI_PORT")

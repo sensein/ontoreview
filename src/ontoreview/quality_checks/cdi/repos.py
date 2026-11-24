@@ -49,8 +49,18 @@ def _get(url: str, params: dict, headers: dict | None = None, timeout: float = 3
     q = urllib.parse.urlencode({k: v for k, v in params.items() if v not in (None, "")})
     req = urllib.request.Request(f"{url}?{q}" if q else url,
                                  headers={"User-Agent": USER_AGENT, "Accept": "application/json", **(headers or {})})
-    with urllib.request.urlopen(req, timeout=timeout) as r:  # noqa: S310 - fixed https endpoints or user-set base
-        return json.loads(r.read().decode("utf-8"))
+    from ... import netstate
+
+    if netstate.is_down(url):
+        raise ConnectionError(netstate.not_available(url))
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:  # noqa: S310 - fixed https endpoints or user-set base
+            return json.loads(r.read().decode("utf-8"))
+    except Exception as e:
+        if netstate.is_unavailable(e):
+            netstate.mark_down(url)
+            raise ConnectionError(netstate.not_available(url)) from None
+        raise
 
 
 def _ols_list(base: str, timeout: float) -> list[dict]:

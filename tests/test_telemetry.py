@@ -167,6 +167,7 @@ def test_ui_session_counts(tel):
     with telemetry.run("build", surface="ontoreview-ui", task="site"):
         pass
     telemetry.end_session()
+    assert [m["event"] for m in tel.sent].count("app_opened") == 1
     s = [m for m in tel.sent if m["event"] == "ui_session"][0]["properties"]
     assert s["tasks_run_count"] == 1 and s["pages_visited"] == {"build": 2} and s["mode"] == "ui"
 
@@ -297,3 +298,118 @@ def test_python_api_not_tracked_in_ci(library, github):
         ontoreview.check("/nonexistent.ttl")
     telemetry._api_end()
     assert library.sent == []
+
+
+def test_app_opened_is_sent_at_start(tel):
+    telemetry.start_session()
+    assert [m["event"] for m in tel.sent] == ["install_first_seen", "app_opened"]
+    assert tel.sent[-1]["properties"]["mode"] == "ui"
+    telemetry.end_session()
+    assert tel.sent[-1]["event"] == "ui_session"
+
+
+def test_repeat_use_is_on_every_event(tel, monkeypatch):
+    import datetime as dt
+
+    for _ in range(3):
+        with telemetry.run("build"):
+            pass
+    p = runs(tel)[-1]["properties"]
+    assert p["days_active"] == "1" and p["runs_total"] == "2-10" and p["days_since_first"] == "0"
+
+    class Later(dt.date):
+        @classmethod
+        def today(cls):
+            return dt.date.today() + dt.timedelta(days=8)
+
+    monkeypatch.setattr(telemetry, "date", Later)
+    with telemetry.run("check"):
+        pass
+    p = runs(tel)[-1]["properties"]
+    assert p["days_active"] == "2-5" and p["days_since_first"] == "7-30"
+
+
+def test_service_down_is_said_plainly_and_skipped(monkeypatch):
+    from ontoreview import netstate
+
+    importlib_reload = __import__("importlib").reload
+    monkeypatch.setattr(netstate, "probe", importlib_reload(netstate).probe)   # the real quick check
+    assert netstate.plain("OOPS!", "OOPS! request failed: HTTP Error 503: Service Unavailable") == \
+        "The OOPS! web service (oops.linkeddata.es) was not available, so this check did not run."
+    assert netstate.plain("Cross-domain interoperability", "<urlopen error timed out>").endswith(
+        "was not available, so this check did not run.")
+    assert netstate.plain("ROBOT", "ROBOT is not available: start Docker") .startswith("ROBOT is not available")
+    assert netstate.plain("IRI checks", "ontology IRI returned 404") == "ontology IRI returned 404"
+    netstate.mark_down("https://oops.linkeddata.es/rest")
+    assert netstate.is_down("https://oops.linkeddata.es/other") and not netstate.probe("https://oops.linkeddata.es/x")
+    netstate.reset()
+
+
+@pytest.mark.real_evaluators
+def test_oops_does_not_wait_when_the_service_is_down(monkeypatch, pizza):
+    import time
+
+    from ontoreview import netstate
+    from ontoreview.quality_checks import oops
+
+    netstate.reset()
+    monkeypatch.setattr(netstate, "probe", lambda url, timeout=5: False)
+    t0 = time.perf_counter()
+    rep = oops.run_oops(pizza[0].graph, timeout=90)
+    assert time.perf_counter() - t0 < 1
+    assert rep.error == "The OOPS! web service (oops.linkeddata.es) was not available, so this check did not run."
+
+
+def test_quiet_hides_harmless_ui_warnings(caplog):
+    import logging
+
+    from ontoreview import quiet
+
+    quiet._done = False
+    quiet.quiet()
+    log = logging.getLogger("nicegui")
+    with caplog.at_level(logging.WARNING, logger="nicegui"):
+        log.warning("An element has been deleted but is still being used. This is most likely a bug")
+        log.warning("something real")
+    shown = [r.getMessage() for r in caplog.records if r.name == "nicegui" and quiet._DropNoise().filter(r)]
+    assert shown == ["something real"]
+
+
+def test_exit_hands_unsent_events_to_a_background_sender(tel, monkeypatch):
+    import subprocess
+
+    started = []
+    real_popen = subprocess.Popen
+
+    def popen(cmd, **kw):
+        if "send_outbox" not in str(cmd):
+            return real_popen(cmd, **kw)                    # e.g. the machine-id lookup
+        started.append((cmd, kw))
+
+    monkeypatch.setattr(subprocess, "Popen", popen)
+    monkeypatch.delenv("ONTOREVIEW_TELEMETRY_SENDER", raising=False)
+    tel.online = False
+    with telemetry.run("build"):
+        pass
+    telemetry.flush()                                       # does not wait for the network
+    [(cmd, kw)] = started
+    assert "send_outbox" in cmd[-1] and kw["env"]["ONTOREVIEW_TELEMETRY_SENDER"] == "1"
+    telemetry._sender_lock().write_text("1")               # a sender is already working: no second one
+    telemetry.flush()
+    assert len(started) == 1
+
+
+def test_background_sender_delivers_when_the_connection_comes_back(tel, monkeypatch):
+    tel.online = False
+    with telemetry.run("build"):
+        pass
+    calls = {"n": 0}
+
+    def sleep(_):
+        calls["n"] += 1
+        tel.online = True                                   # connection is back after a pause
+
+    monkeypatch.setattr(telemetry.time, "sleep", sleep)
+    assert telemetry.send_outbox(budget=60) == 0
+    assert [m["event"] for m in tel.sent] == ["install_first_seen", "run_completed"]
+    assert not telemetry._sender_lock().exists()

@@ -11,8 +11,9 @@ in the app (Settings › Telemetry) and by ``ontoreview telemetry show``. In sho
 Never sent: ontology content, IRIs, file paths, URLs, labels, prompts, AI answers, keys or tokens.
 Keys that are not in :data:`SPEC` are dropped before anything leaves the machine.
 
-Three events only (PostHog bills per event): ``run_completed`` (one per CLI command or app task),
-``ui_session`` (one per app session) and ``install_first_seen`` (once per install). Everything else is a
+Four events only (PostHog bills per event): ``run_completed`` (one per CLI command or app task),
+``app_opened`` (when the app starts, so it is counted even if the terminal is closed later),
+``ui_session`` (a summary when the app stops) and ``install_first_seen`` (once per install). Everything else is a
 property of those events. Sending happens on a background thread and never fails or slows a run.
 
 Switches: ``ontoreview telemetry disable`` / Settings › Telemetry / ``ONTOREVIEW_TELEMETRY_DETAILS=0``
@@ -149,6 +150,12 @@ SPEC: tuple[Prop, ...] = (
     Prop("os", "mandatory", "all", "darwin, linux, windows", "Platform support"),
     Prop("arch", "mandatory", "all", "arm64, x86_64", "Platform support"),
     Prop("extras", "mandatory", "all", "ui, cdi, reason, excel", "Which optional installs are used"),
+    Prop("days_active", "mandatory", "all", "1, 2-5, 5-10, 10-30, 30-100, 100+",
+         "On how many different days this person has used OntoReview: repeat use, not one-off tries"),
+    Prop("runs_total", "mandatory", "all", "1, 2-10, 10-50, 50-200, 200-1k, 1k+",
+         "How many commands / tasks this person has run in all (ranges)"),
+    Prop("days_since_first", "mandatory", "all", "0, 1-7, 7-30, 30-90, 90-365, 365+",
+         "How long ago this person started using OntoReview: whether it keeps being useful"),
     Prop("sample_rate", "mandatory", "all", "1.0, 0.1", "Share of runs sent (CI is sampled), to scale counts"),
     Prop("capped_count", "mandatory", "all", "0, 12", "Events dropped by the daily limit the day before"),
     # ---- optional: details that help improve the checks and the app
@@ -187,7 +194,7 @@ SPEC: tuple[Prop, ...] = (
 TIERS: dict[str, Tier] = {p.name: p.tier for p in SPEC}
 _SENT_BY_POSTHOG = {"$geoip_country_code", "$geoip_continent_code"}   # added server side, never by us
 _POSTHOG_KEYS = {"$process_person_profile", "$lib_version_ontoreview"}
-EVENTS = ("run_completed", "ui_session", "install_first_seen")
+EVENTS = ("run_completed", "app_opened", "ui_session", "install_first_seen")
 
 NEVER_SENT = ("ontology content, IRIs and labels", "file paths and URLs", "competency questions",
               "AI prompts and answers", "API keys and tokens", "ORCID, names, e-mail addresses",
@@ -226,7 +233,51 @@ def enabled() -> bool:
     return disabled_reason() is None
 
 
-_lock = threading.RLock()
+class _StateLock:
+    """Re-entrant lock for telemetry.json: a thread lock plus a file lock, so a command, the app and the
+    background sender (separate processes) never overwrite each other's changes. Held only while the
+    file is read and written, never during a network request."""
+
+    def __init__(self) -> None:
+        self._r = threading.RLock()
+        self._depth = 0
+        self._fh = None
+
+    def __enter__(self):
+        self._r.acquire()
+        if self._depth == 0:
+            try:
+                STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+                self._fh = open(STATE_FILE.with_suffix(".lock"), "a+")  # noqa: SIM115
+                if sys.platform == "win32":
+                    import msvcrt
+                    msvcrt.locking(self._fh.fileno(), msvcrt.LK_LOCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(self._fh.fileno(), fcntl.LOCK_EX)
+            except Exception:  # noqa: BLE001 - no file lock (read-only home, …): the thread lock still holds
+                self._fh = None
+        self._depth += 1
+        return self
+
+    def __exit__(self, *exc) -> None:
+        self._depth -= 1
+        if self._depth == 0 and self._fh is not None:
+            try:
+                if sys.platform == "win32":
+                    import msvcrt
+                    msvcrt.locking(self._fh.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(self._fh.fileno(), fcntl.LOCK_UN)
+                self._fh.close()
+            except Exception:  # noqa: BLE001
+                pass
+            self._fh = None
+        self._r.release()
+
+
+_lock = _StateLock()
 
 
 def _read_state() -> dict[str, Any]:
@@ -370,7 +421,7 @@ def bucket(n: int | float | None, edges: tuple[int, ...] = (1, 100, 1000, 10000)
 
     for lo, hi in zip(edges, edges[1:], strict=False):
         if lo <= n < hi:
-            return f"{k(lo)}-{k(hi)}"
+            return k(lo) if hi - lo == 1 else f"{k(lo)}-{k(hi)}"
     return f"{k(edges[-1])}+"
 
 
@@ -502,6 +553,9 @@ OUTBOX_MAX = 200        # events kept while offline; the oldest are dropped beyo
 OUTBOX_DAYS = 14        # events older than this are not sent any more
 _client = None
 _sample: bool | None = None
+_SEND = {"timeout": 4.0, "retries": 0}     # in a command or the app: short; the background sender: long
+EXIT_WAIT = 1.0         # seconds a command waits for delivery at exit before handing over to the sender
+SENDER_FOR = 180.0      # seconds the background sender keeps trying (slow or flaky connection)
 _drainer: threading.Thread | None = None
 _failed = threading.Event()
 
@@ -520,7 +574,8 @@ def _get_client():
         # so an event leaves the outbox only once PostHog has it.
         # disable_geoip=False: PostHog derives the country from the connection; the IP itself is removed
         # by the project's ingestion transformation (see DECISIONS.md D-046)
-        _client = Posthog(_key(), host=HOST, disable_geoip=False, sync_mode=True, timeout=4, max_retries=0,
+        _client = Posthog(_key(), host=HOST, disable_geoip=False, sync_mode=True, timeout=_SEND["timeout"],
+                          max_retries=_SEND["retries"],
                           on_error=_on_error, enable_exception_autocapture=False, enable_local_evaluation=False)
     return _client
 
@@ -583,14 +638,72 @@ def _kick() -> None:
         _drainer.start()
 
 
-def flush(timeout: float = 3.0) -> None:
-    """Wait a little for the sender (at exit); never longer than ``timeout`` seconds."""
+def flush(timeout: float = EXIT_WAIT) -> None:
+    """At exit: wait up to ``timeout`` seconds for delivery, then hand anything not yet confirmed to a
+    detached background sender, so the command returns at once even on a slow connection."""
     t = _drainer
     if t is not None and t.is_alive():
         t.join(timeout)
+    try:
+        if enabled() and pending():
+            _spawn_sender()
+    except Exception as e:  # noqa: BLE001
+        log.debug("telemetry: %s", e)
 
 
 atexit.register(flush)
+
+_SENDER_ENV = "ONTOREVIEW_TELEMETRY_SENDER"
+
+
+def _sender_lock() -> Path:
+    return STATE_FILE.with_name("telemetry-sender.lock")
+
+
+def _spawn_sender() -> None:
+    """Start one detached process that delivers the outbox in the background (not from the sender itself,
+    and not while another sender is still working)."""
+    if os.environ.get(_SENDER_ENV):
+        return
+    lock = _sender_lock()
+    try:
+        if lock.exists() and time.time() - lock.stat().st_mtime < SENDER_FOR + 30:
+            return
+    except OSError:
+        pass
+    import subprocess
+
+    kw: dict[str, Any] = {"stdin": subprocess.DEVNULL, "stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL,
+                          "close_fds": True, "env": {**os.environ, _SENDER_ENV: "1"}}
+    if sys.platform == "win32":
+        kw["creationflags"] = 0x00000008 | 0x08000000     # DETACHED_PROCESS | CREATE_NO_WINDOW
+    else:
+        kw["start_new_session"] = True                      # survives the terminal / parent exiting
+    subprocess.Popen([sys.executable, "-c", "from ontoreview.telemetry import send_outbox; send_outbox()"], **kw)
+
+
+def send_outbox(budget: float = SENDER_FOR) -> int:
+    """The background sender: deliver the outbox with long timeouts, retrying for up to ``budget`` seconds;
+    an event leaves the outbox only once PostHog confirmed it. Returns the events still waiting."""
+    lock = _sender_lock()
+    try:
+        lock.parent.mkdir(parents=True, exist_ok=True)
+        lock.write_text(str(os.getpid()))
+    except OSError:
+        pass
+    _SEND.update(timeout=30.0, retries=2)
+    end = time.monotonic() + budget
+    try:
+        while enabled() and pending() and time.monotonic() < end:
+            _drain()
+            if pending():
+                time.sleep(min(15.0, max(0.0, end - time.monotonic())))
+        return pending()
+    finally:
+        try:
+            lock.unlink()
+        except OSError:
+            pass
 
 
 def _sampled_in() -> bool:
@@ -647,10 +760,23 @@ def _track(event: str, props: dict[str, Any], surface: str) -> dict | None:
             return None
         st["count"] = st.get("count", 0) + 1
         capped = st.pop("carry_capped", 0)
+        # repeat use, counted on this computer (never dates themselves): days used, runs, time since first use
+        if st.get("last_active") != today:
+            st["last_active"], st["days_active"] = today, int(st.get("days_active", 0)) + 1
+        if event == "run_completed":
+            st["runs_total"] = int(st.get("runs_total", 0)) + 1
+        first = st.setdefault("first_day", st.get("created") or today)
+        try:
+            since = (date.fromisoformat(today) - date.fromisoformat(first)).days
+        except ValueError:
+            since = 0
+        usage = {"days_active": bucket(st["days_active"], (1, 2, 5, 10, 30, 100)),
+                 "runs_total": bucket(st.get("runs_total", 0), (1, 2, 10, 50, 200, 1000)),
+                 "days_since_first": bucket(since, (1, 7, 30, 90, 365))}
         details = not details_env_locked() and bool(st.get("details", True))
         payload = clean({**_base_cache(), **ci_props(), "mode": detect_mode(surface), "surface": surface,
                          "sample_rate": 1.0 if not (is_ci() or is_docker()) else CI_SAMPLE,
-                         "capped_count": capped or None, **props}, details)
+                         "capped_count": capped or None, **usage, **props}, details)
         st["last_events"] = ([{"event": event, "when": int(time.time()), "properties": payload}]
                              + list(st.get("last_events", [])))[:LAST_EVENTS]
         _write_state(st)
@@ -830,13 +956,13 @@ def run(command: str, *, surface: str = "ontoreview", task: str | None = None,
 
 
 def start_session() -> None:
-    """The app started: one ``ui_session`` event is sent when it stops."""
+    """The app started: ``app_opened`` now (shows up in PostHog within seconds, and counts the session even
+    if the process is killed later, e.g. by closing the terminal), ``ui_session`` when it stops."""
     global _session
     if _session is None:
         _session = Session()
         atexit.register(end_session)
-        if enabled() and pending():
-            _kick()                         # events collected while offline
+        track("app_opened", {}, surface="ontoreview-ui")     # also sends anything collected while offline
 
 
 def end_session() -> None:

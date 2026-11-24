@@ -333,6 +333,11 @@ def _score(graph, ev, source, onto, work: Path, deadline: float, stores, backend
                 ev.cdi_rho_sub, ev.cdi_gamma, ev.cdi_k_max, ev.cdi_beta, ev.cdi_theta)
     except Exception as e:  # noqa: BLE001
         return [cdi_report(None, error=f"Scoring failed: {type(e).__name__}: {e}")], None
+    down = {h for s in sources for h in getattr(getattr(s, "http", None), "unavailable", set())}
+    if down:
+        from ... import netstate
+        notes.append(" ".join(f"{netstate.service_name(h)} was not available, so lookups there did not run;"
+                              for h in sorted(down)) + " alignment may be underestimated.")
     if any(getattr(getattr(s, "http", None), "out_of_time", False) for s in sources):
         notes.append(f"Repository lookups stopped after {ev.cdi_budget:.0f} s (evaluation.cdi_budget); "
                      "alignment may be underestimated.")

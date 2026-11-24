@@ -54,8 +54,12 @@ def fetch(url: str, timeout: float, max_bytes: int) -> tuple[dict, bytes | None]
             result["bytes"] = size
             return result, b"".join(chunks)
     except requests.RequestException as exc:
+        status = getattr(getattr(exc, "response", None), "status_code", 0) or 0
+        if not isinstance(exc, requests.HTTPError) or status >= 500:
+            return {**result, "error": "the server was not available, so it could not be checked",
+                    "network_error": True}, None
         return {**result, "error": type(exc).__name__ + (f": {exc}" if str(exc) else ""),
-                "network_error": not isinstance(exc, requests.HTTPError)}, None
+                "network_error": False}, None
 
 
 def parse_rdf(data: bytes, base: str, content_type: str) -> tuple[Graph, str]:
