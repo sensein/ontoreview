@@ -50,10 +50,12 @@ def run_evaluations(graph: Graph, config, source: str | None = None,
         log.info("OOPS! uploads the ontology to oops.linkeddata.es; set evaluation.oops = \"off\" to keep it local.")
         out.append(oops.run_oops(graph, ev.oops_timeout, ev.oops_endpoint or oops.OOPS_ENDPOINT,
                                  skip=skip, robot_state=robot_state))
+    from .. import netstate, telemetry
+
     for r in out:
+        r.error = netstate.plain(r.tool, r.error)     # "X was not available, so this check did not run."
         if r.error:
             log.warning(r.error)
-    from .. import telemetry
 
     telemetry.note_evaluations(config, out)
     return out

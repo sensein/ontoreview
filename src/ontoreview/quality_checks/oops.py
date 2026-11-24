@@ -44,9 +44,16 @@ def run_oops(graph: Graph, timeout: int = 90, endpoint: str = OOPS_ENDPOINT, *,
     req = urllib.request.Request(endpoint, data=body.encode("utf-8"),
                                  headers={"Content-Type": "application/xml",
                                           "User-Agent": "ontoreview (ontology documentation)"})
+    from .. import netstate
+
+    if not netstate.probe(endpoint):          # down or not answering within a few seconds: do not wait 90 s
+        return oops_report(None, netstate.not_available(endpoint), scope)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             text = resp.read().decode("utf-8", "replace")
     except Exception as e:  # noqa: BLE001
-        return oops_report(None, f"OOPS! request failed: {e}", scope)
+        if netstate.is_unavailable(e):
+            netstate.mark_down(endpoint)
+            return oops_report(None, netstate.not_available(endpoint), scope)
+        return oops_report(None, f"OOPS! could not process the ontology ({type(e).__name__}).", scope)
     return oops_report(text, scope=scope)

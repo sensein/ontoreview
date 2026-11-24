@@ -6,7 +6,7 @@ Quick start::
     ontoreview.build("ontology.ttl", out="docs/")
 """
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 from .build import BuildResult, build, build_single_file, check  # noqa: E402
 from .config import Config, load_config  # noqa: E402

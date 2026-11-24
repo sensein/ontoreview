@@ -485,16 +485,22 @@ class _HTTP:
         self.cache: dict[str, dict | None] = {}
         self.lock = threading.Lock()
         self.out_of_time = False     # set when the deadline cut lookups short
+        self.unavailable: set[str] = set()   # hosts that were down during this run
 
     def get_json(self, url: str, params: dict | None = None) -> dict | None:
         full = url + ("?" + urllib.parse.urlencode(params, doseq=True) if params else "")
         with self.lock:
             if full in self.cache:
                 return self.cache[full]
+        from ... import netstate
+
         out = None
         for attempt in range(self.retries):
             if self.deadline is not None and time.time() > self.deadline:
                 self.out_of_time = True
+                return None
+            if netstate.is_down(full):          # failed earlier: skip at once instead of waiting again
+                self.unavailable.add(netstate.host(full))
                 return None
             try:
                 req = urllib.request.Request(full, headers=self.headers)
@@ -506,8 +512,16 @@ class _HTTP:
                     if e.code in (401, 403):
                         raise
                     break
-                time.sleep(1.5 * (attempt + 1))
-            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+                if attempt >= 1:                # a second server error: the service is down
+                    netstate.mark_down(full)
+                    self.unavailable.add(netstate.host(full))
+                    break
+                time.sleep(1.5)
+            except (urllib.error.URLError, TimeoutError, ConnectionError):
+                netstate.mark_down(full)        # no answer: do not retry, skip this host from now on
+                self.unavailable.add(netstate.host(full))
+                break
+            except json.JSONDecodeError:
                 time.sleep(1.5 * (attempt + 1))
         with self.lock:
             self.cache[full] = out
@@ -1148,6 +1162,8 @@ class ZeroShotNLIBackend:
         kw = {"model": model}
         if device is not None:
             kw["device"] = device
+        from ...quiet import quiet_transformers
+        quiet_transformers()
         self.pipe = pipeline("zero-shot-classification", **kw)
         self.levels, self.template, self.batch_size = list(levels), hypothesis_template, batch_size
 

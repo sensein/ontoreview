@@ -22,12 +22,19 @@ BIOPORTAL_API = "https://data.bioontology.org"
 def get_json(url, params, timeout, headers=None):
     import requests
 
+    from ... import netstate
+
+    if netstate.is_down(url):
+        raise ValueError(netstate.not_available(url))
     try:
         with requests.get(url, params=params, headers={"Accept": "application/json", "User-Agent": USER_AGENT,
                                                        **(headers or {})},
                           timeout=(min(timeout, 10), timeout), stream=True) as response:
             if response.status_code == 404:
                 return None
+            if response.status_code >= 500 or response.status_code == 429:
+                netstate.mark_down(url)
+                raise ValueError(netstate.not_available(url))
             if response.status_code != 200:
                 raise ValueError(f"HTTP {response.status_code}")
             body = bytearray()
@@ -38,6 +45,9 @@ def get_json(url, params, timeout, headers=None):
             return json.loads(body)
     except requests.RequestException as exc:
         # Do not emit headers or exception representations containing credentials.
+        if isinstance(exc, (requests.ConnectionError, requests.Timeout)):
+            netstate.mark_down(url)
+            raise ValueError(netstate.not_available(url)) from None
         raise ValueError(type(exc).__name__) from None
     except (TypeError, UnicodeError, json.JSONDecodeError):
         raise ValueError("Malformed API response") from None

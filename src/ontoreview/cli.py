@@ -1173,7 +1173,9 @@ def telemetry_show(last: bool = typer.Option(False, "--last", help="Also print t
 def run() -> None:
     """Console entry point: ``app`` with one anonymous ``run_completed`` event per command (see telemetry.py)."""
     from . import telemetry
+    from .quiet import quiet
 
+    quiet()
     argv = sys.argv[1:]
     command = telemetry.cli_command(argv)
     if command is None or command == "ui" or command.startswith("telemetry") or not telemetry.enabled():
