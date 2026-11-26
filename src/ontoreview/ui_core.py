@@ -579,10 +579,8 @@ def run_task(settings: Settings) -> TaskResult:
 def _run_task(settings: Settings) -> TaskResult:
     from datetime import datetime, timezone
 
-    from .build import build, build_single_file, check, check_records, load, resolve_config
+    from .build import build, build_single_file, check, check_records, export_docs
     from .collection import build_collection, export_collection
-    from .export import export_markdown
-    from .model.extract import extract
     from .report.issues import report_issues
 
     problems = settings.validate()
@@ -661,13 +659,15 @@ def _run_task(settings: Settings) -> TaskResult:
         res.output, res.index = (out.parent if separate else out), str(out)
     elif s.task in ("markdown", "myst"):
         log.info("Exporting %s → %s", "MyST" if s.task == "myst" else "Markdown", out)
-        cfg = resolve_config(src)
-        onto = extract(load(cfg), cfg)
-        from .fixes import check_required
-        check_required(onto, cfg, src)
-        written = export_markdown(onto, out, myst=s.task == "myst")
-        res.rows = [Row(Path(src).name, onto.metadata.title or Path(src).stem, len(onto.terms),
-                        output=str(out / "index.md"))]
+        b = export_docs(src, out=out, myst=s.task == "myst", **ov)
+        written = b.files
+        sm = b.report.totals if b.report else {"error": 0, "warning": 0, "info": 0}
+        res.rows = [Row(Path(src).name, b.ontology.metadata.title or Path(src).stem, len(b.ontology.terms),
+                        sm["error"], sm["warning"], sm["info"],
+                        _external_text(b.report.external if b.report else []), str(out / "index.md"),
+                        issues=report_issues(b.report) if b.report else [],
+                        notes=_scope_notes(b.report.external) if b.report else [],
+                        metrics=_metrics(b.report.external) if b.report else [])]
         res.index = str(out / "index.md") if (out / "index.md").exists() else (str(written[0]) if written else None)
     else:
         if s.task == "single":
@@ -1301,6 +1301,195 @@ def oops_status(prefs: Prefs, check: bool = True) -> dict[str, str]:
     mode = "fallback" if prefs.oops == "auto" else "always"
     return ({"state": "ok", "label": "OOPS! · reachable", "detail": f"{url} ({mode})"} if ok else
             {"state": "missing", "label": "OOPS! · unreachable", "detail": url})
+
+
+# ------------------------------------------------------------------ auto-configure (Settings › Quality checks)
+LOCAL_OOPS_IMAGE = "mpovedavillalon/oops:v2"     # by the OOPS! authors: Tomcat with OOPS! at /OOPS
+LOCAL_OOPS_CONTAINER = "ontoreview-oops"
+LOCAL_OOPS_PORT = 8089                           # 8080 is taken by the docs' Docker preview
+LOCAL_OOPS_URL = f"http://localhost:{LOCAL_OOPS_PORT}/OOPS/rest"
+KEY_VARS = ("BIOPORTAL_API_KEY", "ONTOPORTAL_API_KEY", "HF_TOKEN", "OPENAI_API_KEY", "ANTHROPIC_API_KEY",
+            "OPENROUTER_API_KEY", "GEMINI_API_KEY", "MISTRAL_API_KEY", "GROQ_API_KEY")
+
+
+def _http_ok(url: str, timeout: float = 3) -> bool:
+    import urllib.request
+
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "ontoreview"}),  # noqa: S310
+                                    timeout=timeout) as r:
+            return r.status < 500
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def detect_setup(prefs: Prefs) -> dict[str, Any]:
+    """What this computer offers for the quality checks and AI drafts (nothing is changed or downloaded)."""
+    import importlib.util
+    import shutil
+    import subprocess
+
+    from .quality_checks.robot import _docker, _image_present
+
+    found: dict[str, Any] = {"docker_installed": bool(shutil.which("docker"))}
+    docker = _docker()
+    found["docker_running"] = bool(docker)
+    found["robot_local"] = shutil.which(str(Path(prefs.robot_path or "robot").expanduser())) or ""
+    found["java"] = shutil.which("java") or ""
+    image = prefs.robot_image or "obolibrary/robot"
+    found["robot_image"] = image
+    found["robot_image_present"] = bool(docker and _image_present(docker, image))
+    found["oops_container"] = ""
+    if docker:
+        try:
+            out = subprocess.run([docker, "ps", "-a", "--filter", f"name=^{LOCAL_OOPS_CONTAINER}$",
+                                  "--format", "{{.Status}}"], capture_output=True, text=True, timeout=15)
+            found["oops_container"] = out.stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            pass
+    found["oops_local_url"] = LOCAL_OOPS_URL
+    found["oops_endpoint"] = prefs.oops_endpoint
+    url = (prefs.ai_ollama_url or "http://localhost:11434").rstrip("/")
+    models: list[str] = []
+    try:
+        import urllib.request
+
+        with urllib.request.urlopen(f"{url}/api/tags", timeout=2) as r:  # noqa: S310 - the user's Ollama URL
+            models = [m.get("name", "") for m in json.loads(r.read().decode()).get("models", [])]
+        found["ollama"] = True
+    except Exception:  # noqa: BLE001
+        found["ollama"] = False
+    found["ollama_url"], found["ollama_models"] = url, models
+    found["cdi_extras"] = all(importlib.util.find_spec(m) is not None for m in ("transformers", "torch"))
+    found["keys"] = [k for k in KEY_VARS if os.environ.get(k)]
+    return found
+
+
+def setup_plan(found: dict[str, Any], prefs: Prefs) -> list[dict[str, Any]]:
+    """Steps Auto-configure offers: ``action`` steps can be ticked (``default``: pre-ticked); ``info`` steps say
+    what is ready or what to install by hand."""
+    steps: list[dict[str, Any]] = []
+
+    def act(sid, label, detail, default=True):
+        steps.append({"id": sid, "kind": "action", "label": label, "detail": detail, "default": default})
+
+    def info(label, detail, ok=True):
+        steps.append({"id": "", "kind": "info", "label": label, "detail": detail, "ok": ok})
+
+    if found["robot_local"]:
+        act("use_local_robot", "Use the local robot command", f"Found {found['robot_local']}; no Docker needed.")
+    elif found["docker_running"]:
+        if found["robot_image_present"]:
+            act("use_docker_robot", "Run ROBOT and the reasoner in Docker",
+                f"{found['robot_image']} is already downloaded.")
+        else:
+            act("pull_robot", "Download ROBOT and run it in Docker",
+                f"docker pull {found['robot_image']} (a few hundred MB, once).")
+    elif found["docker_installed"]:
+        info("Docker is installed but not running", "Start Docker Desktop (or the docker service), then run "
+             "Auto-configure again.", ok=False)
+    else:
+        info("No Docker and no local robot", "Install Docker (https://docs.docker.com/get-docker/), or Java 11+ and "
+             "ROBOT (https://robot.obolibrary.org). Until then OOPS! checks the full pitfall catalogue.", ok=False)
+    if found["docker_running"]:
+        state = found["oops_container"]
+        act("local_oops", "Run OOPS! on this computer",
+            ("Container exists (" + state + "); start it" if state else f"docker run {LOCAL_OOPS_IMAGE} on port "
+             f"{LOCAL_OOPS_PORT}") + f" and use {found['oops_local_url']}, so ontologies are never uploaded.",
+            default=found["oops_endpoint"] == found["oops_local_url"])
+    if found["ollama"]:
+        n = len(found["ollama_models"])
+        act("use_ollama", "Use Ollama for AI drafts",
+            f"Running at {found['ollama_url']} with {n} model{'s' if n != 1 else ''}"
+            + ("" if n else "; pull one with Settings › AI & fixes › Pull a model") + ". Put it first in the priority.")
+    else:
+        info("Ollama not found", f"Optional, for local AI drafts: install from https://ollama.com and run "
+             f"`ollama pull {prefs.ai_ollama_model}`.", ok=False)
+    if found["cdi_extras"]:
+        info("Language models available", "ontoreview[cdi] is installed: interoperability scores and Hugging Face "
+             "AI drafts can run here (models download on first use).")
+    else:
+        info("Interoperability models not installed", "pip install \"ontoreview[cdi]\" for the generality score, "
+             "OntoAligner and Hugging Face AI drafts.", ok=False)
+    if found["keys"]:
+        info("Keys found in the environment", ", ".join(found["keys"]))
+    return steps
+
+
+def apply_setup(chosen: set[str], prefs: Prefs, found: dict[str, Any], say=lambda line: None) -> list[str]:
+    """Run the chosen Auto-configure steps and set the matching options on ``prefs`` (not saved here).
+    Returns one line per step that did not work."""
+    import subprocess
+
+    from .quality_checks.robot import _docker
+
+    problems: list[str] = []
+    docker = _docker() if chosen & {"pull_robot", "use_docker_robot", "local_oops"} else None
+
+    def stream(cmd: list[str], timeout: int = 1800) -> bool:
+        say("$ " + " ".join(cmd[1:] if cmd and cmd[0] == docker else cmd))
+        try:
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            t0 = time.time()
+            for line in p.stdout or []:
+                if line.strip():
+                    say(line.rstrip())
+                if time.time() - t0 > timeout:
+                    p.kill()
+                    break
+            return p.wait() == 0
+        except OSError as e:
+            say(str(e))
+            return False
+
+    if "use_local_robot" in chosen:
+        prefs.robot_enabled, prefs.robot_mode, prefs.robot_path = True, "local", found["robot_local"]
+        say(f"ROBOT: local command {found['robot_local']}")
+    if chosen & {"pull_robot", "use_docker_robot"}:
+        if not docker:
+            problems.append("Docker is not running, so ROBOT could not be set up.")
+        elif "pull_robot" in chosen and not stream([docker, "pull", found["robot_image"]]):
+            problems.append(f"Could not download {found['robot_image']}; see the log above.")
+        else:
+            prefs.robot_enabled, prefs.robot_mode = True, "docker"
+            prefs.robot_image = found["robot_image"]
+            if prefs.reasoner == "off":
+                prefs.reasoner = "hermit"
+            say(f"ROBOT: Docker image {found['robot_image']}")
+    if "local_oops" in chosen:
+        if not docker:
+            problems.append("Docker is not running, so OOPS! could not be started.")
+        else:
+            ok = (stream([docker, "start", LOCAL_OOPS_CONTAINER]) if found.get("oops_container") else
+                  stream([docker, "run", "-d", "--name", LOCAL_OOPS_CONTAINER, "--restart", "unless-stopped",
+                          "-p", f"{LOCAL_OOPS_PORT}:8080", LOCAL_OOPS_IMAGE]))
+            base = LOCAL_OOPS_URL.rsplit("/rest", 1)[0] + "/"
+            up = False
+            if ok:
+                say(f"Waiting for OOPS! at {base} …")
+                for _ in range(45):                   # Tomcat needs a while to deploy the application
+                    if _http_ok(base):
+                        up = True
+                        break
+                    time.sleep(2)
+            if up:
+                prefs.oops_endpoint = LOCAL_OOPS_URL
+                if prefs.oops == "off":
+                    prefs.oops = "auto"
+                _oops_cache.pop(LOCAL_OOPS_URL, None)
+                say(f"OOPS!: {LOCAL_OOPS_URL} (local; nothing is uploaded)")
+            else:
+                problems.append(f"OOPS! did not answer at {base}; the public service stays selected. Check "
+                                f"`docker logs {LOCAL_OOPS_CONTAINER}`.")
+    if "use_ollama" in chosen:
+        order = [x for x in (prefs.ai_priority or "").split(",") if x and x != "ollama"]
+        prefs.ai_priority = ",".join(["ollama"] + order)
+        prefs.ai_ollama_url = found["ollama_url"]
+        models = found.get("ollama_models") or []
+        if models and prefs.ai_ollama_model not in models:
+            prefs.ai_ollama_model = models[0]
+        say(f"AI drafts: Ollama first ({prefs.ai_ollama_model})")
+    return problems
 
 
 def system_info() -> dict[str, str]:

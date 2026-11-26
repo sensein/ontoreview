@@ -233,6 +233,30 @@ NAV = [  # key, path, label, svg path data
      '<path d="M12 17h.01"/>'),
 ]
 
+# One-sentence setup notes, shown at the top of each Settings box (and expanded in Help › Setting up checks)
+SETUP = {
+    "robot": "Start Docker (Docker Desktop, or the docker service on Linux); the first run pulls the image, or pull it "
+             "now with <code>docker pull obolibrary/robot</code>. Without Docker: install Java 11+ and "
+             "<a class=\"text-primary\" href=\"https://robot.obolibrary.org\" target=\"_blank\" rel=\"noopener\">ROBOT</a>, "
+             "then choose the local robot command.",
+    "reasoner": "Nothing extra: it runs <code>robot reason</code> with the ROBOT setup above (Docker running, or a "
+                "local robot).",
+    "iri": "Nothing to install; works offline from the bundled database. BioPortal lookups need a free API key in "
+           "<code>BIOPORTAL_API_KEY</code>.",
+    "ontocheck": "Nothing to install: it runs inside OntoReview.",
+    "cdi": "<code>pip install \"ontoreview[cdi]\"</code>; the models are downloaded from Hugging Face on first use "
+           "(or ahead of time: <code>hf download facebook/bart-large-mnli</code>). OLS needs no key; BioPortal needs "
+           "<code>BIOPORTAL_API_KEY</code>.",
+    "si": "Same as cross-domain: <code>pip install \"ontoreview[cdi]\"</code> for the generality model.",
+    "oops": "Public service: nothing to install (needs internet; the ontology is uploaded). Private ontologies: run "
+            "your own with <code>docker run -d -p 8080:8080 mpovedavillalon/oops:v2</code> and set the URL to "
+            "<code>http://localhost:8080/OOPS/rest</code>.",
+    "ai": "Ollama: install it from ollama.com and run <code>ollama pull qwen3.5:4b</code>. Hugging Face: "
+          "<code>pip install \"ontoreview[cdi]\"</code> (the model downloads on first use). API: set "
+          "<code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, … or paste a key below.",
+    "publish": "Needs git. Sign in with a token below, or with <code>gh auth login</code> / your SSH key.",
+}
+
 # Help page: (anchor, title, screenshot(s) in ui_assets/help/ (a name, a tuple of names, or ""), steps, note, links)
 # a link target is an app path ("/history"), "settings:<tab>" (general | docs | checks | look) or an https URL
 HELP = [
@@ -542,11 +566,80 @@ HELP = [
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
        "command line, CI and teammates, use Project config › Save current settings to write an ontoreview.toml; "
        "its values override these.", [("General", "settings:general"), ("Documentation", "settings:docs"), ("Quality checks", "settings:checks"), ("Appearance", "settings:look")]),
+    ("setup", "Setting up checks and services", "", [
+        "<b>Where settings go:</b> Settings in this app (your defaults), <code>ontoreview.toml</code> in the project "
+        "(sections <code>[evaluation]</code> and <code>[ai]</code>; shared with the CLI and CI), command-line flags "
+        "(<code>ontoreview check --help</code>) or environment variables. Each Settings box starts with a one-line "
+        "<b>Setup</b> note; the details are below.",
+        "<b>ROBOT and the reasoner (Docker):</b> install <a class=\"text-primary\" "
+        "href=\"https://docs.docker.com/get-docker/\" target=\"_blank\" rel=\"noopener\">Docker Desktop</a> (or Docker "
+        "Engine on Linux) and start it. Pull the image once: <code>docker pull obolibrary/robot</code> (otherwise the "
+        "first build pulls it). For reproducible results pin a release tag, e.g. "
+        "<code>obolibrary/robot:v1.9.8</code>, in Settings › Quality checks › ROBOT › Docker image, "
+        "<code>robot_image</code> in ontoreview.toml or <code>ROBOT_DOCKER_IMAGE</code>. Press <b>Test</b> to check. "
+        "Logical consistency (HermiT or ELK) uses the same image.",
+        "<b>ROBOT without Docker:</b> install Java 11 or newer, download <code>robot.jar</code> and the "
+        "<code>robot</code> script from <a class=\"text-primary\" href=\"https://robot.obolibrary.org\" "
+        "target=\"_blank\" rel=\"noopener\">robot.obolibrary.org</a>, put them on your PATH, and choose "
+        "<b>Local robot command</b> (or set <code>robot_path</code>). A local robot is used before Docker.",
+        "<b>ontoreview.toml for ROBOT:</b><pre class=\"or-mono\" style=\"margin:.3em 0;white-space:pre-wrap\">"
+        "[evaluation]\nrobot = \"auto\"                  # auto | on | off\nrobot_image = \"obolibrary/robot\"\n"
+        "# robot_path = \"/usr/local/bin/robot\"\nreasoner = \"hermit\"              # hermit | elk | off\n"
+        "reasoner_timeout = 600</pre>"
+        "Without ROBOT, <code>auto</code> skips it and OOPS! checks the full pitfall catalogue instead.",
+        "<b>OOPS! (public service):</b> nothing to install; the default URL is "
+        "<code>https://oops.linkeddata.es/rest</code>. It needs internet and uploads the ontology, so set OOPS! to "
+        "<b>Off</b> for private ontologies, or run your own.",
+        "<b>OOPS! on your own machine (Docker):</b> <code>docker run -d --name oops -p 8080:8080 "
+        "mpovedavillalon/oops:v2</code> (the image by the OOPS! authors: a Tomcat server with OOPS! at "
+        "<code>/OOPS</code>). Then set <b>Service URL</b> to <code>http://localhost:8080/OOPS/rest</code> and press "
+        "<b>Check</b>. On another server use its address, e.g. <code>https://oops.example.org/OOPS/rest</code>. In "
+        "ontoreview.toml: <code>oops_endpoint = \"http://localhost:8080/OOPS/rest\"</code>, <code>oops = \"auto\"</code> "
+        "(auto | on | off), <code>oops_timeout = 90</code>.",
+        "<b>Hugging Face models</b> (cross-domain and scientific interoperability, OntoAligner, AI drafts): "
+        "<code>pip install \"ontoreview[cdi]\"</code>. They are downloaded on first use and run on this computer: "
+        "<code>facebook/bart-large-mnli</code> (generality, about 1.6 GB), <code>all-MiniLM-L6-v2</code> (OntoAligner, "
+        "about 90 MB) and, for AI drafts, <code>Qwen/Qwen3.5-4B</code> (about 9 GB; <code>Qwen/Qwen3.5-2B</code> for "
+        "small machines). Download ahead of time with <code>hf download facebook/bart-large-mnli</code> (the "
+        "<code>hf</code> command comes with huggingface_hub; older versions: <code>huggingface-cli download</code>).",
+        "<b>Hugging Face options:</b> a token (Settings, or <code>HF_TOKEN</code>) gives higher download limits and "
+        "access to gated models; the cache is <code>~/.cache/huggingface</code> (move it with <code>HF_HOME</code>); "
+        "after downloading, <code>HF_HUB_OFFLINE=1</code> keeps everything offline. Other models: "
+        "<code>cdi_model</code> and <code>cdi_sbert_model</code> in <code>[evaluation]</code>, <code>hf_model</code> in "
+        "<code>[ai]</code>.",
+        "<b>Ollama (AI drafts, local):</b> install from <a class=\"text-primary\" href=\"https://ollama.com\" "
+        "target=\"_blank\" rel=\"noopener\">ollama.com</a>, then <code>ollama pull qwen3.5:4b</code> (or <b>Pull a "
+        "model</b> in Settings › AI &amp; fixes). With Docker: <code>docker run -d -p 11434:11434 -v "
+        "ollama:/root/.ollama --name ollama ollama/ollama</code> and <code>docker exec ollama ollama pull "
+        "qwen3.5:4b</code>. The default URL is <code>http://localhost:11434</code>; set <b>Ollama URL</b> (or "
+        "<code>ollama_url</code> in <code>[ai]</code>) for a server elsewhere.",
+        "<b>AI through an API:</b> pick the provider in Settings › AI &amp; fixes and paste a key, or set "
+        "<code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, <code>OPENROUTER_API_KEY</code>, "
+        "<code>GEMINI_API_KEY</code>, <code>MISTRAL_API_KEY</code> or <code>GROQ_API_KEY</code>. <b>Custom</b> takes "
+        "any OpenAI-compatible base URL, e.g. LM Studio (<code>http://localhost:1234/v1</code>) or vLLM. The order "
+        "of sources is <code>priority = [\"ollama\", \"hf\", \"api\"]</code> in <code>[ai]</code>.",
+        "<b>OLS, BioPortal and other OntoPortal services:</b> OLS needs nothing; another OLS instance is "
+        "<code>ols@https://…/api</code>. BioPortal needs a free account and its API key (bioportal.bioontology.org › "
+        "Account) in Settings or <code>BIOPORTAL_API_KEY</code>; AgroPortal and other OntoPortal services use "
+        "<code>ONTOPORTAL_API_KEY</code>. To stay offline, untick <b>Allow network lookups</b> "
+        "(<code>iri_network = false</code>).",
+        "<b>OntoCheck and the term database:</b> nothing to install; both run inside OntoReview.",
+        "<b>ORCID</b> (creator lookup in the fixes review): nothing to set up; it uses the public ORCID registry.",
+        "<b>GitHub Pages deploy:</b> needs git; sign in with a GitHub token (Settings › General › Publishing) or "
+        "<code>gh auth login</code> / an SSH key. See <i>Deploy</i> above for the token permissions.",
+        "<b>Inferred superclasses</b> (Settings › Documentation): <code>pip install \"ontoreview[reason]\"</code>.",
+    ], "Keys and tokens stay on this computer: they are never written to reports, ontoreview.toml, the run history "
+       "or the command line shown in the app. Prefer environment variables in CI.",
+     [("Settings › Quality checks", "settings:checks"), ("Settings › AI & fixes", "settings:ai"),
+      ("ROBOT documentation", "http://robot.obolibrary.org"), ("OOPS! Docker image", "https://hub.docker.com/r/mpovedavillalon/oops"),
+      ("Ollama", "https://ollama.com")]),
     ("trouble", "Troubleshooting", "", [
         "<b>ROBOT · Docker not running:</b> start Docker Desktop, or choose “Local robot command” in Settings › "
-        "Quality checks. The first run downloads the ROBOT image, which can take a minute.",
+        "Quality checks. The first run downloads the ROBOT image, which can take a minute; "
+        "<code>docker pull obolibrary/robot</code> does it ahead of time. See <i>Setting up checks and services</i>.",
         "<b>OOPS! · unreachable:</b> the web service may be down or you are offline; builds still finish, the "
-        "OOPS! section reports the problem. Set OOPS! to Off for private ontologies.",
+        "OOPS! section reports the problem. Set OOPS! to Off for private ontologies, or run OOPS! locally with "
+        "Docker (see <i>Setting up checks and services</i>).",
         "<b>Port already in use:</b> start with <code>ontoreview ui --port 8800</code>, or just run it again "
         "without --port to use the next free port.",
         "<b>Dropped files:</b> browsers don't share real paths, so dropped items are copied to "
@@ -687,6 +780,8 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-hero { background: #0F1724; color: #fff; border-radius: 14px; padding: 32px; }
 .or-feature .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
   display: flex; align-items: center; justify-content: center; }
+.or-setup { padding: 8px 12px; background: var(--or-primary-soft); color: var(--or-ink-2); border-radius: 8px; font-size: 12.5px; line-height: 1.5; }
+.or-setup code { font-size: 12px; }
 .or-notice { padding: 10px 12px; background: var(--or-warn-bg); color: var(--or-warn); border-radius: 8px; font-size: 12.5px; }
 .or-themeprev { display: block; height: 64px; border-radius: 8px; border: 1px solid var(--or-line); width: 100%; }
 @media (prefers-reduced-motion: reduce) { .ob-dropzone { transition: none; } }

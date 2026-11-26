@@ -8,8 +8,8 @@ Quick start::
 
 __version__ = "1.0.4"
 
-from .build import BuildResult, build, build_single_file, check  # noqa: E402
+from .build import BuildResult, build, build_single_file, check, export_docs  # noqa: E402
 from .config import Config, load_config  # noqa: E402
 from .diff import compare_files  # noqa: E402
 
-__all__ = ["BuildResult", "Config", "build", "build_single_file", "check", "compare_files", "load_config", "__version__"]
+__all__ = ["BuildResult", "Config", "build", "build_single_file", "check", "compare_files", "export_docs", "load_config", "__version__"]

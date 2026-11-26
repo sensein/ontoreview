@@ -685,11 +685,11 @@ def export_cmd(
     output: Path = typer.Option(Path("docs-md"), "--output", "-o"),
     config: Path | None = ConfigOpt,
 ) -> None:
-    """Export the documentation as Markdown or MyST for another static-site generator.
+    """Export the documentation as Markdown or MyST for another static-site generator, with the same
+    content as the website (overview, terms, quality report, provenance, …). MyST adds conf.py,
+    requirements.txt and a README for building with Sphinx.
     SOURCE may be a folder: each ontology is exported to its own sub-folder, plus an index.md."""
-    from .build import load, resolve_config
-    from .export import export_markdown
-    from .model.extract import extract
+    from .build import export_docs, resolve_config
 
     folder = _folder_source(source, config)
     if folder is not None:
@@ -705,9 +705,10 @@ def export_cmd(
             raise typer.Exit(1)
         return
     cfg = resolve_config(source, config)
-    onto = extract(load(cfg), cfg)
-    files = export_markdown(onto, output, myst=fmt == ExportFormat.myst)
-    console.print(f"[green]✓[/] wrote {len(files)} files to {output}")
+    res = export_docs(config=cfg, out=output, myst=fmt == ExportFormat.myst)
+    console.print(f"[green]✓[/] wrote {len(res.files)} files to {output}")
+    if fmt == ExportFormat.myst:
+        console.print(f"  Build with Sphinx: see {output / 'README.md'}")
 
 
 CI_WORKFLOW = """name: Ontology docs
@@ -965,7 +966,13 @@ def fix_list(source: str = typer.Argument(..., help="Ontology file."), config: P
     s.precheck()
     ai_info: dict = {"used": False}
     if ai or refine or ai_description:
-        from .fixes.ai import AIError, ai_suggestions, draft_description, pick_source, refine_definition
+        from .fixes.ai import (
+            AIError,
+            ai_suggestions,
+            draft_description,
+            pick_source,
+            refine_definition,
+        )
         cfg_ai = _ai_config(s.cfg.ai, ai_priority, ai_ollama_model, ai_ollama_url, ai_hf_model, ai_api_provider,
                             ai_api_model, ai_api_base_url, ai_timeout)
         try:

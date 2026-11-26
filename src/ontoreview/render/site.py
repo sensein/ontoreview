@@ -222,10 +222,10 @@ class SiteRenderer:
         def page(name: str) -> str:
             return f"{name}.html" if multi else "index.html"
 
-        intro = self._introduction() if st.introduction else None
+        intro = self._introduction_text() if st.introduction else None
         if intro:
             out.append(Section("introduction", t("introduction"), "introduction.html",
-                               context={"intro": intro}))
+                               context={"intro": markdown(intro), "text": intro}))
         for cs in cfg.custom_sections:
             if cs.position == "before-terms":
                 out.append(self._custom(cs))
@@ -350,18 +350,17 @@ class SiteRenderer:
             if p and p.is_file():
                 text = p.read_text("utf-8")
         sid = cs.id or re.sub(r"[^a-z0-9]+", "-", cs.title.lower()).strip("-")
-        return Section(sid, cs.title, "custom.html", context={"body": markdown(text)})
+        return Section(sid, cs.title, "custom.html", context={"body": markdown(text), "text": text})
 
-    def _introduction(self) -> Markup | None:
+    def _introduction_text(self) -> str | None:
         """Only when there is substantive text: a configured intro, or a description that is not
-        already used as the lede of the document header."""
+        already used as the lede of the document header. Markdown source (the Markdown export uses it as is)."""
         cfg, m = self.cfg, self.onto.metadata
         if cfg.introduction:
             p = cfg.resolve(cfg.introduction)
-            text = p.read_text("utf-8") if p and p.is_file() else cfg.introduction
-            return markdown(text)
+            return p.read_text("utf-8") if p and p.is_file() else cfg.introduction
         if m.abstract and m.description and m.description.strip() != m.abstract.strip():
-            return markdown(m.description)
+            return m.description
         return None
 
     # ------------------------------------------------------------------ write
