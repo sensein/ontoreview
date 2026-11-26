@@ -621,7 +621,7 @@ def _run_task(settings: Settings) -> TaskResult:
         res.rows = [_row_from_entry(e, out, "index.html") for e in coll.entries]
         res.skipped, res.index = coll.skipped, str(out / "index.html")
     elif s.is_folder and s.task in ("markdown", "myst"):
-        coll = export_collection(src, out, myst=s.task == "myst")
+        coll = export_collection(src, out, myst=s.task == "myst", **ov)
         res.rows = [_row_from_entry(e, out, "index.md") for e in coll.entries]
         res.skipped, res.index = coll.skipped, str(out / "index.md")
     elif s.task in ("check", "interop"):

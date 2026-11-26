@@ -84,10 +84,20 @@ RECOMMENDED = "site"
 INCLUDES = {
     "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, "
             "cross-domain interoperability, OOPS!), "
-            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt, and standalone.html (all in one file)",
-    "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
-    "markdown": "Includes: one page per term type; no quality checks or diagram",
-    "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
+            "changelog, downloads (TTL, OWL, JSON-LD), citation, provenance (who made each fix: a person, a rule or "
+            "AI), llms.txt, and standalone.html (all in one file)",
+    "single": "Includes: the same content as the website, in one self-contained HTML file: every term, search, "
+              "class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck "
+              "metrics, cross-domain interoperability, OOPS!), changelog, downloads (TTL, OWL, JSON-LD, embedded in "
+              "the file), citation and provenance (who made each fix: a person, a rule or AI)",
+    "markdown": "Includes: the same content as the website, as Markdown pages: every term, class diagram (Mermaid) "
+                "and hierarchy, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck "
+                "metrics, cross-domain interoperability, OOPS!), changelog, downloads (TTL, OWL, JSON-LD), citation, "
+                "provenance (who made each fix: a person, a rule or AI) and ontology.json; no search",
+    "myst": "Includes: the same content as the website, as MyST pages with cross-references: every term, class "
+            "diagram (Mermaid) and hierarchy, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, "
+            "OntoCheck metrics, cross-domain interoperability, OOPS!), changelog, downloads, citation and provenance, "
+            "plus conf.py, requirements.txt and a README to build it with Sphinx",
     "check": "Includes: built-in checks, ROBOT, reasoner, IRI, OntoCheck and OOPS! results as JSON; no documentation",
     "interop": "Includes: CDI (Align, Gen), SI (covered scientific domains, per-domain scores, domain of each "
                "reference ontology) as JSON; references and options in Settings › Quality checks",

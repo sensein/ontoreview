@@ -114,3 +114,12 @@ def test_discovery_skips_earlier_output(onto_folder, tmp_path):
     build_collection(onto_folder, onto_folder / "old-site")         # and another, older one
     files, _ = find_ontologies(onto_folder)
     assert len(files) == 6 and not any("docs" in f.parts or "old-site" in f.parts for f in files)
+
+
+def test_export_collection_has_quality_report_and_uses_settings(onto_folder, tmp_path):
+    res = export_collection(onto_folder, tmp_path / "md", evaluation={"oops": "off"})
+    page = tmp_path / "md" / "pizza-ttl" / "quality.md"
+    text = page.read_text()
+    assert "# 6 Quality report" in text and "distinct problems" in text     # the website's report, as Markdown
+    assert 'id="quality-oops"' not in text                                  # oops = off reaches every ontology
+    assert len(res.ok) == 5
