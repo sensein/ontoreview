@@ -209,11 +209,11 @@ def _title(folder: Path, config) -> str:
 # ------------------------------------------------------------------ export
 @_api("export_collection")
 def export_collection(folder: str | Path, out: str | Path = "docs-md", config: Config | str | Path | None = None,
-                      *, myst: bool = False) -> CollectionResult:
-    """Markdown/MyST export of every ontology in ``folder``, one sub-folder each, plus an index."""
-    from .build import load, resolve_config
-    from .export import export_markdown
-    from .model.extract import extract
+                      *, myst: bool = False, **overrides: Any) -> CollectionResult:
+    """Markdown/MyST export of every ontology in ``folder``, one sub-folder each, plus an index. Each one gets
+    the website's content, quality report included; ``overrides`` set options as for :func:`build_collection`."""
+    from .build import export_docs, resolve_config
+    from .export import write_sphinx_project
 
     t0 = time.perf_counter()
     folder, out = Path(folder).resolve(), Path(out)
@@ -221,15 +221,16 @@ def export_collection(folder: str | Path, out: str | Path = "docs-md", config: C
     files, skipped = find_ontologies(folder, _excluded_output(folder, out))
     if not files:
         raise ValueError(f"No ontology files found in {folder}")
+    overrides = _drop_per_ontology(overrides)
     slugs = slugs_for(files, folder)
     entries = []
     for i, f in enumerate(files, 1):
         e = Entry(source=f.relative_to(folder).as_posix(), slug=slugs[f])
         log.info("[%d/%d] %s", i, len(files), e.source)
         try:
-            cfg = resolve_config(f, _config_for(f, folder, config))
-            onto = extract(load(cfg), cfg)
-            written = export_markdown(onto, out / e.slug, myst=myst)
+            cfg = resolve_config(f, _config_for(f, folder, config), **overrides)
+            b = export_docs(config=cfg, out=out / e.slug, myst=myst, sphinx_project=False)
+            onto, written = b.ontology, b.files
             md = onto.metadata
             e.title = md.title or f.stem
             e.description = " ".join(str(md.abstract or md.description or "").split())
@@ -241,6 +242,11 @@ def export_collection(folder: str | Path, out: str | Path = "docs-md", config: C
         entries.append(e)
     result = CollectionResult(out, entries, [s.relative_to(folder).as_posix() for s in skipped])
     (out / "index.md").write_text(_index_md(result, _title(folder, config), myst), "utf-8")
+    if myst:            # one Sphinx project for the whole collection, at its root
+        from .model.entities import Metadata, Ontology
+
+        write_sphinx_project(out, Ontology(Metadata(title=_title(folder, config)), None, {}, []),
+                             [out / "index.md"])
     _write_manifest(result, _title(folder, config))
     result.seconds = time.perf_counter() - t0
     return result

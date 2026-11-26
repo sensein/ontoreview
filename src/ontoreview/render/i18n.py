@@ -135,6 +135,8 @@ EN = {
     "prov_fix_change": "Fix",
     "prov_fix_by": "Made by",
     "prov_fix_at": "Accepted",
+    "prov_fix_decided": "Decision",
+    "changes_applied": "Changes applied",
     "prov_fix_ontology": "Ontology",
     "prov_fix_edited": "edited by the user",
     "and": "and",

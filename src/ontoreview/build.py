@@ -114,6 +114,110 @@ def load(cfg: Config) -> LoadedOntology:
     )
 
 
+@dataclass
+class _Analysis:
+    """Everything a documentation output is made from: one parse, one quality run."""
+    loaded: LoadedOntology
+    plugins: PluginManager
+    onto: Ontology
+    report: Report | None
+    cqset: CQSet | None
+    prov: dict
+    changelog: Changelog | None
+
+
+def _analyze(cfg: Config, started, lang: str | None = None) -> _Analysis:
+    """Parse, fix-check, run the quality checks and competency questions, record provenance and compare
+    with the previous version: the shared first half of a website build, a single file and an export."""
+    loaded = load(cfg)
+    plugins = PluginManager(load_plugins(cfg.plugins))
+    onto = extract(loaded, cfg, lang or (cfg.languages or ["en"])[0])
+    check_required(onto, cfg, loaded.source)    # fix first, then document
+    log.info("Parsed %d terms; running quality checks", len(onto.terms))
+    report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
+    if report is not None:
+        report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
+    cqset = load_competency_questions(cfg, loaded, onto, report)
+    _note_telemetry(cfg, loaded, onto, report, docs=True)
+    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
+    changelog = None
+    if cfg.previous_version:
+        prev = cfg.previous_version
+        prev_src = prev if prev.startswith(("http://", "https://")) else str(cfg.resolve(prev))
+        try:
+            changelog = compare(load_ontology(prev_src), loaded, cfg)
+        except Exception as e:  # noqa: BLE001
+            log.warning("Could not compute changelog against %s: %s", prev, e)
+    return _Analysis(loaded, plugins, onto, report, cqset, prov, changelog)
+
+
+def _write_data_files(out_dir: Path, cfg: Config, a: _Analysis) -> list[Path]:
+    """The machine-readable files that sit next to the documentation (website and Markdown alike):
+    CITATION.cff, the frozen check records, provenance.ttl, quality.json, the changelog and the
+    competency-question results."""
+    written: list[Path] = []
+    if cfg.sections.citation:
+        p = out_dir / "CITATION.cff"
+        p.write_text(citation_cff(a.onto.metadata, cfg.base_url), "utf-8")
+        written.append(p)
+    written += write_records(out_dir, a.onto, a.report, a.prov, Path(cfg.source or "").name,
+                             provenance=cfg.sections.provenance)
+    if a.report is not None:
+        (out_dir / "quality.json").write_text(a.report.to_json(), "utf-8")
+        written.append(out_dir / "quality.json")
+    if a.changelog is not None:
+        (out_dir / "changelog.json").write_text(a.changelog.to_json(), "utf-8")
+        (out_dir / "CHANGELOG.md").write_text(a.changelog.to_markdown(), "utf-8")
+        written += [out_dir / "changelog.json", out_dir / "CHANGELOG.md"]
+    if a.cqset is not None:
+        p = out_dir / "competency-questions.json"
+        p.write_text(json.dumps(
+            {"summary": a.cqset.summary, "questions": [
+                {k: getattr(q, k) for k in ("id", "question", "sparql", "answer", "status", "error",
+                                            "total_rows", "columns", "rows")} for q in a.cqset.questions]},
+            indent=2, ensure_ascii=False), "utf-8")
+        written.append(p)
+    return written
+
+
+@_api("export_docs")
+def export_docs(source: str | Path | None = None, out: str | Path = "docs-md",
+                config: Config | str | Path | None = None, *, myst: bool = False,
+                sphinx_project: bool = True, **overrides: Any) -> BuildResult:
+    """Markdown (``myst=False``, for MkDocs / Docusaurus / GitHub) or MyST (``myst=True``, for Sphinx)
+    documentation with the same content as the website: the same checks, competency questions,
+    changelog, downloads and provenance. A MyST export also gets ``conf.py``, ``requirements.txt`` and
+    ``README.md`` (unless ``sphinx_project=False``; existing ones are kept).
+
+    >>> import ontoreview
+    >>> ontoreview.export_docs("ontology.ttl", out="docs-myst", myst=True)   # doctest: +SKIP
+    """
+    from .export import export_markdown, write_sphinx_project
+
+    t0 = time.perf_counter()
+    started = _now()
+    cfg = resolve_config(source, config, **overrides)
+    out_dir = Path(out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    a = _analyze(cfg, started)
+    a.plugins.decorate_terms(a.onto)
+    log.info("Exporting %s → %s", "MyST" if myst else "Markdown", out_dir)
+    downloads = write_serializations(a.loaded.graph, out_dir, cfg.serialization_basename,
+                                     cfg.serializations) if cfg.sections.serializations else []
+    files = [out_dir / d["file"] for d in downloads]
+    pages = export_markdown(a.onto, out_dir, myst=myst, cqs=a.cqset, report=a.report, changelog=a.changelog,
+                            downloads=downloads, provenance=a.prov, config=cfg)
+    files += pages + _write_data_files(out_dir, cfg, a)
+    from .export import ontology_json
+
+    (out_dir / "ontology.json").write_text(json.dumps(ontology_json(a.onto, a.cqset, a.prov), indent=1,
+                                                      ensure_ascii=False), "utf-8")
+    files.append(out_dir / "ontology.json")
+    if myst and sphinx_project:
+        files += write_sphinx_project(out_dir, a.onto, pages)
+    return BuildResult(out_dir, a.onto, a.report, a.changelog, files, time.perf_counter() - t0, a.cqset)
+
+
 @_api("build_single_file")
 def build_single_file(source: str | Path | None = None, out_file: str | Path = "ontology.html",
                       config: Config | str | Path | None = None, **overrides: Any) -> BuildResult:
@@ -125,26 +229,10 @@ def build_single_file(source: str | Path | None = None, out_file: str | Path = "
     cfg = resolve_config(source, config, **overrides)
     out_file = Path(out_file)
     out_file.parent.mkdir(parents=True, exist_ok=True)
-    loaded = load(cfg)
-    plugins = PluginManager(load_plugins(cfg.plugins))
-    onto = extract(loaded, cfg, (cfg.languages or ["en"])[0])
-    check_required(onto, cfg, loaded.source)    # fix first, then document
+    a = _analyze(cfg, started)
+    loaded, plugins, onto, report, cqset, prov, changelog = (a.loaded, a.plugins, a.onto, a.report, a.cqset,
+                                                             a.prov, a.changelog)
     plugins.decorate_terms(onto)
-    log.info("Parsed %d terms; running quality checks", len(onto.terms))
-    report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
-    if report is not None:
-        report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
-    cqset = load_competency_questions(cfg, loaded, onto, report)
-    _note_telemetry(cfg, loaded, onto, report, docs=True)
-    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
-    changelog = None
-    if cfg.previous_version:
-        prev = cfg.previous_version
-        try:
-            changelog = compare(load_ontology(prev if prev.startswith("http") else str(cfg.resolve(prev))),
-                                loaded, cfg)
-        except Exception as e:  # noqa: BLE001
-            log.warning("Could not compute changelog against %s: %s", prev, e)
     log.info("Rendering single HTML file → %s", out_file)
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
@@ -216,29 +304,11 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     out_dir = Path(out) if out else (cfg.resolve(cfg.output) or Path("docs"))
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    loaded = load(cfg)
-    plugins = PluginManager(load_plugins(cfg.plugins))
-
     languages = cfg.languages or ["en"]
     primary = languages[0]
-    onto = extract(loaded, cfg, primary)
-    check_required(onto, cfg, loaded.source)    # fix first, then document
-    log.info("Parsed %d terms; running quality checks", len(onto.terms))
-    report = run_checks(onto, loaded.graph, cfg, plugins.rules()) if cfg.sections.quality else None
-    if report is not None:
-        report.external = run_evaluations(loaded.graph, cfg, loaded.source, onto.namespace)
-    cqset = load_competency_questions(cfg, loaded, onto, report)
-    _note_telemetry(cfg, loaded, onto, report, docs=True)
-    prov = provenance_record(onto, _source_path(cfg), __version__, started, report)
-
-    changelog = None
-    if cfg.previous_version:
-        prev = cfg.previous_version
-        prev_src = prev if prev.startswith(("http://", "https://")) else str(cfg.resolve(prev))
-        try:
-            changelog = compare(load_ontology(prev_src), loaded, cfg)
-        except Exception as e:  # noqa: BLE001
-            log.warning("Could not compute changelog against %s: %s", prev, e)
+    a = _analyze(cfg, started, primary)
+    loaded, plugins, onto, report, cqset, prov, changelog = (a.loaded, a.plugins, a.onto, a.report, a.cqset,
+                                                             a.prov, a.changelog)
 
     files: list[Path] = []
     log.info("Rendering website → %s", out_dir)
@@ -253,7 +323,8 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
     if cfg.llm:
         from .export import write_llm_files
 
-        written_llm = write_llm_files(onto, out_dir, cfg.base_url, downloads, cqset)
+        written_llm = write_llm_files(onto, out_dir, cfg.base_url, downloads, cqset, report=report,
+                                      changelog=changelog, provenance=prov, config=cfg)
         files += written_llm
         purposes = {
             "llms.txt": "Index for language models (llmstxt.org): summary and links to the Markdown pages",
@@ -298,30 +369,15 @@ def build(source: str | Path | None = None, out: str | Path | None = None,
         (out_dir / "nginx.conf.example").write_text(nginx_conf(downloads, cfg.rewrite_base), "utf-8")
         if cfg.base_url:
             (out_dir / "w3id.htaccess").write_text(w3id_htaccess(cfg.base_url, downloads), "utf-8")
-    if cfg.sections.citation:
-        (out_dir / "CITATION.cff").write_text(citation_cff(onto.metadata, cfg.base_url), "utf-8")
     if cfg.deploy_files:            # DEPLOY.md, Docker, nginx, preview script, GitHub Pages workflow
         from .publish.deploy import write_deploy_files
         files += write_deploy_files(out_dir, onto.metadata.title or "", downloads, cfg.base_url,
                                     cfg.deploy_branch, cfg.conneg)
-    write_records(out_dir, onto, report, prov, Path(cfg.source or "").name, provenance=cfg.sections.provenance)
-    if report is not None:
-        (out_dir / "quality.json").write_text(report.to_json(), "utf-8")
-    if changelog is not None:
-        (out_dir / "changelog.json").write_text(changelog.to_json(), "utf-8")
-        (out_dir / "CHANGELOG.md").write_text(changelog.to_markdown(), "utf-8")
+    _write_data_files(out_dir, cfg, a)
     (out_dir / ".nojekyll").write_text("", "utf-8")
     (out_dir / ".ontoreview-build").write_text(str(time.time()), "utf-8")
 
     plugins.postprocess(out_dir, onto, cfg)
-    if cqset is not None:
-        import json as _json
-
-        (out_dir / "competency-questions.json").write_text(_json.dumps(
-            {"summary": cqset.summary, "questions": [
-                {k: getattr(q, k) for k in ("id", "question", "sparql", "answer", "status", "error",
-                                            "total_rows", "columns", "rows")} for q in cqset.questions]},
-            indent=2, ensure_ascii=False), "utf-8")
     return BuildResult(out_dir, onto, report, changelog, files, time.perf_counter() - t0, cqset)
 
 

@@ -90,6 +90,7 @@
     {% if x.source %}{{ row(t('source'), exprs(x.source)) }}{% endif %}
     {% if x.is_defined_by %}{{ row(t('is_defined_by'), refs(x.is_defined_by)) }}{% endif %}
     {% for a in x.annotations %}{{ row(ref(a.prop), exprs(a.values)) }}{% endfor %}
+    {% if x.iri in term_changes %}{% set body %}{% for c in term_changes[x.iri] %}<div class="usage">{{ c.title }}{% if c.option %}: {{ c.option }}{% endif %} <span class="muted">· {{ c.label }}; {{ c.decided|lower }}{% if c.accepted_at %}, {{ {'when': c.accepted_at}|prov_when }}{% endif %}</span>{% if c.ai_assisted %} <span class="ai-tag">AI-assisted</span>{% endif %}</div>{% endfor %}{% endset %}{{ row(t('changes_applied'), body) }}{% endif %}
     {% if x.competency_questions and cq_page %}{% set body %}{% for cid, anchor in x.competency_questions %}<a href="{{ ('#' if not multi or cq_page == page else cq_page ~ '#') ~ anchor }}">{{ cid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% endset %}{{ row(t('competency_questions'), body) }}{% endif %}
     </tbody>
   </table>

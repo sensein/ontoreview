@@ -20,7 +20,7 @@ from .. import __version__
 from ..config import Config
 from ..diff import Changelog
 from ..model.entities import KIND_BADGES, KIND_SLUGS, Ontology, Ref
-from ..publish import bibtex, citation_text
+from ..publish import bibtex, citation_text, fix_attribution, term_changes
 from ..report.models import Report, tool_anchor
 from .data import graph_data, jsonld, search_index
 from .i18n import LANGUAGE_NAMES, Translator
@@ -160,6 +160,7 @@ class SiteRenderer:
         env.filters["badge"] = lambda k: KIND_BADGES.get(k, k)
         env.filters["tool_anchor"] = tool_anchor
         env.filters["prov_when"] = _prov_when
+        env.filters["fix_who"] = fix_attribution
         env.globals.update(
             t=self.t,
             href=self.href,
@@ -178,6 +179,7 @@ class SiteRenderer:
             ui=self.cfg.ui,
             build_id=format(int(time.time()), "x"),
             ai_terms=self._ai_terms(),
+            term_changes=term_changes(self.provenance),
         )
         return env
 
@@ -222,10 +224,10 @@ class SiteRenderer:
         def page(name: str) -> str:
             return f"{name}.html" if multi else "index.html"
 
-        intro = self._introduction() if st.introduction else None
+        intro = self._introduction_text() if st.introduction else None
         if intro:
             out.append(Section("introduction", t("introduction"), "introduction.html",
-                               context={"intro": intro}))
+                               context={"intro": markdown(intro), "text": intro}))
         for cs in cfg.custom_sections:
             if cs.position == "before-terms":
                 out.append(self._custom(cs))
@@ -350,18 +352,17 @@ class SiteRenderer:
             if p and p.is_file():
                 text = p.read_text("utf-8")
         sid = cs.id or re.sub(r"[^a-z0-9]+", "-", cs.title.lower()).strip("-")
-        return Section(sid, cs.title, "custom.html", context={"body": markdown(text)})
+        return Section(sid, cs.title, "custom.html", context={"body": markdown(text), "text": text})
 
-    def _introduction(self) -> Markup | None:
+    def _introduction_text(self) -> str | None:
         """Only when there is substantive text: a configured intro, or a description that is not
-        already used as the lede of the document header."""
+        already used as the lede of the document header. Markdown source (the Markdown export uses it as is)."""
         cfg, m = self.cfg, self.onto.metadata
         if cfg.introduction:
             p = cfg.resolve(cfg.introduction)
-            text = p.read_text("utf-8") if p and p.is_file() else cfg.introduction
-            return markdown(text)
+            return p.read_text("utf-8") if p and p.is_file() else cfg.introduction
         if m.abstract and m.description and m.description.strip() != m.abstract.strip():
-            return markdown(m.description)
+            return m.description
         return None
 
     # ------------------------------------------------------------------ write

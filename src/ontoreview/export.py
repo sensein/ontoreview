@@ -4,164 +4,157 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .config import Config
 from .model.axioms import expr_text
-from .model.entities import KIND_SLUGS, Ontology, Ref, Term
+from .model.entities import KIND_SLUGS, Ontology, Term
 from .telemetry import api as _api
 
 
-def _link(r: Ref, myst: bool) -> str:
-    if r.internal and r.anchor and r.kind:
-        page = KIND_SLUGS[r.kind]
-        if myst:
-            return f"[{r.label}]({page}.md#{r.anchor.lower()})"
-        return f"[{r.label}]({page}.md#{r.anchor.lower()})"
-    return f"[{r.label}]({r.iri})"
-
-
-def _expr_md(expr, myst: bool) -> str:
-    out = []
-    for k, v in expr:
-        if k == "ref":
-            out.append(_link(v, myst))
-        elif k == "kw":
-            out.append(f"*{v}*")
-        elif k == "lit":
-            out.append(f"`{v}`")
-        else:
-            out.append(str(v))
-    return "".join(out)
-
-
-def _term_md(t: Term, myst: bool) -> str:
-    lines = []
-    if myst:
-        lines.append(f"({t.anchor.lower()})=")
-    dep = " ~~deprecated~~" if t.deprecated else ""
-    lines.append(f"### {t.label}{dep}")
-    lines.append("")
-    lines.append(f"**IRI:** `{t.iri}`" + (f" · `{t.curie}`" if t.curie else ""))
-    lines.append("")
-    if t.definition:
-        lines += [t.definition, ""]
-    for c in t.comments:
-        lines += [c, ""]
-    rows: list[tuple[str, str]] = []
-
-    def refs(label, items):
-        if items:
-            rows.append((label, ", ".join(_link(r, myst) for r in items)))
-
-    def exprs(label, items):
-        if items:
-            rows.append((label, "; ".join(_expr_md(e, myst) for e in items)))
-
-    refs("Superclasses", t.superclasses)
-    exprs("Restrictions", t.restrictions)
-    exprs("Equivalent to", t.equivalent)
-    refs("Subclasses", t.subclasses)
-    refs("Disjoint with", t.disjoint)
-    refs("Super-properties", t.super_properties)
-    refs("Sub-properties", t.sub_properties)
-    exprs("Domain", t.domain)
-    exprs("Range", t.range)
-    if t.characteristics:
-        rows.append(("Characteristics", ", ".join(t.characteristics)))
-    exprs("Inverse of", t.inverse_of)
-    exprs("Property chain", t.chains)
-    exprs("Types", t.types)
-    refs("Broader", t.broader)
-    refs("Narrower", t.narrower)
-    refs("Instances", t.instances)
-    if t.used_in:
-        rows.append(("Used in", "; ".join(f"{u.role} {_link(u.ref, myst)}" for u in t.used_in)))
-    if t.examples:
-        rows.append(("Examples", "; ".join(f"`{e}`" for e in t.examples)))
-    for a in t.annotations:
-        rows.append((a.prop.label, "; ".join(expr_text(v) for v in a.values)))
-    if rows:
-        lines += ["| | |", "|---|---|"]
-        for k, v in rows:
-            cell = v.replace("|", "\\|").replace("\n", " ")
-            lines.append(f"| {k} | {cell} |")
-        lines.append("")
-    return "\n".join(lines)
-
-
 @_api("export_markdown")
-def export_markdown(onto: Ontology, out: Path, myst: bool = False, cqs=None) -> list[Path]:
-    out.mkdir(parents=True, exist_ok=True)
+def export_markdown(onto: Ontology, out: Path, myst: bool = False, cqs=None, *, report=None, changelog=None,
+                    downloads: list[dict] | None = None, provenance: dict | None = None,
+                    config: Config | None = None) -> list[Path]:
+    """Write the documentation as Markdown pages (MyST labels and a toctree when ``myst``).
+
+    Pass what a build produced (``report``, ``changelog``, ``downloads``, ``provenance``) to get every section
+    of the website; :func:`ontoreview.build.export_docs` runs that pipeline and calls this."""
+    from .render.markdown import render_markdown
+    from .render.site import SiteRenderer
+
+    cfg = config or Config()
+    # the interactive class diagram has no static equivalent worth keeping: Markdown has no Visualization section
+    cfg = cfg.model_copy(update={"layout": "multi", "sections": cfg.sections.model_copy(update={"graph": False})})
+    site = SiteRenderer(cfg, onto, out, report=report, changelog=changelog, downloads=downloads, cqs=cqs,
+                        provenance=provenance)
+    return render_markdown(site, out, myst=myst)
+
+
+# ---------------------------------------------------------------------------- Sphinx project (MyST)
+SPHINX_REQUIREMENTS = """sphinx>=7
+myst-parser>=2
+furo
+"""
+
+SPHINX_CONF = '''"""Sphinx configuration for this MyST export (written by OntoReview {version}).
+
+Build: see README.md. In short: pip install -r requirements.txt && sphinx-build -b html . _build/html
+"""
+
+project = {title!r}
+author = {author!r}
+release = {release!r}
+copyright = {copyright!r}
+
+extensions = ["myst_parser"]
+
+source_suffix = {{".md": "markdown"}}
+root_doc = "index"
+exclude_patterns = ["_build", "README.md", "requirements.txt", ".venv", "venv", "**/README.md"]
+myst_heading_anchors = 3
+
+try:
+    import furo  # noqa: F401
+    html_theme = "furo"
+except ImportError:
+    html_theme = "alabaster"
+html_title = project
+'''
+
+SPHINX_README = """# {title}: Sphinx (MyST) documentation
+
+This folder is a ready-to-build [Sphinx](https://www.sphinx-doc.org) project. The pages are
+[MyST Markdown](https://myst-parser.readthedocs.io), written by OntoReview {version}; they carry the same
+content as the OntoReview website (overview, terms, quality report, provenance, …), except the interactive
+class diagram.
+
+| File | What it is |
+|---|---|
+| `conf.py` | Sphinx configuration (MyST parser, Furo theme) |
+| `requirements.txt` | The Python packages needed to build |
+| `index.md` | Front page: metadata, contents, overview, namespaces, downloads, citation, provenance |
+{pages}| `ontology.*`, `CITATION.cff`, `provenance.ttl`, `*.json` | Downloads and machine-readable records, linked from the pages |
+
+## Build
+
+Needs Python 3.9 or newer.
+
+```bash
+cd {folder}
+python -m venv .venv
+source .venv/bin/activate            # Windows: .venv\\Scripts\\activate
+pip install -r requirements.txt
+sphinx-build -b html . _build/html
+```
+
+Open `_build/html/index.html` in a browser.
+
+## Live preview while editing
+
+```bash
+pip install sphinx-autobuild
+sphinx-autobuild . _build/html        # serves http://127.0.0.1:8000 and rebuilds on every change
+```
+
+## Other outputs
+
+```bash
+sphinx-build -b singlehtml . _build/singlehtml   # one HTML page
+sphinx-build -b latex . _build/latex             # LaTeX / PDF (needs a TeX installation)
+```
+
+## Publish
+
+- **Read the Docs**: add a `.readthedocs.yaml` that installs `requirements.txt` and builds with Sphinx
+  (`sphinx.configuration: conf.py`), then import the repository on readthedocs.org.
+- **GitHub Pages**: build with the commands above in a workflow and upload `_build/html` with
+  `actions/upload-pages-artifact`.
+
+## Customize
+
+- Theme: change `html_theme` in `conf.py` (for example `"sphinx_rtd_theme"` or `"pydata_sphinx_theme"`) and add
+  it to `requirements.txt`.
+- Your own pages: add `.md` files and list them in the `toctree` at the end of the contents in `index.md`.
+- Regenerate after changing the ontology: `ontoreview export ONTOLOGY -f myst -o {folder}`. Generated pages are
+  overwritten; `conf.py`, `requirements.txt` and this README are only written when missing, so your edits stay.
+"""
+
+
+def write_sphinx_project(out: Path, onto: Ontology, pages: list[Path] | None = None) -> list[Path]:
+    """``conf.py``, ``requirements.txt`` and ``README.md`` for a MyST export. Existing files are kept, so
+    a re-export never overwrites the user's own configuration."""
+    import datetime as dt
+
+    from . import __version__
+
     m = onto.metadata
+    title = m.title or "Ontology documentation"
+    author = ", ".join(a.name for a in m.creators) or "OntoReview"
+    page_rows = "".join(f"| `{p.name}` | {_page_title(p)} |\n"
+                        for p in (pages or []) if p.name != "index.md" and p.suffix == ".md")
+    files = {
+        "conf.py": SPHINX_CONF.format(version=__version__, title=title, author=author,
+                                      release=m.version_info or "", copyright=f"{dt.date.today().year}, {author}"),
+        "requirements.txt": SPHINX_REQUIREMENTS,
+        "README.md": SPHINX_README.format(title=title, version=__version__, pages=page_rows, folder=out.name),
+    }
     written = []
-    idx = [f"# {m.title or 'Ontology'}", ""]
-    if m.iri:
-        idx += [f"**IRI:** `{m.iri}`", ""]
-    if m.version_info:
-        idx += [f"**Version:** {m.version_info}", ""]
-    if m.creators:
-        idx += ["**Authors:** " + ", ".join(a.name for a in m.creators), ""]
-    if m.license:
-        idx += [f"**License:** [{m.license_label or m.license}]({m.license})", ""]
-    if m.abstract:
-        idx += [m.abstract, ""]
-    if m.description:
-        idx += [m.description, ""]
-    idx += ["## Contents", ""]
-    for kind in onto.kinds_present():
-        from .model.entities import KIND_LABELS
-
-        idx.append(f"- [{KIND_LABELS[kind][1]}]({KIND_SLUGS[kind]}.md) ({onto.stats.get(kind, 0)})")
-    if cqs is not None and cqs.questions:
-        idx.append(f"- [Competency questions](competency-questions.md) ({len(cqs.questions)})")
-    if myst:
-        pages = [KIND_SLUGS[k] for k in onto.kinds_present()]
-        if cqs is not None and cqs.questions:
-            pages.append("competency-questions")
-        idx += ["", "```{toctree}", ":hidden:", ""] + pages + ["```"]
-    p = out / "index.md"
-    p.write_text("\n".join(idx) + "\n", "utf-8")
-    written.append(p)
-    for kind in onto.kinds_present():
-        from .model.entities import KIND_LABELS
-
-        body = [f"# {KIND_LABELS[kind][1]}", ""]
-        for t in onto.by_kind(kind):
-            body.append(_term_md(t, myst))
-        p = out / f"{KIND_SLUGS[kind]}.md"
-        p.write_text("\n".join(body) + "\n", "utf-8")
-        written.append(p)
-    if cqs is not None and cqs.questions:
-        p = out / "competency-questions.md"
-        p.write_text(cq_markdown(cqs, myst), "utf-8")
-        written.append(p)
+    for name, text in files.items():
+        p = out / name
+        if not p.exists():
+            p.write_text(text, "utf-8")
+            written.append(p)
     return written
 
 
-STATUS_TEXT = {"passed": "answerable", "failed": "not answerable", "error": "query error",
-               "untested": "not tested"}
-
-
-def cq_markdown(cqs, myst: bool = False) -> str:
-    lines = ["# Competency questions", ""]
-    for q in cqs.questions:
-        if myst:
-            lines.append(f"({q.anchor})=")
-        lines += [f"### {q.id}. {q.question}", "", f"**Status:** {STATUS_TEXT.get(q.status, q.status)}"
-                  + (f" ({q.total_rows} results)" if q.status in ("passed", "failed") else ""), ""]
-        if q.term_refs:
-            lines += ["**Terms:** " + ", ".join(_link(r, myst) for r in q.term_refs), ""]
-        if q.answer:
-            lines += [f"**Expected answer:** {q.answer}", ""]
-        if q.notes:
-            lines += [q.notes, ""]
-        if q.sparql:
-            lines += ["```sparql", q.sparql.strip(), "```", ""]
-        if q.error:
-            lines += [f"Error: {q.error}", ""]
-    return "\n".join(lines) + "\n"
+def _page_title(p: Path) -> str:
+    for line in p.read_text("utf-8").splitlines():
+        if line.startswith("# "):
+            return line[2:].strip()
+    return p.stem
 
 
 # ---------------------------------------------------------------------------- LLM / agent files
-def _term_json(t: Term) -> dict:
+def _term_json(t: Term, changes: dict | None = None) -> dict:
     def refs(items):
         return [r.curie or r.iri for r in items]
 
@@ -180,26 +173,51 @@ def _term_json(t: Term) -> dict:
         "types": exprs(t.types), "broader": refs(t.broader), "narrower": refs(t.narrower),
         "replaced_by": refs(t.replaced_by),
         "competency_questions": [cid for cid, _ in t.competency_questions],
+        "changes": [{k: c[k] for k in ("title", "option", "label", "made", "ai_assisted", "human_input", "decided",
+                                       "accepted_at", "provider", "model", "revision") if c.get(k) not in (None, "")}
+                    for c in (changes or {}).get(t.iri, [])],
     }
     return {k: v for k, v in d.items() if v not in (None, [], False, "")} | {"iri": t.iri, "kind": t.kind}
 
 
-def ontology_json(onto: Ontology, cqs=None) -> dict:
+def ontology_json(onto: Ontology, cqs=None, provenance: dict | None = None) -> dict:
+    from .publish import fix_attribution, term_changes
+
     m = onto.metadata
+    changes = term_changes(provenance)
+    prov = None
+    if provenance:
+        fixes = provenance.get("fixes") or {}
+        prov = {"source": provenance.get("source"), "tool": provenance.get("tool"),
+                "generated": provenance.get("generated"), "checks": provenance.get("checks"),
+                "events": provenance.get("events"),
+                "fixes": {"derived_from": (fixes.get("derived_from") or {}).get("name"),
+                          "applied": [{"id": a.get("id"), "subject": a.get("subject"), "title": a.get("title"),
+                                       "option": a.get("option"), **{k: v for k, v in fix_attribution(a).items()
+                                                                     if v not in (None, "")}}
+                                      for a in fixes.get("applied", [])],
+                          "ai_assisted": fixes.get("ai_assisted", 0), "human_input": fixes.get("human_input", 0)}
+                if fixes else None}
     return {
         "title": m.title, "iri": m.iri, "version": m.version_info, "namespace": m.preferred_namespace,
         "prefix": m.preferred_prefix, "description": m.abstract or m.description,
         "license": m.license, "creators": [a.name for a in m.creators],
         "prefixes": dict(onto.prefixes), "counts": onto.stats,
-        "terms": [_term_json(t) for k in onto.kinds_present() for t in onto.by_kind(k)],
+        "terms": [_term_json(t, changes) for k in onto.kinds_present() for t in onto.by_kind(k)],
         "competency_questions": [
             {"id": q.id, "question": q.question, "sparql": q.sparql, "status": q.status}
             for q in (cqs.questions if cqs is not None else [])
         ],
+        "provenance": prov,
     }
 
 
-def llms_txt(onto: Ontology, base_url: str | None, downloads: list[dict], cqs=None) -> str:
+EXTRA_PAGES = {"changelog.md": ("Changelog", "what changed since the previous version"),
+               "quality.md": ("Quality report", "the problems each quality check found, merged and per check")}
+
+
+def llms_txt(onto: Ontology, base_url: str | None, downloads: list[dict], cqs=None,
+             pages: list[str] | None = None, provenance: dict | None = None) -> str:
     """An llms.txt index (https://llmstxt.org): summary + links to Markdown versions."""
     m = onto.metadata
     base = (base_url.rstrip("/") + "/") if base_url else ""
@@ -223,6 +241,12 @@ def llms_txt(onto: Ontology, base_url: str | None, downloads: list[dict], cqs=No
     counts = ", ".join(tr.kind_count(k, n) for k, n in onto.stats.items() if k != "triples")
     if counts:
         facts.append(f"- Contents: {counts}")
+    fixes = (provenance or {}).get("fixes")
+    if fixes:
+        facts.append(f"- This version: {len(fixes.get('applied', []))} reviewed fixes applied to "
+                     f"{(fixes.get('derived_from') or {}).get('name', 'the original')} "
+                     f"({fixes.get('ai_assisted', 0)} AI-assisted, {fixes.get('human_input', 0)} with a person's "
+                     "input); see Provenance in index.md and provenance.ttl")
     lines += facts + ["", "Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.", ""]
     lines += ["## Documentation", "", f"- [Overview]({base}index.md): metadata and contents"]
     from .model.entities import KIND_LABELS
@@ -232,6 +256,10 @@ def llms_txt(onto: Ontology, base_url: str | None, downloads: list[dict], cqs=No
                      f"{tr.kind_count(kind, onto.stats.get(kind, 0))} with definitions and axioms")
     if cqs is not None and cqs.questions:
         lines.append(f"- [Competency questions]({base}competency-questions.md): example questions with SPARQL queries")
+    for name in pages or []:
+        if name in EXTRA_PAGES:
+            title, what = EXTRA_PAGES[name]
+            lines.append(f"- [{title}]({base}{name}): {what}")
     lines += ["", "## Machine-readable", "",
               f"- [ontology.json]({base}ontology.json): all terms as JSON (IRI, label, definition, hierarchy, domain/range)",
               f"- [llms-full.txt]({base}llms-full.txt): the complete documentation as one Markdown file"]
@@ -248,11 +276,14 @@ def llms_full_txt(md_files: list[Path]) -> str:
 
 
 def write_llm_files(onto: Ontology, out: Path, base_url: str | None, downloads: list[dict],
-                    cqs=None) -> list[Path]:
+                    cqs=None, *, report=None, changelog=None, provenance: dict | None = None,
+                    config: Config | None = None) -> list[Path]:
     import json
 
-    md = export_markdown(onto, out, myst=False, cqs=cqs)
-    (out / "llms.txt").write_text(llms_txt(onto, base_url, downloads, cqs), "utf-8")
+    md = export_markdown(onto, out, myst=False, cqs=cqs, report=report, changelog=changelog, downloads=downloads,
+                         provenance=provenance, config=config)
+    (out / "llms.txt").write_text(llms_txt(onto, base_url, downloads, cqs, [p.name for p in md], provenance), "utf-8")
     (out / "llms-full.txt").write_text(llms_full_txt(md), "utf-8")
-    (out / "ontology.json").write_text(json.dumps(ontology_json(onto, cqs), indent=1, ensure_ascii=False), "utf-8")
+    (out / "ontology.json").write_text(json.dumps(ontology_json(onto, cqs, provenance), indent=1, ensure_ascii=False),
+                                       "utf-8")
     return md + [out / "llms.txt", out / "llms-full.txt", out / "ontology.json"]

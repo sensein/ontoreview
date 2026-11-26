@@ -30,17 +30,21 @@ from rdflib import URIRef
 from . import __version__, telemetry
 from .ui_core import (
     ACTIVE_TASKS,
+    CHECKED_TASKS,
+    LOCAL_OOPS_URL,
     MAX_UPLOAD_BYTES,
     RUN_FOLDER_TASKS,
     TASKS,
     Prefs,
     Settings,
     add_deploy,
+    apply_setup,
     browse,
     change_counts,
     clear_history,
     deploys_for,
     describe_source,
+    detect_setup,
     existing_output,
     load_reviews,
     save_reviews,
@@ -55,6 +59,7 @@ from .ui_core import (
     run_config_rows,
     run_name,
     run_task,
+    setup_plan,
     system_info,
     task_kind,
     upload_files,
@@ -80,10 +85,20 @@ RECOMMENDED = "site"
 INCLUDES = {
     "site": "Includes: every term, search, class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, "
             "cross-domain interoperability, OOPS!), "
-            "changelog, downloads (TTL, OWL, JSON-LD), citation, llms.txt, and standalone.html (all in one file)",
-    "single": "Includes: the same pages and quality report as the website, in one file; no separate downloads",
-    "markdown": "Includes: one page per term type; no quality checks or diagram",
-    "myst": "Includes: Markdown pages with MyST cross-references; no quality checks or diagram",
+            "changelog, downloads (TTL, OWL, JSON-LD), citation, provenance (who made each fix: a person, a rule or "
+            "AI), llms.txt, and standalone.html (all in one file)",
+    "single": "Includes: the same content as the website, in one self-contained HTML file: every term, search, "
+              "class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck "
+              "metrics, cross-domain interoperability, OOPS!), changelog, downloads (TTL, OWL, JSON-LD, embedded in "
+              "the file), citation and provenance (who made each fix: a person, a rule or AI)",
+    "markdown": "Includes: the website's content as Markdown pages: every term, quality report (built-in checks, "
+                "ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, cross-domain interoperability, OOPS!), "
+                "changelog, downloads (TTL, OWL, JSON-LD), citation, provenance (who made each fix: a person, a rule "
+                "or AI) and ontology.json; not the interactive class diagram or search",
+    "myst": "Includes: the website's content as MyST pages with cross-references: every term, quality report "
+            "(built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, cross-domain "
+            "interoperability, OOPS!), changelog, downloads, citation and provenance, plus conf.py, requirements.txt "
+            "and a README to build it with Sphinx; not the interactive class diagram",
     "check": "Includes: built-in checks, ROBOT, reasoner, IRI, OntoCheck and OOPS! results as JSON; no documentation",
     "interop": "Includes: CDI (Align, Gen), SI (covered scientific domains, per-domain scores, domain of each "
                "reference ontology) as JSON; references and options in Settings › Quality checks",
@@ -232,6 +247,30 @@ NAV = [  # key, path, label, svg path data
     ("help", "/help", "Help", '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/>'
      '<path d="M12 17h.01"/>'),
 ]
+
+# One-sentence setup notes, shown at the top of each Settings box (and expanded in Help › Setting up checks)
+SETUP = {
+    "robot": "Start Docker (Docker Desktop, or the docker service on Linux); the first run pulls the image, or pull it "
+             "now with <code>docker pull obolibrary/robot</code>. Without Docker: install Java 11+ and "
+             "<a class=\"text-primary\" href=\"https://robot.obolibrary.org\" target=\"_blank\" rel=\"noopener\">ROBOT</a>, "
+             "then choose the local robot command.",
+    "reasoner": "Nothing extra: it runs <code>robot reason</code> with the ROBOT setup above (Docker running, or a "
+                "local robot).",
+    "iri": "Nothing to install; works offline from the bundled database. BioPortal lookups need a free API key in "
+           "<code>BIOPORTAL_API_KEY</code>.",
+    "ontocheck": "Nothing to install: it runs inside OntoReview.",
+    "cdi": "<code>pip install \"ontoreview[cdi]\"</code>; the models are downloaded from Hugging Face on first use "
+           "(or ahead of time: <code>hf download facebook/bart-large-mnli</code>). OLS needs no key; BioPortal needs "
+           "<code>BIOPORTAL_API_KEY</code>.",
+    "si": "Same as cross-domain: <code>pip install \"ontoreview[cdi]\"</code> for the generality model.",
+    "oops": "Public service: nothing to install (needs internet; the ontology is uploaded). Private ontologies: run "
+            "your own with <code>docker run -d -p 8080:8080 mpovedavillalon/oops:v2</code> and set the URL to "
+            "<code>http://localhost:8080/OOPS/rest</code>.",
+    "ai": "Ollama: install it from ollama.com and run <code>ollama pull qwen3.5:4b</code>. Hugging Face: "
+          "<code>pip install \"ontoreview[cdi]\"</code> (the model downloads on first use). API: set "
+          "<code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, … or paste a key below.",
+    "publish": "Needs git. Sign in with a token below, or with <code>gh auth login</code> / your SSH key.",
+}
 
 # Help page: (anchor, title, screenshot(s) in ui_assets/help/ (a name, a tuple of names, or ""), steps, note, links)
 # a link target is an app path ("/history"), "settings:<tab>" (general | docs | checks | look) or an https URL
@@ -542,11 +581,80 @@ HELP = [
     ], "These are defaults for you on this computer. To fix settings for one project, and share them with the "
        "command line, CI and teammates, use Project config › Save current settings to write an ontoreview.toml; "
        "its values override these.", [("General", "settings:general"), ("Documentation", "settings:docs"), ("Quality checks", "settings:checks"), ("Appearance", "settings:look")]),
+    ("setup", "Setting up checks and services", "", [
+        "<b>Where settings go:</b> Settings in this app (your defaults), <code>ontoreview.toml</code> in the project "
+        "(sections <code>[evaluation]</code> and <code>[ai]</code>; shared with the CLI and CI), command-line flags "
+        "(<code>ontoreview check --help</code>) or environment variables. Each Settings box starts with a one-line "
+        "<b>Setup</b> note; the details are below.",
+        "<b>ROBOT and the reasoner (Docker):</b> install <a class=\"text-primary\" "
+        "href=\"https://docs.docker.com/get-docker/\" target=\"_blank\" rel=\"noopener\">Docker Desktop</a> (or Docker "
+        "Engine on Linux) and start it. Pull the image once: <code>docker pull obolibrary/robot</code> (otherwise the "
+        "first build pulls it). For reproducible results pin a release tag, e.g. "
+        "<code>obolibrary/robot:v1.9.8</code>, in Settings › Quality checks › ROBOT › Docker image, "
+        "<code>robot_image</code> in ontoreview.toml or <code>ROBOT_DOCKER_IMAGE</code>. Press <b>Test</b> to check. "
+        "Logical consistency (HermiT or ELK) uses the same image.",
+        "<b>ROBOT without Docker:</b> install Java 11 or newer, download <code>robot.jar</code> and the "
+        "<code>robot</code> script from <a class=\"text-primary\" href=\"https://robot.obolibrary.org\" "
+        "target=\"_blank\" rel=\"noopener\">robot.obolibrary.org</a>, put them on your PATH, and choose "
+        "<b>Local robot command</b> (or set <code>robot_path</code>). A local robot is used before Docker.",
+        "<b>ontoreview.toml for ROBOT:</b><pre class=\"or-mono\" style=\"margin:.3em 0;white-space:pre-wrap\">"
+        "[evaluation]\nrobot = \"auto\"                  # auto | on | off\nrobot_image = \"obolibrary/robot\"\n"
+        "# robot_path = \"/usr/local/bin/robot\"\nreasoner = \"hermit\"              # hermit | elk | off\n"
+        "reasoner_timeout = 600</pre>"
+        "Without ROBOT, <code>auto</code> skips it and OOPS! checks the full pitfall catalogue instead.",
+        "<b>OOPS! (public service):</b> nothing to install; the default URL is "
+        "<code>https://oops.linkeddata.es/rest</code>. It needs internet and uploads the ontology, so set OOPS! to "
+        "<b>Off</b> for private ontologies, or run your own.",
+        "<b>OOPS! on your own machine (Docker):</b> <code>docker run -d --name oops -p 8080:8080 "
+        "mpovedavillalon/oops:v2</code> (the image by the OOPS! authors: a Tomcat server with OOPS! at "
+        "<code>/OOPS</code>). Then set <b>Service URL</b> to <code>http://localhost:8080/OOPS/rest</code> and press "
+        "<b>Check</b>. On another server use its address, e.g. <code>https://oops.example.org/OOPS/rest</code>. In "
+        "ontoreview.toml: <code>oops_endpoint = \"http://localhost:8080/OOPS/rest\"</code>, <code>oops = \"auto\"</code> "
+        "(auto | on | off), <code>oops_timeout = 90</code>.",
+        "<b>Hugging Face models</b> (cross-domain and scientific interoperability, OntoAligner, AI drafts): "
+        "<code>pip install \"ontoreview[cdi]\"</code>. They are downloaded on first use and run on this computer: "
+        "<code>facebook/bart-large-mnli</code> (generality, about 1.6 GB), <code>all-MiniLM-L6-v2</code> (OntoAligner, "
+        "about 90 MB) and, for AI drafts, <code>Qwen/Qwen3.5-4B</code> (about 9 GB; <code>Qwen/Qwen3.5-2B</code> for "
+        "small machines). Download ahead of time with <code>hf download facebook/bart-large-mnli</code> (the "
+        "<code>hf</code> command comes with huggingface_hub; older versions: <code>huggingface-cli download</code>).",
+        "<b>Hugging Face options:</b> a token (Settings, or <code>HF_TOKEN</code>) gives higher download limits and "
+        "access to gated models; the cache is <code>~/.cache/huggingface</code> (move it with <code>HF_HOME</code>); "
+        "after downloading, <code>HF_HUB_OFFLINE=1</code> keeps everything offline. Other models: "
+        "<code>cdi_model</code> and <code>cdi_sbert_model</code> in <code>[evaluation]</code>, <code>hf_model</code> in "
+        "<code>[ai]</code>.",
+        "<b>Ollama (AI drafts, local):</b> install from <a class=\"text-primary\" href=\"https://ollama.com\" "
+        "target=\"_blank\" rel=\"noopener\">ollama.com</a>, then <code>ollama pull qwen3.5:4b</code> (or <b>Pull a "
+        "model</b> in Settings › AI &amp; fixes). With Docker: <code>docker run -d -p 11434:11434 -v "
+        "ollama:/root/.ollama --name ollama ollama/ollama</code> and <code>docker exec ollama ollama pull "
+        "qwen3.5:4b</code>. The default URL is <code>http://localhost:11434</code>; set <b>Ollama URL</b> (or "
+        "<code>ollama_url</code> in <code>[ai]</code>) for a server elsewhere.",
+        "<b>AI through an API:</b> pick the provider in Settings › AI &amp; fixes and paste a key, or set "
+        "<code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, <code>OPENROUTER_API_KEY</code>, "
+        "<code>GEMINI_API_KEY</code>, <code>MISTRAL_API_KEY</code> or <code>GROQ_API_KEY</code>. <b>Custom</b> takes "
+        "any OpenAI-compatible base URL, e.g. LM Studio (<code>http://localhost:1234/v1</code>) or vLLM. The order "
+        "of sources is <code>priority = [\"ollama\", \"hf\", \"api\"]</code> in <code>[ai]</code>.",
+        "<b>OLS, BioPortal and other OntoPortal services:</b> OLS needs nothing; another OLS instance is "
+        "<code>ols@https://…/api</code>. BioPortal needs a free account and its API key (bioportal.bioontology.org › "
+        "Account) in Settings or <code>BIOPORTAL_API_KEY</code>; AgroPortal and other OntoPortal services use "
+        "<code>ONTOPORTAL_API_KEY</code>. To stay offline, untick <b>Allow network lookups</b> "
+        "(<code>iri_network = false</code>).",
+        "<b>OntoCheck and the term database:</b> nothing to install; both run inside OntoReview.",
+        "<b>ORCID</b> (creator lookup in the fixes review): nothing to set up; it uses the public ORCID registry.",
+        "<b>GitHub Pages deploy:</b> needs git; sign in with a GitHub token (Settings › General › Publishing) or "
+        "<code>gh auth login</code> / an SSH key. See <i>Deploy</i> above for the token permissions.",
+        "<b>Inferred superclasses</b> (Settings › Documentation): <code>pip install \"ontoreview[reason]\"</code>.",
+    ], "Keys and tokens stay on this computer: they are never written to reports, ontoreview.toml, the run history "
+       "or the command line shown in the app. Prefer environment variables in CI.",
+     [("Settings › Quality checks", "settings:checks"), ("Settings › AI & fixes", "settings:ai"),
+      ("ROBOT documentation", "http://robot.obolibrary.org"), ("OOPS! Docker image", "https://hub.docker.com/r/mpovedavillalon/oops"),
+      ("Ollama", "https://ollama.com")]),
     ("trouble", "Troubleshooting", "", [
         "<b>ROBOT · Docker not running:</b> start Docker Desktop, or choose “Local robot command” in Settings › "
-        "Quality checks. The first run downloads the ROBOT image, which can take a minute.",
+        "Quality checks. The first run downloads the ROBOT image, which can take a minute; "
+        "<code>docker pull obolibrary/robot</code> does it ahead of time. See <i>Setting up checks and services</i>.",
         "<b>OOPS! · unreachable:</b> the web service may be down or you are offline; builds still finish, the "
-        "OOPS! section reports the problem. Set OOPS! to Off for private ontologies.",
+        "OOPS! section reports the problem. Set OOPS! to Off for private ontologies, or run OOPS! locally with "
+        "Docker (see <i>Setting up checks and services</i>).",
         "<b>Port already in use:</b> start with <code>ontoreview ui --port 8800</code>, or just run it again "
         "without --port to use the next free port.",
         "<b>Dropped files:</b> browsers don't share real paths, so dropped items are copied to "
@@ -687,6 +795,8 @@ body { background: var(--or-bg); color: var(--or-ink); font-family: Inter, syste
 .or-hero { background: #0F1724; color: #fff; border-radius: 14px; padding: 32px; }
 .or-feature .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--or-primary-soft); color: var(--or-primary);
   display: flex; align-items: center; justify-content: center; }
+.or-setup { padding: 8px 12px; background: var(--or-primary-soft); color: var(--or-ink-2); border-radius: 8px; font-size: 12.5px; line-height: 1.5; }
+.or-setup code { font-size: 12px; }
 .or-notice { padding: 10px 12px; background: var(--or-warn-bg); color: var(--or-warn); border-radius: 8px; font-size: 12.5px; }
 .or-themeprev { display: block; height: 64px; border-radius: 8px; border: 1px solid var(--or-line); width: 100%; }
 @media (prefers-reduced-motion: reduce) { .ob-dropzone { transition: none; } }
@@ -904,7 +1014,7 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
         what = " and ".join(x for x, on in (("Cross-domain", s.cdi), ("scientific", s.si)) if on).capitalize()
         return [("parse", "Parse ontology"), ("cdi", f"{what} interoperability"), ("render", "Write report")]
     steps = [("parse", "Parse ontology"), ("checks", "Built-in quality checks")]
-    if s.task in ("site", "single", "check"):
+    if s.task in CHECKED_TASKS:             # every docs format runs the same checks as a check run
         if s.robot != "off":
             steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
             if s.reasoner != "off":
@@ -1757,7 +1867,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             if prior:
                 what = f"{prior['count']} ontologies" if prior["kind"] == "folder" else "output"
                 existing_info.text = f"Previous {what} here from {when_text(prior['when'])}; building again updates it."
-            checks_row.set_visibility(s.task in ("site", "single", "check", "interop"))
+            checks_row.set_visibility(s.task in CHECKED_TASKS + ("interop",))
             prev_box.set_visibility(s.task == "diff")
             robot_txt = ("ROBOT off" if s.robot == "off" else
                          f"ROBOT ({'local' if s.robot_path else 'Docker'})")
@@ -2413,6 +2523,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.label(hint).classes("or-hint")
             return r
 
+        def setup_note(key: str) -> None:
+            """The one-line setup note at the top of a Settings box (details: Help › Setting up checks)."""
+            ui.html(f'<div class="or-setup"><b>Setup:</b> {SETUP[key]} '
+                    '<a class="text-primary" href="/help#setup">More in Help</a></div>', sanitize=False)
+
         def telemetry_panel() -> None:
             """Settings › Telemetry: the optional-details switch and the table of everything that can be sent."""
             reason = telemetry.disabled_reason()
@@ -2560,6 +2675,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
                             ui.label("Publishing (GitHub Pages)").classes("or-h2 q-pt-md")
                             ui.label("Used by Deploy on website results and in Run history.").classes("or-hint")
+                            setup_note("publish")
                             with row("GitHub token (optional)",
                                      "Lets OntoReview push and turn on Pages without other tools, and create the "
                                      "repository if you allow it. Kept on this computer only; never in reports or "
@@ -2655,11 +2771,23 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 ui.checkbox().bind_value(work, "verbose").props('aria-label="Verbose log"')
                 with ui.tab_panel(t_checks).classes("q-pa-none").style(
                         "display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;align-items:start"):
+                    with ui.card().classes("or-card w-full").props("flat").style("grid-column: 1 / -1"):
+                        with ui.row().classes("or-sec w-full items-center justify-between gap-3"):
+                            with ui.column().classes("gap-1").style("flex: 1 1 420px"):
+                                ui.label("Auto-configure").classes("or-h2")
+                                ui.label("Finds Docker, a local robot, Ollama and the language models on this "
+                                         "computer, shows what it would do, then downloads the ROBOT image, can start "
+                                         "OOPS! locally, and sets the options below. Nothing runs before you confirm.") \
+                                    .classes("or-hint")
+                            ui.button("Detect and configure", icon="auto_fix_high",
+                                      on_click=lambda: auto_configure()).props("unelevated no-caps") \
+                                .mark("auto-configure")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
                                 ui.label("ROBOT").classes("or-h2")
                                 robot_badge = ui.html("", sanitize=False)
+                            setup_note("robot")
                             ui.label("Run ROBOT with").classes("or-label")
                             mode_box = ui.row().classes("w-full gap-3 no-wrap max-sm:flex-wrap") \
                                 .props('role="radiogroup" aria-label="Run ROBOT with"')
@@ -2684,6 +2812,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("An OWL reasoner checks that the ontology is consistent and that every class "
                                      "can have members. It runs through ROBOT (above), on this machine.") \
                                 .classes("or-hint")
+                            setup_note("reasoner")
                             ui.label("Reasoner").classes("or-label")
                             ui.select(REASONER_CHOICES).bind_value(work, "reasoner") \
                                 .props('outlined dense aria-label="Reasoner"').classes("w-72").mark("reasoner")
@@ -2697,6 +2826,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                      "resolves, and whether reused classes and properties exist in their vocabulary. "
                                      "Terms are looked up in SQLite first (bundled W3C vocabularies and your cache), "
                                      "then OLS, BioPortal and a direct download.").classes("or-hint")
+                            setup_note("iri")
                             ui.checkbox("Run IRI checks").bind_value(work, "iri_checks").mark("iri-checks")
                             ui.checkbox("Allow network lookups").bind_value(work, "iri_network")
                             ui.label("Off: only the bundled and cached SQLite database is used; unknown terms are "
@@ -2711,6 +2841,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("OntoCheck").classes("or-h2")
                             ui.label("Quality metrics for labeling, structure, accessibility and naming conventions, "
                                      "shown as a scorecard in the review. Runs on this machine.").classes("or-hint")
+                            setup_note("ontocheck")
                             ui.checkbox("Run OntoCheck").bind_value(work, "ontocheck").mark("ontocheck")
                             ui.checkbox("Check declared SPARQL endpoints and RDF dumps are reachable").bind_value(
                                 work, "ontocheck_network")
@@ -2727,6 +2858,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("Scores how well the ontology aligns with ontologies from other domains "
                                      "(Align) and how general its class definitions are (Gen); CDI combines "
                                      "both.").classes("or-hint")
+                            setup_note("cdi")
                             ui.checkbox("Score cross-domain interoperability").bind_value(work, "cdi").mark("cdi")
                             ui.label("Reference ontologies, one per line").classes("or-label")
                             cdi_refs = ui.textarea(placeholder="ols\nols:envo,chebi\nbioportal:NCIT\n"
@@ -2815,6 +2947,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                      "ontology's own, in which it is interoperable: for each domain, CDI computed "
                                      "with only that domain's reference ontologies must reach θ_s. Upper-level "
                                      "ontologies (BFO, DOLCE, …) are ignored.").classes("or-hint")
+                            setup_note("si")
                             ui.checkbox("Score scientific interoperability").bind_value(work, "si").mark("si")
                             si_same = ui.checkbox("Use the cross-domain reference ontologies",
                                                   value=not work.si_references.strip()).mark("si-same-refs")
@@ -2871,11 +3004,12 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 with ui.row().classes("items-center gap-2"):
                                     oops_badge = ui.html("", sanitize=False)
                                     ui.button("Check", on_click=lambda: test_oops()).props("flat dense no-caps")
+                            setup_note("oops")
                             ui.label("Service URL").classes("or-label")
                             ui.input().bind_value(work, "oops_endpoint") \
                                 .props('outlined dense aria-label="OOPS! service URL"').classes("w-full or-mono")
-                            ui.label("The public OOPS! REST service. Change it only if you run your own OOPS! server.") \
-                                .classes("or-hint")
+                            ui.label("The public OOPS! REST service, or your own OOPS! server (Auto-configure can "
+                                     f"start one: {LOCAL_OOPS_URL}).").classes("or-hint")
                             with ui.row().classes("gap-6 items-end"):
                                 with ui.column().classes("gap-1"):
                                     ui.label("Timeout").classes("or-label")
@@ -2913,7 +3047,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("Draft definitions for terms without one, refine existing definitions and "
                                      "suggest a description. Every draft is shown with the model that wrote it and "
                                      "applied only when you accept it.").classes("or-hint")
-                            with row("Use AI drafts", "Off by default."):
+                            setup_note("ai")
+                            with row("Use AI drafts", "On by default; nothing is applied until you accept it."):
                                 ui.checkbox().bind_value(work, "ai_enabled").props('aria-label="Use AI drafts"') \
                                     .mark("ai-enabled")
                             with row("Priority", "The first available source is used; reorder or remove sources. "
@@ -3138,6 +3273,70 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         async def test_oops() -> None:
             oops_badge.content = '<span class="or-badge off">Checking…</span>'
             show_badge(oops_badge, await run.io_bound(oops_status, work, True))
+
+        async def auto_configure() -> None:
+            found = await run.io_bound(detect_setup, work)
+            steps = setup_plan(found, work)
+            picks: dict = {}
+            lines: list[str] = []
+            with ui.dialog() as dlg, ui.card().classes("or-card").style("width:min(44rem,94vw);max-height:90vh;overflow-y:auto"):
+                with ui.column().classes("or-sec gap-3 w-full"):
+                    ui.label("Auto-configure").classes("or-h2")
+                    ui.label("Tick what to do; the rest is what was found.").classes("or-hint")
+                    for st in steps:
+                        if st["kind"] == "action":
+                            with ui.column().classes("gap-0"):
+                                picks[st["id"]] = ui.checkbox(st["label"], value=st["default"]) \
+                                    .mark(f"setup-{st['id']}")
+                                ui.label(st["detail"]).classes("or-hint").style("margin-left:40px")
+                        else:
+                            with ui.row().classes("no-wrap items-start gap-2"):
+                                ui.icon("check_circle" if st["ok"] else "info", size="20px") \
+                                    .classes("text-positive" if st["ok"] else "text-warning")
+                                with ui.column().classes("gap-0"):
+                                    ui.label(st["label"]).classes("or-label")
+                                    ui.label(st["detail"]).classes("or-hint")
+                    logbox = ui.log(max_lines=400).classes("w-full or-mono").style("height:180px")
+                    logbox.set_visibility(False)
+                    with ui.row().classes("w-full justify-end gap-2"):
+                        close_btn = ui.button("Close", on_click=dlg.close).props("outline no-caps")
+                        go_btn = ui.button("Apply", icon="play_arrow").props("unelevated no-caps") \
+                            .mark("setup-apply")
+
+                    def flush() -> None:
+                        while lines:
+                            logbox.push(lines.pop(0))
+
+                    async def go() -> None:
+                        chosen = {k for k, cb in picks.items() if cb.value}
+                        if not chosen:
+                            notify("Nothing ticked.")
+                            return
+                        go_btn.disable()
+                        close_btn.disable()
+                        logbox.set_visibility(True)
+                        timer = ui.timer(0.3, flush)
+                        try:
+                            problems = await run.io_bound(apply_setup, chosen, work, found, lines.append)
+                        finally:
+                            flush()
+                            timer.cancel()
+                            close_btn.enable()
+                        render_mode()
+                        save()
+                        await test_robot()
+                        await test_oops()
+                        if problems:
+                            for msg in problems:
+                                logbox.push("⚠ " + msg)
+                            notify("Configured, with problems: see the log.", "warning")
+                        else:
+                            notify("Configured and saved.", "positive")
+                            dlg.close()
+                    go_btn.on_click(go)
+                    if not picks:
+                        go_btn.disable()
+            dlg.open()
 
         def reset() -> None:
             for k, v in asdict(Prefs()).items():

@@ -232,6 +232,49 @@ def _iso(d: _dt.datetime) -> str:
     return d.astimezone(_dt.timezone.utc).isoformat(timespec="seconds")
 
 
+def fix_attribution(a: dict) -> dict:
+    """Who made an applied fix and who decided on it, worded once for every output (website, single file,
+    Markdown, MyST, ontology.json, provenance.ttl).
+
+    ``made``: ``ai`` (a language model drafted it), ``human`` (a person typed the value or wrote it),
+    ``rule`` (an OntoReview rule) or ``tool`` (suggested from another check's finding). ``human_edit``: a
+    person changed the draft before accepting it. ``decided``: how it was accepted."""
+    mb = a.get("made_by") or {}
+    kind, edited = a.get("kind") or "", bool(a.get("edited"))
+    if mb.get("type") == "llm":
+        model = " · ".join(str(x) for x in (mb.get("provider") or mb.get("source"), mb.get("model")) if x)
+        made, label = "ai", f"AI draft ({model})" if model else "AI draft"
+        if mb.get("revision"):
+            label += f", revision {str(mb['revision'])[:12]}"
+    elif kind in ("U", "M"):
+        made, label = "human", "Value entered by a person" if kind == "U" else "Written by a person"
+    elif mb.get("type") == "check":
+        made, label = "tool", f"Suggested from {mb.get('id') or a.get('rule')}"
+    else:
+        made, label = "rule", f"Rule {mb.get('id') or a.get('rule') or ''}".strip()
+    human_edit = edited and made != "human"
+    if human_edit:
+        label += ", edited by a person"
+    via = a.get("accepted_via") or "review"
+    decided = ("Accepted automatically as a safe fix (--accept-safe)" if via == "accept-safe"
+               else "Reviewed and accepted by a person")
+    return {"made": made, "label": label, "ai_assisted": made == "ai", "human_edit": human_edit,
+            "human_input": made == "human" or human_edit, "decided": decided, "accepted_via": via,
+            "accepted_at": a.get("accepted_at"), "model": mb.get("model") if made == "ai" else None,
+            "provider": (mb.get("provider") or mb.get("source")) if made == "ai" else None,
+            "revision": mb.get("revision") if made == "ai" else None}
+
+
+def term_changes(record: dict | None) -> dict[str, list[dict]]:
+    """Applied fixes per term IRI (from :func:`provenance_record`), each with its :func:`fix_attribution`."""
+    out: dict[str, list[dict]] = {}
+    for a in ((record or {}).get("fixes") or {}).get("applied", []):
+        if a.get("subject"):
+            out.setdefault(a["subject"], []).append({"title": a.get("title", ""), "option": a.get("option", ""),
+                                                      "id": a.get("id"), **fix_attribution(a)})
+    return out
+
+
 def provenance_record(onto: Ontology, source: str | Path, tool_version: str, started: _dt.datetime,
                       report=None, generated: _dt.datetime | None = None) -> dict:
     """What this documentation was made from, by what, and when: one record shown in the docs'
@@ -287,10 +330,12 @@ def provenance_record(onto: Ontology, source: str | Path, tool_version: str, sta
                      "checks": rec.get("checks", {}), "kinds": kinds}
             n_ai = sum(1 for a in applied if a.get("ai_assisted"))
             fixes["ai_assisted"] = n_ai
+            fixes["human_input"] = sum(1 for a in applied if fix_attribution(a)["human_input"])
             event(rec.get("created_at"), f"{len(applied)} fix{'es' if len(applied) != 1 else ''} applied",
                   f"From {rec.get('source', {}).get('name', 'the original')}: "
                   + ", ".join(f"{n} {k.lower()}" for k, n in kinds.items())
-                  + (f" · {n_ai} AI-assisted" if n_ai else ""), "fix")
+                  + (f" · {n_ai} AI-assisted" if n_ai else "")
+                  + (f" · {fixes['human_input']} with a person's input" if fixes["human_input"] else ""), "fix")
     event(started, "Documentation build started", f"From {name}" if name else "", "build")
     event(generated, "Documentation generated",
           f"OntoReview {tool_version}" + (f"; checks: {', '.join(checks)}" if checks else ""), "build")
@@ -377,8 +422,21 @@ def _fix_provenance(g: Graph, fixes: dict, fixed: URIRef) -> None:
     g.add((fixed, PROV.wasGeneratedBy, apply))
     if fixes.get("created_at"):
         g.add((apply, PROV.endedAtTime, Literal(fixes["created_at"], datatype=XSD.dateTime)))
+    person = URIRef("urn:ontoreview:person:reviewer")     # the person who reviewed the fixes (not named)
+    if fixes.get("applied"):
+        g.add((person, RDF.type, PROV.Person))
+        g.add((person, RDFS.label, Literal("The person who reviewed and accepted the fixes")))
     for a in fixes.get("applied", []):
         node = URIRef(f"urn:ontoreview:fix:{a['id']}")
+        who = fix_attribution(a)
+        g.add((node, DCTERMS.creator, Literal(who["label"])))
+        if a.get("subject"):
+            g.add((node, DCTERMS.subject, URIRef(a["subject"])))
+        if who["accepted_via"] == "review":
+            _role(g, node, person, "reviewer")       # every reviewed fix was accepted by a person
+        if who["human_input"]:
+            g.add((node, DCTERMS.type, Literal("Human input")))
+            _role(g, node, person, "author" if who["made"] == "human" else "editor")
         g.add((node, RDF.type, PROV.Activity))
         g.add((node, DCTERMS.isPartOf, apply))
         g.add((node, RDFS.label, Literal(f"{a.get('title', '')}: {a.get('option', '')}")))
@@ -399,3 +457,16 @@ def _fix_provenance(g: Graph, fixes: dict, fixed: URIRef) -> None:
             agent = URIRef(f"urn:ontoreview:fixer:{mb.get('id', a.get('rule', 'rule'))}")
             g.add((agent, RDF.type, PROV.SoftwareAgent))
         g.add((node, PROV.wasAssociatedWith, agent))
+        _role(g, node, agent, "drafter" if who["made"] == "ai" else "author" if who["made"] == "rule" else "suggester")
+
+
+def _role(g: Graph, activity: URIRef, agent: URIRef, role: str) -> None:
+    """prov:wasAssociatedWith plus a qualified association naming the agent's role (author, editor, reviewer…)."""
+    from rdflib import BNode
+
+    g.add((activity, PROV.wasAssociatedWith, agent))
+    q = BNode()
+    g.add((activity, PROV.qualifiedAssociation, q))
+    g.add((q, RDF.type, PROV.Association))
+    g.add((q, PROV.agent, agent))
+    g.add((q, PROV.hadRole, URIRef(f"https://w3id.org/ontoreview#{role}")))

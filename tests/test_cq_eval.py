@@ -233,7 +233,7 @@ def test_llm_files(fixtures, tmp_path):
     ontoreview.build(fixtures / "pizza.ttl", out=tmp_path, competency_questions=[str(fixtures / "cq" / "pizza-cq.yaml")])
     llms = (tmp_path / "llms.txt").read_text()
     assert llms.startswith("# Pizza Ontology") and "[Classes](classes.md)" in llms and "ontology.json" in llms
-    assert "### Pizza" in (tmp_path / "classes.md").read_text()
+    assert "\n## Pizza\n" in (tmp_path / "classes.md").read_text()
     assert "SELECT ?pizza" in (tmp_path / "llms-full.txt").read_text()
     data = json.loads((tmp_path / "ontology.json").read_text())
     pizza = next(t for t in data["terms"] if t.get("curie") == "pizza:Pizza")
