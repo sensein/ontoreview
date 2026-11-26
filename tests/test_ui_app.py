@@ -707,3 +707,40 @@ async def test_app_waits_for_a_running_task_before_stopping(monkeypatch):
     app.connect[0]()
     await app.disconnect[0]()
     assert app.stopped and "running task" in said[0] and len(sleeps) == 3
+
+
+@pytest.mark.anyio
+async def test_auto_configure_dialog(isolated, monkeypatch):
+    """Settings › Quality checks › Auto-configure shows what was found, runs only the ticked steps and saves."""
+    import ontoreview.ui as ui_mod
+
+    found = {"docker_installed": True, "docker_running": True, "robot_local": "", "java": "",
+             "robot_image": "obolibrary/robot", "robot_image_present": False, "oops_container": "",
+             "oops_local_url": ui_core.LOCAL_OOPS_URL, "oops_endpoint": "https://oops.linkeddata.es/rest",
+             "ollama": False, "ollama_url": "http://localhost:11434", "ollama_models": [], "cdi_extras": False,
+             "keys": []}
+    ran = []
+
+    def fake_apply(chosen, prefs, f, say):
+        ran.append(set(chosen))
+        say("$ pull obolibrary/robot")
+        prefs.robot_mode = "docker"
+        return []
+
+    monkeypatch.setattr(ui_mod, "detect_setup", lambda prefs: found)
+    monkeypatch.setattr(ui_mod, "apply_setup", fake_apply)
+    ok = {"state": "ok", "label": "ROBOT · Docker ready", "detail": ""}
+    monkeypatch.setattr(ui_mod, "robot_status", lambda prefs: ok)          # no real Docker / network checks
+    monkeypatch.setattr(ui_mod, "oops_status", lambda prefs, check=True: ok)
+    async with user_simulation(root=build_page) as user:
+        await user.open("/settings")
+        user.find("Quality checks").click()
+        await user.should_see("Auto-configure")
+        await user.should_see("Setup:")
+        user.find(marker="auto-configure").click()
+        await user.should_see("Download ROBOT and run it in Docker")
+        await user.should_see("Interoperability models not installed")
+        user.find(marker="setup-apply").click()
+        await user.should_see("Configured and saved.")
+    assert ran == [{"pull_robot"}]                    # local OOPS! is offered but not pre-ticked
+    assert ui_core.Prefs.load().robot_mode == "docker"

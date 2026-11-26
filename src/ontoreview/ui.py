@@ -30,17 +30,20 @@ from rdflib import URIRef
 from . import __version__, telemetry
 from .ui_core import (
     ACTIVE_TASKS,
+    LOCAL_OOPS_URL,
     MAX_UPLOAD_BYTES,
     RUN_FOLDER_TASKS,
     TASKS,
     Prefs,
     Settings,
     add_deploy,
+    apply_setup,
     browse,
     change_counts,
     clear_history,
     deploys_for,
     describe_source,
+    detect_setup,
     existing_output,
     load_reviews,
     save_reviews,
@@ -55,6 +58,7 @@ from .ui_core import (
     run_config_rows,
     run_name,
     run_task,
+    setup_plan,
     system_info,
     task_kind,
     upload_files,
@@ -2508,6 +2512,11 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         ui.label(hint).classes("or-hint")
             return r
 
+        def setup_note(key: str) -> None:
+            """The one-line setup note at the top of a Settings box (details: Help › Setting up checks)."""
+            ui.html(f'<div class="or-setup"><b>Setup:</b> {SETUP[key]} '
+                    '<a class="text-primary" href="/help#setup">More in Help</a></div>', sanitize=False)
+
         def telemetry_panel() -> None:
             """Settings › Telemetry: the optional-details switch and the table of everything that can be sent."""
             reason = telemetry.disabled_reason()
@@ -2655,6 +2664,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                         with ui.column().classes("w-full gap-0").style("padding: 4px 24px"):
                             ui.label("Publishing (GitHub Pages)").classes("or-h2 q-pt-md")
                             ui.label("Used by Deploy on website results and in Run history.").classes("or-hint")
+                            setup_note("publish")
                             with row("GitHub token (optional)",
                                      "Lets OntoReview push and turn on Pages without other tools, and create the "
                                      "repository if you allow it. Kept on this computer only; never in reports or "
@@ -2750,11 +2760,23 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 ui.checkbox().bind_value(work, "verbose").props('aria-label="Verbose log"')
                 with ui.tab_panel(t_checks).classes("q-pa-none").style(
                         "display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;align-items:start"):
+                    with ui.card().classes("or-card w-full").props("flat").style("grid-column: 1 / -1"):
+                        with ui.row().classes("or-sec w-full items-center justify-between gap-3"):
+                            with ui.column().classes("gap-1").style("flex: 1 1 420px"):
+                                ui.label("Auto-configure").classes("or-h2")
+                                ui.label("Finds Docker, a local robot, Ollama and the language models on this "
+                                         "computer, shows what it would do, then downloads the ROBOT image, can start "
+                                         "OOPS! locally, and sets the options below. Nothing runs before you confirm.") \
+                                    .classes("or-hint")
+                            ui.button("Detect and configure", icon="auto_fix_high",
+                                      on_click=lambda: auto_configure()).props("unelevated no-caps") \
+                                .mark("auto-configure")
                     with ui.card().classes("or-card w-full").props("flat"):
                         with ui.column().classes("or-sec gap-3"):
                             with ui.row().classes("w-full items-center justify-between"):
                                 ui.label("ROBOT").classes("or-h2")
                                 robot_badge = ui.html("", sanitize=False)
+                            setup_note("robot")
                             ui.label("Run ROBOT with").classes("or-label")
                             mode_box = ui.row().classes("w-full gap-3 no-wrap max-sm:flex-wrap") \
                                 .props('role="radiogroup" aria-label="Run ROBOT with"')
@@ -2779,6 +2801,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("An OWL reasoner checks that the ontology is consistent and that every class "
                                      "can have members. It runs through ROBOT (above), on this machine.") \
                                 .classes("or-hint")
+                            setup_note("reasoner")
                             ui.label("Reasoner").classes("or-label")
                             ui.select(REASONER_CHOICES).bind_value(work, "reasoner") \
                                 .props('outlined dense aria-label="Reasoner"').classes("w-72").mark("reasoner")
@@ -2792,6 +2815,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                      "resolves, and whether reused classes and properties exist in their vocabulary. "
                                      "Terms are looked up in SQLite first (bundled W3C vocabularies and your cache), "
                                      "then OLS, BioPortal and a direct download.").classes("or-hint")
+                            setup_note("iri")
                             ui.checkbox("Run IRI checks").bind_value(work, "iri_checks").mark("iri-checks")
                             ui.checkbox("Allow network lookups").bind_value(work, "iri_network")
                             ui.label("Off: only the bundled and cached SQLite database is used; unknown terms are "
@@ -2806,6 +2830,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("OntoCheck").classes("or-h2")
                             ui.label("Quality metrics for labeling, structure, accessibility and naming conventions, "
                                      "shown as a scorecard in the review. Runs on this machine.").classes("or-hint")
+                            setup_note("ontocheck")
                             ui.checkbox("Run OntoCheck").bind_value(work, "ontocheck").mark("ontocheck")
                             ui.checkbox("Check declared SPARQL endpoints and RDF dumps are reachable").bind_value(
                                 work, "ontocheck_network")
@@ -2822,6 +2847,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("Scores how well the ontology aligns with ontologies from other domains "
                                      "(Align) and how general its class definitions are (Gen); CDI combines "
                                      "both.").classes("or-hint")
+                            setup_note("cdi")
                             ui.checkbox("Score cross-domain interoperability").bind_value(work, "cdi").mark("cdi")
                             ui.label("Reference ontologies, one per line").classes("or-label")
                             cdi_refs = ui.textarea(placeholder="ols\nols:envo,chebi\nbioportal:NCIT\n"
@@ -2910,6 +2936,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                      "ontology's own, in which it is interoperable: for each domain, CDI computed "
                                      "with only that domain's reference ontologies must reach θ_s. Upper-level "
                                      "ontologies (BFO, DOLCE, …) are ignored.").classes("or-hint")
+                            setup_note("si")
                             ui.checkbox("Score scientific interoperability").bind_value(work, "si").mark("si")
                             si_same = ui.checkbox("Use the cross-domain reference ontologies",
                                                   value=not work.si_references.strip()).mark("si-same-refs")
@@ -2966,11 +2993,12 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                                 with ui.row().classes("items-center gap-2"):
                                     oops_badge = ui.html("", sanitize=False)
                                     ui.button("Check", on_click=lambda: test_oops()).props("flat dense no-caps")
+                            setup_note("oops")
                             ui.label("Service URL").classes("or-label")
                             ui.input().bind_value(work, "oops_endpoint") \
                                 .props('outlined dense aria-label="OOPS! service URL"').classes("w-full or-mono")
-                            ui.label("The public OOPS! REST service. Change it only if you run your own OOPS! server.") \
-                                .classes("or-hint")
+                            ui.label("The public OOPS! REST service, or your own OOPS! server (Auto-configure can "
+                                     f"start one: {LOCAL_OOPS_URL}).").classes("or-hint")
                             with ui.row().classes("gap-6 items-end"):
                                 with ui.column().classes("gap-1"):
                                     ui.label("Timeout").classes("or-label")
@@ -3008,7 +3036,8 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
                             ui.label("Draft definitions for terms without one, refine existing definitions and "
                                      "suggest a description. Every draft is shown with the model that wrote it and "
                                      "applied only when you accept it.").classes("or-hint")
-                            with row("Use AI drafts", "Off by default."):
+                            setup_note("ai")
+                            with row("Use AI drafts", "On by default; nothing is applied until you accept it."):
                                 ui.checkbox().bind_value(work, "ai_enabled").props('aria-label="Use AI drafts"') \
                                     .mark("ai-enabled")
                             with row("Priority", "The first available source is used; reorder or remove sources. "
@@ -3233,6 +3262,70 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
         async def test_oops() -> None:
             oops_badge.content = '<span class="or-badge off">Checking…</span>'
             show_badge(oops_badge, await run.io_bound(oops_status, work, True))
+
+        async def auto_configure() -> None:
+            found = await run.io_bound(detect_setup, work)
+            steps = setup_plan(found, work)
+            picks: dict = {}
+            lines: list[str] = []
+            with ui.dialog() as dlg, ui.card().classes("or-card").style("width:min(44rem,94vw);max-height:90vh;overflow-y:auto"):
+                with ui.column().classes("or-sec gap-3 w-full"):
+                    ui.label("Auto-configure").classes("or-h2")
+                    ui.label("Tick what to do; the rest is what was found.").classes("or-hint")
+                    for st in steps:
+                        if st["kind"] == "action":
+                            with ui.column().classes("gap-0"):
+                                picks[st["id"]] = ui.checkbox(st["label"], value=st["default"]) \
+                                    .mark(f"setup-{st['id']}")
+                                ui.label(st["detail"]).classes("or-hint").style("margin-left:40px")
+                        else:
+                            with ui.row().classes("no-wrap items-start gap-2"):
+                                ui.icon("check_circle" if st["ok"] else "info", size="20px") \
+                                    .classes("text-positive" if st["ok"] else "text-warning")
+                                with ui.column().classes("gap-0"):
+                                    ui.label(st["label"]).classes("or-label")
+                                    ui.label(st["detail"]).classes("or-hint")
+                    logbox = ui.log(max_lines=400).classes("w-full or-mono").style("height:180px")
+                    logbox.set_visibility(False)
+                    with ui.row().classes("w-full justify-end gap-2"):
+                        close_btn = ui.button("Close", on_click=dlg.close).props("outline no-caps")
+                        go_btn = ui.button("Apply", icon="play_arrow").props("unelevated no-caps") \
+                            .mark("setup-apply")
+
+                    def flush() -> None:
+                        while lines:
+                            logbox.push(lines.pop(0))
+
+                    async def go() -> None:
+                        chosen = {k for k, cb in picks.items() if cb.value}
+                        if not chosen:
+                            notify("Nothing ticked.")
+                            return
+                        go_btn.disable()
+                        close_btn.disable()
+                        logbox.set_visibility(True)
+                        timer = ui.timer(0.3, flush)
+                        try:
+                            problems = await run.io_bound(apply_setup, chosen, work, found, lines.append)
+                        finally:
+                            flush()
+                            timer.cancel()
+                            close_btn.enable()
+                        render_mode()
+                        save()
+                        await test_robot()
+                        await test_oops()
+                        if problems:
+                            for msg in problems:
+                                logbox.push("⚠ " + msg)
+                            notify("Configured, with problems: see the log.", "warning")
+                        else:
+                            notify("Configured and saved.", "positive")
+                            dlg.close()
+                    go_btn.on_click(go)
+                    if not picks:
+                        go_btn.disable()
+            dlg.open()
 
         def reset() -> None:
             for k, v in asdict(Prefs()).items():

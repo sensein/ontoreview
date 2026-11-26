@@ -157,7 +157,7 @@ def _page_title(p: Path) -> str:
 
 
 # ---------------------------------------------------------------------------- LLM / agent files
-def _term_json(t: Term) -> dict:
+def _term_json(t: Term, changes: dict | None = None) -> dict:
     def refs(items):
         return [r.curie or r.iri for r in items]
 
@@ -176,22 +176,42 @@ def _term_json(t: Term) -> dict:
         "types": exprs(t.types), "broader": refs(t.broader), "narrower": refs(t.narrower),
         "replaced_by": refs(t.replaced_by),
         "competency_questions": [cid for cid, _ in t.competency_questions],
+        "changes": [{k: c[k] for k in ("title", "option", "label", "made", "ai_assisted", "human_input", "decided",
+                                       "accepted_at", "provider", "model", "revision") if c.get(k) not in (None, "")}
+                    for c in (changes or {}).get(t.iri, [])],
     }
     return {k: v for k, v in d.items() if v not in (None, [], False, "")} | {"iri": t.iri, "kind": t.kind}
 
 
-def ontology_json(onto: Ontology, cqs=None) -> dict:
+def ontology_json(onto: Ontology, cqs=None, provenance: dict | None = None) -> dict:
+    from .publish import fix_attribution, term_changes
+
     m = onto.metadata
+    changes = term_changes(provenance)
+    prov = None
+    if provenance:
+        fixes = provenance.get("fixes") or {}
+        prov = {"source": provenance.get("source"), "tool": provenance.get("tool"),
+                "generated": provenance.get("generated"), "checks": provenance.get("checks"),
+                "events": provenance.get("events"),
+                "fixes": {"derived_from": (fixes.get("derived_from") or {}).get("name"),
+                          "applied": [{"id": a.get("id"), "subject": a.get("subject"), "title": a.get("title"),
+                                       "option": a.get("option"), **{k: v for k, v in fix_attribution(a).items()
+                                                                     if v not in (None, "")}}
+                                      for a in fixes.get("applied", [])],
+                          "ai_assisted": fixes.get("ai_assisted", 0), "human_input": fixes.get("human_input", 0)}
+                if fixes else None}
     return {
         "title": m.title, "iri": m.iri, "version": m.version_info, "namespace": m.preferred_namespace,
         "prefix": m.preferred_prefix, "description": m.abstract or m.description,
         "license": m.license, "creators": [a.name for a in m.creators],
         "prefixes": dict(onto.prefixes), "counts": onto.stats,
-        "terms": [_term_json(t) for k in onto.kinds_present() for t in onto.by_kind(k)],
+        "terms": [_term_json(t, changes) for k in onto.kinds_present() for t in onto.by_kind(k)],
         "competency_questions": [
             {"id": q.id, "question": q.question, "sparql": q.sparql, "status": q.status}
             for q in (cqs.questions if cqs is not None else [])
         ],
+        "provenance": prov,
     }
 
 
@@ -201,7 +221,7 @@ EXTRA_PAGES = {"graph.md": ("Visualization", "the class hierarchy as a diagram a
 
 
 def llms_txt(onto: Ontology, base_url: str | None, downloads: list[dict], cqs=None,
-             pages: list[str] | None = None) -> str:
+             pages: list[str] | None = None, provenance: dict | None = None) -> str:
     """An llms.txt index (https://llmstxt.org): summary + links to Markdown versions."""
     m = onto.metadata
     base = (base_url.rstrip("/") + "/") if base_url else ""
@@ -225,6 +245,12 @@ def llms_txt(onto: Ontology, base_url: str | None, downloads: list[dict], cqs=No
     counts = ", ".join(tr.kind_count(k, n) for k, n in onto.stats.items() if k != "triples")
     if counts:
         facts.append(f"- Contents: {counts}")
+    fixes = (provenance or {}).get("fixes")
+    if fixes:
+        facts.append(f"- This version: {len(fixes.get('applied', []))} reviewed fixes applied to "
+                     f"{(fixes.get('derived_from') or {}).get('name', 'the original')} "
+                     f"({fixes.get('ai_assisted', 0)} AI-assisted, {fixes.get('human_input', 0)} with a person's "
+                     "input); see Provenance in index.md and provenance.ttl")
     lines += facts + ["", "Terms are identified by IRI; use the CURIEs and labels below when writing SPARQL or RDF.", ""]
     lines += ["## Documentation", "", f"- [Overview]({base}index.md): metadata and contents"]
     from .model.entities import KIND_LABELS
@@ -260,7 +286,8 @@ def write_llm_files(onto: Ontology, out: Path, base_url: str | None, downloads: 
 
     md = export_markdown(onto, out, myst=False, cqs=cqs, report=report, changelog=changelog, downloads=downloads,
                          provenance=provenance, config=config)
-    (out / "llms.txt").write_text(llms_txt(onto, base_url, downloads, cqs, [p.name for p in md]), "utf-8")
+    (out / "llms.txt").write_text(llms_txt(onto, base_url, downloads, cqs, [p.name for p in md], provenance), "utf-8")
     (out / "llms-full.txt").write_text(llms_full_txt(md), "utf-8")
-    (out / "ontology.json").write_text(json.dumps(ontology_json(onto, cqs), indent=1, ensure_ascii=False), "utf-8")
+    (out / "ontology.json").write_text(json.dumps(ontology_json(onto, cqs, provenance), indent=1, ensure_ascii=False),
+                                       "utf-8")
     return md + [out / "llms.txt", out / "llms-full.txt", out / "ontology.json"]

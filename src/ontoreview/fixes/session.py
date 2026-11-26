@@ -97,6 +97,7 @@ class Accepted:
     edited: bool = False
     values: dict = field(default_factory=dict)          # what the user typed, for U fixes
     at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat(timespec="seconds"))
+    via: str = "review"     # "review": a person accepted it; "accept-safe": accepted in bulk as a safe fix
 
 
 @dataclass
@@ -219,7 +220,8 @@ class FixSession:
                 s.checked["options"].append({"fixed": fixed, "new_findings": new})
 
     # ------------------------------------------------------------ decisions
-    def accept(self, sid: str, option: int = 0, values: dict | None = None, text: str | None = None) -> Accepted:
+    def accept(self, sid: str, option: int = 0, values: dict | None = None, text: str | None = None,
+               via: str = "review") -> Accepted:
         s = self.get(sid)
         if s.kind == "M":
             raise FixError("Manual issues have no automatic fix; edit the ontology yourself.")
@@ -236,14 +238,14 @@ class FixSession:
             edited = text.strip() != literal_text(o.add[0][2]) if o.add else True
         else:
             chosen, edited = s.options[option], False
-        self.accepted[sid] = Accepted(s, chosen, edited, dict(values or {}))
+        self.accepted[sid] = Accepted(s, chosen, edited, dict(values or {}), via=via)
         return self.accepted[sid]
 
     def accept_safe(self) -> int:
         n = 0
         for s in self.suggestions:
             if s.safe and s.id not in self.accepted:
-                self.accept(s.id)
+                self.accept(s.id, via="accept-safe")
                 n += 1
         return n
 
@@ -335,7 +337,8 @@ class FixSession:
                          "kind": a.suggestion.kind, "source": a.suggestion.source, "title": a.suggestion.title,
                          "option": a.option.label, "add": a.option.add, "remove": a.option.remove,
                          "edited": a.edited, "made_by": a.suggestion.made_by, "accepted_at": a.at,
-                         "ai_assisted": a.suggestion.made_by.get("type") == "llm"} for a in accepted],
+                         "ai_assisted": a.suggestion.made_by.get("type") == "llm", "accepted_via": a.via}
+                        for a in accepted],
             "not_applied": [{"id": s.id, "rule": s.rule, "subject": s.subject, "title": s.title} for s in not_applied],
             "checks": {"before": self.report.summary, "after": after.summary, "fixed": fixed, "new": new},
         }, indent=2, ensure_ascii=False), "utf-8")

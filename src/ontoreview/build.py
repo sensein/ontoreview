@@ -208,6 +208,11 @@ def export_docs(source: str | Path | None = None, out: str | Path = "docs-md",
     pages = export_markdown(a.onto, out_dir, myst=myst, cqs=a.cqset, report=a.report, changelog=a.changelog,
                             downloads=downloads, provenance=a.prov, config=cfg)
     files += pages + _write_data_files(out_dir, cfg, a)
+    from .export import ontology_json
+
+    (out_dir / "ontology.json").write_text(json.dumps(ontology_json(a.onto, a.cqset, a.prov), indent=1,
+                                                      ensure_ascii=False), "utf-8")
+    files.append(out_dir / "ontology.json")
     if myst and sphinx_project:
         files += write_sphinx_project(out_dir, a.onto, pages)
     return BuildResult(out_dir, a.onto, a.report, a.changelog, files, time.perf_counter() - t0, a.cqset)

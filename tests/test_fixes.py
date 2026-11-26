@@ -473,3 +473,59 @@ def test_cli_fix_apply_rejects_suggestions_for_another_version(b, tmp_path):
     b.write_text(b.read_text() + "\n# changed\n")
     r = runner.invoke(app, ["fix", "apply", str(b), "--from", str(saved), "--accept-safe"])
     assert r.exit_code == 2 and "another version" in " ".join(r.output.split())
+
+
+def test_fix_attribution_is_the_same_in_every_format(tmp_path):
+    """Who made each fix (rule, a person, AI) and how it was accepted appear in the website, the single
+    file, Markdown, MyST, llms files, ontology.json and provenance.ttl alike."""
+    import json
+
+    from rdflib.namespace import PROV, RDF
+
+    p = tmp_path / "a.ttl"
+    p.write_text("@prefix : <http://example.org/a#> .\n@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
+                 "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
+                 "<http://example.org/a> a owl:Ontology .\n:X a owl:Class ; rdfs:label \" padded \" .\n"
+                 ":Y a owl:Class ; rdfs:label \"Y\" ; rdfs:subClassOf :Y .\n")
+    s = FixSession(p)
+    for x in s.required_open():                             # a person types title, description, license, creators
+        s.accept(x.id, values=VALUES[x.rule])
+    ai = by_rule(s, "FX001")                                # the label fix on X, drafted by a model here
+    ai.made_by = {"type": "llm", "provider": "Ollama", "model": "qwen3.5:4b", "revision": "abc123"}
+    s.accept(ai.id)
+    s.accepted[ai.id].edited = True                         # the person changed the AI draft before accepting
+    assert s.accept_safe() == 1                             # OB022 on Y, accepted in bulk
+    r = s.write()
+
+    ai_label = "AI draft (Ollama · qwen3.5:4b), revision abc123, edited by a person"
+    site = tmp_path / "site"
+    ontoreview.build(r.path, out=site, evaluation={"oops": "off"})
+    single = tmp_path / "one.html"
+    ontoreview.build_single_file(r.path, single, evaluation={"oops": "off"})
+    md, myst = tmp_path / "md", tmp_path / "myst"
+    ontoreview.export_docs(r.path, out=md, evaluation={"oops": "off"})
+    ontoreview.export_docs(r.path, out=myst, myst=True, evaluation={"oops": "off"})
+    import html as _h
+    texts = {"site": _h.unescape((site / "index.html").read_text()), "single": _h.unescape(single.read_text()),
+             "md": (md / "index.md").read_text() + (md / "classes.md").read_text(),
+             "myst": (myst / "index.md").read_text() + (myst / "classes.md").read_text(),
+             "llms-full": (site / "llms-full.txt").read_text()}
+    for name, text in texts.items():
+        assert ai_label in text, name
+        assert "Value entered by a person" in text, name
+        assert "Reviewed and accepted by a person" in text, name
+        assert "Changes applied" in text, name                  # per term, next to its definition and axioms
+    for name, text in texts.items():
+        assert "Accepted automatically as a safe fix" in text, name
+    assert "AI-assisted" in (site / "llms.txt").read_text() or "1 AI-assisted" in (site / "llms.txt").read_text()
+    data = json.loads((site / "ontology.json").read_text())
+    x = next(t for t in data["terms"] if t["iri"] == "http://example.org/a#X")
+    assert any(c["ai_assisted"] and c["label"] == ai_label for c in x["changes"])
+    assert data["provenance"]["fixes"]["ai_assisted"] == 1 and data["provenance"]["fixes"]["human_input"] >= 4
+    pg = Graph().parse(site / "provenance.ttl")
+    person = URIRef("urn:ontoreview:person:reviewer")
+    assert (person, RDF.type, PROV.Person) in pg
+    edited = URIRef(f"urn:ontoreview:fix:{ai.id}")
+    assert (edited, DCTERMS.subject, URIRef("http://example.org/a#X")) in pg
+    roles = {str(pg.value(q, PROV.hadRole)).rsplit("#", 1)[-1] for q in pg.objects(edited, PROV.qualifiedAssociation)}
+    assert roles == {"drafter", "editor", "reviewer"}

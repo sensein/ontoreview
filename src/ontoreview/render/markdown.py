@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 
 from ..model.entities import KIND_SLUGS, Ontology, Ref, Term, TreeNode
+from ..publish import fix_attribution, term_changes
 from ..report.models import tool_anchor
 from .site import Section, SiteRenderer, _filesize, _prov_when
 
@@ -48,6 +49,7 @@ class MarkdownRenderer:
         self.toc = site.toc(self.sections)
         self.cq_page = next((self._page(s) for s in self.sections if s.id == "competency-questions"), None)
         self.quality_page = next((self._page(s) for s in self.sections if s.id == "quality"), None)
+        self.changes = term_changes(site.provenance)
 
     # ------------------------------------------------------------------ links and anchors
     @staticmethod
@@ -403,6 +405,11 @@ class MarkdownRenderer:
         add("is_defined_by", self.refs(x.is_defined_by))
         for a in x.annotations:
             rows.append((self.ref(a.prop), self.exprs(a.values)))
+        if x.iri in self.changes:
+            add("changes_applied", "; ".join(
+                f"{c['title']}" + (f": {c['option']}" if c["option"] else "") + f" ({c['label']}; "
+                + c["decided"].lower() + (f", {_prov_when({'when': c['accepted_at']})}" if c["accepted_at"] else "")
+                + ")" + (" **AI-assisted**" if c["ai_assisted"] else "") for c in self.changes[x.iri]))
         if x.competency_questions and self.cq_page:
             add("competency_questions", ", ".join(f"[{cid}]({self.cq_page}#{anchor.lower()})"
                                                   for cid, anchor in x.competency_questions))
@@ -622,15 +629,13 @@ class MarkdownRenderer:
                 rows2 = []
                 for a in fixes.get("applied", []):
                     term = self.onto.terms.get(a.get("subject")) if a.get("subject") else None
-                    mb = a.get("made_by") or {}
-                    by = (f"{mb.get('provider') or mb.get('source')} · {_code(mb.get('model'))}"
-                          if mb.get("type") == "llm" else f"{a.get('source', '')} {_code(mb.get('id') or a.get('rule'))}")
-                    change = a.get("title", "") + (" (AI-assisted)" if a.get("ai_assisted") else "") + (
-                        f": {a['option']}" if a.get("option") else "") + (
-                        f" · {t('prov_fix_edited')}" if a.get("edited") else "")
-                    rows2.append([self.ref(term.ref()) if term else t("prov_fix_ontology"), change, by,
-                                  _prov_when({"when": a.get("accepted_at", "")})])
-                out += self.grid([t("prov_fix_term"), t("prov_fix_change"), t("prov_fix_by"), t("prov_fix_at")], rows2)
+                    who = fix_attribution(a)
+                    change = a.get("title", "") + (" **AI-assisted**" if who["ai_assisted"] else "") + (
+                        f": {a['option']}" if a.get("option") else "")
+                    rows2.append([self.ref(term.ref()) if term else t("prov_fix_ontology"), change, who["label"],
+                                  who["decided"], _prov_when({"when": a.get("accepted_at", "")})])
+                out += self.grid([t("prov_fix_term"), t("prov_fix_change"), t("prov_fix_by"), t("prov_fix_decided"),
+                                  t("prov_fix_at")], rows2)
             out += [self.anchor("provenance-build"), f"{sub} {t('prov_build')}", ""]
             src = rec.get("source") or {}
             rows3 = []

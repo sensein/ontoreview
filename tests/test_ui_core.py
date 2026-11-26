@@ -218,3 +218,69 @@ def test_each_run_in_its_own_folder(fixtures, tmp_path):
     assert rows["Task"] == "Website"
     assert rows["Each run in its own folder"] == "on" and rows["OOPS!"] == "off"
     assert export_output(tmp_path / "h.json") == tmp_path / "h.json"        # a single file is exported as is
+
+
+def test_setup_plan_offers_what_was_found():
+    from ontoreview.ui_core import LOCAL_OOPS_URL, Prefs, setup_plan
+
+    base = {"robot_local": "", "docker_installed": True, "docker_running": True, "robot_image": "obolibrary/robot",
+            "robot_image_present": False, "oops_container": "", "oops_local_url": LOCAL_OOPS_URL,
+            "oops_endpoint": "https://oops.linkeddata.es/rest", "ollama": False, "ollama_url": "http://localhost:11434",
+            "ollama_models": [], "cdi_extras": False, "keys": []}
+    ids = {s["id"]: s for s in setup_plan(base, Prefs()) if s["kind"] == "action"}
+    assert ids["pull_robot"]["default"] and not ids["local_oops"]["default"]
+    stopped = setup_plan(base | {"docker_running": False}, Prefs())
+    assert not [s for s in stopped if s["kind"] == "action"]
+    assert any("not running" in s["label"] for s in stopped)
+    local = {s["id"] for s in setup_plan(base | {"robot_local": "/usr/bin/robot"}, Prefs())}
+    assert "use_local_robot" in local and "pull_robot" not in local
+
+
+def test_apply_setup_pulls_robot_and_starts_oops(monkeypatch):
+    import ontoreview.quality_checks.robot as robot
+    import ontoreview.ui_core as core
+
+    calls = []
+
+    class FakePopen:
+        def __init__(self, cmd, **kw):
+            calls.append(cmd)
+            self.stdout = iter(["done\n"])
+
+        def wait(self):
+            return 0
+
+    monkeypatch.setattr(robot, "_docker", lambda: "docker")
+    monkeypatch.setattr("subprocess.Popen", FakePopen)
+    monkeypatch.setattr(core, "_http_ok", lambda url, timeout=3: True)
+    prefs = core.Prefs(robot_mode="local", reasoner="off", ai_priority="hf,api")
+    found = {"robot_image": "obolibrary/robot", "oops_container": "", "ollama_url": "http://localhost:11434",
+             "ollama_models": ["llama3:8b"], "robot_local": ""}
+    log = []
+    problems = core.apply_setup({"pull_robot", "local_oops", "use_ollama"}, prefs, found, log.append)
+    assert problems == []
+    assert ["docker", "pull", "obolibrary/robot"] in calls
+    assert any(c[:2] == ["docker", "run"] and core.LOCAL_OOPS_IMAGE in c for c in calls)
+    assert prefs.robot_mode == "docker" and prefs.reasoner == "hermit"
+    assert prefs.oops_endpoint == core.LOCAL_OOPS_URL
+    assert prefs.ai_priority.startswith("ollama,") and prefs.ai_ollama_model == "llama3:8b"
+
+
+def test_apply_setup_keeps_public_oops_when_local_does_not_answer(monkeypatch):
+    import ontoreview.quality_checks.robot as robot
+    import ontoreview.ui_core as core
+
+    class FakePopen:
+        def __init__(self, cmd, **kw):
+            self.stdout = iter([])
+
+        def wait(self):
+            return 0
+
+    monkeypatch.setattr(robot, "_docker", lambda: "docker")
+    monkeypatch.setattr("subprocess.Popen", FakePopen)
+    monkeypatch.setattr(core, "_http_ok", lambda url, timeout=3: False)
+    monkeypatch.setattr(core.time, "sleep", lambda s: None)
+    prefs = core.Prefs()
+    problems = core.apply_setup({"local_oops"}, prefs, {"oops_container": "Exited (0)"})
+    assert prefs.oops_endpoint == core.Prefs.oops_endpoint and "did not answer" in problems[0]

@@ -20,7 +20,7 @@ from .. import __version__
 from ..config import Config
 from ..diff import Changelog
 from ..model.entities import KIND_BADGES, KIND_SLUGS, Ontology, Ref
-from ..publish import bibtex, citation_text
+from ..publish import bibtex, citation_text, fix_attribution, term_changes
 from ..report.models import Report, tool_anchor
 from .data import graph_data, jsonld, search_index
 from .i18n import LANGUAGE_NAMES, Translator
@@ -160,6 +160,7 @@ class SiteRenderer:
         env.filters["badge"] = lambda k: KIND_BADGES.get(k, k)
         env.filters["tool_anchor"] = tool_anchor
         env.filters["prov_when"] = _prov_when
+        env.filters["fix_who"] = fix_attribution
         env.globals.update(
             t=self.t,
             href=self.href,
@@ -178,6 +179,7 @@ class SiteRenderer:
             ui=self.cfg.ui,
             build_id=format(int(time.time()), "x"),
             ai_terms=self._ai_terms(),
+            term_changes=term_changes(self.provenance),
         )
         return env
 
