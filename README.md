@@ -96,8 +96,8 @@ Command line: `ontoreview fix list a.ttl --ai -o fixes.json`, then `ontoreview f
 | **Docs** – interactive diagram | **Docs** – scientific interoperability per domain |
 | ![Run history: configuration, re-run and export](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/history-config.png) | ![Deploy to GitHub Pages](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/deploy.png) |
 | **Run history** – re-run as is or changed, export | **Deploy** – push to GitHub Pages |
-| ![Settings: scientific interoperability](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/si-settings.png) | |
-| **Settings** – references, domains, OLS/BioPortal search | |
+| ![Settings: scientific interoperability](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/si-settings.png) | ![Settings: auto config](https://raw.githubusercontent.com/sensein/ontoreview/main/src/ontoreview/ui_assets/help/auto-config.png)|
+| **Settings** – references, domains, OLS/BioPortal search | **Settings** – Auto configuration |
 
 
 ## 🎥 Video Tutorial
