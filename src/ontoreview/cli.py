@@ -684,19 +684,56 @@ def export_cmd(
                                      help="markdown (MkDocs/Docusaurus) or myst (Sphinx)."),
     output: Path = typer.Option(Path("docs-md"), "--output", "-o"),
     config: Path | None = ConfigOpt,
+    lang: str | None = typer.Option(None, "--lang", "-l", help="Comma-separated languages, e.g. en,es,pt."),
+    previous: str | None = typer.Option(None, "--previous", "-p", help="Previous version (file/URL) for the changelog."),
+    base_url: str | None = typer.Option(None, help="Public URL where the docs will be published."),
+    reason: bool | None = typer.Option(None, "--reason/--no-reason", help="Show inferred superclasses (needs owlrl)."),
+    imports: bool | None = typer.Option(None, "--imports/--no-imports", help="Load owl:imports."),
+    include_imported: bool | None = typer.Option(None, help="Also document imported terms."),
+    individuals: bool | None = typer.Option(None, "--individuals/--no-individuals"),
+    cq: list[str] | None = typer.Option(None, "--cq", help="Competency questions file (.yaml/.json/.csv/.tsv/.xlsx); repeatable."),
+    oops: bool | None = typer.Option(None, "--oops/--no-oops", help="--oops: full OOPS! pitfall catalogue; --no-oops: never upload to oops.linkeddata.es. By default OOPS! runs alongside ROBOT, skipping what ROBOT checks (full when ROBOT cannot run)."),
+    robot: str | None = typer.Option(None, "--robot", help="ROBOT report: auto (default: local robot, else Docker; OOPS! fallback), on (also report if unavailable), off, or a path to a robot executable."),
+    reasoner: str | None = typer.Option(None, "--reasoner", help="Logical consistency check through ROBOT: hermit (default, OWL 2 DL), elk (fast, OWL 2 EL only) or off."),
+    ontocheck: bool | None = typer.Option(None, "--ontocheck/--no-ontocheck", help="OntoCheck metrics: labeling, structural, accessibility and naming (default: on)."),
+    iri: bool | None = typer.Option(None, "--iri/--no-iri", help="IRI checks: syntax, header, ontology-IRI resolution, external terms (default: on)."),
+    offline: bool = typer.Option(False, "--offline", help="IRI checks use only the bundled and cached SQLite database (no OLS, BioPortal or downloads)."),
+    cdi: list[str] | None = typer.Option(None, "--cdi", help="Score cross-domain interoperability against this reference; repeatable: a file or URL (RDF, or SSSOM .tsv), ols, ols:envo,chebi, bioportal, bioportal:NCIT, or another OLS/OntoPortal service as ols@https://…/api."),
+    cdi_domain: list[str] | None = typer.Option(None, "--cdi-domain", help="The ontology's own domain; discovered reference ontologies from it are left out. Repeatable."),
+    hf_token: str | None = typer.Option(None, "--hf-token", help="Optional Hugging Face token for downloading the CDI language models (higher rate limits). Prefer the HF_TOKEN environment variable to keep it out of shell history."),
+    no_cdi: bool = typer.Option(False, "--no-cdi", help="Skip the cross-domain interoperability score (on by default; it queries OLS and runs a language model)."),
+    cdi_ontoaligner: str | None = typer.Option(None, "--cdi-ontoaligner", help="Also match file/URL references with OntoAligner: sbert (sentence embeddings, default; model downloaded automatically), fuzzy (string similarity) or off. Needs ontoreview[cdi]."),
+    cdi_api_key: list[str] | None = typer.Option(None, "--cdi-api-key", help="Optional API key for BioPortal (KEY or bioportal=KEY), another OntoPortal service (ontoportal=KEY or bioportal@host=KEY). Avoids shared rate limits; OLS needs none. Prefer BIOPORTAL_API_KEY / ONTOPORTAL_API_KEY to keep keys out of shell history."),
+    no_si: bool = typer.Option(False, "--no-si", help="Skip the scientific interoperability degree (on by default; it reuses the cross-domain run and its --cdi references)."),
+    si_home_domain: str | None = typer.Option(None, "--si-home-domain", help="The ontology's own scientific domain: an OECD field code (1.2) or name. Default: classified from its title and description."),
+    si_theta_s: float | None = typer.Option(None, "--si-theta-s", help="θ_s: a domain counts as covered when its CDI reaches this (default 0.3)."),
+    si_domain: list[str] | None = typer.Option(None, "--si-domain", help="Your scientific domain for a reference ontology, e.g. ols:emi=1.5 (several: ols:emi=1.5;1.6). Repeatable."),
+    si_ref: list[str] | None = typer.Option(None, "--si-ref", help="Reference ontology for scientific interoperability only (same forms as --cdi: file, SSSOM, ols, ols:envo, bioportal:NCIT). Repeatable; default: the --cdi references."),
+    set_: list[str] | None = typer.Option(None, "--set", metavar="KEY=VALUE", help="Any [evaluation] setting, e.g. --set cdi_tau=0.6 --set iri_network=false. Repeatable; see `ontoreview evaluate --list-options`."),
+    verbose: bool = typer.Option(False, "--verbose", "-v"),
 ) -> None:
     """Export the documentation as Markdown or MyST for another static-site generator, with the same
-    content as the website (overview, terms, quality report, provenance, …). MyST adds conf.py,
-    requirements.txt and a README for building with Sphinx.
+    content as the website (overview, terms, quality report, provenance, …) and the same quality-check
+    options as `build`. MyST adds conf.py, requirements.txt and a README for building with Sphinx.
     SOURCE may be a folder: each ontology is exported to its own sub-folder, plus an index.md."""
-    from .build import export_docs, resolve_config
+    _setup_logging(verbose)
+    from .build import export_docs
 
+    ov = _overrides(languages=lang, previous_version=previous, base_url=base_url, reason=reason,
+                    load_imports=imports, include_imported=include_imported, include_individuals=individuals,
+                    evaluation=_with_set(_eval_overrides(oops, robot, reasoner, ontocheck, iri, offline, cdi, cdi_domain,
+                                                         cdi_api_key, cdi_ontoaligner, no_cdi, hf_token,
+                                                         _si_overrides(no_si, si_home_domain, si_theta_s, si_domain,
+                                                                       si_ref)), set_),
+                    competency_questions=[str(Path(c).resolve()) for c in cq] if cq else None)
+    myst = fmt == ExportFormat.myst
     folder = _folder_source(source, config)
     if folder is not None:
         from .collection import export_collection
 
         try:
-            res = export_collection(folder, output, config=config, myst=fmt == ExportFormat.myst)
+            with console.status(f"Exporting every ontology in {folder} (with quality checks)…"):
+                res = export_collection(folder, output, config=config, myst=myst, **ov)
         except (ValueError, FileNotFoundError) as e:
             err.print(f"[bold red]Error:[/] {escape(str(e))}")
             raise typer.Exit(2) from e
@@ -704,10 +741,14 @@ def export_cmd(
         if res.failed:
             raise typer.Exit(1)
         return
-    cfg = resolve_config(source, config)
-    res = export_docs(config=cfg, out=output, myst=fmt == ExportFormat.myst)
+    try:
+        with console.status("Exporting documentation (with quality checks)…"):
+            res = export_docs(source, out=output, config=config, myst=myst, **ov)
+    except (ValueError, FileNotFoundError) as e:
+        err.print(f"[bold red]Error:[/] {escape(str(e))}")
+        raise typer.Exit(2) from e
     console.print(f"[green]✓[/] wrote {len(res.files)} files to {output}")
-    if fmt == ExportFormat.myst:
+    if myst:
         console.print(f"  Build with Sphinx: see {output / 'README.md'}")
 
 

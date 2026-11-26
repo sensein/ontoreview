@@ -247,7 +247,7 @@ class Settings:
                     problems.append(f"{label} file not found: {v}")
         if self.task == "interop" and not (self.cdi or self.si):
             problems.append("Turn on cross-domain or scientific interoperability (or both) to run this check.")
-        if self.si and self.task in ("site", "single", "check", "interop"):
+        if self.si and self.task in CHECKED_TASKS + ("interop",):
             from .quality_checks.cdi.si import resolve_fos
 
             for label, spec in [("Own scientific domain", self.si_home_domain)] + [
@@ -260,7 +260,7 @@ class Settings:
             bad = [ln.strip() for ln in self.si_domain_map.splitlines() if ln.strip() and "=" not in ln]
             if bad:
                 problems.append(f"Domain map lines need 'ontology id = field', e.g. 'ols:emi = 1.5': {bad[0]}")
-        if (self.cdi or self.si) and self.task in ("site", "single", "check", "interop"):
+        if (self.cdi or self.si) and self.task in CHECKED_TASKS + ("interop",):
             from .quality_checks.cdi import parse_reference
 
             refs = [r for r in self.cdi_references.splitlines() if r.strip()]
@@ -287,8 +287,8 @@ class Settings:
             return " ".join(cmd + [q(self.previous_version.strip() or "<previous>"), q(self.source or "<source>"),
                                    "--format", "markdown", "-o", q(str(self.output_path()))])
         args = cmd + [q(self.source or "<source>"), "-o", q(str(self.output_path()))]
-        if self.task in ("site", "single"):
-            if self.layout != "single":
+        if self.task in DOCS_TASKS:
+            if self.layout != "single" and self.task in ("site", "single"):
                 args += ["--layout", self.layout]
             if self.languages.strip() and self.languages.strip() != "en":
                 args += ["--lang", q(self.languages.replace(" ", ""))]
@@ -304,7 +304,7 @@ class Settings:
                 args += ["--previous", q(self.previous_version.strip())]
         if self.task == "interop":
             self._cli_interop(args, q)
-        if self.task in ("site", "single", "check"):
+        if self.task in CHECKED_TASKS:
             if not self.is_folder:
                 for c in [x.strip() for x in self.competency_questions.split(",") if x.strip()]:
                     args += ["--cq", q(c)]
@@ -528,6 +528,7 @@ def _external_text(reports) -> str:
 
 
 DOCS_TASKS = ("site", "single", "markdown", "myst")
+CHECKED_TASKS = DOCS_TASKS + ("check",)       # run the quality checks (every docs format includes the report)
 RUN_FOLDER_TASKS = DOCS_TASKS + ("check", "interop")   # each run in its own folder (Settings.separate_runs)
 FILE_SUFFIXES = (".html", ".json", ".md")
 

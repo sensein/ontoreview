@@ -284,3 +284,17 @@ def test_apply_setup_keeps_public_oops_when_local_does_not_answer(monkeypatch):
     prefs = core.Prefs()
     problems = core.apply_setup({"local_oops"}, prefs, {"oops_container": "Exited (0)"})
     assert prefs.oops_endpoint == core.Prefs.oops_endpoint and "did not answer" in problems[0]
+
+
+def test_every_docs_format_shows_the_same_check_steps():
+    from ontoreview.ui import _plan
+    from ontoreview.ui_core import Settings
+
+    plans = {t: _plan(Settings(source="a.ttl", task=t, robot="auto", oops="auto")) for t in
+             ("site", "single", "markdown", "myst")}
+    keys = {t: [k for k, _ in p] for t, p in plans.items()}
+    assert keys["site"] == keys["single"] == keys["markdown"] == keys["myst"]
+    assert {"robot", "iri", "ontocheck", "oops"} <= set(keys["markdown"])
+    assert plans["myst"][-1] == ("render", "Write MyST files")
+    cli = Settings(source="a.ttl", task="markdown", oops="off").cli()
+    assert cli.startswith("ontoreview export --format markdown") and "--no-oops" in cli

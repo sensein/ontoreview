@@ -2,7 +2,7 @@
 
 The section list, order, numbering and page split come from :meth:`SiteRenderer.sections` (multi-page
 layout), and the wording from the same :class:`Translator`, so a Markdown export says what the website
-says. Each ``sections/<name>.html`` template has a ``_<name>`` method here.
+says. The interactive Visualization (class diagram) is website-only. Each ``sections/<name>.html`` template has a ``_<name>`` method here.
 
 Anchors are explicit, so links work in every target: MyST labels ``(anchor)=`` for Sphinx, and
 ``<a id="anchor"></a>`` for GitHub, MkDocs and Docusaurus. Links are ``page.md#anchor``.
@@ -13,12 +13,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from ..model.entities import KIND_SLUGS, Ontology, Ref, Term, TreeNode
+from ..model.entities import KIND_SLUGS, Ontology, Ref, Term
 from ..publish import fix_attribution, term_changes
 from ..report.models import tool_anchor
 from .site import Section, SiteRenderer, _filesize, _prov_when
-
-MERMAID_MAX_NODES = 250  # larger hierarchies are shown as the nested list only
 
 STATUS_KEYS = {"passed": "cq_passed", "failed": "cq_failed", "error": "cq_error", "untested": "cq_untested"}
 
@@ -274,50 +272,6 @@ class MarkdownRenderer:
                 out += [f"**{t.kind_title(kind)}** ({len(items)}): {links}", ""]
             if any(x.external for x in self.onto.terms.values()):
                 out += [f"\\* {t('external')}: declared in this ontology, outside its namespace.", ""]
-        return out
-
-    def _graph(self, s: Section, h: int) -> list[str]:
-        t, onto = self.t, self.onto
-        title = self.meta.title or "the ontology"
-        out = [f"*{t('figure')} 1.* {t('figure_caption', title=title).split('. ')[0]}.", ""]
-        nodes: dict[str, str] = {}
-        edges: list[tuple[str, str, str]] = []
-        for x in onto.terms.values():
-            if x.kind == "class":
-                for p in x.superclasses:
-                    edges.append((x.iri, p.iri, ""))
-            elif x.kind == "concept":
-                for p in x.broader:
-                    edges.append((x.iri, p.iri, ""))
-        labels = {x.iri: x.label for x in onto.terms.values()}
-        for a, b, _ in edges:
-            nodes.setdefault(a, f"n{len(nodes)}")
-            nodes.setdefault(b, f"n{len(nodes)}")
-        for x in onto.terms.values():
-            if x.kind in ("class", "concept"):
-                nodes.setdefault(x.iri, f"n{len(nodes)}")
-        if nodes and len(nodes) <= MERMAID_MAX_NODES:
-            def lab(iri: str) -> str:
-                text = labels.get(iri) or iri.rstrip("/#").rsplit("/", 1)[-1].rsplit("#", 1)[-1]
-                return text.replace('"', "#quot;")
-
-            fence = "```{mermaid}" if self.myst else "```mermaid"
-            out += [fence, "flowchart BT"]
-            out += [f'  {nid}["{lab(iri)}"]' for iri, nid in nodes.items()]
-            out += [f"  {nodes[a]} --> {nodes[b]}" for a, b, _ in edges]
-            out += ["```", "", f"*{t('legend_sub')}: an arrow points from a subclass to its superclass.*", ""]
-        elif nodes:
-            out += [f"*The hierarchy has {len(nodes)} classes, too many for a diagram; it is listed below.*", ""]
-        for key, tree in (("class_hierarchy", onto.class_tree), ("concept_hierarchy", onto.concept_tree)):
-            if tree:
-                out += [f"{'#' * (h + 1)} {t(key)}", ""] + self._tree(tree) + [""]
-        return out
-
-    def _tree(self, nodes: list[TreeNode], depth: int = 0) -> list[str]:
-        out = []
-        for n in nodes:
-            out.append("  " * depth + "- " + self.ref(n.ref))
-            out += self._tree(n.children, depth + 1)
         return out
 
     def _namespaces(self, s: Section, h: int) -> list[str]:

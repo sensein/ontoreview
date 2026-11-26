@@ -30,6 +30,7 @@ from rdflib import URIRef
 from . import __version__, telemetry
 from .ui_core import (
     ACTIVE_TASKS,
+    CHECKED_TASKS,
     LOCAL_OOPS_URL,
     MAX_UPLOAD_BYTES,
     RUN_FOLDER_TASKS,
@@ -90,14 +91,14 @@ INCLUDES = {
               "class diagram, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck "
               "metrics, cross-domain interoperability, OOPS!), changelog, downloads (TTL, OWL, JSON-LD, embedded in "
               "the file), citation and provenance (who made each fix: a person, a rule or AI)",
-    "markdown": "Includes: the same content as the website, as Markdown pages: every term, class diagram (Mermaid) "
-                "and hierarchy, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck "
-                "metrics, cross-domain interoperability, OOPS!), changelog, downloads (TTL, OWL, JSON-LD), citation, "
-                "provenance (who made each fix: a person, a rule or AI) and ontology.json; no search",
-    "myst": "Includes: the same content as the website, as MyST pages with cross-references: every term, class "
-            "diagram (Mermaid) and hierarchy, quality report (built-in checks, ROBOT, reasoner consistency, IRI checks, "
-            "OntoCheck metrics, cross-domain interoperability, OOPS!), changelog, downloads, citation and provenance, "
-            "plus conf.py, requirements.txt and a README to build it with Sphinx",
+    "markdown": "Includes: the website's content as Markdown pages: every term, quality report (built-in checks, "
+                "ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, cross-domain interoperability, OOPS!), "
+                "changelog, downloads (TTL, OWL, JSON-LD), citation, provenance (who made each fix: a person, a rule "
+                "or AI) and ontology.json; not the interactive class diagram or search",
+    "myst": "Includes: the website's content as MyST pages with cross-references: every term, quality report "
+            "(built-in checks, ROBOT, reasoner consistency, IRI checks, OntoCheck metrics, cross-domain "
+            "interoperability, OOPS!), changelog, downloads, citation and provenance, plus conf.py, requirements.txt "
+            "and a README to build it with Sphinx; not the interactive class diagram",
     "check": "Includes: built-in checks, ROBOT, reasoner, IRI, OntoCheck and OOPS! results as JSON; no documentation",
     "interop": "Includes: CDI (Align, Gen), SI (covered scientific domains, per-domain scores, domain of each "
                "reference ontology) as JSON; references and options in Settings › Quality checks",
@@ -1013,7 +1014,7 @@ def _plan(s: Settings) -> list[tuple[str, str]]:
         what = " and ".join(x for x, on in (("Cross-domain", s.cdi), ("scientific", s.si)) if on).capitalize()
         return [("parse", "Parse ontology"), ("cdi", f"{what} interoperability"), ("render", "Write report")]
     steps = [("parse", "Parse ontology"), ("checks", "Built-in quality checks")]
-    if s.task in ("site", "single", "check"):
+    if s.task in CHECKED_TASKS:             # every docs format runs the same checks as a check run
         if s.robot != "off":
             steps.append(("robot", "ROBOT report" + (" (local)" if s.robot_path else " (Docker)")))
             if s.reasoner != "off":
@@ -1866,7 +1867,7 @@ def build_page() -> None:  # noqa: C901 - the shell and its four pages share sta
             if prior:
                 what = f"{prior['count']} ontologies" if prior["kind"] == "folder" else "output"
                 existing_info.text = f"Previous {what} here from {when_text(prior['when'])}; building again updates it."
-            checks_row.set_visibility(s.task in ("site", "single", "check", "interop"))
+            checks_row.set_visibility(s.task in CHECKED_TASKS + ("interop",))
             prev_box.set_visibility(s.task == "diff")
             robot_txt = ("ROBOT off" if s.robot == "off" else
                          f"ROBOT ({'local' if s.robot_path else 'Docker'})")

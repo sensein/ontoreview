@@ -21,7 +21,9 @@ def export_markdown(onto: Ontology, out: Path, myst: bool = False, cqs=None, *, 
     from .render.markdown import render_markdown
     from .render.site import SiteRenderer
 
-    cfg = (config or Config()).model_copy(update={"layout": "multi"})
+    cfg = config or Config()
+    # the interactive class diagram has no static equivalent worth keeping: Markdown has no Visualization section
+    cfg = cfg.model_copy(update={"layout": "multi", "sections": cfg.sections.model_copy(update={"graph": False})})
     site = SiteRenderer(cfg, onto, out, report=report, changelog=changelog, downloads=downloads, cqs=cqs,
                         provenance=provenance)
     return render_markdown(site, out, myst=myst)
@@ -31,7 +33,6 @@ def export_markdown(onto: Ontology, out: Path, myst: bool = False, cqs=None, *, 
 SPHINX_REQUIREMENTS = """sphinx>=7
 myst-parser>=2
 furo
-sphinxcontrib-mermaid
 """
 
 SPHINX_CONF = '''"""Sphinx configuration for this MyST export (written by OntoReview {version}).
@@ -45,11 +46,6 @@ release = {release!r}
 copyright = {copyright!r}
 
 extensions = ["myst_parser"]
-try:                                   # the Visualization page draws the class hierarchy with Mermaid
-    import sphinxcontrib.mermaid  # noqa: F401
-    extensions.append("sphinxcontrib.mermaid")
-except ImportError:
-    pass
 
 source_suffix = {{".md": "markdown"}}
 root_doc = "index"
@@ -68,11 +64,12 @@ SPHINX_README = """# {title}: Sphinx (MyST) documentation
 
 This folder is a ready-to-build [Sphinx](https://www.sphinx-doc.org) project. The pages are
 [MyST Markdown](https://myst-parser.readthedocs.io), written by OntoReview {version}; they carry the same
-content as the OntoReview website (overview, visualization, terms, quality report, provenance, …).
+content as the OntoReview website (overview, terms, quality report, provenance, …), except the interactive
+class diagram.
 
 | File | What it is |
 |---|---|
-| `conf.py` | Sphinx configuration (MyST parser, Mermaid diagrams, Furo theme) |
+| `conf.py` | Sphinx configuration (MyST parser, Furo theme) |
 | `requirements.txt` | The Python packages needed to build |
 | `index.md` | Front page: metadata, contents, overview, namespaces, downloads, citation, provenance |
 {pages}| `ontology.*`, `CITATION.cff`, `provenance.ttl`, `*.json` | Downloads and machine-readable records, linked from the pages |
@@ -215,8 +212,7 @@ def ontology_json(onto: Ontology, cqs=None, provenance: dict | None = None) -> d
     }
 
 
-EXTRA_PAGES = {"graph.md": ("Visualization", "the class hierarchy as a diagram and as a list"),
-               "changelog.md": ("Changelog", "what changed since the previous version"),
+EXTRA_PAGES = {"changelog.md": ("Changelog", "what changed since the previous version"),
                "quality.md": ("Quality report", "the problems each quality check found, merged and per check")}
 
 
